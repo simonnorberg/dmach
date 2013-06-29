@@ -1,0 +1,89 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    tools:context=".MainActivity" >
+
+    <LinearLayout
+        android:id="@+id/controls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal" >
+
+        <ToggleButton
+            android:id="@+id/playButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@string/play_listener"
+            android:text="@string/play"
+            android:textOff="@string/play"
+            android:textOn="@string/play" />
+
+        <Button
+            android:id="@+id/tempoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@string/tempo_listener"
+            android:text="@string/init_tempo" />
+
+    </LinearLayout>
+
+    <RadioGroup
+        android:id="@+id/channels"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/controls"
+        android:orientation="vertical" >
+
+        <RadioButton
+            android:id="@+id/bd"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:onClick="@string/channel_listener"
+            android:text="@string/bd" />
+
+        <RadioButton
+            android:id="@+id/sd"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:onClick="@string/channel_listener"
+            android:text="@string/sd" />
+
+        <RadioButton
+            android:id="@+id/tt"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:onClick="@string/channel_listener"
+            android:text="@string/tt" />
+
+        <RadioButton
+            android:id="@+id/hh"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:onClick="@string/channel_listener"
+            android:text="@string/hh" />
+
+    </RadioGroup>
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/channels"
+        android:layout_below="@+id/controls" >
+    </FrameLayout>
+
+</RelativeLayout>

@@ -1,0 +1,50 @@
+#N canvas 361 230 742 300 10;
+#X obj 138 149 outlet;
+#X obj 9 77 vstep;
+#X obj 46 77 vstep;
+#X obj 83 77 vstep;
+#X obj 120 77 vstep;
+#X obj 157 77 vstep;
+#X obj 194 77 vstep;
+#X obj 231 77 vstep;
+#X obj 268 77 vstep;
+#X obj 198 -53 inlet step;
+#X obj 9 -53 inlet pos;
+#X obj 9 -32 sel 0 1 2 3 4 5 6 7;
+#X obj 198 -32 sel 0 1 2 3 4 5 6 7;
+#X text 361 -50 Copyright (C) 2013 Simon Norberg This program is free
+software: you can redistribute it and/or modify it under the terms
+of the GNU General Public License as published by the Free Software
+Foundation \, either version 3 of the License \, or (at your option)
+any later version. This program is distributed in the hope that it
+will be useful \, but WITHOUT ANY WARRANTY \; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+the GNU General Public License for more details. You should have received
+a copy of the GNU General Public License along with this program. If
+not \, see <http://www.gnu.org/licenses/>.;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X connect 8 0 0 0;
+#X connect 9 0 12 0;
+#X connect 10 0 11 0;
+#X connect 11 0 1 0;
+#X connect 11 1 2 0;
+#X connect 11 2 3 0;
+#X connect 11 3 4 0;
+#X connect 11 4 5 0;
+#X connect 11 5 6 0;
+#X connect 11 6 7 0;
+#X connect 11 7 8 0;
+#X connect 12 0 1 1;
+#X connect 12 1 2 1;
+#X connect 12 2 3 1;
+#X connect 12 3 4 1;
+#X connect 12 4 5 1;
+#X connect 12 5 6 1;
+#X connect 12 6 7 1;
+#X connect 12 7 8 1;
