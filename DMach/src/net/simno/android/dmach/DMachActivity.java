@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import net.simno.android.dmach.PatchFragment.PatchFragmentListener;
-import net.simno.android.dmach.TempoDialog.TempoDialogListener;
 import net.simno.android.dmach.model.Channel;
 import net.simno.android.dmach.model.Patch;
 import net.simno.android.dmach.model.PointF;
@@ -37,11 +36,14 @@ import org.puredata.core.PdBase;
 import org.puredata.core.PdListener;
 import org.puredata.core.utils.IoUtils;
 
+import com.michaelnovakjr.numberpicker.NumberPicker;
+import com.michaelnovakjr.numberpicker.NumberPickerDialog;
+import com.michaelnovakjr.numberpicker.NumberPickerDialog.OnNumberSetListener;
+
 import android.os.Bundle;
 import android.os.IBinder;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.Context;
@@ -60,7 +62,7 @@ import android.widget.RadioGroup;
 import android.widget.ToggleButton;
 
 public class DMachActivity extends Activity
-implements TempoDialogListener, PatchFragmentListener {
+implements PatchFragmentListener, OnNumberSetListener {
 
 	private final String TAG = this.getClass().getSimpleName();
 	static final int stepCount = 8;
@@ -293,22 +295,23 @@ implements TempoDialogListener, PatchFragmentListener {
 	}
 		
 	public void onTempoClicked(View view) {
-		DialogFragment dialog = new TempoDialog();
-		dialog.show(getFragmentManager(), "tempo");
+		int tempo = Integer.parseInt((String) ((Button) view).getText());
+		NumberPickerDialog dialog = new NumberPickerDialog(this, -1, 120);
+		NumberPicker picker = dialog.getNumberPicker();
+		picker.setRange(1, 1000);
+		picker.setCurrent(tempo);
+		picker.setSpeed(50);
+        dialog.setOnNumberSetListener(this);
+        dialog.show();
 		Log.i(TAG, "onTempoClicked");
-	}
-	
-	@Override
-	public void onTempoPositiveClick(DialogFragment dialog, int tempo) {
-		PdBase.sendFloat("tempo", tempo);
-		((Button) findViewById(R.id.tempoButton)).setText("" + tempo);
-		Log.i(TAG, "onTempoPositiveClick " + tempo);
-	}
-	
-	@Override
-	public void onTempoNegativeClick(DialogFragment dialog) {
-		Log.i(TAG, "onTempoNegativeClick");
 	}	
+	
+	@Override
+	public void onNumberSet(int selectedNumber) {
+		PdBase.sendFloat("tempo", selectedNumber);
+		((Button) findViewById(R.id.tempoButton)).setText("" + selectedNumber);
+		Log.i(TAG, "Number selected: " + selectedNumber);
+	}
 	
 	public void onChannelClicked(View view) {
 		RadioGroup group = (RadioGroup) findViewById(R.id.channels);
