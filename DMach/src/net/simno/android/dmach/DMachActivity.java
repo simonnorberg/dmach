@@ -54,7 +54,6 @@ import android.content.ServiceConnection;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -93,13 +92,6 @@ implements PatchFragmentListener, OnNumberSetListener {
         initSystemServices();
         initPdService();
 		Log.i(TAG, "onCreate");
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_main, menu);
-		Log.i(TAG, "onCreateOptionsMenu");
-		return true;
 	}
 		
 	@Override
@@ -163,7 +155,6 @@ implements PatchFragmentListener, OnNumberSetListener {
 						return;
 					}
 					if (state == TelephonyManager.CALL_STATE_IDLE) {
-						// check if playing to!!!
 						if (!pdService.isRunning()) {
 							startAudio();
 						}
@@ -283,6 +274,7 @@ implements PatchFragmentListener, OnNumberSetListener {
 			})
 			.setNegativeButton("No", null)
 			.show();
+		Log.i(TAG, "onBackPressed");
 	}
 	
 	public void onPlayClicked(View view) {
@@ -310,7 +302,7 @@ implements PatchFragmentListener, OnNumberSetListener {
 	public void onNumberSet(int selectedNumber) {
 		PdBase.sendFloat("tempo", selectedNumber);
 		((Button) findViewById(R.id.tempoButton)).setText("" + selectedNumber);
-		Log.i(TAG, "Number selected: " + selectedNumber);
+		Log.i(TAG, "onNumberSet: " + selectedNumber);
 	}
 	
 	public void onChannelClicked(View view) {
