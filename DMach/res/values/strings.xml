@@ -26,8 +26,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="step_listener">onStepClicked</string>    
     <string name="tempo_listener">onTempoClicked</string>
     <string name="init_tempo">120</string>
-    <string name="mixer">Mixer</string>
-    <string name="none">None</string>
     
     <string name="bd">BD</string>
     <string name="sd">SD</string>
