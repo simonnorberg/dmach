@@ -24,314 +24,150 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     <LinearLayout
         android:id="@+id/bdSteps"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        style="@style/Steps" >
 
         <ToggleButton
             android:id="@+id/bd0"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+			style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/bd1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/bd2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/bd3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/bd4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/bd5"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/bd6"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/bd7"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/sdSteps"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        style="@style/Steps" >
 
         <ToggleButton
             android:id="@+id/sd0"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/sd1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/sd2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/sd3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/sd4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/sd5"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/sd6"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/sd7"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ttSteps"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        style="@style/Steps" >
 
         <ToggleButton
             android:id="@+id/tt0"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/tt1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/tt2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/tt3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/tt4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/tt5"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/tt6"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/tt7"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/hhSteps"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        style="@style/Steps" >
 
         <ToggleButton
             android:id="@+id/hh0"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/hh1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/hh2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/hh3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/hh4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/hh5"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/hh6"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
 
         <ToggleButton
             android:id="@+id/hh7"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="@string/step_listener"
-            android:textOff=""
-            android:textOn="" />
+            style="@style/Step" />
     </LinearLayout>
 
     <RadioGroup
@@ -343,60 +179,36 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
         <RadioButton
             android:id="@+id/pos0"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:clickable="false"
-            android:checked="true" />
+            android:checked="true"
+            style="@style/Pos" />
 
         <RadioButton
             android:id="@+id/pos1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:clickable="false" />
+            style="@style/Pos" />
 
         <RadioButton
             android:id="@+id/pos2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:clickable="false" />
+            style="@style/Pos" />
         
         <RadioButton
             android:id="@+id/pos3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:clickable="false" />
+            style="@style/Pos" />
         
         <RadioButton
             android:id="@+id/pos4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:clickable="false" />
+            style="@style/Pos" />
         
         <RadioButton
             android:id="@+id/pos5"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:clickable="false" />
+            style="@style/Pos" />
         
         <RadioButton
             android:id="@+id/pos6"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:clickable="false" />
+            style="@style/Pos" />
         
         <RadioButton
             android:id="@+id/pos7"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:clickable="false" />
+            style="@style/Pos" />
         
     </RadioGroup>
 

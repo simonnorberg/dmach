@@ -62,35 +62,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
         <RadioButton
             android:id="@+id/bd"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:onClick="@string/channel_listener"
-            android:text="@string/bd" />
+            android:text="@string/bd"
+            style="@style/Channel" />
 
         <RadioButton
             android:id="@+id/sd"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:onClick="@string/channel_listener"
-            android:text="@string/sd" />
+            android:text="@string/sd"
+            style="@style/Channel" />
 
         <RadioButton
             android:id="@+id/tt"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:onClick="@string/channel_listener"
-            android:text="@string/tt" />
+            android:text="@string/tt"
+            style="@style/Channel" />
 
         <RadioButton
             android:id="@+id/hh"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:onClick="@string/channel_listener"
-            android:text="@string/hh" />
+            android:text="@string/hh"
+            style="@style/Channel" />
 
     </RadioGroup>
 
