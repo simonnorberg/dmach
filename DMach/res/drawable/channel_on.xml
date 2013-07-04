@@ -16,10 +16,6 @@ GNU General Public License for more details.
 along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 -->
 
-<resources>
-    <color name="dark_grey">#302e2c</color>
-    <color name="light_grey">#c1bf87</color>
-    <color name="orange">#e9950a</color>
-    <color name="yellow">#ebebaf</color>
-    <color name="white">#ffffff</color>
-</resources>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/orange" />
+</shape>

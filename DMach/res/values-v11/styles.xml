@@ -20,13 +20,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     
     <style name="DMachTheme" parent="android:Theme.Holo.Light.NoActionBar.Fullscreen">
         <item name="android:soundEffectsEnabled">false</item>
-        <item name="android:windowBackground">@color/background</item>
+        <item name="android:windowBackground">@color/yellow</item>
     </style>
 
     <style name="Channel">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">0dp</item>
-        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/channel</item>
+        <item name="android:button">@null</item>
+        <item name="android:textColor">@color/yellow</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+        
         <item name="android:onClick">@string/channel_listener</item>
     </style>
     
