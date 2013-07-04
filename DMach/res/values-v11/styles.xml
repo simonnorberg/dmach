@@ -20,6 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     
     <style name="DMachTheme" parent="android:Theme.Holo.Light.NoActionBar.Fullscreen">
         <item name="android:soundEffectsEnabled">false</item>
+        <item name="android:windowBackground">@color/background</item>
     </style>
 
     <style name="Channel">
