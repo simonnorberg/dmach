@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <style name="DMachTheme" parent="android:Theme.Holo.Light.NoActionBar.Fullscreen">
         <item name="android:soundEffectsEnabled">false</item>
         <item name="android:windowBackground">@color/yellow</item>
+        <item name="android:typeface">monospace</item>
     </style>
 
     <style name="Channel">
@@ -28,9 +29,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <item name="android:button">@null</item>
         <item name="android:textColor">@color/yellow</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">40dp</item>
-        
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">25sp</item>
         <item name="android:onClick">@string/channel_listener</item>
     </style>
     

@@ -28,9 +28,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         android:id="@+id/controls"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
         android:orientation="horizontal" >
 
         <ToggleButton
@@ -51,45 +48,47 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     </LinearLayout>
 
-    <RadioGroup
-        android:id="@+id/channels"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/controls"
-        android:orientation="vertical" >
-
-        <RadioButton
-            android:id="@+id/bd"
-            android:text="@string/bd"
-            style="@style/Channel" />
-
-        <RadioButton
-            android:id="@+id/sd"
-            android:text="@string/sd"
-            style="@style/Channel" />
-
-        <RadioButton
-            android:id="@+id/tt"
-            android:text="@string/tt"
-            style="@style/Channel" />
-
-        <RadioButton
-            android:id="@+id/hh"
-            android:text="@string/hh"
-            style="@style/Channel" />
-
-    </RadioGroup>
-
-    <FrameLayout
-        android:id="@+id/fragment_container"
+    <LinearLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@+id/channels"
-        android:layout_below="@+id/controls" >
-    </FrameLayout>
+        android:layout_below="@id/controls"
+        android:orientation="horizontal" >
+
+		<RadioGroup
+	        android:id="@+id/channels"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="1" >
+
+	        <RadioButton
+	            android:id="@+id/bd"
+	            android:text="@string/bd"
+	            style="@style/Channel" />
+	
+	        <RadioButton
+	            android:id="@+id/sd"
+	            android:text="@string/sd"
+	            style="@style/Channel" />
+	
+	        <RadioButton
+	            android:id="@+id/tt"
+	            android:text="@string/tt"
+	            style="@style/Channel" />
+	
+	        <RadioButton
+	            android:id="@+id/hh"
+	            android:text="@string/hh"
+	            style="@style/Channel" />
+	
+	    </RadioGroup>
+
+	    <FrameLayout
+	        android:id="@+id/fragment_container"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="8" />
+
+    </LinearLayout>   
 
 </RelativeLayout>
