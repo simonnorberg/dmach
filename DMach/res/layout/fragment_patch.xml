@@ -26,8 +26,40 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <RadioGroup
         android:id="@+id/patches"
         android:layout_marginRight="8dp"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content" />
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content">
+        
+		<RadioButton
+		    android:id="@+id/setting1"
+		    android:text="@string/setting1"
+		    style="@style/Setting.Top" />
+		
+		<RadioButton
+		    android:id="@+id/setting2"
+		    android:text="@string/setting2"
+		    style="@style/Setting.Middle" />
+		
+		<RadioButton
+		    android:id="@+id/setting3"
+		    android:text="@string/setting3"
+		    style="@style/Setting.Middle" />
+		
+		<RadioButton
+		    android:id="@+id/setting4"
+		    android:text="@string/setting4"
+		    style="@style/Setting.Middle" />
+		
+		<RadioButton
+		    android:id="@+id/setting5"
+		    android:text="@string/setting5"
+		    style="@style/Setting.Middle" />
+		
+		<RadioButton
+		    android:id="@+id/setting6"
+		    android:text="@string/setting6"
+		    style="@style/Setting.Bottom" />
+        
+    </RadioGroup>
 
     <net.simno.android.dmach.view.PatchView
         android:id="@+id/patchView"

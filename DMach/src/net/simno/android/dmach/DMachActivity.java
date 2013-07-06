@@ -65,8 +65,8 @@ public class DMachActivity extends Activity
 implements PatchFragmentListener, OnNumberSetListener {
 
 	private final String TAG = this.getClass().getSimpleName();
-	static final int stepCount = 8;
-	static final int channelCount = 4;
+	static final int STEP_COUNT = 8;
+	static final int CHANNEL_COUNT = 4;
 	private ArrayList<Channel> channels;
 	private int selectedChannelIndex = -1;
 	private PdUiDispatcher dispatcher;
@@ -104,35 +104,35 @@ implements PatchFragmentListener, OnNumberSetListener {
 	}
 	
 	private void initChannels() {
-		channels = new ArrayList<Channel>(channelCount);
+		channels = new ArrayList<Channel>(CHANNEL_COUNT);
 		
 		Patch bdPatch = new Patch();
-		bdPatch.addSetting(new Setting("freq1", "freq2", new PointF(.4f, .4f)));
-		bdPatch.addSetting(new Setting("curvetime", "square", new PointF(.4f, 0)));
-		bdPatch.addSetting(new Setting("noizelevel", "lowpass", new PointF(.7f, .7f)));
-		bdPatch.addSetting(new Setting("decay", "gain", new PointF(.49f, .49f)));
-		channels.add(new Channel("bd", bdPatch, new boolean[stepCount]));
+		bdPatch.addSetting(new Setting("Freq 1", "Freq 2", new PointF(.4f, .4f)));
+		bdPatch.addSetting(new Setting("Curve Time", "Square", new PointF(.4f, 0)));
+		bdPatch.addSetting(new Setting("Noise Level", "Low-pass", new PointF(.7f, .7f)));
+		bdPatch.addSetting(new Setting("Decay", "Gain", new PointF(.49f, .49f)));
+		channels.add(new Channel("bd", bdPatch, new boolean[STEP_COUNT]));
 		
 		Patch sdPatch = new Patch();
-		sdPatch.addSetting(new Setting("pitch", "noise", new PointF(.49f , .8f)));
-		sdPatch.addSetting(new Setting("bandpass", "bandpassQ", new PointF(.7f, .6f)));
-		sdPatch.addSetting(new Setting("decay", "bodyDecay", new PointF(.55f, .42f)));
-		sdPatch.addSetting(new Setting("attack", "lowpass", new PointF(.55f, .6f)));
-		sdPatch.addSetting(new Setting("xfade", "gain", new PointF(.35f, .45f)));
-		channels.add(new Channel("sd", sdPatch, new boolean[stepCount]));
+		sdPatch.addSetting(new Setting("Pitch", "Noise", new PointF(.49f , .8f)));
+		sdPatch.addSetting(new Setting("Band-pass", "Band-pass Q", new PointF(.7f, .6f)));
+		sdPatch.addSetting(new Setting("Decay", "Body Decay", new PointF(.55f, .42f)));
+		sdPatch.addSetting(new Setting("Attack", "Low-pass", new PointF(.55f, .6f)));
+		sdPatch.addSetting(new Setting("X-fade", "Gain", new PointF(.35f, .45f)));
+		channels.add(new Channel("sd", sdPatch, new boolean[STEP_COUNT]));
 		
 		Patch ttPatch = new Patch();
-		ttPatch.addSetting(new Setting("pitch", "gain", new PointF(.499f, .49f)));
-		channels.add(new Channel("tt", ttPatch, new boolean[stepCount]));
+		ttPatch.addSetting(new Setting("Pitch", "Gain", new PointF(.499f, .49f)));
+		channels.add(new Channel("tt", ttPatch, new boolean[STEP_COUNT]));
 		
 		Patch hhPatch = new Patch();
-		hhPatch.addSetting(new Setting("pitch", "ratioA", new PointF(.45f, 1)));
-		hhPatch.addSetting(new Setting("ratioB", "noise", new PointF(.9f, .6f)));
-		hhPatch.addSetting(new Setting("noisepitch", "snap", new PointF(.55f, .1f)));
-		hhPatch.addSetting(new Setting("attack", "release", new PointF(.4f, .55f)));
-		hhPatch.addSetting(new Setting("filter", "filterQ", new PointF(.7f, .6f)));
-		hhPatch.addSetting(new Setting("lowpass", "gain", new PointF(.8f, .4f)));
-		channels.add(new Channel("hh", hhPatch, new boolean[stepCount]));
+		hhPatch.addSetting(new Setting("Pitch", "Ratio A", new PointF(.45f, 1)));
+		hhPatch.addSetting(new Setting("Ratio B", "Noise", new PointF(.9f, .6f)));
+		hhPatch.addSetting(new Setting("Noise Pitch", "Snap", new PointF(.55f, .1f)));
+		hhPatch.addSetting(new Setting("Attack", "Release", new PointF(.4f, .55f)));
+		hhPatch.addSetting(new Setting("Filter", "Filter Q", new PointF(.7f, .6f)));
+		hhPatch.addSetting(new Setting("Low-pass", "Gain", new PointF(.8f, .4f)));
+		channels.add(new Channel("hh", hhPatch, new boolean[STEP_COUNT]));
 		Log.i(TAG, "initChannels");
 	}
 	

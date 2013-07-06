@@ -26,10 +26,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="step_listener">onStepClicked</string>    
     <string name="tempo_listener">onTempoClicked</string>
     <string name="init_tempo">120</string>
-    
     <string name="bd">BD</string>
     <string name="sd">SD</string>
     <string name="tt">TT</string>
     <string name="hh">HH</string>
+    <string name="setting1">1</string>
+    <string name="setting2">2</string>
+    <string name="setting3">3</string>
+    <string name="setting4">4</string>
+    <string name="setting5">5</string>
+    <string name="setting6">6</string>
     
 </resources>

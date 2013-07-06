@@ -71,7 +71,7 @@ public class SequencerFragment extends Fragment {
 			boolean[] sdSequence = channels.get(1).getSequence();
 			boolean[] ttSequence = channels.get(2).getSequence();
 			boolean[] hhSequence = channels.get(3).getSequence();
-			for (int i = 0; i < DMachActivity.stepCount; ++i) {
+			for (int i = 0; i < DMachActivity.STEP_COUNT; ++i) {
 				ToggleButton bd = (ToggleButton) bdSteps.getChildAt(i);
 				ToggleButton sd = (ToggleButton) sdSteps.getChildAt(i);
 				ToggleButton tt = (ToggleButton) ttSteps.getChildAt(i);

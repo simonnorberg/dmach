@@ -25,15 +25,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     
     <style name="Play">
         <item name="android:background">@drawable/rect_dark_grey</item>
-        <item name="android:src">@drawable/play</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_marginRight">8dp</item>
         <item name="android:layout_width">80dp</item>
         <item name="android:onClick">@string/play_listener</item>
+        <item name="android:src">@drawable/play</item>
     </style>
     
     <style name="Tempo">
-        <item name="android:background">@drawable/sel_orange_dark_grey</item>
+        <item name="android:background">@drawable/rect_dark_grey</item>
         <item name="android:button">@null</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_height">62dp</item>
@@ -46,16 +46,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     </style>
     
     <style name="Channel">
-        <item name="android:background">@drawable/sel_orange_dark_grey</item>
+        <item name="android:background">@drawable/sel_channel</item>
         <item name="android:button">@null</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/yellow</item>
-        <item name="android:textSize">32sp</item>
-        <item name="android:textStyle">bold</item>
 		<item name="android:layout_height">0dp</item>
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_width">match_parent</item>
+        <item name="android:textColor">@color/yellow</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:onClick">@string/channel_listener</item>
     </style>
     
@@ -66,7 +66,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     </style>
     
     <style name="Step">
-        <item name="android:background">@drawable/sel_red_light_grey</item>
+        <item name="android:background">@drawable/sel_step</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_marginLeft">8dp</item>
         <item name="android:layout_marginTop">8dp</item>
@@ -78,12 +78,32 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     </style>
     
     <style name="Setting">
-        <item name="android:background">@drawable/sel_orange_dark_grey</item>
+        <item name="android:background">@drawable/sel_setting</item>
         <item name="android:button">@null</item>
         <item name="android:gravity">center</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:paddingLeft">23dp</item>
+        <item name="android:paddingRight">23dp</item>
+        <item name="android:paddingTop">3dp</item>
         <item name="android:textColor">@color/yellow</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:textStyle">normal</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+        
+    <style name="Setting.Bottom">
+        <item name="android:layout_marginTop">4dp</item>
     </style>
     
+    <style name="Setting.Middle">
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+    </style>
+    
+    <style name="Setting.Top">
+        <item name="android:layout_marginBottom">4dp</item>
+    </style>
+
 </resources>
