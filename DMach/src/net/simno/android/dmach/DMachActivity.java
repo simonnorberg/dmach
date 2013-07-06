@@ -57,6 +57,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.ToggleButton;
 
@@ -71,6 +72,7 @@ implements PatchFragmentListener, OnNumberSetListener {
 	private PdUiDispatcher dispatcher;
 	private PdService pdService = null;
 	private int patch = 0;
+	private boolean isRunning = false;
 	private final Object lock = new Object();
 	private final ServiceConnection pdConnection = new ServiceConnection() {
 		@Override
@@ -276,6 +278,13 @@ implements PatchFragmentListener, OnNumberSetListener {
 	
 	public void onPlayClicked(View view) {
 		// reset progressbar?
+		ImageButton imageButton = (ImageButton) view;
+		if (true == isRunning) {
+			imageButton.setImageResource(R.drawable.play);
+		} else {
+			imageButton.setImageResource(R.drawable.stop);
+		}
+		isRunning = !isRunning;
 		PdBase.sendBang("run");
 		Log.i(TAG, "onPlayClicked");
 	}

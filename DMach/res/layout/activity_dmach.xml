@@ -31,8 +31,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
-        <ToggleButton
+        <ImageButton
             android:id="@+id/playButton"
+            android:contentDescription="@string/play"
             style="@style/Play" />
 
         <Button
