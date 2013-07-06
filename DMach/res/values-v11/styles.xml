@@ -33,7 +33,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     </style>
     
     <style name="Tempo">
-        <item name="android:background">@drawable/sel_orange_light_grey</item>
+        <item name="android:background">@drawable/sel_orange_dark_grey</item>
         <item name="android:button">@null</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_height">62dp</item>
@@ -46,7 +46,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     </style>
     
     <style name="Channel">
-        <item name="android:background">@drawable/sel_orange_light_grey</item>
+        <item name="android:background">@drawable/sel_orange_dark_grey</item>
         <item name="android:button">@null</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/yellow</item>
@@ -75,6 +75,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <item name="android:textOff">""</item>
         <item name="android:textOn">""</item>
         <item name="android:onClick">@string/step_listener</item>
+    </style>
+    
+    <style name="Setting">
+        <item name="android:background">@drawable/sel_orange_dark_grey</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/yellow</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">normal</item>
     </style>
     
 </resources>

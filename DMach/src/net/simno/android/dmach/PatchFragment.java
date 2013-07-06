@@ -30,6 +30,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnLayoutChangeListener;
 import android.view.ViewGroup;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
@@ -111,10 +112,15 @@ public class PatchFragment extends Fragment {
 		});
         int current = initPatch.getSelectedSettingIndex();
         for (int i = 0; i < initPatch.getCount(); ++i) {
-        	RadioButton rb = new RadioButton(getActivity());
+        	RadioButton rb = (RadioButton) inflater.inflate(R.layout.radiobutton_setting, null); 
         	group.addView(rb, i);
         	rb.setText("" + (i + 1));
         	rb.setChecked(i == current ? true : false);
+            LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,
+            		LayoutParams.WRAP_CONTENT);
+            params.setMargins(0, 0, 0, 6);
+            rb.setLayoutParams(params);
+            rb.setPadding(32, 4, 32, 4);
         }
         return view;
     }
