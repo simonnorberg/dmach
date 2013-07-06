@@ -18,13 +18,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/steps"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_width="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/bdSteps"
-        style="@style/Steps" >
+        style="@style/Steps">
 
         <ToggleButton
             android:id="@+id/bd0"
@@ -61,7 +61,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     <LinearLayout
         android:id="@+id/sdSteps"
-        style="@style/Steps" >
+        style="@style/Steps">
 
         <ToggleButton
             android:id="@+id/sd0"
@@ -98,7 +98,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     <LinearLayout
         android:id="@+id/ttSteps"
-        style="@style/Steps" >
+        style="@style/Steps">
 
         <ToggleButton
             android:id="@+id/tt0"
@@ -135,7 +135,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     <LinearLayout
         android:id="@+id/hhSteps"
-        style="@style/Steps" >
+        style="@style/Steps">
 
         <ToggleButton
             android:id="@+id/hh0"

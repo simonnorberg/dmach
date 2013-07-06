@@ -42,8 +42,8 @@ public final class PatchView extends View {
 	private static final int backgroundColor = Color.parseColor("#E9950A");
 	private static final int circleColor = Color.parseColor("#EBEBAF");
 	private static final int textColor = Color.parseColor("#B57400");
-	private static final float radius = 30f;
-	private static final float strokeWidth = 6f;
+	private static final float radius = 36f;
+	private static final float strokeWidth = 8f;
 	private static final float textSize = 40f;
 	private Rect bounds = new Rect();
 	private Rect vBounds = new Rect();
@@ -185,7 +185,7 @@ public final class PatchView extends View {
 		
 		textPaint.getTextBounds(hText, 0, hText.length(), hBounds);
 		canvas.drawText(hText, bounds.centerX() - hBounds.centerX(),
-				bounds.height(), textPaint);
+				bounds.height() - 10, textPaint);
 		
 		textPaint.getTextBounds(vText, 0, vText.length(), vBounds);
 		vPath.reset();
