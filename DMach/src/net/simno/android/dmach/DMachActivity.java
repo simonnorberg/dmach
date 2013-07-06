@@ -90,10 +90,10 @@ implements PatchFragmentListener, OnNumberSetListener {
 		initChannels();
         initGui();
         initSystemServices();
-        initPdService();
+        initPdService();   
 		Log.i(TAG, "onCreate");
 	}
-		
+	
 	@Override
 	protected void onDestroy() {
 		cleanup();
@@ -186,10 +186,7 @@ implements PatchFragmentListener, OnNumberSetListener {
 		dispatcher.addListener("pos", new PdListener.Adapter() {
 			@Override
 			public void receiveFloat(String source, float x) {
-				RadioGroup group = (RadioGroup) findViewById(R.id.pos);
-				if (group != null) {
-					group.check(group.getChildAt((int) x).getId());	
-				}
+				// progressbar
 			}
 		});
 		startAudio();
@@ -278,10 +275,7 @@ implements PatchFragmentListener, OnNumberSetListener {
 	}
 	
 	public void onPlayClicked(View view) {
-		RadioGroup group = (RadioGroup) findViewById(R.id.pos);
-		if (group != null) {
-			group.check(group.getChildAt(0).getId());	
-		}
+		// reset progressbar?
 		PdBase.sendBang("run");
 		Log.i(TAG, "onPlayClicked");
 	}

@@ -170,46 +170,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             style="@style/Step" />
     </LinearLayout>
 
-    <RadioGroup
-        android:id="@+id/pos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="false"
-        android:orientation="horizontal" >
-
-        <RadioButton
-            android:id="@+id/pos0"
-            android:checked="true"
-            style="@style/Pos" />
-
-        <RadioButton
-            android:id="@+id/pos1"
-            style="@style/Pos" />
-
-        <RadioButton
-            android:id="@+id/pos2"
-            style="@style/Pos" />
-        
-        <RadioButton
-            android:id="@+id/pos3"
-            style="@style/Pos" />
-        
-        <RadioButton
-            android:id="@+id/pos4"
-            style="@style/Pos" />
-        
-        <RadioButton
-            android:id="@+id/pos5"
-            style="@style/Pos" />
-        
-        <RadioButton
-            android:id="@+id/pos6"
-            style="@style/Pos" />
-        
-        <RadioButton
-            android:id="@+id/pos7"
-            style="@style/Pos" />
-        
-    </RadioGroup>
-
 </LinearLayout>

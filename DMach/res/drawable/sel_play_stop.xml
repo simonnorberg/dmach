@@ -16,11 +16,12 @@ GNU General Public License for more details.
 along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 -->
 
-<resources>
-    <color name="dark_grey">#302e2c</color>
-    <color name="light_grey">#c1bf87</color>
-    <color name="orange">#e9950a</color>
-    <color name="red">#b02b2f</color>
-    <color name="yellow">#ebebaf</color>
-    <color name="white">#ffffff</color>
-</resources>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+	<item
+	    android:state_checked="true"
+	    android:drawable="@drawable/play" />
+	
+	<item
+	    android:state_checked="false"
+	    android:drawable="@drawable/play" />
+</selector>

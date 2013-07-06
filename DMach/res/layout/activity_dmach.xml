@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="3dp"
     android:keepScreenOn="true"
     tools:context=".MainActivity" >
 
@@ -32,19 +33,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
         <ToggleButton
             android:id="@+id/playButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@string/play_listener"
-            android:text="@string/play"
-            android:textOff="@string/play"
-            android:textOn="@string/play" />
+            style="@style/Play" />
 
         <Button
             android:id="@+id/tempoButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@string/tempo_listener"
-            android:text="@string/init_tempo" />
+            style="@style/Tempo" />
 
     </LinearLayout>
 
@@ -53,13 +46,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/controls"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
 		<RadioGroup
 	        android:id="@+id/channels"
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
-	        android:layout_weight="1" >
+	        android:layout_weight="1">
 
 	        <RadioButton
 	            android:id="@+id/bd"
