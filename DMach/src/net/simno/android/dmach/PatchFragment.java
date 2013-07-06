@@ -111,6 +111,9 @@ public class PatchFragment extends Fragment {
 			}
 		});
         int current = initPatch.getSelectedSettingIndex();
+        
+        System.out.println("PatchFragment height: " + container.getHeight());
+        
         for (int i = 0; i < initPatch.getCount(); ++i) {
         	RadioButton rb = (RadioButton) inflater.inflate(R.layout.radiobutton_setting, null); 
         	group.addView(rb, i);
@@ -118,7 +121,7 @@ public class PatchFragment extends Fragment {
         	rb.setChecked(i == current ? true : false);
             LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,
             		LayoutParams.WRAP_CONTENT);
-            params.setMargins(0, 0, 0, 6);
+            params.setMargins(0, 0, 0, 12);
             rb.setLayoutParams(params);
             rb.setPadding(32, 4, 32, 4);
         }
