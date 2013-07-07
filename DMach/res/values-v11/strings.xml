@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 <resources>
 
-    <string name="app_name">DMach</string>
+    <string name="app_name">DMACH</string>
     <string name="bd">BD</string>
     <string name="channel_listener">onChannelClicked</string>
     <string name="hh">HH</string>

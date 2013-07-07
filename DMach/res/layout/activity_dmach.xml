@@ -40,6 +40,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             android:id="@+id/tempoButton"
             style="@style/Tempo" />
 
+        <TextView
+            android:id="@+id/title"
+            style="@style/Title" />
+
     </LinearLayout>
 
     <LinearLayout
