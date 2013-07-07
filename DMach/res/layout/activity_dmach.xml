@@ -39,6 +39,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <Button
             android:id="@+id/tempoButton"
             style="@style/Tempo" />
+        
+        <ImageButton
+            android:contentDescription="@string/reset"
+            android:id="@+id/resetButton"
+            style="@style/Reset" />
 
     </LinearLayout>
 

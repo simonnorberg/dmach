@@ -40,10 +40,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <style name="Play">
         <item name="android:background">@drawable/sel_control</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_marginRight">8dp</item>
         <item name="android:layout_width">80dp</item>
         <item name="android:onClick">@string/play_listener</item>
         <item name="android:src">@drawable/play</item>
+    </style>
+    
+    <style name="Reset">
+        <item name="android:background">@drawable/sel_control</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_width">80dp</item>
+        <item name="android:onClick">@string/reset_listener</item>
+        <item name="android:src">@drawable/reset</item>
     </style>
     
     <style name="Setting">
@@ -98,6 +106,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <item name="android:button">@null</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_height">62dp</item>
+        <item name="android:layout_marginLeft">8dp</item>
         <item name="android:layout_width">80dp</item>
         <item name="android:onClick">@string/tempo_listener</item>
         <item name="android:text">@string/init_tempo</item>

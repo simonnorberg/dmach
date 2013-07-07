@@ -299,7 +299,14 @@ implements PatchFragmentListener, OnNumberSetListener {
         dialog.setOnNumberSetListener(this);
         dialog.show();
 		Log.i(TAG, "onTempoClicked");
-	}	
+	}
+	
+	public void onResetClicked(View view) {
+		//reset sequence
+		//sendBang to pd
+		//setFragment if channel == -1
+		Log.i(TAG, "onResetClicked");
+	}
 	
 	@Override
 	public void onNumberSet(int selectedNumber) {

@@ -26,6 +26,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="logo">logo</string>
     <string name="play">play</string>
     <string name="play_listener">onPlayClicked</string>
+    <string name="reset">reset</string>
+    <string name="reset_listener">onResetClicked</string>
     <string name="sd">SD</string>
     <string name="setting1">1</string>
     <string name="setting2">2</string>
