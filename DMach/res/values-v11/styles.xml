@@ -27,18 +27,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <item name="android:layout_weight">1</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:onClick">@string/channel_listener</item>
-        <item name="android:textColor">@color/yellow</item>
+        <item name="android:textColor">@color/colonial</item>
         <item name="android:textSize">32sp</item>
         <item name="android:textStyle">bold</item>
     </style>
     
     <style name="DMachTheme" parent="android:Theme.Holo.Light.NoActionBar.Fullscreen">
         <item name="android:soundEffectsEnabled">false</item>
-        <item name="android:windowBackground">@color/yellow</item>
+        <item name="android:windowBackground">@color/colonial</item>
     </style>
     
     <style name="Play">
-        <item name="android:background">@drawable/rect_dark_grey</item>
+        <item name="android:background">@drawable/sel_control</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_marginRight">8dp</item>
         <item name="android:layout_width">80dp</item>
@@ -57,7 +57,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <item name="android:paddingLeft">23dp</item>
         <item name="android:paddingRight">23dp</item>
         <item name="android:paddingTop">3dp</item>
-        <item name="android:textColor">@color/yellow</item>
+        <item name="android:textColor">@color/colonial</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -94,14 +94,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     </style>
     
 	<style name="Tempo">
-        <item name="android:background">@drawable/rect_dark_grey</item>
+        <item name="android:background">@drawable/sel_control</item>
         <item name="android:button">@null</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_height">62dp</item>
         <item name="android:layout_width">80dp</item>
         <item name="android:onClick">@string/tempo_listener</item>
         <item name="android:text">@string/init_tempo</item>
-        <item name="android:textColor">@color/yellow</item>
+        <item name="android:textColor">@color/colonial</item>
         <item name="android:textSize">32sp</item>
         <item name="android:textStyle">bold</item>
     </style>

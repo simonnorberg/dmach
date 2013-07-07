@@ -17,10 +17,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <resources>
-    <color name="dark_grey">#302e2c</color>
-    <color name="light_grey">#c1bf87</color>
-    <color name="orange">#e9950a</color>
-    <color name="red">#b02b2f</color>
-    <color name="yellow">#ebebaf</color>
-    <color name="white">#ffffff</color>
+    <color name="dune">#302e2c</color>
+    <color name="khaki">#c1bf87</color>
+    <color name="gamboge">#e9950a</color>
+    <color name="gamboge_alpha">#7fe9950a</color>
+    <color name="poppy">#b02b2f</color>
+    <color name="poppy_alpha">#7fb02b2f</color>
+    <color name="colonial">#ebebaf</color>
 </resources>

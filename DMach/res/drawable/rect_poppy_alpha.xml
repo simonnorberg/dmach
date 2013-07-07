@@ -16,15 +16,6 @@ GNU General Public License for more details.
 along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 -->
 
-<selector xmlns:android="http://schemas.android.com/apk/res/android" >
-	<item
-	    android:state_pressed="true"
-	    android:drawable="@drawable/rect_poppy_alpha" />
-	<item
-	    android:state_checked="true"
-	    android:drawable="@drawable/rect_poppy" />
-	
-	<item
-	    android:state_checked="false"
-	    android:drawable="@drawable/rect_khaki" />
-</selector>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/poppy_alpha" />
+</shape>

@@ -19,13 +19,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
 	<item
 	    android:state_enabled="false"
-	    android:drawable="@drawable/rect_yellow" />
+	    android:drawable="@drawable/rect_colonial" />
 	
 	<item
 	    android:state_checked="true"
-	    android:drawable="@drawable/rect_orange" />
+	    android:drawable="@drawable/rect_gamboge" />
 	
 	<item
 	    android:state_checked="false"
-	    android:drawable="@drawable/rect_dark_grey" />
+	    android:state_pressed="false"
+	    android:drawable="@drawable/rect_dune" />
+	
+	<item
+	    android:state_checked="false"
+	    android:state_pressed="true"
+	    android:drawable="@drawable/rect_gamboge_alpha" />
 </selector>
