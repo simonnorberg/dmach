@@ -27,6 +27,7 @@ import net.simno.android.dmach.model.Channel;
 import net.simno.android.dmach.model.Patch;
 import net.simno.android.dmach.model.PointF;
 import net.simno.android.dmach.model.Setting;
+import net.simno.android.dmach.view.ProgressBarView;
 import net.simno.android.dmach.R;
 
 import org.puredata.android.io.AudioParameters;
@@ -57,6 +58,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.ToggleButton;
@@ -138,12 +140,10 @@ implements PatchFragmentListener, OnNumberSetListener {
 	
 	private void initGui() {
 		setContentView(R.layout.activity_dmach);
-        if (findViewById(R.id.fragment_container) != null) {
-        	getFragmentManager().beginTransaction()
-            .add(R.id.fragment_container,
-            		SequencerFragment.newInstance(channels))
-            .commit();
-        }
+    	getFragmentManager().beginTransaction()
+        .add(R.id.fragment_container, SequencerFragment.newInstance(channels)).commit();
+        FrameLayout frame = (FrameLayout) findViewById(R.id.fragment_container);
+        frame.addView(new ProgressBarView(this));
 		Log.i(TAG, "initGui");
 	}
 	
