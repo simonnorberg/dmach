@@ -92,7 +92,7 @@ implements PatchFragmentListener, OnNumberSetListener {
 		initChannels();
         initGui();
         initSystemServices();
-        initPdService();   
+        initPdService();
 		Log.i(TAG, "onCreate");
 	}
 	
@@ -227,7 +227,7 @@ implements PatchFragmentListener, OnNumberSetListener {
 				}
 			}
 			pdService.startAudio(new Intent(this, DMachActivity.class),
-					R.drawable.icon, "DMach", "Return to DMach.");	
+					R.drawable.ic_stat_notify_dmach, "DMach", "Return to DMach.");	
 		}
 		Log.i(TAG, "startAudio");
 	}

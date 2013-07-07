@@ -105,15 +105,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <item name="android:textSize">32sp</item>
         <item name="android:textStyle">bold</item>
     </style>
-    
-	<style name="Title">
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:gravity">right|center_vertical</item>
-        <item name="android:text">@string/app_name</item>
-        <item name="android:textColor">@color/dune</item>
-        <item name="android:textSize">32sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
         
 </resources>

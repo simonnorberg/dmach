@@ -40,12 +40,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             android:id="@+id/tempoButton"
             style="@style/Tempo" />
 
-        <TextView
-            android:id="@+id/title"
-            style="@style/Title" />
-
     </LinearLayout>
 
+    <ImageView
+        android:contentDescription="@string/logo"
+        android:id="@+id/logo"
+        android:layout_alignBottom="@+id/controls"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:src="@drawable/logo" />
+    
     <LinearLayout
         android:id="@+id/container"
         android:layout_below="@id/controls"
@@ -87,6 +93,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	        android:layout_weight="8"
 	      	android:layout_width="0dp" />
 
-    </LinearLayout>   
+    </LinearLayout>
 
 </RelativeLayout>
