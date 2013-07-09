@@ -80,7 +80,7 @@ implements PatchFragmentListener, OnNumberSetListener {
 	static final int CHANNEL_COUNT = 4;
 	private ArrayList<Channel> channels;
 	private int selectedChannelIndex = -1;
-	private int tempo = 25;
+	private int tempo = 120;
 	private int patch;
 	private boolean isRunning;
 	private ProgressBarView progressBarView;

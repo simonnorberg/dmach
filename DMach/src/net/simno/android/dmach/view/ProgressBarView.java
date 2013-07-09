@@ -46,16 +46,18 @@ implements OnBeatListener, OnTempoChangeListener {
 	private int stepLength;
 	private int stepMargin;
 	private int barWidth;
-//	private long updateDelay;
-//	private long beatTime;
+	private long updateDelay;
+	private long beatTime;
 	private ShapeDrawable progressBar;
 	private ProgressBarView thisView = this;
 	private Handler progressHandler;
 	private Runnable progressRunnable = new Runnable() {
         @Override
         public void run() {
-            moveBar();
+//            System.out.print("+ ");
+        	moveBar();
             thisView.invalidate();
+//            System.out.println("\n\n\n");
         }
     };
 	
@@ -76,7 +78,7 @@ implements OnBeatListener, OnTempoChangeListener {
         this.height = height;
 //        this.width = width;
         
-//        this.beatTime = 60000 / tempo;
+        this.beatTime = 15000 / tempo;
         
         stepMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());
         
@@ -85,26 +87,14 @@ implements OnBeatListener, OnTempoChangeListener {
         barWidth = (width - ((steps - 1) * stepMargin)) / steps;
 //        stepLength = width / steps;
         
-        
+        updateDelay = Math.max(beatTime / stepLength, 1);
+        System.out.println("updateDelay: " + updateDelay);
         
 //        updateDelay = beatTime / (stepLength / PROGRESS_SIZE);
         progressHandler = new Handler();
         progressBar = new ShapeDrawable(new RectShape());
         progressBar.getPaint().setColor(BAR_COLOR);
-        progressBar.setAlpha(BAR_TRANSPARENCY);
-        
-        
-        System.out.println("stepMargin: " + stepMargin);
-        System.out.println("stepLength: " + stepLength);
-        System.out.println("width: " + width);
-        
-//        int margin = (steps - 1) * stepMargin;
-//        System.out.println("margin: " + margin);
-//        int stepNoM = (width - margin) / steps;
-//        System.out.println("stepNoM: " + stepNoM);
-//        stepLength = stepNoM + stepMargin;
-//        System.out.println("stepLength: " + stepLength);
-        
+        progressBar.setAlpha(BAR_TRANSPARENCY);        
         
 //        moveBar();
     }
@@ -112,8 +102,9 @@ implements OnBeatListener, OnTempoChangeListener {
     private void moveBar() {
         synchronized (progressBar) {
 //            barPos = (barPos + PROGRESS_SIZE) % width;
-            progressBar.setBounds(barPos, 0, barPos + stepMargin, height);
+            progressBar.setBounds(barPos, 0, barPos + barWidth, height);
         }
+        ++barPos;
     }
 		
 	@Override
@@ -130,12 +121,15 @@ implements OnBeatListener, OnTempoChangeListener {
 
 	@Override
 	public void onBeat(int beat) {
-        barPos = beat * (stepLength);// + stepMargin);
+        barPos = beat * (stepLength);
 
         progressHandler.removeCallbacks(progressRunnable);
-//        for (int i = 0; i < beatTime; i += updateDelay) {
+//        for (int i = 0; i < stepLength * updateDelay; i += updateDelay) {
 //            progressHandler.postDelayed(progressRunnable, i);
 //        }
-        progressHandler.post(progressRunnable);
+        for (int i = 0; i < stepLength; ++i) {
+            progressHandler.postDelayed(progressRunnable, i * updateDelay);
+        }
+//        progressHandler.post(progressRunnable);
     }
 }
