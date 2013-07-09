@@ -171,9 +171,6 @@ implements PatchFragmentListener, OnNumberSetListener {
 	
 	private void initProgressBar(int width, int height) {
 		progressBarView = new ProgressBarView(this, width, height, STEP_COUNT, tempo);
-//      fragmentContainer.addView(progressBarView);
-//      progressBarView.bringToFront();
-		
 		Log.i(TAG, "initProgressBar");
 	}
 	
@@ -220,6 +217,7 @@ implements PatchFragmentListener, OnNumberSetListener {
 		Log.i(TAG, "initPdService");
 	}
 	
+	
 	private void initPd() {
 		dispatcher = new PdUiDispatcher();
 		PdBase.setReceiver(dispatcher);
@@ -232,6 +230,7 @@ implements PatchFragmentListener, OnNumberSetListener {
 		startAudio();
 		Log.i(TAG, "initPd");
 	}
+	
 	
 	private void startAudio() {
 		synchronized (lock) {
@@ -270,6 +269,7 @@ implements PatchFragmentListener, OnNumberSetListener {
 		Log.i(TAG, "startAudio");
 	}
 	
+	
 	private void stopAudio() {
 		synchronized (lock) {
 			if (pdService == null) {
@@ -279,6 +279,7 @@ implements PatchFragmentListener, OnNumberSetListener {
 		}
 		Log.i(TAG, "stopAudio");
 	}
+	
 	
 	private void cleanup() {
 		synchronized (lock) {
@@ -298,16 +299,22 @@ implements PatchFragmentListener, OnNumberSetListener {
 		Log.i(TAG, "cleanup");
 	}
 	
+	
 	private void setFragment() {
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		if (selectedChannelIndex != -1) {
 			transaction.replace(R.id.fragment_container,
 					PatchFragment.newInstance(getSelectedChannel().getPatch()));
+			transaction.commit();
+			removeProgressBar();
 		} else {
 			transaction.replace(R.id.fragment_container,
 					SequencerFragment.newInstance(channels));
+			transaction.commit();
+			getFragmentManager().executePendingTransactions();
+			addProgressBar();
 		}
-		transaction.commit();
+		
 		Log.i(TAG, "setFragment");
 	}
 	
@@ -315,6 +322,7 @@ implements PatchFragmentListener, OnNumberSetListener {
 //		Log.i(TAG, "getSelectedChannel");
 		return channels.get(selectedChannelIndex);
 	}
+	
 	
 	public void onBackPressed() {
 		new AlertDialog.Builder(this)
@@ -331,6 +339,7 @@ implements PatchFragmentListener, OnNumberSetListener {
 			.show();
 		Log.i(TAG, "onBackPressed");
 	}
+	
 	
 	public void onPlayClicked(View view) {
 		ImageButton imageButton = (ImageButton) view;
@@ -358,10 +367,12 @@ implements PatchFragmentListener, OnNumberSetListener {
 		Log.i(TAG, "onTempoClicked");
 	}
 	
+	
 	public void onResetClicked(View view) {
 		//reset sequence
 		//sendBang to pd
 		//setFragment if channel == -1
+		progressBarView.bringToFront();
 		Log.i(TAG, "onResetClicked");
 	}
 	
@@ -375,6 +386,7 @@ implements PatchFragmentListener, OnNumberSetListener {
 		}
 		Log.i(TAG, "onNumberSet: " + selectedNumber);
 	}
+	
 	
 	public void onChannelClicked(View view) {
 		RadioGroup group = (RadioGroup) findViewById(R.id.channels);
@@ -391,6 +403,7 @@ implements PatchFragmentListener, OnNumberSetListener {
 		Log.i(TAG, "onChannelClicked");
 	}
 	
+	
 	public void onStepClicked(View view) {
 		ViewGroup steps = (ViewGroup) findViewById(R.id.steps);
 		ViewGroup group = ((ViewGroup)view.getParent());
@@ -404,11 +417,13 @@ implements PatchFragmentListener, OnNumberSetListener {
 		Log.i(TAG, "onStepClicked " + channel.getName() + " " + buttonIndex);
 	}
 	
+	
 	@Override
 	public void onSettingIndexChanged(int index) {
 		getSelectedChannel().getPatch().setSelectedSettingIndex(index);
 		Log.i(TAG, "onSettingIndexChanged");
 	}
+	
 
 	@Override
 	public void onSettingPosChanged(PointF pos) {

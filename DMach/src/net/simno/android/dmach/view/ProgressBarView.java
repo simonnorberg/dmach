@@ -82,12 +82,14 @@ implements OnBeatListener, OnTempoChangeListener {
         progressHandler = new Handler();
         progressBar = new ShapeDrawable(new RectShape());
         progressBar.getPaint().setColor(BAR_COLOR);
-        progressBar.setAlpha(BAR_TRANSPARENCY);        
+        progressBar.setAlpha(BAR_TRANSPARENCY);
      }
 
     private void setUpdateDelay(int tempo) {
         long beatTime = 15000 / tempo;
-        updateDelay = Math.max(beatTime / stepLength, 1);
+        System.out.println("beatTime: " + beatTime);
+        updateDelay = Math.max(Math.round((double) beatTime / stepLength), 1);
+        System.out.println("updateDelay: " + updateDelay);
     }
     
     private void moveBar() {
