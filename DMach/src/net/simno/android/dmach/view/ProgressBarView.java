@@ -35,10 +35,8 @@ import android.view.View;
 public final class ProgressBarView extends View
 implements OnBeatListener, OnTempoChangeListener {
 
-	private static final int BAR_WIDTH = 10;
-//	private static final int PROGRESS_SIZE = 15;
 	private static final int BAR_COLOR = Color.YELLOW;
-	private static final int BAR_TRANSPARENCY = 200;
+	private static final int BAR_TRANSPARENCY = 127;
 	
 //	private int width;
 	private int height;
@@ -47,17 +45,14 @@ implements OnBeatListener, OnTempoChangeListener {
 	private int stepMargin;
 	private int barWidth;
 	private long updateDelay;
-	private long beatTime;
 	private ShapeDrawable progressBar;
 	private ProgressBarView thisView = this;
 	private Handler progressHandler;
 	private Runnable progressRunnable = new Runnable() {
         @Override
         public void run() {
-//            System.out.print("+ ");
         	moveBar();
             thisView.invalidate();
-//            System.out.println("\n\n\n");
         }
     };
 	
@@ -77,31 +72,26 @@ implements OnBeatListener, OnTempoChangeListener {
         super(context);
         this.height = height;
 //        this.width = width;
-        
-        this.beatTime = 15000 / tempo;
-        
+
         stepMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());
-        
-        
-        stepLength = ((width - ((steps - 1) * stepMargin)) / steps) + stepMargin;
         barWidth = (width - ((steps - 1) * stepMargin)) / steps;
-//        stepLength = width / steps;
+        stepLength = barWidth + stepMargin;
+
+        setUpdateDelay(tempo);
         
-        updateDelay = Math.max(beatTime / stepLength, 1);
-        System.out.println("updateDelay: " + updateDelay);
-        
-//        updateDelay = beatTime / (stepLength / PROGRESS_SIZE);
         progressHandler = new Handler();
         progressBar = new ShapeDrawable(new RectShape());
         progressBar.getPaint().setColor(BAR_COLOR);
         progressBar.setAlpha(BAR_TRANSPARENCY);        
-        
-//        moveBar();
-    }
+     }
 
+    private void setUpdateDelay(int tempo) {
+        long beatTime = 15000 / tempo;
+        updateDelay = Math.max(beatTime / stepLength, 1);
+    }
+    
     private void moveBar() {
         synchronized (progressBar) {
-//            barPos = (barPos + PROGRESS_SIZE) % width;
             progressBar.setBounds(barPos, 0, barPos + barWidth, height);
         }
         ++barPos;
@@ -116,7 +106,7 @@ implements OnBeatListener, OnTempoChangeListener {
 
 	@Override
 	public void onTempoChange(int tempo) {
-		
+		setUpdateDelay(tempo);
 	}
 
 	@Override
@@ -124,12 +114,11 @@ implements OnBeatListener, OnTempoChangeListener {
         barPos = beat * (stepLength);
 
         progressHandler.removeCallbacks(progressRunnable);
-//        for (int i = 0; i < stepLength * updateDelay; i += updateDelay) {
-//            progressHandler.postDelayed(progressRunnable, i);
-//        }
-        for (int i = 0; i < stepLength; ++i) {
-            progressHandler.postDelayed(progressRunnable, i * updateDelay);
+        for (int i = 0; i < stepLength * updateDelay; i += updateDelay) {
+            progressHandler.postDelayed(progressRunnable, i);
         }
-//        progressHandler.post(progressRunnable);
+//        for (int i = 0; i < stepLength; ++i) {
+//            progressHandler.postDelayed(progressRunnable, i * updateDelay);
+//        }
     }
 }

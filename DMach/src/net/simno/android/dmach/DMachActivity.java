@@ -152,6 +152,8 @@ implements PatchFragmentListener, OnNumberSetListener {
 	private void initGui() {
 		setContentView(R.layout.activity_dmach);
 
+		((Button) findViewById(R.id.tempoButton)).setText("" + tempo);
+		
 		getFragmentManager().beginTransaction()
         .add(R.id.fragment_container, SequencerFragment.newInstance(channels)).commit();
 		
@@ -296,6 +298,24 @@ implements PatchFragmentListener, OnNumberSetListener {
 		Log.i(TAG, "cleanup");
 	}
 	
+	private void setFragment() {
+		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		if (selectedChannelIndex != -1) {
+			transaction.replace(R.id.fragment_container,
+					PatchFragment.newInstance(getSelectedChannel().getPatch()));
+		} else {
+			transaction.replace(R.id.fragment_container,
+					SequencerFragment.newInstance(channels));
+		}
+		transaction.commit();
+		Log.i(TAG, "setFragment");
+	}
+	
+	private Channel getSelectedChannel() {
+//		Log.i(TAG, "getSelectedChannel");
+		return channels.get(selectedChannelIndex);
+	}
+	
 	public void onBackPressed() {
 		new AlertDialog.Builder(this)
 			.setIcon(R.drawable.icon)
@@ -347,8 +367,12 @@ implements PatchFragmentListener, OnNumberSetListener {
 	
 	@Override
 	public void onNumberSet(int selectedNumber) {
-		PdBase.sendFloat("tempo", selectedNumber);
-		((Button) findViewById(R.id.tempoButton)).setText("" + selectedNumber);
+		if (selectedNumber != tempo) {
+			tempo = selectedNumber;
+			PdBase.sendFloat("tempo", tempo);
+			((Button) findViewById(R.id.tempoButton)).setText("" + tempo);
+			progressBarView.onTempoChange(tempo);
+		}
 		Log.i(TAG, "onNumberSet: " + selectedNumber);
 	}
 	
@@ -394,23 +418,5 @@ implements PatchFragmentListener, OnNumberSetListener {
 		PdBase.sendFloat(name + (2 * index), pos.getX());
 		PdBase.sendFloat(name + (2 * index + 1), pos.getY());
 //		Log.i(TAG, "onSettingPosChanged");
-	}
-		
-	private Channel getSelectedChannel() {
-//		Log.i(TAG, "getSelectedChannel");
-		return channels.get(selectedChannelIndex);
-	}
-	
-	private void setFragment() {
-		FragmentTransaction transaction = getFragmentManager().beginTransaction();
-		if (selectedChannelIndex != -1) {
-			transaction.replace(R.id.fragment_container,
-					PatchFragment.newInstance(getSelectedChannel().getPatch()));
-		} else {
-			transaction.replace(R.id.fragment_container,
-					SequencerFragment.newInstance(channels));
-		}
-		transaction.commit();
-		Log.i(TAG, "setFragment");
 	}
 }
