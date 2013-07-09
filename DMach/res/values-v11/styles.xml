@@ -86,8 +86,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <style name="Step">
         <item name="android:background">@drawable/sel_step</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_marginLeft">8dp</item>
-        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginRight">8dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:onClick">@string/step_listener</item>
@@ -95,10 +94,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <item name="android:textOn">""</item>
     </style>
     
+    <style name="Step.Last">
+        <item name="android:layout_marginRight">0dp</item>
+    </style>
+    
 	<style name="Steps">
         <item name="android:layout_height">0dp</item>
+        <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_width">match_parent</item>
+    </style>
+    
+	<style name="Steps.Top">
+        <item name="android:layout_marginTop">0dp</item>
     </style>
     
 	<style name="Tempo">

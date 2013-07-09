@@ -24,7 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     <LinearLayout
         android:id="@+id/bdSteps"
-        style="@style/Steps">
+        style="@style/Steps.Top">
 
         <ToggleButton
             android:id="@+id/bd0"
@@ -56,7 +56,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
         <ToggleButton
             android:id="@+id/bd7"
-            style="@style/Step" />
+            style="@style/Step.Last" />
     </LinearLayout>
 
     <LinearLayout
@@ -93,7 +93,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
         <ToggleButton
             android:id="@+id/sd7"
-            style="@style/Step" />
+            style="@style/Step.Last" />
     </LinearLayout>
 
     <LinearLayout
@@ -130,7 +130,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
         <ToggleButton
             android:id="@+id/tt7"
-            style="@style/Step" />
+            style="@style/Step.Last" />
     </LinearLayout>
 
     <LinearLayout
@@ -167,7 +167,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
         <ToggleButton
             android:id="@+id/hh7"
-            style="@style/Step" />
+            style="@style/Step.Last" />
     </LinearLayout>
 
 </LinearLayout>

@@ -57,24 +57,35 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.ToggleButton;
 
 public class DMachActivity extends Activity
 implements PatchFragmentListener, OnNumberSetListener {
 
+	public interface OnBeatListener {
+		public void onBeat(int beat);
+	}
+	
+	public interface OnTempoChangeListener {
+		public void onTempoChange(int tempo);
+	}
+	
 	private final String TAG = this.getClass().getSimpleName();
 	static final int STEP_COUNT = 8;
 	static final int CHANNEL_COUNT = 4;
 	private ArrayList<Channel> channels;
 	private int selectedChannelIndex = -1;
+	private int tempo = 25;
+	private int patch;
+	private boolean isRunning;
+	private ProgressBarView progressBarView;
 	private PdUiDispatcher dispatcher;
-	private PdService pdService = null;
-	private int patch = 0;
-	private boolean isRunning = false;
+	private PdService pdService;
 	private final Object lock = new Object();
 	private final ServiceConnection pdConnection = new ServiceConnection() {
 		@Override
@@ -140,11 +151,36 @@ implements PatchFragmentListener, OnNumberSetListener {
 	
 	private void initGui() {
 		setContentView(R.layout.activity_dmach);
-    	getFragmentManager().beginTransaction()
+
+		getFragmentManager().beginTransaction()
         .add(R.id.fragment_container, SequencerFragment.newInstance(channels)).commit();
-        FrameLayout frame = (FrameLayout) findViewById(R.id.fragment_container);
-        frame.addView(new ProgressBarView(this));
+		
+		final RelativeLayout container = (RelativeLayout) findViewById(R.id.fragment_container);
+		container.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+			@Override
+			public void onGlobalLayout() {
+				initProgressBar(container.getWidth(), container.getHeight());
+				container.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+			}
+		});
+		
 		Log.i(TAG, "initGui");
+	}
+	
+	private void initProgressBar(int width, int height) {
+		progressBarView = new ProgressBarView(this, width, height, STEP_COUNT, tempo);
+//      fragmentContainer.addView(progressBarView);
+//      progressBarView.bringToFront();
+		
+		Log.i(TAG, "initProgressBar");
+	}
+	
+	private void addProgressBar() {
+		((RelativeLayout) findViewById(R.id.fragment_container)).addView(progressBarView);
+	}
+	
+	private void removeProgressBar() {
+		((RelativeLayout) findViewById(R.id.fragment_container)).removeView(progressBarView);
 	}
 	
 	private void initSystemServices() {
@@ -188,7 +224,7 @@ implements PatchFragmentListener, OnNumberSetListener {
 		dispatcher.addListener("pos", new PdListener.Adapter() {
 			@Override
 			public void receiveFloat(String source, float x) {
-				// progressbar
+				progressBarView.onBeat((int) x);
 			}
 		});
 		startAudio();
@@ -277,12 +313,13 @@ implements PatchFragmentListener, OnNumberSetListener {
 	}
 	
 	public void onPlayClicked(View view) {
-		// reset progressbar?
 		ImageButton imageButton = (ImageButton) view;
 		if (true == isRunning) {
 			imageButton.setImageResource(R.drawable.play);
+			removeProgressBar();
 		} else {
 			imageButton.setImageResource(R.drawable.stop);
+			addProgressBar();
 		}
 		isRunning = !isRunning;
 		PdBase.sendBang("run");
