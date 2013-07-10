@@ -21,7 +21,7 @@
 package net.simno.android.dmach.view;
 
 import net.simno.android.dmach.DMachActivity.OnBeatListener;
-import net.simno.android.dmach.DMachActivity.OnTempoChangeListener;
+import net.simno.android.dmach.DMachActivity.OnTempoChangedListener;
 import net.simno.android.dmach.DMachActivity.OnVisibilityListener;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -34,7 +34,7 @@ import android.util.TypedValue;
 import android.view.View;
 
 public final class ProgressBarView extends View
-implements OnBeatListener, OnTempoChangeListener, OnVisibilityListener {
+implements OnBeatListener, OnTempoChangedListener, OnVisibilityListener {
 
 	private static final int BAR_COLOR = Color.YELLOW;
 	private static final int BAR_TRANSPARENCY = 127;
@@ -105,7 +105,7 @@ implements OnBeatListener, OnTempoChangeListener, OnVisibilityListener {
 	}
 
 	@Override
-	public void onTempoChange(int tempo) {
+	public void onTempoChanged(int tempo) {
 		setUpdateDelay(tempo);
 	}
 

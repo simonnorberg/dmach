@@ -76,8 +76,8 @@ implements PatchFragmentListener, OnNumberSetListener {
 		public void onHide();
 	}
 	
-	public interface OnTempoChangeListener {
-		public void onTempoChange(int tempo);
+	public interface OnTempoChangedListener {
+		public void onTempoChanged(int tempo);
 	}
 	
 	private final String TAG = this.getClass().getSimpleName();
@@ -381,7 +381,7 @@ implements PatchFragmentListener, OnNumberSetListener {
 			tempo = selectedNumber;
 			PdBase.sendFloat("tempo", tempo);
 			((Button) findViewById(R.id.tempoButton)).setText("" + tempo);
-			progressBarView.onTempoChange(tempo);
+			progressBarView.onTempoChanged(tempo);
 		}
 		Log.i(TAG, "onNumberSet: " + selectedNumber);
 	}
