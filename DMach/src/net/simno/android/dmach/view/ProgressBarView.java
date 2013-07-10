@@ -85,7 +85,7 @@ implements OnBeatListener, OnTempoChangedListener, OnVisibilityListener {
      }
 
     private void setUpdateDelay(int tempo) {
-        updateDelay = Math.max(Math.round((15000.0 / tempo) / stepLength), 1);
+        updateDelay = Math.max(Math.round((30000.0 / tempo) / stepLength), 1);
     }
     
     private void moveBar() {
