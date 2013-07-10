@@ -369,9 +369,18 @@ implements PatchFragmentListener, OnNumberSetListener {
 	}
 	
 	public void onResetClicked(View view) {
-		//reset sequence
-		//sendBang to pd
-		//setFragment if channel == -1
+		for (Channel channel : channels) {
+			for (int i = 0; i < STEP_COUNT; ++i) {
+				if (true == channel.getStep(i)) {
+					channel.setStep(i, false);
+					PdBase.sendFloat(channel.getName(), i);			
+				}
+			}
+		}
+		if (selectedChannelIndex == -1) {
+			((RelativeLayout) findViewById(R.id.fragment_container)).removeAllViews();
+			setFragment();
+		}
 		Log.i(TAG, "onResetClicked");
 	}
 	

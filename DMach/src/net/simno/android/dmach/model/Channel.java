@@ -55,6 +55,10 @@ public final class Channel implements Parcelable {
 		return result;
 	}
 	
+	public boolean getStep(int index) {
+		return sequence[index];
+	}
+	
 	public void setStep(int index, boolean status) {
 		sequence[index] = status;
 	}
