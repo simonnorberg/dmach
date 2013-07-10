@@ -1,4 +1,4 @@
-#N canvas 188 137 743 394 10;
+#N canvas 106 256 743 394 10;
 #N canvas 184 102 469 360 bd 0;
 #X obj 14 248 outlet~;
 #X obj 14 130 perk-bassdrum;
@@ -174,10 +174,8 @@
 #X obj 167 -216 dac~ 1 2;
 #X obj 8 -235 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 8 -215 metro 125;
 #X obj 59 -280 t b f;
 #X obj 59 -237 /;
-#X msg 59 -258 15000;
 #X obj 8 -302 r run;
 #X obj 59 -302 r tempo;
 #X obj 8 -281 t b b;
@@ -197,25 +195,27 @@ warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
 the GNU General Public License for more details. You should have received
 a copy of the GNU General Public License along with this program. If
 not \, see <http://www.gnu.org/licenses/>.;
-#X obj 175 -153 test;
-#X connect 0 0 18 0;
-#X connect 1 0 18 0;
-#X connect 2 0 18 0;
-#X connect 3 0 18 0;
-#X connect 5 0 6 0;
-#X connect 6 0 13 0;
-#X connect 7 0 9 0;
-#X connect 7 1 8 1;
-#X connect 8 0 6 1;
-#X connect 9 0 8 0;
-#X connect 10 0 12 0;
-#X connect 11 0 7 0;
-#X connect 12 0 5 0;
-#X connect 12 1 15 0;
-#X connect 13 0 14 0;
-#X connect 13 0 16 0;
-#X connect 14 0 13 1;
-#X connect 15 0 13 1;
-#X connect 16 0 17 0;
-#X connect 18 0 4 0;
-#X connect 18 0 4 1;
+#X msg 59 -258 30000;
+#X obj 8 -215 metro 250;
+#X obj 177 -165 test;
+#X connect 0 0 16 0;
+#X connect 1 0 16 0;
+#X connect 2 0 16 0;
+#X connect 3 0 16 0;
+#X connect 5 0 19 0;
+#X connect 6 0 18 0;
+#X connect 6 1 7 1;
+#X connect 7 0 19 1;
+#X connect 8 0 10 0;
+#X connect 9 0 6 0;
+#X connect 10 0 5 0;
+#X connect 10 1 13 0;
+#X connect 11 0 12 0;
+#X connect 11 0 14 0;
+#X connect 12 0 11 1;
+#X connect 13 0 11 1;
+#X connect 14 0 15 0;
+#X connect 16 0 4 0;
+#X connect 16 0 4 1;
+#X connect 18 0 7 0;
+#X connect 19 0 11 0;
