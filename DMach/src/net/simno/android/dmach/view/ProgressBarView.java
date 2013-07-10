@@ -22,6 +22,7 @@ package net.simno.android.dmach.view;
 
 import net.simno.android.dmach.DMachActivity.OnBeatListener;
 import net.simno.android.dmach.DMachActivity.OnTempoChangeListener;
+import net.simno.android.dmach.DMachActivity.OnVisibilityListener;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -33,17 +34,18 @@ import android.util.TypedValue;
 import android.view.View;
 
 public final class ProgressBarView extends View
-implements OnBeatListener, OnTempoChangeListener {
+implements OnBeatListener, OnTempoChangeListener, OnVisibilityListener {
 
 	private static final int BAR_COLOR = Color.YELLOW;
 	private static final int BAR_TRANSPARENCY = 127;
+	private static final int MARGIN_DP = 8;
 	
-//	private int width;
+	private boolean isVisible;
 	private int height;
 	private int barPos;
 	private int stepLength;
 	private int stepMargin;
-	private int barWidth;
+	private int stepWidth;
 	private long updateDelay;
 	private ShapeDrawable progressBar;
 	private ProgressBarView thisView = this;
@@ -71,14 +73,11 @@ implements OnBeatListener, OnTempoChangeListener {
     public ProgressBarView(Context context, int width, int height, int steps, int tempo) {
         super(context);
         this.height = height;
-//        this.width = width;
-
-        stepMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());
-        barWidth = (width - ((steps - 1) * stepMargin)) / steps;
-        stepLength = barWidth + stepMargin;
-
+        stepMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, MARGIN_DP,
+        		getResources().getDisplayMetrics());
+        stepWidth = (width - ((steps - 1) * stepMargin)) / steps;
+        stepLength = stepWidth + stepMargin;
         setUpdateDelay(tempo);
-        
         progressHandler = new Handler();
         progressBar = new ShapeDrawable(new RectShape());
         progressBar.getPaint().setColor(BAR_COLOR);
@@ -86,24 +85,23 @@ implements OnBeatListener, OnTempoChangeListener {
      }
 
     private void setUpdateDelay(int tempo) {
-        long beatTime = 15000 / tempo;
-        System.out.println("beatTime: " + beatTime);
-        updateDelay = Math.max(Math.round((double) beatTime / stepLength), 1);
-        System.out.println("updateDelay: " + updateDelay);
+        updateDelay = Math.max(Math.round((15000.0 / tempo) / stepLength), 1);
     }
     
     private void moveBar() {
         synchronized (progressBar) {
-            progressBar.setBounds(barPos, 0, barPos + barWidth, height);
+            progressBar.setBounds(barPos, 0, barPos + stepWidth, height);
         }
         ++barPos;
     }
 		
 	@Override
 	protected void onDraw(Canvas canvas) {
-        synchronized (progressBar) {
-            progressBar.draw(canvas);
-        }
+		if (true == isVisible) {
+			synchronized (progressBar) {
+	            progressBar.draw(canvas);
+	        }	
+		}
 	}
 
 	@Override
@@ -113,14 +111,21 @@ implements OnBeatListener, OnTempoChangeListener {
 
 	@Override
 	public void onBeat(int beat) {
-        barPos = beat * (stepLength);
-
+        barPos = beat * stepLength;
         progressHandler.removeCallbacks(progressRunnable);
         for (int i = 0; i < stepLength * updateDelay; i += updateDelay) {
             progressHandler.postDelayed(progressRunnable, i);
         }
-//        for (int i = 0; i < stepLength; ++i) {
-//            progressHandler.postDelayed(progressRunnable, i * updateDelay);
-//        }
     }
+
+	@Override
+	public void onShow() {
+		isVisible = true;
+	}
+
+	@Override
+	public void onHide() {
+		isVisible = false;
+		thisView.invalidate();
+	}
 }

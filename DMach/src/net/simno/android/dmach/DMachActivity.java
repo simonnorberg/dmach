@@ -70,6 +70,11 @@ implements PatchFragmentListener, OnNumberSetListener {
 	public interface OnBeatListener {
 		public void onBeat(int beat);
 	}
+
+	public interface OnVisibilityListener {
+		public void onShow();
+		public void onHide();
+	}
 	
 	public interface OnTempoChangeListener {
 		public void onTempoChange(int tempo);
@@ -162,6 +167,7 @@ implements PatchFragmentListener, OnNumberSetListener {
 			@Override
 			public void onGlobalLayout() {
 				initProgressBar(container.getWidth(), container.getHeight());
+				addProgressBar();
 				container.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 			}
 		});
@@ -176,10 +182,12 @@ implements PatchFragmentListener, OnNumberSetListener {
 	
 	private void addProgressBar() {
 		((RelativeLayout) findViewById(R.id.fragment_container)).addView(progressBarView);
+		Log.i(TAG, "addProgressBar");
 	}
 	
 	private void removeProgressBar() {
 		((RelativeLayout) findViewById(R.id.fragment_container)).removeView(progressBarView);
+		Log.i(TAG, "removeProgressBar");
 	}
 	
 	private void initSystemServices() {
@@ -217,7 +225,6 @@ implements PatchFragmentListener, OnNumberSetListener {
 		Log.i(TAG, "initPdService");
 	}
 	
-	
 	private void initPd() {
 		dispatcher = new PdUiDispatcher();
 		PdBase.setReceiver(dispatcher);
@@ -230,7 +237,6 @@ implements PatchFragmentListener, OnNumberSetListener {
 		startAudio();
 		Log.i(TAG, "initPd");
 	}
-	
 	
 	private void startAudio() {
 		synchronized (lock) {
@@ -269,7 +275,6 @@ implements PatchFragmentListener, OnNumberSetListener {
 		Log.i(TAG, "startAudio");
 	}
 	
-	
 	private void stopAudio() {
 		synchronized (lock) {
 			if (pdService == null) {
@@ -279,7 +284,6 @@ implements PatchFragmentListener, OnNumberSetListener {
 		}
 		Log.i(TAG, "stopAudio");
 	}
-	
 	
 	private void cleanup() {
 		synchronized (lock) {
@@ -298,7 +302,6 @@ implements PatchFragmentListener, OnNumberSetListener {
 		}
 		Log.i(TAG, "cleanup");
 	}
-	
 	
 	private void setFragment() {
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -323,7 +326,6 @@ implements PatchFragmentListener, OnNumberSetListener {
 		return channels.get(selectedChannelIndex);
 	}
 	
-	
 	public void onBackPressed() {
 		new AlertDialog.Builder(this)
 			.setIcon(R.drawable.icon)
@@ -340,15 +342,14 @@ implements PatchFragmentListener, OnNumberSetListener {
 		Log.i(TAG, "onBackPressed");
 	}
 	
-	
 	public void onPlayClicked(View view) {
 		ImageButton imageButton = (ImageButton) view;
 		if (true == isRunning) {
 			imageButton.setImageResource(R.drawable.play);
-			removeProgressBar();
+			progressBarView.onHide();
 		} else {
 			imageButton.setImageResource(R.drawable.stop);
-			addProgressBar();
+			progressBarView.onShow();
 		}
 		isRunning = !isRunning;
 		PdBase.sendBang("run");
@@ -367,12 +368,10 @@ implements PatchFragmentListener, OnNumberSetListener {
 		Log.i(TAG, "onTempoClicked");
 	}
 	
-	
 	public void onResetClicked(View view) {
 		//reset sequence
 		//sendBang to pd
 		//setFragment if channel == -1
-		progressBarView.bringToFront();
 		Log.i(TAG, "onResetClicked");
 	}
 	
@@ -386,7 +385,6 @@ implements PatchFragmentListener, OnNumberSetListener {
 		}
 		Log.i(TAG, "onNumberSet: " + selectedNumber);
 	}
-	
 	
 	public void onChannelClicked(View view) {
 		RadioGroup group = (RadioGroup) findViewById(R.id.channels);
@@ -403,7 +401,6 @@ implements PatchFragmentListener, OnNumberSetListener {
 		Log.i(TAG, "onChannelClicked");
 	}
 	
-	
 	public void onStepClicked(View view) {
 		ViewGroup steps = (ViewGroup) findViewById(R.id.steps);
 		ViewGroup group = ((ViewGroup)view.getParent());
@@ -417,13 +414,11 @@ implements PatchFragmentListener, OnNumberSetListener {
 		Log.i(TAG, "onStepClicked " + channel.getName() + " " + buttonIndex);
 	}
 	
-	
 	@Override
 	public void onSettingIndexChanged(int index) {
 		getSelectedChannel().getPatch().setSelectedSettingIndex(index);
 		Log.i(TAG, "onSettingIndexChanged");
 	}
-	
 
 	@Override
 	public void onSettingPosChanged(PointF pos) {
