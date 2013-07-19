@@ -120,7 +120,7 @@ public class PatchFragment extends Fragment {
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_patch, container, false);
         initPatchView((PatchView) view.findViewById(R.id.patchView));
-        initSettings((RadioGroup) view.findViewById(R.id.patches));
+        if (mPatch != null) initSettings((RadioGroup) view.findViewById(R.id.patches));
         return view;
     }
     

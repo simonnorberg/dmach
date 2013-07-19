@@ -448,11 +448,11 @@ implements OnPatchChangedListener, OnNumberSetListener {
     }
 
     /**
-     * @param view The channel radio button that was clicked
+     * @param channel The channel radio button that was clicked
      */
-    public void onChannelClicked(View view) {
-        RadioGroup group = (RadioGroup) findViewById(R.id.channels);
-        int index = group.indexOfChild(view);
+    public void onChannelClicked(View channel) {
+        RadioGroup group = (RadioGroup) channel.getParent();
+        int index = group.indexOfChild(channel);
         if (index != -1) {
             if (index == selectedChannelIndex) {
                 group.clearCheck();
@@ -466,14 +466,14 @@ implements OnPatchChangedListener, OnNumberSetListener {
     }
 
     /**
-     * @param view The step toggle button that was clicked
+     * @param step The step toggle button that was clicked
      */
-    public void onStepClicked(View view) {
-        ViewGroup steps = (ViewGroup) findViewById(R.id.steps);
-        ViewGroup group = ((ViewGroup)view.getParent());
-        Channel channel = channels.get(steps.indexOfChild(group));
-        int buttonIndex = group.indexOfChild(view);
-        boolean status = ((ToggleButton) view).isChecked();
+    public void onStepClicked(View step) {
+        ViewGroup stepGroup = (ViewGroup) step.getParent();
+        ViewGroup groupContainer = (ViewGroup) stepGroup.getParent();
+        Channel channel = channels.get(groupContainer.indexOfChild(stepGroup));
+        int buttonIndex = stepGroup.indexOfChild(step);
+        boolean status = ((ToggleButton) step).isChecked();
         channel.setStep(buttonIndex, status);
         PdBase.sendFloat(channel.getName(), buttonIndex);
         Log.d(TAG, "onStepClicked " + channel.getName() + " " + buttonIndex);
