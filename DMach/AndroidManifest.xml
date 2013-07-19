@@ -34,6 +34,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         android:theme="@style/DMachTheme" >
         <activity
             android:name="net.simno.android.dmach.DMachActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:screenOrientation="sensorLandscape"
             android:launchMode="singleTask" >
