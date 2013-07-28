@@ -17,8 +17,10 @@
 
 package net.simno.android.dmach;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
@@ -212,11 +214,17 @@ implements OnPatchChangedListener, OnNumberSetListener {
         .add(R.id.fragment_container, SequencerFragment.newInstance(channels)).commit();
         final RelativeLayout container = (RelativeLayout) findViewById(R.id.fragment_container);
         container.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+            @SuppressLint("NewApi")
+            @SuppressWarnings("deprecation")
             @Override
             public void onGlobalLayout() {
                 initProgressBar(container.getWidth(), container.getHeight());
                 addProgressBar();
-                container.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                    container.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                } else {
+                    container.getViewTreeObserver().removeOnGlobalLayoutListener(this);    
+                }
             }
         });
         Log.d(TAG, "initGui");
