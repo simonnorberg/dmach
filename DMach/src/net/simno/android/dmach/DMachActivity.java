@@ -174,18 +174,18 @@ implements OnPatchChangedListener, OnNumberSetListener {
         channels = new ArrayList<Channel>(CHANNEL_COUNT);
 
         Patch bdPatch = new Patch();
-        bdPatch.addSetting(new Setting("Freq 1", "Freq 2", new PointF(.4f, .4f)));
-        bdPatch.addSetting(new Setting("Curve Time", "Square", new PointF(.4f, 0)));
-        bdPatch.addSetting(new Setting("Noise Level", "Low-pass", new PointF(.7f, .7f)));
-        bdPatch.addSetting(new Setting("Decay", "Gain", new PointF(.49f, .49f)));
+        bdPatch.addSetting(new Setting("Pitch A", "Gain", new PointF(.4f, .49f)));
+        bdPatch.addSetting(new Setting("Low-pass", "Square", new PointF(.7f, 0)));
+        bdPatch.addSetting(new Setting("Pitch B", "Curve Time", new PointF(.4f, .4f)));
+        bdPatch.addSetting(new Setting("Decay", "Noise Level", new PointF(.49f, .7f)));
         channels.add(new Channel("bd", bdPatch, new boolean[STEP_COUNT]));
 
         Patch sdPatch = new Patch();
-        sdPatch.addSetting(new Setting("Pitch", "Noise", new PointF(.49f , .8f)));
-        sdPatch.addSetting(new Setting("Band-pass", "Band-pass Q", new PointF(.7f, .6f)));
+        sdPatch.addSetting(new Setting("Pitch", "Gain", new PointF(.49f , .45f)));
+        sdPatch.addSetting(new Setting("Low-pass", "Noise", new PointF(.6f, .8f)));
+        sdPatch.addSetting(new Setting("X-fade", "Attack", new PointF(.35f, .55f)));
         sdPatch.addSetting(new Setting("Decay", "Body Decay", new PointF(.55f, .42f)));
-        sdPatch.addSetting(new Setting("Attack", "Low-pass", new PointF(.55f, .6f)));
-        sdPatch.addSetting(new Setting("X-fade", "Gain", new PointF(.35f, .45f)));
+        sdPatch.addSetting(new Setting("Band-pass", "Band-pass Q", new PointF(.7f, .6f)));
         channels.add(new Channel("sd", sdPatch, new boolean[STEP_COUNT]));
 
         Patch ttPatch = new Patch();
@@ -193,12 +193,12 @@ implements OnPatchChangedListener, OnNumberSetListener {
         channels.add(new Channel("tt", ttPatch, new boolean[STEP_COUNT]));
 
         Patch hhPatch = new Patch();
-        hhPatch.addSetting(new Setting("Pitch", "Ratio A", new PointF(.45f, 1)));
-        hhPatch.addSetting(new Setting("Ratio B", "Noise", new PointF(.9f, .6f)));
-        hhPatch.addSetting(new Setting("Noise Pitch", "Snap", new PointF(.55f, .1f)));
-        hhPatch.addSetting(new Setting("Attack", "Release", new PointF(.4f, .55f)));
+        hhPatch.addSetting(new Setting("Pitch", "Gain", new PointF(.45f, .4f)));
+        hhPatch.addSetting(new Setting("Low-pass", "Snap", new PointF(.8f, .1f)));
+        hhPatch.addSetting(new Setting("Noise Pitch", "Noise", new PointF(.55f, .6f)));
+        hhPatch.addSetting(new Setting("Ratio B", "Ratio A", new PointF(.9f, 1)));
+        hhPatch.addSetting(new Setting("Release", "Attack", new PointF(.55f, .4f)));
         hhPatch.addSetting(new Setting("Filter", "Filter Q", new PointF(.7f, .6f)));
-        hhPatch.addSetting(new Setting("Low-pass", "Gain", new PointF(.8f, .4f)));
         channels.add(new Channel("hh", hhPatch, new boolean[STEP_COUNT]));
 
         Log.d(TAG, "initChannels");
