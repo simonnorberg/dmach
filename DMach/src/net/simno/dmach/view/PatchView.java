@@ -15,7 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.simno.android.dmach.view;
+package net.simno.dmach.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -27,10 +27,9 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-
-import net.simno.android.dmach.model.Patch;
-import net.simno.android.dmach.model.PointF;
-import net.simno.android.dmach.model.Setting;
+import net.simno.dmach.model.Patch;
+import net.simno.dmach.model.PointF;
+import net.simno.dmach.model.Setting;
 
 /**
  * PatchView is a graphical representation ofn the settings in a DMach patch. The setting's two

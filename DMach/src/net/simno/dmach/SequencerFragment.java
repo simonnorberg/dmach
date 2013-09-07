@@ -15,7 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.simno.android.dmach;
+package net.simno.dmach;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -23,9 +23,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ToggleButton;
-
-import net.simno.android.dmach.R;
-import net.simno.android.dmach.model.Channel;
+import net.simno.dmach.R;
+import net.simno.dmach.model.Channel;
 
 import java.util.ArrayList;
 

@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.simno.android.dmach.view;
+package net.simno.dmach.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -27,10 +27,9 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
-
-import net.simno.android.dmach.DMachActivity.OnBeatListener;
-import net.simno.android.dmach.DMachActivity.OnTempoChangedListener;
-import net.simno.android.dmach.DMachActivity.OnVisibilityListener;
+import net.simno.dmach.DMachActivity.OnBeatListener;
+import net.simno.dmach.DMachActivity.OnTempoChangedListener;
+import net.simno.dmach.DMachActivity.OnVisibilityListener;
 
 /**
  * ProgressBarView is an animated progress bar showing the current step in a sequence.

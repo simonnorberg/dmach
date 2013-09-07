@@ -15,7 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.simno.android.dmach;
+package net.simno.dmach;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -45,13 +45,13 @@ import com.michaelnovakjr.numberpicker.NumberPicker;
 import com.michaelnovakjr.numberpicker.NumberPickerDialog;
 import com.michaelnovakjr.numberpicker.NumberPickerDialog.OnNumberSetListener;
 
-import net.simno.android.dmach.PatchFragment.OnPatchChangedListener;
-import net.simno.android.dmach.R;
-import net.simno.android.dmach.model.Channel;
-import net.simno.android.dmach.model.Patch;
-import net.simno.android.dmach.model.PointF;
-import net.simno.android.dmach.model.Setting;
-import net.simno.android.dmach.view.ProgressBarView;
+import net.simno.dmach.R;
+import net.simno.dmach.PatchFragment.OnPatchChangedListener;
+import net.simno.dmach.model.Channel;
+import net.simno.dmach.model.Patch;
+import net.simno.dmach.model.PointF;
+import net.simno.dmach.model.Setting;
+import net.simno.dmach.view.ProgressBarView;
 
 import org.puredata.android.io.AudioParameters;
 import org.puredata.android.service.PdService;

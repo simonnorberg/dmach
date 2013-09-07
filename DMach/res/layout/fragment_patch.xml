@@ -59,7 +59,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         
     </RadioGroup>
 
-    <net.simno.android.dmach.view.PatchView
+    <net.simno.dmach.view.PatchView
         android:id="@+id/patchView"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content" />

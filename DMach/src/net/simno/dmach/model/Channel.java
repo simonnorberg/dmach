@@ -15,7 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.simno.android.dmach.model;
+package net.simno.dmach.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

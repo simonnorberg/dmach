@@ -15,7 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.simno.android.dmach;
+package net.simno.dmach;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -27,12 +27,11 @@ import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
-
-import net.simno.android.dmach.R;
-import net.simno.android.dmach.model.Patch;
-import net.simno.android.dmach.model.PointF;
-import net.simno.android.dmach.view.PatchView;
-import net.simno.android.dmach.view.PatchView.OnPosChangedListener;
+import net.simno.dmach.R;
+import net.simno.dmach.model.Patch;
+import net.simno.dmach.model.PointF;
+import net.simno.dmach.view.PatchView;
+import net.simno.dmach.view.PatchView.OnPosChangedListener;
 
 /**
  * PatchFragment holds a PatchView and RadioGroup for selecting the patch settings.
