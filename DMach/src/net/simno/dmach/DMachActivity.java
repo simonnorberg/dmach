@@ -523,7 +523,7 @@ implements OnPatchChangedListener, OnNumberSetListener {
      */
     @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(this)
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
         .setIcon(R.drawable.ic_launcher_dmach)
         .setTitle("Closing DMach")
         .setMessage("Are you sure you want to close DMach?")
@@ -534,7 +534,9 @@ implements OnPatchChangedListener, OnNumberSetListener {
             }
         })
         .setNegativeButton("No", null)
-        .show();
+        .create();
+        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.show();
         Log.d(TAG, "onBackPressed");
     }
 }
