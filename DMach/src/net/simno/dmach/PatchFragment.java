@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+
 import net.simno.dmach.R;
 import net.simno.dmach.model.Patch;
 import net.simno.dmach.model.PointF;

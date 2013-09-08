@@ -31,7 +31,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -112,7 +111,6 @@ implements OnPatchChangedListener, OnNumberSetListener {
 
     static final int CHANNEL_COUNT = 4;
     static final int STEP_COUNT = 8;
-    private final String TAG = this.getClass().getSimpleName();
 
     private boolean isRunning;
     private int patch;
@@ -153,7 +151,6 @@ implements OnPatchChangedListener, OnNumberSetListener {
         initGui();
         initSystemServices();
         initPdService();
-        Log.d(TAG, "onCreate");
     }
 
     /* (non-Javadoc)
@@ -162,7 +159,6 @@ implements OnPatchChangedListener, OnNumberSetListener {
     @Override
     protected void onDestroy() {
         cleanup();
-        Log.d(TAG, "onDestroy " + Integer.toString(getChangingConfigurations(), 16));
         super.onDestroy();
     }
 
@@ -200,8 +196,6 @@ implements OnPatchChangedListener, OnNumberSetListener {
         hhPatch.addSetting(new Setting("Release", "Attack", new PointF(.55f, .4f)));
         hhPatch.addSetting(new Setting("Filter", "Filter Q", new PointF(.7f, .6f)));
         channels.add(new Channel("hh", hhPatch, new boolean[STEP_COUNT]));
-
-        Log.d(TAG, "initChannels");
     }
 
     /**
@@ -227,7 +221,6 @@ implements OnPatchChangedListener, OnNumberSetListener {
                 }
             }
         });
-        Log.d(TAG, "initGui");
     }
 
     /**
@@ -238,17 +231,14 @@ implements OnPatchChangedListener, OnNumberSetListener {
      */
     private void initProgressBar(int width, int height) {
         progressBarView = new ProgressBarView(this, width, height, STEP_COUNT);
-        Log.d(TAG, "initProgressBar");
     }
 
     private void addProgressBar() {
         ((RelativeLayout) findViewById(R.id.fragment_container)).addView(progressBarView);
-        Log.d(TAG, "addProgressBar");
     }
 
     private void removeProgressBar() {
         ((RelativeLayout) findViewById(R.id.fragment_container)).removeView(progressBarView);
-        Log.d(TAG, "removeProgressBar");
     }
 
     /**
@@ -276,7 +266,6 @@ implements OnPatchChangedListener, OnNumberSetListener {
                 }
             }
         }, PhoneStateListener.LISTEN_CALL_STATE);
-        Log.d(TAG, "initSystemServices");
     }
 
     private void initPdService() {
@@ -287,7 +276,6 @@ implements OnPatchChangedListener, OnNumberSetListener {
                         BIND_AUTO_CREATE);
             }
         }.start();
-        Log.d(TAG, "initPdService");
     }
 
     private void initPd() {
@@ -301,7 +289,6 @@ implements OnPatchChangedListener, OnNumberSetListener {
         });
         startAudio();
         setTempo(mTempo);
-        Log.d(TAG, "initPd");
     }
 
     /**
@@ -316,7 +303,6 @@ implements OnPatchChangedListener, OnNumberSetListener {
             try {
                 pdService.initAudio(sampleRate, 0, 2, -1);
             } catch (IOException e) {
-                Log.e(TAG, e.toString());
                 finish();
                 return;
             }
@@ -328,7 +314,6 @@ implements OnPatchChangedListener, OnNumberSetListener {
                     File patchFile = new File(dir, "dmach.pd");
                     patch = PdBase.openPatch(patchFile.getAbsolutePath());
                 } catch (IOException e) {
-                    Log.e(TAG, e.toString());
                     finish();
                     return;
                 }
@@ -339,7 +324,6 @@ implements OnPatchChangedListener, OnNumberSetListener {
             pdService.startAudio(new Intent(this, DMachActivity.class),
                     R.drawable.ic_stat_notify_dmach, "DMach", "Return to DMach.");
         }
-        Log.d(TAG, "startAudio");
     }
 
     private void stopAudio() {
@@ -349,7 +333,6 @@ implements OnPatchChangedListener, OnNumberSetListener {
             }
             pdService.stopAudio();
         }
-        Log.d(TAG, "stopAudio");
     }
 
     private void cleanup() {
@@ -367,7 +350,6 @@ implements OnPatchChangedListener, OnNumberSetListener {
                 pdService = null;
             }
         }
-        Log.d(TAG, "cleanup");
     }
 
     /**
@@ -386,7 +368,6 @@ implements OnPatchChangedListener, OnNumberSetListener {
             getFragmentManager().executePendingTransactions();
             addProgressBar();
         }
-        Log.d(TAG, "setFragment");
     }
 
     private Channel getSelectedChannel() {
@@ -401,7 +382,6 @@ implements OnPatchChangedListener, OnNumberSetListener {
         PdBase.sendFloat("tempo", mTempo);
         ((Button) findViewById(R.id.tempoButton)).setText("" + mTempo);
         progressBarView.onTempoChanged(mTempo);
-        Log.d(TAG, "setTempo: " + mTempo);
     }
 
     /**
@@ -418,7 +398,6 @@ implements OnPatchChangedListener, OnNumberSetListener {
         }
         isRunning = !isRunning;
         PdBase.sendBang("run");
-        Log.d(TAG, "onPlayClicked");
     }
 
     /**
@@ -433,7 +412,6 @@ implements OnPatchChangedListener, OnNumberSetListener {
         picker.setSpeed(50);
         dialog.setOnNumberSetListener(this);
         dialog.show();
-        Log.d(TAG, "onTempoClicked");
     }
 
     /**
@@ -452,7 +430,6 @@ implements OnPatchChangedListener, OnNumberSetListener {
             ((RelativeLayout) findViewById(R.id.fragment_container)).removeAllViews();
             setFragment();
         }
-        Log.d(TAG, "onResetClicked");
     }
 
     /**
@@ -470,7 +447,6 @@ implements OnPatchChangedListener, OnNumberSetListener {
             }
             setFragment();
         }
-        Log.d(TAG, "onChannelClicked");
     }
 
     /**
@@ -484,7 +460,6 @@ implements OnPatchChangedListener, OnNumberSetListener {
         boolean status = ((ToggleButton) step).isChecked();
         channel.setStep(buttonIndex, status);
         PdBase.sendFloat(channel.getName(), buttonIndex);
-        Log.d(TAG, "onStepClicked " + channel.getName() + " " + buttonIndex);
     }
 
     /* (non-Javadoc)
@@ -493,7 +468,6 @@ implements OnPatchChangedListener, OnNumberSetListener {
     @Override
     public void onNumberSet(int selectedNumber) {
         if (selectedNumber != mTempo) setTempo(selectedNumber);
-        Log.d(TAG, "onNumberSet: " + selectedNumber);
     }
 
     /* (non-Javadoc)
@@ -502,7 +476,6 @@ implements OnPatchChangedListener, OnNumberSetListener {
     @Override
     public void onSettingIndexChanged(int index) {
         getSelectedChannel().getPatch().setSelectedSettingIndex(index);
-        Log.d(TAG, "onSettingIndexChanged");
     }
 
     /* (non-Javadoc)
@@ -537,6 +510,5 @@ implements OnPatchChangedListener, OnNumberSetListener {
         .create();
         alertDialog.setCanceledOnTouchOutside(true);
         alertDialog.show();
-        Log.d(TAG, "onBackPressed");
     }
 }

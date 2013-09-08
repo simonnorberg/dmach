@@ -27,6 +27,7 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
 import net.simno.dmach.model.Patch;
 import net.simno.dmach.model.PointF;
 import net.simno.dmach.model.Setting;

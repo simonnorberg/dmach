@@ -27,6 +27,7 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
+
 import net.simno.dmach.DMachActivity.OnBeatListener;
 import net.simno.dmach.DMachActivity.OnTempoChangedListener;
 import net.simno.dmach.DMachActivity.OnVisibilityListener;
