@@ -15,7 +15,7 @@
 
 LOCAL_PATH := $(call my-dir)
 
-PD_C_INCLUDES := $(LOCAL_PATH)/../../../../pd-for-android/PdCore/jni/libpd/pure-data/src
+PD_C_INCLUDES := $(LOCAL_PATH)/../../../pd-for-android/PdCore/jni/libpd/pure-data/src
 
 #---------------------------------------------------------------
 
@@ -52,7 +52,7 @@ LOCAL_MODULE := tanh_tilde
 LOCAL_C_INCLUDES := $(PD_C_INCLUDES)
 LOCAL_CFLAGS := -DPD
 LOCAL_SRC_FILES := tanh.c
-LOCAL_LDLIBS := -L$(LOCAL_PATH)/../../../../pd-for-android/PdCore/libs/$(TARGET_ARCH_ABI) -lpd
+LOCAL_LDLIBS := -L$(LOCAL_PATH)/../../../pd-for-android/PdCore/libs/$(TARGET_ARCH_ABI) -lpd
 LOCAL_STATIC_LIBRARIES := sic
 include $(BUILD_SHARED_LIBRARY)
 
