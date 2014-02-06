@@ -19,9 +19,7 @@ package net.simno.dmach.view;
 
 import java.util.ArrayList;
 
-import net.simno.dmach.R;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -34,24 +32,27 @@ import android.view.View;
 public final class SequencerView extends View {
 
     public interface OnStepChangedListener {
-        public void onStepChanged(int group, int channel, int step);
+        public void onStepChanged(int index);
     }
     
     private static final int BACKGROUND_COLOR = Color.parseColor("#EBEBAF");
     private static final int UNCHECKED_COLOR = Color.parseColor("#C1BF87");
     private static final int CHECKED_COLOR = Color.parseColor("#B02B2F");
     private static final int STEPS = 16;
-    private static final int CHANNELS = 3;
+    private static final int CHANNELS = 6;
 
-    private float mStepWidth;
-    private float mHeight;
-    private int mMargin;
-    private int mGroup;
-    
-    private Paint mUncheckedPaint;
-    private Paint mCheckedPaint;
     private ArrayList<Step> mSteps = new ArrayList<Step>();
     private OnStepChangedListener mListener;
+    private Paint mUncheckedPaint;
+    private Paint mCheckedPaint;
+    private boolean mChecked;
+    private int mWidth;
+    private int mHeight;
+    private int mMargin;
+    private float mStepWidth;
+    private float mStepHeight;
+    private float mStepMarginWidth;
+    private float mStepMarginHeight;
     
     private class Step {
         private final RectF rect;
@@ -73,25 +74,11 @@ public final class SequencerView extends View {
 
     public SequencerView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        TypedArray a = context.getTheme().obtainStyledAttributes(
-                attrs,R.styleable.SequencerView, 0, 0);
-        try {
-            mGroup = a.getInt(R.styleable.SequencerView_group, 0);
-            } finally {
-                a.recycle();
-            }
         init();
     }
 
     public SequencerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        TypedArray a = context.getTheme().obtainStyledAttributes(
-                attrs, R.styleable.SequencerView, 0, 0);
-        try {
-            mGroup = a.getInt(R.styleable.SequencerView_group, 0);
-            } finally {
-                a.recycle();
-            }
         init();
     }
 
@@ -99,9 +86,9 @@ public final class SequencerView extends View {
         mListener = listener;
     }
 
-    private void notifyOnStepChanged(int channel, int step) {
+    private void notifyOnStepChanged(int index) {
         if (mListener != null) {
-            mListener.onStepChanged(mGroup, channel, step);
+            mListener.onStepChanged(index);
         }
     }
 
@@ -124,26 +111,49 @@ public final class SequencerView extends View {
     private void initSteps() {
         for (int ch = 0; ch < CHANNELS; ++ch) {
             for (int st = 0; st < STEPS; ++st) {
-                float left = st * (mStepWidth + mMargin);
+                float left = st * mStepMarginWidth;
                 float right = left + mStepWidth;
-                float top = ch * (mHeight + mMargin);
-                float bottom = top + mHeight;
+                float top = ch * mStepMarginHeight;
+                float bottom = top + mStepHeight;
                 mSteps.add(new Step(new RectF(left, top, right, bottom)));
             }
         }
+    }    
+    
+    private void onActionDown(float x, float y) {
+        int index = calculateIndex(x, y);
+        if (index == -1) {
+            return;
+        }
+        mChecked = mSteps.get(index).checked;
+        mSteps.get(index).toggle();
+        notifyOnStepChanged(index);
+        invalidate();
     }
     
-    private void changeStep(float x, float y) {
-        if (x >= 0 && y >= 0) {
-            int channel = (int) (y / (mHeight + mMargin));
-            int step = (int) (x / (mStepWidth + mMargin));
-            int index = channel * STEPS + step;
-            if (index < mSteps.size()) {
-                notifyOnStepChanged(channel, step);
-                mSteps.get(index).toggle();
-                invalidate();    
-            }
+    private void onActionMove(float x, float y) {
+        int index = calculateIndex(x, y);
+        if (index == -1) {
+            return;
         }
+        if (mSteps.get(index).checked == mChecked) {
+            mSteps.get(index).toggle();
+            notifyOnStepChanged(index);
+            invalidate();
+        }
+    }
+
+    private void onActionUp(float x, float y) {
+        
+    }
+    
+    private int calculateIndex(float x, float y) {
+        if (x < 0 || y < 0 || x > mWidth || y > mHeight) {
+            return -1;
+        }
+        int channel = (int) (y / mStepMarginHeight);
+        int step = (int) (x / mStepMarginWidth);
+        return channel * STEPS + step;
     }
     
     @Override
@@ -158,8 +168,12 @@ public final class SequencerView extends View {
     @Override
     protected void onSizeChanged (int w, int h, int oldw, int oldh) {
         if (w != 0 && h != 0) {
+            mWidth = w;
+            mHeight = h;
             mStepWidth = (float) ((w - ((STEPS - 1.0) * mMargin)) / STEPS);
-            mHeight = (float) ((h - ((CHANNELS - 1.0) * mMargin)) / CHANNELS);
+            mStepHeight = (float) ((h - ((CHANNELS - 1.0) * mMargin)) / CHANNELS);
+            mStepMarginWidth = mStepWidth + mMargin;
+            mStepMarginHeight = mStepHeight + mMargin;
             initSteps();            
         }
     }
@@ -167,9 +181,16 @@ public final class SequencerView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
-        case MotionEvent.ACTION_UP:
-            changeStep(event.getX(), event.getY());
+        case MotionEvent.ACTION_DOWN:
+            onActionDown(event.getX(), event.getY());
             break;
+        case MotionEvent.ACTION_MOVE:
+            onActionMove(event.getX(), event.getY());
+            break;
+        case MotionEvent.ACTION_UP:
+//            onActionUp(event.getX(), event.getY());
+//            changeStep(event.getX(), event.getY());
+//            break;
         }
         return true;
     }
