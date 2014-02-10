@@ -22,16 +22,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ToggleButton;
+import android.view.View.OnLayoutChangeListener;
 
 import net.simno.dmach.R;
-import net.simno.dmach.model.Channel;
+import net.simno.dmach.view.ProgressBarView;
+import net.simno.dmach.view.SequencerView;
+import net.simno.dmach.view.SequencerView.OnStepChangedListener;
 
-import java.util.ArrayList;
-
-/**
- * SequencerFragment holds all step buttons in the step sequencer.
- */
 public class SequencerFragment extends Fragment {
 
     public SequencerFragment() {
@@ -39,25 +36,17 @@ public class SequencerFragment extends Fragment {
     }
 
     private static final String TAG_SEQUENCER = "sequencer";
-    private ArrayList<Channel> mChannels;
-
-    /**
-     * Creates a new SequencerFragment instance
-     *
-     * @param channels The channels list to send to the new instance
-     * @return The new SequencerFramgment instance
-     */
-    public static SequencerFragment newInstance(ArrayList<Channel> channels) {
+    private int[] mSequence;
+    private SequencerView mSequencerView;
+    
+    public static SequencerFragment newInstance(int[] sequence) {
         SequencerFragment sf = new SequencerFragment();
         Bundle args = new Bundle();
-        args.putParcelableArrayList(TAG_SEQUENCER, channels);
+        args.putIntArray(TAG_SEQUENCER, sequence);
         sf.setArguments(args);
         return sf;
     }
-
-    /* (non-Javadoc)
-     * @see android.app.Fragment#onCreate(android.os.Bundle)
-     */
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,40 +54,34 @@ public class SequencerFragment extends Fragment {
             savedInstanceState = getArguments();
         }
         if (null != savedInstanceState) {
-            mChannels = savedInstanceState.getParcelableArrayList(TAG_SEQUENCER);
+            mSequence = savedInstanceState.getIntArray(TAG_SEQUENCER);
         }
     }
 
-    /* (non-Javadoc)
-     * @see android.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup,
-     * android.os.Bundle)
-     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sequencer, container, false);
-
-        // Initialize step buttons
-        if (null != mChannels) {
-            ViewGroup bdSteps = (ViewGroup) view.findViewById(R.id.bdSteps);
-            ViewGroup sdSteps = (ViewGroup) view.findViewById(R.id.sdSteps);
-            ViewGroup ttSteps = (ViewGroup) view.findViewById(R.id.ttSteps);
-            ViewGroup hhSteps = (ViewGroup) view.findViewById(R.id.hhSteps);
-            boolean[] bdSequence = mChannels.get(0).getSequence();
-            boolean[] sdSequence = mChannels.get(1).getSequence();
-            boolean[] ttSequence = mChannels.get(2).getSequence();
-            boolean[] hhSequence = mChannels.get(3).getSequence();
-            for (int i = 0; i < DMachActivity.STEP_COUNT; ++i) {
-                ToggleButton bd = (ToggleButton) bdSteps.getChildAt(i);
-                ToggleButton sd = (ToggleButton) sdSteps.getChildAt(i);
-                ToggleButton tt = (ToggleButton) ttSteps.getChildAt(i);
-                ToggleButton hh = (ToggleButton) hhSteps.getChildAt(i);
-                bd.setChecked(bdSequence[i]);
-                sd.setChecked(sdSequence[i]);
-                tt.setChecked(ttSequence[i]);
-                hh.setChecked(hhSequence[i]);
+        mSequencerView = (SequencerView) view.findViewById(R.id.sequencer);
+        mSequencerView.setOnStepChangedListener((OnStepChangedListener) getActivity());
+        mSequencerView.addOnLayoutChangeListener(new OnLayoutChangeListener() {            
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right,
+                    int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if (null != mSequence) {
+                    mSequencerView.setChecked(mSequence);
+                }
             }
-        }
+        });
         return view;
+    }
+    
+    @Override
+    public void onDestroyView() {
+        ProgressBarView p = ((ProgressBarView) getActivity().findViewById(R.id.progress_bar));
+        if (null != p) {
+            p.cleanup();
+        }
+        super.onDestroyView();
     }
 }

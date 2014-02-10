@@ -19,23 +19,33 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <resources>
 
     <string name="app_name">DMach</string>
-    <string name="bd">BD</string>
-    <string name="channel_listener">onChannelClicked</string>
-    <string name="hh">HH</string>
+
     <string name="logo">logo</string>
     <string name="play">play</string>
-    <string name="play_listener">onPlayClicked</string>
     <string name="reset">reset</string>
+
+    <string name="channel_listener">onChannelClicked</string>
+    <string name="play_listener">onPlayClicked</string>
     <string name="reset_listener">onResetClicked</string>
+    <string name="tempo_listener">onTempoClicked</string>
+
+    <string name="bd">BD</string>
     <string name="sd">SD</string>
+    <string name="cp">CP</string>
+    <string name="tt">TT</string>
+    <string name="cb">CB</string>
+    <string name="hh">HH</string>
+
     <string name="setting1">1</string>
     <string name="setting2">2</string>
     <string name="setting3">3</string>
     <string name="setting4">4</string>
     <string name="setting5">5</string>
     <string name="setting6">6</string>
-    <string name="step_listener">onStepClicked</string>
-    <string name="tempo_listener">onTempoClicked</string>
-    <string name="tt">TT</string>
-    
+
+    <string name="saved_sequence">net.simno.dmach.SAVED_SEQUENCE</string>
+    <string name="saved_tempo">net.simno.dmach.TEMPO</string>
+    <string name="saved_shuffle">net.simno.dmach.SHUFFLE</string>
+    <string name="margin_dp">3</string>
+
 </resources>

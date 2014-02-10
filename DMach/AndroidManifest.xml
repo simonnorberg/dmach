@@ -33,7 +33,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         android:label="@string/app_name"
         android:theme="@style/DMachTheme" >
         <activity
-            android:name="net.simno.dmach.DMachActivity"
+            android:name="net.simno.dmach.DMach"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:screenOrientation="sensorLandscape"

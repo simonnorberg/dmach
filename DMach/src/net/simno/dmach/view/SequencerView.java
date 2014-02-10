@@ -18,7 +18,9 @@
 package net.simno.dmach.view;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
+import net.simno.dmach.DMach;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -32,16 +34,14 @@ import android.view.View;
 public final class SequencerView extends View {
 
     public interface OnStepChangedListener {
-        public void onStepChanged(int index);
+        public void onStepChanged(int channel, int step);
     }
     
     private static final int BACKGROUND_COLOR = Color.parseColor("#EBEBAF");
     private static final int UNCHECKED_COLOR = Color.parseColor("#C1BF87");
     private static final int CHECKED_COLOR = Color.parseColor("#B02B2F");
-    private static final int STEPS = 16;
-    private static final int CHANNELS = 6;
 
-    private ArrayList<Step> mSteps = new ArrayList<Step>();
+    private final ArrayList<Step> mSequence = new ArrayList<Step>();
     private OnStepChangedListener mListener;
     private Paint mUncheckedPaint;
     private Paint mCheckedPaint;
@@ -51,17 +51,13 @@ public final class SequencerView extends View {
     private int mMargin;
     private float mStepWidth;
     private float mStepHeight;
-    private float mStepMarginWidth;
-    private float mStepMarginHeight;
+    private float mStepWidthMargin;
+    private float mStepHeightMargin;
     
     private class Step {
-        private final RectF rect;
+        private RectF rect;
         private boolean checked;
         
-        Step(RectF rect) {
-            this.rect = rect;
-        }
-
         void toggle() {
             checked = !checked;
         }
@@ -86,83 +82,107 @@ public final class SequencerView extends View {
         mListener = listener;
     }
 
-    private void notifyOnStepChanged(int index) {
+    private void notifyOnStepChanged(int channel, int step) {
         if (mListener != null) {
-            mListener.onStepChanged(index);
+            mListener.onStepChanged(channel, step);
         }
     }
 
+    public void setChecked(int[] sequence) {
+        Iterator<Step> i = mSequence.iterator();
+        for (int c = 0; c < (DMach.CHANNELS); ++c) {
+            for (int s = 0; s < DMach.STEPS; ++s) {
+                if (i.hasNext()) {
+                    int mask = DMach.MASKS[c % (DMach.CHANNELS / DMach.GROUPS)];
+                    int index = s + ((c / (DMach.CHANNELS / DMach.GROUPS)) * DMach.STEPS);
+                    int value = sequence[index] & mask;
+                    i.next().checked = value != 0 ? true : false;
+                }
+            }
+        }
+        invalidate();
+    }
+    
     private void init() {
         setMinimumHeight(100);
         setMinimumWidth(100);
         
-        mUncheckedPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mUncheckedPaint = new Paint();
         mUncheckedPaint.setColor(UNCHECKED_COLOR);
         mUncheckedPaint.setStyle(Paint.Style.FILL);
         
-        mCheckedPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mCheckedPaint = new Paint();
         mCheckedPaint.setColor(CHECKED_COLOR);
         mCheckedPaint.setStyle(Paint.Style.FILL);
         
         DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
         mMargin = Math.round(3 * (dm.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-    }
-
-    private void initSteps() {
-        for (int ch = 0; ch < CHANNELS; ++ch) {
-            for (int st = 0; st < STEPS; ++st) {
-                float left = st * mStepMarginWidth;
-                float right = left + mStepWidth;
-                float top = ch * mStepMarginHeight;
-                float bottom = top + mStepHeight;
-                mSteps.add(new Step(new RectF(left, top, right, bottom)));
+        
+        for (int channel = 0; channel < DMach.CHANNELS; ++channel) {
+            for (int step = 0; step < DMach.STEPS; ++step) {
+                mSequence.add(new Step());
             }
         }
-    }    
+    }
+    
+    private void initSteps() {
+        for (int channel = 0; channel < DMach.CHANNELS; ++channel) {
+            for (int step = 0; step < DMach.STEPS; ++step) {
+                float left = step * mStepWidthMargin;
+                float right = left + mStepWidth;
+                float top = channel * mStepHeightMargin;
+                float bottom = top + mStepHeight;
+                int index = (channel * DMach.STEPS) + step;
+                mSequence.get(index).rect = new RectF(left, top, right, bottom);
+            }
+        }
+    }
     
     private void onActionDown(float x, float y) {
-        int index = calculateIndex(x, y);
-        if (index == -1) {
+        if (!isValidXY(x, y)) {
             return;
         }
-        mChecked = mSteps.get(index).checked;
-        mSteps.get(index).toggle();
-        notifyOnStepChanged(index);
+        
+        int channel = (int) (y / mStepHeightMargin);
+        int step = (int) (x / mStepWidthMargin);
+        int index = channel * DMach.STEPS + step;
+        
+        mChecked = mSequence.get(index).checked;
+        mSequence.get(index).toggle();
+        notifyOnStepChanged(channel, step);
         invalidate();
+
     }
     
     private void onActionMove(float x, float y) {
-        int index = calculateIndex(x, y);
-        if (index == -1) {
+        if (!isValidXY(x, y)) {
             return;
         }
-        if (mSteps.get(index).checked == mChecked) {
-            mSteps.get(index).toggle();
-            notifyOnStepChanged(index);
+
+        int channel = (int) (y / mStepHeightMargin);
+        int step = (int) (x / mStepWidthMargin);
+        int index = channel * DMach.STEPS + step;
+        
+        if (mSequence.get(index).checked == mChecked) {
+            mSequence.get(index).toggle();
+            notifyOnStepChanged(channel, step);
             invalidate();
         }
     }
-
-    private void onActionUp(float x, float y) {
-        
-    }
     
-    private int calculateIndex(float x, float y) {
+    private boolean isValidXY(float x, float y) {
         if (x < 0 || y < 0 || x > mWidth || y > mHeight) {
-            return -1;
+            return false;
         }
-        int channel = (int) (y / mStepMarginHeight);
-        int step = (int) (x / mStepMarginWidth);
-        return channel * STEPS + step;
+        return true;
     }
     
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawColor(BACKGROUND_COLOR);
-        for (Step s : mSteps) {
+        for (Step s : mSequence) {
             canvas.drawRect(s.rect, s.checked ? mCheckedPaint : mUncheckedPaint);
         }
-
     }
 
     @Override
@@ -170,11 +190,12 @@ public final class SequencerView extends View {
         if (w != 0 && h != 0) {
             mWidth = w;
             mHeight = h;
-            mStepWidth = (float) ((w - ((STEPS - 1.0) * mMargin)) / STEPS);
-            mStepHeight = (float) ((h - ((CHANNELS - 1.0) * mMargin)) / CHANNELS);
-            mStepMarginWidth = mStepWidth + mMargin;
-            mStepMarginHeight = mStepHeight + mMargin;
-            initSteps();            
+            mStepWidth = (float) ((w - ((DMach.STEPS - 1.0) * mMargin)) / DMach.STEPS);
+            mStepHeight = (float) ((h - ((DMach.CHANNELS - 1.0) * mMargin)) / DMach.CHANNELS);
+            mStepWidthMargin = mStepWidth + mMargin;
+            mStepHeightMargin = mStepHeight + mMargin;
+            initSteps();
+            invalidate();
         }
     }
     
@@ -187,10 +208,6 @@ public final class SequencerView extends View {
         case MotionEvent.ACTION_MOVE:
             onActionMove(event.getX(), event.getY());
             break;
-        case MotionEvent.ACTION_UP:
-//            onActionUp(event.getX(), event.getY());
-//            changeStep(event.getX(), event.getY());
-//            break;
         }
         return true;
     }

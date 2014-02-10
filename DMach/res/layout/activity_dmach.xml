@@ -82,14 +82,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	            style="@style/Channel" />
 	
 	        <RadioButton
-	            android:id="@+id/tt"
+	            android:id="@+id/ht"
 	            android:text="@string/tt"
 	            style="@style/Channel" />
 	
 	        <RadioButton
-	            android:id="@+id/hh"
+	            android:id="@+id/lt"
 	            android:text="@string/hh"
 	            style="@style/Channel" />
+	        
+	        <RadioButton
+                android:id="@+id/cp"
+                android:text="@string/bd"
+                style="@style/Channel" />
+    
+            <RadioButton
+                android:id="@+id/cb"
+                android:text="@string/sd"
+                style="@style/Channel" />
 	
 	    </RadioGroup>
 
