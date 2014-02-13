@@ -21,47 +21,48 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     android:layout_width="match_parent"
     android:orientation="horizontal">
 
-    <RadioGroup
-        android:id="@+id/patches"
+    <LinearLayout
+        android:id="@+id/settings"
         android:layout_height="match_parent"
-        android:layout_marginRight="8dp"
-        android:layout_width="wrap_content">
+        android:layout_width="60dp"
+        android:layout_marginRight="3dp"
+        android:orientation="vertical">
         
-		<RadioButton
+		<ImageButton
 		    android:id="@+id/setting1"
-		    android:text="@string/setting1"
-		    style="@style/Setting.Top" />
+		    android:contentDescription="@string/none"
+		    style="@style/Setting.1" />
 		
-		<RadioButton
+		<ImageButton
 		    android:id="@+id/setting2"
-		    android:text="@string/setting2"
-		    style="@style/Setting.Middle" />
+		    android:contentDescription="@string/none"
+		    style="@style/Setting.2" />
 		
-		<RadioButton
+		<ImageButton
 		    android:id="@+id/setting3"
-		    android:text="@string/setting3"
-		    style="@style/Setting.Middle" />
+		    android:contentDescription="@string/none"
+		    style="@style/Setting.3" />
 		
-		<RadioButton
+		<ImageButton
 		    android:id="@+id/setting4"
-		    android:text="@string/setting4"
-		    style="@style/Setting.Middle" />
+		    android:contentDescription="@string/none"
+		    style="@style/Setting.4" />
 		
-		<RadioButton
+		<ImageButton
 		    android:id="@+id/setting5"
-		    android:text="@string/setting5"
-		    style="@style/Setting.Middle" />
+		    android:contentDescription="@string/none"
+		    style="@style/Setting.5" />
 		
-		<RadioButton
+		<ImageButton
 		    android:id="@+id/setting6"
-		    android:text="@string/setting6"
-		    style="@style/Setting.Bottom" />
+		    android:contentDescription="@string/none"
+		    style="@style/Setting.6" />
         
-    </RadioGroup>
+    </LinearLayout>
 
     <net.simno.dmach.view.PatchView
         android:id="@+id/patchView"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content" />
+        android:layout_height="match_parent"
+        android:layout_width="match_parent" />
 
 </LinearLayout>

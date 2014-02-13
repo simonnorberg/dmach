@@ -34,28 +34,10 @@ import net.simno.dmach.model.PointF;
 import net.simno.dmach.view.PatchView;
 import net.simno.dmach.view.PatchView.OnPosChangedListener;
 
-/**
- * PatchFragment holds a PatchView and RadioGroup for selecting the patch settings.
- */
 public class PatchFragment extends Fragment {
 
-    /**
-     * Interface definition for a callback to be invoked when the patch settings has changed.
-     */
     public interface OnPatchChangedListener {
-
-        /**
-         * Called when the setting selection has changed
-         *
-         * @param index The new selected setting index
-         */
         public void onSettingIndexChanged(int index);
-
-        /**
-         * Called when the setting's parameter values has changed
-         *
-         * @param pos The PointF object that holds the two values
-         */
         public void onSettingPosChanged(PointF pos);
     }
 
@@ -69,12 +51,6 @@ public class PatchFragment extends Fragment {
         super();
     }
 
-    /**
-     * Creates a new PatchFragment instance
-     *
-     * @param patch The patch to send to the new instance
-     * @return The new PatchFragment instance
-     */
     public static PatchFragment newInstance(Patch patch) {
         PatchFragment pf = new PatchFragment();
         Bundle args = new Bundle();
@@ -83,9 +59,6 @@ public class PatchFragment extends Fragment {
         return pf;
     }
 
-    /* (non-Javadoc)
-     * @see android.app.Fragment#onAttach(android.app.Activity)
-     */
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -97,9 +70,6 @@ public class PatchFragment extends Fragment {
         }
     }
 
-    /* (non-Javadoc)
-     * @see android.app.Fragment#onCreate(android.os.Bundle)
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,26 +81,17 @@ public class PatchFragment extends Fragment {
         }
     }
 
-    /* (non-Javadoc)
-     * @see android.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup,
-     * android.os.Bundle)
-     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_patch, container, false);
-        initPatchView((PatchView) view.findViewById(R.id.patchView));
-        if (mPatch != null) {
-            initSettings((RadioGroup) view.findViewById(R.id.patches));
-        }
+//        initPatchView((PatchView) view.findViewById(R.id.patchView));
+//        if (mPatch != null) {
+//            initSettings((RadioGroup) view.findViewById(R.id.settings));
+//        }
         return view;
     }
-    
-    /**
-     * Initializes mPatchView and adds listeners to it
-     *
-     * @param patchView The new PatchView object
-     */
+
     private void initPatchView(PatchView patchView) {
         mPatchView = patchView;
         mPatchView.setOnPosChangedListener(new OnPosChangedListener() {
@@ -150,12 +111,7 @@ public class PatchFragment extends Fragment {
             }
         });
     }
-    
-    /**
-     * Adds setting radiobuttons and a OnCheckedChangedListener to the radiogroup 
-     *
-     * @param group The settings radiogroup
-     */
+
     private void initSettings(RadioGroup group) {
         int current = mPatch.getSelectedSettingIndex();
         int enabledSettingsCount = mPatch.getCount();

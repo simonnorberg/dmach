@@ -22,11 +22,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	    android:drawable="@drawable/rect_gamboge_alpha" />
     
 	<item
-	    android:state_checked="true"
+	    android:state_selected="true"
 	    android:drawable="@drawable/rect_gamboge" />
 	
 	<item
-	    android:state_checked="false"
+	    android:state_selected="false"
 	    android:drawable="@drawable/rect_dune" />
 
 </selector>

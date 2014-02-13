@@ -32,22 +32,8 @@ import net.simno.dmach.model.Patch;
 import net.simno.dmach.model.PointF;
 import net.simno.dmach.model.Setting;
 
-/**
- * PatchView is a graphical representation ofn the settings in a DMach patch. The setting's two
- * parameters are assigned to the X axis and the Y axis respectively. The parameters can be changed
- * by moving the circle on the canvas.
- */
 public final class PatchView extends View {
-    /**
-     * Interface definition for a callback to be invoked when the circle that represents the
-     * setting's parameter values has moved its position.
-     */
     public interface OnPosChangedListener {
-        /**
-         * Called when the circle position has changed.
-         *
-         * @param pos The new circle position
-         */
         public void onPosChanged(PointF pos);
     }
 
@@ -82,9 +68,6 @@ public final class PatchView extends View {
         init();
     }
 
-    /**
-     * Sets minimum height and width of this view and initializes paint and patch objects.
-     */
     private void init() {
         setMinimumHeight(100);
         setMinimumWidth(100);
@@ -109,20 +92,10 @@ public final class PatchView extends View {
         mPatch.addSetting(new Setting());
     }
 
-    /**
-     * Register a callback to be invoked when the circle position has changed.
-     *
-     * @param listener The callback that will run
-     */
     public void setOnPosChangedListener(OnPosChangedListener listener) {
         mListener = listener;
     }
 
-    /**
-     * Notifies the listener that the circle position has changed.
-     *
-     * @param pos The circle position
-     */
     private void notifyOnPosChanged(PointF pos) {
         if (mListener != null) mListener.onPosChanged(pos);
     }
@@ -150,67 +123,43 @@ public final class PatchView extends View {
         invalidate();
     }
 
-    /**
-     * Gets the minimum horizontal position of the circle center. It depends on the circle radius
-     * and stroke width.
-     *
-     * @return The minimum horizontal position of the circle center
-     */
     private float getMinX() {
         return CIRCLE_RADIUS + (CIRCLE_STROKE_WIDTH / 2);
     }
 
-    /**
-     * Gets the minimum vertical position of the circle center. It is always the same as the minimum
-     * horizontal position.
-     *
-     * @return The minimum vertical position of the circle center
-     */
     private float getMinY() {
         return getMinX();
     }
 
-    /**
-     * @return The maximum horizontal position of the circle center
-     */
     private float getMaxX() {
         return getWidth() - getMinX();
     }
 
-    /**
-     * @return The maximum vertical position of the circle center
-     */
     private float getMaxY() {
         return getHeight() - getMinY();
     }
 
-    /**
-     * Checks if the provided value is in the allowed horizontal range. If it is not in the allowed
-     * horizontal range it will be adjusted before it is returned.
-     *
-     * @param x The value to check
-     * @return The valid value
-     */
     private float getValidX(float x) {
         float min = getMinX();
-        if (x < min) return min;
+        if (x < min) {
+            return min;
+        }
         float max = getMaxX();
-        if (x > max) return max;
+        if (x > max) {
+            return max;
+        }
         return x;
     }
 
-    /**
-     * Checks if the provided value is in the allowed vertical range. If it is not in the allowed
-     * vertical range it will be adjusted before it is returned.
-     *
-     * @param x The value to check
-     * @return The valid value
-     */
     private float getValidY(float y) {
         float min = getMinY();
-        if (y < min) return min;
+        if (y < min) {
+            return min;
+        }
         float max = getMaxY();
-        if (y > max) return max;
+        if (y > max) {
+            return max;
+        }
         return y;
     }
 
@@ -243,20 +192,16 @@ public final class PatchView extends View {
         float height = getMaxY() - getMinY();
         float x = pos.getX() - getMinX();
         float y = pos.getY() - getMinY();
-        if (x > 0) x /= width;
-        if (y > 0) y /= height;
+        if (x > 0) {
+            x /= width;
+        }
+        if (y > 0) {
+            y /= height;
+        }
         y = 1 - y;
         return new PointF(x, y);
     }
 
-    /**
-     * Checks if the provided x and y values are valid. This will make sure that the circle is
-     * always drawn inside this view's bounds. The PatchView patch is updated and then the values
-     * are converted to internal representation before notifying the OnPosChangedListener.
-     * 
-     * @param x The horizontal circle center position
-     * @param y The vertical circle center position
-     */
     private void moveCircle(float x, float y) {
         PointF pos = new PointF(getValidX(x), getValidY(y));
         mPatch.setSelectedPos(pos);
@@ -264,9 +209,6 @@ public final class PatchView extends View {
         invalidate();
     }
 
-    /* (non-Javadoc)
-     * @see android.view.View#onDraw(android.graphics.Canvas)
-     */
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawColor(BACKGROUND_COLOR);
@@ -291,9 +233,6 @@ public final class PatchView extends View {
         canvas.drawCircle(pos.getX(), pos.getY(), CIRCLE_RADIUS, mCirclePaint);
     }
 
-    /* (non-Javadoc)
-     * @see android.view.View#onTouchEvent(android.view.MotionEvent)
-     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {

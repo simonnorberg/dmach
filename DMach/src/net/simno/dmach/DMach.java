@@ -25,7 +25,6 @@ import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
@@ -36,11 +35,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.google.gson.Gson;
 
@@ -50,6 +49,7 @@ import net.simno.dmach.model.Channel;
 import net.simno.dmach.model.Patch;
 import net.simno.dmach.model.PointF;
 import net.simno.dmach.model.Setting;
+import net.simno.dmach.view.SequencerView;
 import net.simno.dmach.view.SequencerView.OnStepChangedListener;
 
 import org.puredata.android.io.AudioParameters;
@@ -62,8 +62,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class DMach extends Activity
-implements OnStepChangedListener {
-//implements OnPatchChangedListener {
+implements OnStepChangedListener, OnPatchChangedListener {
     
     public static final int[] MASKS = {1, 2, 4};
     public static final int GROUPS = 2;
@@ -72,12 +71,14 @@ implements OnStepChangedListener {
 
     private int[] mSequence;
     private boolean mIsRunning;
-    private int mPatch;
-//    private int selectedChannelIndex = -1;
-    private int mTempo = 120;
+    
+    private int mSelectedChannel;
+    private int mSelectedSetting;
+    private int mTempo;
     private int mShuffle;
     private TextView mTempoText;
     private TextView mShuffleText;
+    private int mPdPatch;
     private PdService mPdService;
     private final Object mLock = new Object();
     private final ServiceConnection mPdConnection = new ServiceConnection() {
@@ -90,8 +91,6 @@ implements OnStepChangedListener {
         @Override
         public void onServiceDisconnected(ComponentName name) {}
     };
-    
-    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +120,7 @@ implements OnStepChangedListener {
         editor.putString(getString(R.string.saved_sequence), json)
         .putInt(getString(R.string.saved_tempo), mTempo)
         .putInt(getString(R.string.saved_shuffle), mShuffle)
+        .putInt(getString(R.string.saved_channel), mSelectedChannel)
         .commit();
     }
     
@@ -134,6 +134,7 @@ implements OnStepChangedListener {
         }
         mTempo = prefs.getInt(getString(R.string.saved_tempo), 120);
         mShuffle = prefs.getInt(getString(R.string.saved_shuffle), 0);
+        mSelectedChannel = prefs.getInt(getString(R.string.saved_channel), -1);
     }
     
 //    private void initChannels() {
@@ -170,8 +171,21 @@ implements OnStepChangedListener {
 
     private void initGui() {
         setContentView(R.layout.activity_dmach);
+        
+        if (mSelectedChannel != -1) {
+            LinearLayout channels = (LinearLayout) findViewById(R.id.channels);
+            ImageButton channel = (ImageButton) channels.getChildAt(mSelectedChannel);
+            if (channel != null) {
+                channel.setSelected(true);
+                // start patch fragment
+            }
+        } else {
+            // start sequencer fragment
+        }
+//        getFragmentManager().beginTransaction().add(R.id.fragment_container,
+//                SequencerFragment.newInstance(mSequence)).commit();
         getFragmentManager().beginTransaction().add(R.id.fragment_container,
-                SequencerFragment.newInstance(mSequence)).commit();
+                PatchFragment.newInstance(new Patch())).commit();
     }
 
     private void initSystemServices() {
@@ -202,8 +216,8 @@ implements OnStepChangedListener {
         new Thread() {
             @Override
             public void run() {
-                bindService(new Intent(DMach.this, PdService.class),mPdConnection,
-                        BIND_AUTO_CREATE);
+                bindService(new Intent(DMach.this, PdService.class),
+                        mPdConnection, BIND_AUTO_CREATE);
             }
         }.start();
     }
@@ -211,6 +225,10 @@ implements OnStepChangedListener {
     private void initPd() {
         PdBase.sendFloat("shuffle", mShuffle / 100.0f);
         PdBase.sendFloat("tempo", mTempo);
+        sendSequence();
+    }
+    
+    private void sendSequence() {
         for (int step = 0; step < STEPS; ++step) {
             PdBase.sendList("step", new Object[]{0, step, mSequence[step]});
             PdBase.sendList("step", new Object[]{1, step, mSequence[step + STEPS]});
@@ -229,13 +247,13 @@ implements OnStepChangedListener {
                 finish();
                 return;
             }
-            if (mPatch == 0) {
+            if (mPdPatch == 0) {
                 try {
                     File dir = getFilesDir();
                     IoUtils.extractZipResource(getResources()
                             .openRawResource(R.raw.dmach), dir, true);
                     File patchFile = new File(dir, "dmach.pd");
-                    mPatch = PdBase.openPatch(patchFile.getAbsolutePath());
+                    mPdPatch = PdBase.openPatch(patchFile.getAbsolutePath());
                 } catch (IOException e) {
                     finish();
                     return;
@@ -261,9 +279,9 @@ implements OnStepChangedListener {
     private void cleanup() {
         synchronized (mLock) {
             stopAudio();
-            if (mPatch != 0) {
-                PdBase.closePatch(mPatch);
-                mPatch = 0;
+            if (mPdPatch != 0) {
+                PdBase.closePatch(mPdPatch);
+                mPdPatch = 0;
             }
             PdBase.release();
             try {
@@ -295,17 +313,17 @@ implements OnStepChangedListener {
         ImageButton imageButton = (ImageButton) view;
         if (mIsRunning) {
             PdBase.sendBang("stop");
-            imageButton.setImageResource(R.drawable.play);
+            imageButton.setImageResource(R.drawable.control_play);
         } else {
             PdBase.sendBang("play");
-            imageButton.setImageResource(R.drawable.stop);
+            imageButton.setImageResource(R.drawable.control_stop);
         }
         mIsRunning = !mIsRunning;
     }
 
-    public void onTempoClicked(View view) {
+    public void onConfigClicked(View view) {
         LayoutInflater inflater = LayoutInflater.from(this);
-        View layout = inflater.inflate(R.layout.settings_dialog, null);
+        View layout = inflater.inflate(R.layout.dialog_config, null);
         AlertDialog alertDialog = new AlertDialog.Builder(this).setView(layout).create();
         alertDialog.setCanceledOnTouchOutside(true);
         alertDialog.show();
@@ -351,14 +369,12 @@ implements OnStepChangedListener {
     }
 
     public void onResetClicked(View view) {
-//        for (Channel channel : channels) {
-//            for (int i = 0; i < STEP_COUNT; ++i) {
-//                if (true == channel.getStep(i)) {
-//                    channel.setStep(i, false);
-//                    PdBase.sendFloat(channel.getName(), i);
-//                }
-//            }
-//        }
+        mSequence = new int[GROUPS * STEPS];
+        sendSequence();
+        SequencerView sequencer = (SequencerView) findViewById(R.id.sequencer);
+        if (sequencer != null) {
+            sequencer.setChecked(mSequence);
+        }
 //        if (selectedChannelIndex == -1) {
 //            ((RelativeLayout) findViewById(R.id.fragment_container)).removeAllViews();
 //            setFragment();
@@ -366,7 +382,7 @@ implements OnStepChangedListener {
         System.out.println("onResetClicked");
     }
 
-    public void onChannelClicked(View channel) {
+    public void onChannelClicked(View view) {
 //        RadioGroup group = (RadioGroup) channel.getParent();
 //        int index = group.indexOfChild(channel);
 //        if (index != -1) {
@@ -378,7 +394,29 @@ implements OnStepChangedListener {
 //            }
 //            setFragment();
 //        }
-        System.out.println("onChannelClicked");
+//      
+        ImageButton channel = (ImageButton) view;
+        LinearLayout channels = (LinearLayout) channel.getParent();
+        int index = channels.indexOfChild(channel);
+        
+        if (index != -1) {
+            if (index == mSelectedChannel) {
+                mSelectedChannel = -1;
+                channel.setSelected(false);
+            } else {
+                ImageButton oldChannel = (ImageButton) channels.getChildAt(mSelectedChannel);
+                if (oldChannel != null) {
+                    oldChannel.setSelected(false);
+                }
+                mSelectedChannel = index;
+                channel.setSelected(true);
+            }
+        }
+//        System.out.println("onChannelClicked " + channel.isSelected());
+    }
+    
+    public void onSettingClicked(View channel) {
+        System.out.println("onSettingClicked");
     }
 
     @Override
@@ -390,22 +428,17 @@ implements OnStepChangedListener {
         PdBase.sendList("step", new Object[]{group, step, mSequence[index]});
     }
 
-//    @Override
-//    public void onNumberSet(int selectedNumber) {
-//        if (selectedNumber != mTempo) setTempo(selectedNumber);
-//    }
-
-//    @Override
-//    public void onSettingIndexChanged(int index) {
+    @Override
+    public void onSettingIndexChanged(int index) {
 //        getSelectedChannel().getPatch().setSelectedSettingIndex(index);
-//    }
+    }
 
-//    @Override
-//    public void onSettingPosChanged(PointF pos) {
+    @Override
+    public void onSettingPosChanged(PointF pos) {
 //        getSelectedChannel().getPatch().setSelectedPos(pos);
 //        String name = getSelectedChannel().getName();
 //        int index = getSelectedChannel().getPatch().getSelectedSettingIndex();
 //        PdBase.sendFloat(name + (2 * index), pos.getX());
 //        PdBase.sendFloat(name + (2 * index + 1), pos.getY());
-//    }
+    }
 }

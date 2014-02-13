@@ -16,100 +16,103 @@ GNU General Public License for more details.
 along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:keepScreenOn="true"
     android:layout_height="match_parent"
-    android:layout_margin="3dp"
     android:layout_width="match_parent"
+    android:layout_marginLeft="3dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginRight="3dp"
+    android:layout_marginBottom="3dp"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/controls"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_width="match_parent"
-        android:orientation="horizontal">
+        android:layout_weight="1">
 
         <ImageButton
-            android:contentDescription="@string/play"
             android:id="@+id/playButton"
-            style="@style/Play" />
+            android:contentDescription="@string/none"
+            style="@style/Control.Play" />
 
-        <Button
-            android:id="@+id/tempoButton"
-            style="@style/Tempo" />
+        <ImageButton
+            android:id="@+id/configButton"
+            android:contentDescription="@string/none"
+            style="@style/Control.Config" />
         
         <ImageButton
-            android:contentDescription="@string/reset"
             android:id="@+id/resetButton"
-            style="@style/Reset" />
+            android:contentDescription="@string/none"
+            style="@style/Control.Reset" />
+        
+        <ImageView
+	        android:id="@+id/logo"
+	        android:contentDescription="@string/none"
+	        android:layout_alignParentRight="true"
+	        android:layout_centerVertical="true"
+	        android:layout_height="wrap_content"
+	        android:layout_width="wrap_content"
+	        android:src="@drawable/logo" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
-    <ImageView
-        android:contentDescription="@string/logo"
-        android:id="@+id/logo"
-        android:layout_alignBottom="@+id/controls"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:src="@drawable/logo" />
-    
     <LinearLayout
         android:id="@+id/container"
-        android:layout_below="@id/controls"
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6"
+        android:layout_marginTop="6dp"
         android:orientation="horizontal">
 
-		<RadioGroup
+		<LinearLayout
 	        android:id="@+id/channels"
 	        android:layout_height="match_parent"
-	        android:layout_marginRight="8dp"
-	        android:layout_weight="1"
-	        android:layout_width="0dp">
+	        android:layout_width="60dp"
+	        android:layout_marginRight="3dp"
+	        android:orientation="vertical">
 
-	        <RadioButton
+	        <ImageButton
 	            android:id="@+id/bd"
-	            android:text="@string/bd"
-	            style="@style/Channel" />
+	            android:contentDescription="@string/none"
+	            style="@style/Channel.BD" />
 	
-	        <RadioButton
+	        <ImageButton
 	            android:id="@+id/sd"
-	            android:text="@string/sd"
-	            style="@style/Channel" />
+	            android:contentDescription="@string/none"
+	            style="@style/Channel.SD" />
 	
-	        <RadioButton
-	            android:id="@+id/ht"
-	            android:text="@string/tt"
-	            style="@style/Channel" />
+	        <ImageButton
+	            android:id="@+id/cp"
+	            android:contentDescription="@string/none"
+	            style="@style/Channel.CP" />
 	
-	        <RadioButton
-	            android:id="@+id/lt"
-	            android:text="@string/hh"
-	            style="@style/Channel" />
+	        <ImageButton
+	            android:id="@+id/tt"
+	            android:contentDescription="@string/none"
+	            style="@style/Channel.TT" />
 	        
-	        <RadioButton
-                android:id="@+id/cp"
-                android:text="@string/bd"
-                style="@style/Channel" />
-    
-            <RadioButton
+	        <ImageButton
                 android:id="@+id/cb"
-                android:text="@string/sd"
-                style="@style/Channel" />
+                android:contentDescription="@string/none"
+                style="@style/Channel.CB" />
+    
+            <ImageButton
+                android:id="@+id/hh"
+                android:contentDescription="@string/none"
+                style="@style/Channel.HH" />
 	
-	    </RadioGroup>
+	    </LinearLayout>
 
 	    <RelativeLayout
 	        android:id="@+id/fragment_container"
 	        android:layout_height="match_parent"
-	        android:layout_marginTop="8dp"
-	        android:layout_weight="8"
-	      	android:layout_width="0dp" />
+	        android:layout_width="match_parent" />
 
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
