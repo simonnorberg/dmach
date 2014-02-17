@@ -20,30 +20,17 @@ package net.simno.dmach.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Setting holds name and value for two parameters
- */
 public final class Setting implements Parcelable {
     private String mHText;
     private String mVText;
-    private PointF mPos;
+    private float mX;
+    private float mY;
 
-    public Setting() {
-        this("init", "init");
-    }
-
-    public Setting(String hText, String vText) {
-        this(hText, vText, new PointF(0.5f, 0.5f));
-    }
-
-    public Setting(String hText, String vText, PointF pos) {
+    public Setting(String hText, String vText, float x, float y) {
         mHText = hText;
         mVText = vText;
-        mPos = new PointF(pos);
-    }
-
-    public Setting(Setting s) {
-        this(s.getHText(), s.getVText(), s.getPos());
+        mX = x;
+        mY = y;
     }
 
     public Setting(Parcel in) {
@@ -58,12 +45,20 @@ public final class Setting implements Parcelable {
         return mVText;
     }
 
-    public PointF getPos() {
-        return new PointF(mPos);
+    public float getX() {
+        return mX;
+    }
+    
+    public float getY() {
+        return mY;
     }
 
-    public void setPos(PointF pos) {
-        mPos = new PointF(pos);
+    public void setX(float x) {
+        mX = x;
+    }
+    
+    public void setY(float y) {
+        mY = y;
     }
 
     public static final Parcelable.Creator<Setting> CREATOR = new Parcelable.Creator<Setting>() {
@@ -99,7 +94,8 @@ public final class Setting implements Parcelable {
     public void writeToParcel(Parcel out, int flags) {
         out.writeString(mHText);
         out.writeString(mVText);
-        out.writeParcelable(mPos, flags);
+        out.writeFloat(mX);
+        out.writeFloat(mY);
     }
 
     /**
@@ -111,6 +107,7 @@ public final class Setting implements Parcelable {
     private void readFromParcel(Parcel in) {
         mHText = in.readString();
         mVText = in.readString();
-        mPos = in.readParcelable(PointF.class.getClassLoader());
+        mX = in.readFloat();
+        mY = in.readFloat();
     }
 }

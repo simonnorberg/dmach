@@ -20,54 +20,50 @@ package net.simno.dmach.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Channel holds a name, a patch and a boolean sequence.
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public final class Channel implements Parcelable {
     private String mName;
-    private Patch mPatch;
-    private boolean[] mSequence;
+    private List<Setting> mSettings;
+    private int mSelectedSetting;
 
-    public Channel(String name, Patch patch, boolean[] sequence) {
+    public Channel(String name) {
         mName = name;
-        mPatch = new Patch(patch);
-        mSequence = new boolean[sequence.length];
-        for (int i = 0; i < sequence.length; ++i) {
-            mSequence[i] = sequence[i];
-        }
+        mSettings = new ArrayList<Setting>();
     }
 
     public Channel(Parcel in) {
         readFromParcel(in);
     }
 
+    public void addSetting(Setting s) {
+        mSettings.add(s);
+    }
+
     public String getName() {
         return mName;
     }
-
-    public Patch getPatch() {
-        return mPatch;
+    
+    public int getSelection() {
+        return mSelectedSetting;
     }
 
-    public boolean[] getSequence() {
-        boolean[] result = new boolean[mSequence.length];
-        for (int i = 0; i < mSequence.length; ++i) {
-            result[i] = mSequence[i];
-        }
-        return result;
+    public void selectSetting(int index) {
+        mSelectedSetting = index;
+    }
+    
+    public Setting getSelectedSetting() {
+        return mSettings.get(mSelectedSetting);
     }
 
-    public boolean getStep(int index) {
-        return mSequence[index];
-    }
-
-    public void setStep(int index, boolean status) {
-        mSequence[index] = status;
+    public int getCount() {
+        return mSettings.size();
     }
 
     public static final Parcelable.Creator<Channel> CREATOR = new Parcelable.Creator<Channel>() {
         /**
-         * Return a new channel from the data in the specified parcel.
+         * Return a new patch from the data in the specified parcel.
          */
         @Override
         public Channel createFromParcel(Parcel in) {
@@ -75,7 +71,7 @@ public final class Channel implements Parcelable {
         }
 
         /**
-         * Return an array of channels of the specified size.
+         * Return an array of patches of the specified size.
          */
         @Override
         public Channel[] newArray(int size) {
@@ -89,27 +85,27 @@ public final class Channel implements Parcelable {
     }
 
     /**
-     * Write this channel to the specified parcel. To restore a channel from
+     * Write this patch to the specified parcel. To restore a patch from
      * a parcel, use readFromParcel()
      *
-     * @param out The parcel to write the channel's name, patch and sequence into
+     * @param out The parcel to write the patch's settings and selection into
      */
     @Override
     public void writeToParcel(Parcel out, int flags) {
         out.writeString(mName);
-        out.writeParcelable(mPatch, flags);
-        out.writeBooleanArray(mSequence);
+        out.writeList(mSettings);
+        out.writeInt(mSelectedSetting);
     }
 
     /**
-     * Set the channel's name, patch and sequence from the data stored in the specified
+     * Set the patch's settings and selection from the data stored in the specified
      * parcel. To write a patch to a parcel, call writeToParcel().
      *
-     * @param in The parcel to read the channel's name, patch and sequence from
+     * @param in The parcel to read the patch's settings and selection from
      */
     private void readFromParcel(Parcel in) {
         mName = in.readString();
-        mPatch = in.readParcelable(Patch.class.getClassLoader());
-        in.readBooleanArray(mSequence);
+        in.readList(mSettings, Setting.class.getClassLoader());
+        mSelectedSetting = in.readInt();
     }
 }

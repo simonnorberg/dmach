@@ -17,7 +17,6 @@
 
 package net.simno.dmach;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.app.Activity;
@@ -33,24 +32,18 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import net.simno.dmach.R;
-import net.simno.dmach.PatchFragment.OnPatchChangedListener;
 import net.simno.dmach.model.Channel;
-import net.simno.dmach.model.Patch;
-import net.simno.dmach.model.PointF;
 import net.simno.dmach.model.Setting;
 import net.simno.dmach.view.SequencerView;
-import net.simno.dmach.view.SequencerView.OnStepChangedListener;
 
 import org.puredata.android.io.AudioParameters;
 import org.puredata.android.service.PdService;
@@ -59,10 +52,11 @@ import org.puredata.core.utils.IoUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
-public class DMach extends Activity
-implements OnStepChangedListener, OnPatchChangedListener {
+public class DMach extends Activity {
     
     public static final int[] MASKS = {1, 2, 4};
     public static final int GROUPS = 2;
@@ -71,9 +65,8 @@ implements OnStepChangedListener, OnPatchChangedListener {
 
     private int[] mSequence;
     private boolean mIsRunning;
-    
+    private List<Channel> mChannels;
     private int mSelectedChannel;
-    private int mSelectedSetting;
     private int mTempo;
     private int mShuffle;
     private TextView mTempoText;
@@ -116,58 +109,80 @@ implements OnStepChangedListener, OnPatchChangedListener {
 
     private void storeSettings() {
         Editor editor = getPreferences(MODE_PRIVATE).edit();
-        String json = new Gson().toJson(mSequence);
-        editor.putString(getString(R.string.saved_sequence), json)
+        String mSequenceJson = new Gson().toJson(mSequence);
+        String mChannelsJson = new Gson().toJson(mChannels);
+        editor.putString(getString(R.string.saved_sequence), mSequenceJson)
+        .putString(getString(R.string.saved_channels), mChannelsJson)
         .putInt(getString(R.string.saved_tempo), mTempo)
         .putInt(getString(R.string.saved_shuffle), mShuffle)
         .putInt(getString(R.string.saved_channel), mSelectedChannel)
         .commit();
     }
-    
+
     private void restoreSettings() {
         SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-        String json = prefs.getString(getString(R.string.saved_sequence), "");
-        if (!json.isEmpty()) {
-            mSequence = new Gson().fromJson(json, int[].class);    
+        String mSequenceJson = prefs.getString(getString(R.string.saved_sequence), "");
+        if (!mSequenceJson.isEmpty()) {
+            mSequence = new Gson().fromJson(mSequenceJson, int[].class);    
         } else {
             mSequence = new int[GROUPS * STEPS];
+        }
+        Type type = new TypeToken<ArrayList<Channel>>() {}.getType();
+        String mChannelsJson = prefs.getString(getString(R.string.saved_channels), "");
+        if (!mChannelsJson.isEmpty()) {
+            mChannels = new Gson().fromJson(mChannelsJson, type);    
+        } else {
+            initChannels();
         }
         mTempo = prefs.getInt(getString(R.string.saved_tempo), 120);
         mShuffle = prefs.getInt(getString(R.string.saved_shuffle), 0);
         mSelectedChannel = prefs.getInt(getString(R.string.saved_channel), -1);
     }
     
-//    private void initChannels() {
-//        channels = new ArrayList<Channel>(CHANNEL_COUNT);
-//
-//        Patch bdPatch = new Patch();
-//        bdPatch.addSetting(new Setting("Pitch A", "Gain", new PointF(.4f, .49f)));
-//        bdPatch.addSetting(new Setting("Low-pass", "Square", new PointF(.7f, 0)));
-//        bdPatch.addSetting(new Setting("Pitch B", "Curve Time", new PointF(.4f, .4f)));
-//        bdPatch.addSetting(new Setting("Decay", "Noise Level", new PointF(.49f, .7f)));
-//        channels.add(new Channel("bd", bdPatch, new boolean[STEP_COUNT]));
-//
-//        Patch sdPatch = new Patch();
-//        sdPatch.addSetting(new Setting("Pitch", "Gain", new PointF(.49f , .45f)));
-//        sdPatch.addSetting(new Setting("Low-pass", "Noise", new PointF(.6f, .8f)));
-//        sdPatch.addSetting(new Setting("X-fade", "Attack", new PointF(.35f, .55f)));
-//        sdPatch.addSetting(new Setting("Decay", "Body Decay", new PointF(.55f, .42f)));
-//        sdPatch.addSetting(new Setting("Band-pass", "Band-pass Q", new PointF(.7f, .6f)));
-//        channels.add(new Channel("sd", sdPatch, new boolean[STEP_COUNT]));
-//
-//        Patch ttPatch = new Patch();
-//        ttPatch.addSetting(new Setting("Pitch", "Gain", new PointF(.499f, .49f)));
-//        channels.add(new Channel("tt", ttPatch, new boolean[STEP_COUNT]));
-//
-//        Patch hhPatch = new Patch();
-//        hhPatch.addSetting(new Setting("Pitch", "Gain", new PointF(.45f, .4f)));
-//        hhPatch.addSetting(new Setting("Low-pass", "Snap", new PointF(.8f, .1f)));
-//        hhPatch.addSetting(new Setting("Noise Pitch", "Noise", new PointF(.55f, .6f)));
-//        hhPatch.addSetting(new Setting("Ratio B", "Ratio A", new PointF(.9f, 1)));
-//        hhPatch.addSetting(new Setting("Release", "Attack", new PointF(.55f, .4f)));
-//        hhPatch.addSetting(new Setting("Filter", "Filter Q", new PointF(.7f, .6f)));
-//        channels.add(new Channel("hh", hhPatch, new boolean[STEP_COUNT]));
-//    }
+    private void initChannels() {
+        mChannels = new ArrayList<Channel>();
+
+        Channel bd = new Channel("bd");
+        bd.addSetting(new Setting("Pitch A", "Gain", .4f, .49f));
+        bd.addSetting(new Setting("Low-pass", "Square", .7f, 0));
+        bd.addSetting(new Setting("Pitch B", "Curve Time", .4f, .4f));
+        bd.addSetting(new Setting("Decay", "Noise Level", .49f, .7f));
+        mChannels.add(bd);
+
+        Channel sd = new Channel("sd");
+        sd.addSetting(new Setting("Pitch", "Gain", .49f , .45f));
+        sd.addSetting(new Setting("Low-pass", "Noise", .6f, .8f));
+        sd.addSetting(new Setting("X-fade", "Attack", .35f, .55f));
+        sd.addSetting(new Setting("Decay", "Body Decay", .55f, .42f));
+        sd.addSetting(new Setting("Band-pass", "Band-pass Q", .7f, .6f));
+        mChannels.add(sd);
+        
+        Channel cp = new Channel("cp");
+        cp.addSetting(new Setting("Pitch", "Filter Q", .49f , .45f));
+        cp.addSetting(new Setting("Filter From", "Filter To", .6f, .8f));
+        cp.addSetting(new Setting("Delay 1", "Delay 2", .35f, .55f));
+        cp.addSetting(new Setting("Decay", "Gain", .55f, .42f));
+        mChannels.add(cp);
+
+        Channel tt = new Channel("tt");
+        tt.addSetting(new Setting("Pitch", "Gain", .499f, .49f));
+        mChannels.add(tt);
+
+        Channel cb = new Channel("cb");
+        cb.addSetting(new Setting("Pitch", "Decay 1", .49f , .45f));
+        cb.addSetting(new Setting("Decay 2", "Vcf", .6f, .8f));
+        cb.addSetting(new Setting("Vcf Q", "Gain", .35f, .55f));
+        mChannels.add(cb);
+        
+        Channel hh = new Channel("hh");
+        hh.addSetting(new Setting("Pitch", "Gain", .45f, .4f));
+        hh.addSetting(new Setting("Low-pass", "Snap", .8f, .1f));
+        hh.addSetting(new Setting("Noise Pitch", "Noise", .55f, .6f));
+        hh.addSetting(new Setting("Ratio B", "Ratio A", .9f, 1));
+        hh.addSetting(new Setting("Release", "Attack", .55f, .4f));
+        hh.addSetting(new Setting("Filter", "Filter Q", .7f, .6f));
+        mChannels.add(hh);
+    }
 
     private void initGui() {
         setContentView(R.layout.activity_dmach);
@@ -177,15 +192,13 @@ implements OnStepChangedListener, OnPatchChangedListener {
             ImageButton channel = (ImageButton) channels.getChildAt(mSelectedChannel);
             if (channel != null) {
                 channel.setSelected(true);
-                // start patch fragment
+                getFragmentManager().beginTransaction().add(R.id.fragmentContainer,
+                        ChannelFragment.newInstance(mChannels.get(mSelectedChannel))).commit();
             }
         } else {
-            // start sequencer fragment
+            getFragmentManager().beginTransaction().add(R.id.fragmentContainer,
+                  SequencerFragment.newInstance(mSequence)).commit();
         }
-//        getFragmentManager().beginTransaction().add(R.id.fragment_container,
-//                SequencerFragment.newInstance(mSequence)).commit();
-        getFragmentManager().beginTransaction().add(R.id.fragment_container,
-                PatchFragment.newInstance(new Patch())).commit();
     }
 
     private void initSystemServices() {
@@ -292,22 +305,18 @@ implements OnStepChangedListener, OnPatchChangedListener {
         }
     }
 
-//    private void setFragment() {
-//        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//        if (selectedChannelIndex != -1) {
-//            transaction.replace(R.id.fragment_container,
-//                    PatchFragment.newInstance(getSelectedChannel().getPatch()));
-//            transaction.commit();
-//        } else {
-//            transaction.replace(R.id.fragment_container, SequencerFragment.newInstance(channels));
-//            transaction.commit();
-//            getFragmentManager().executePendingTransactions();
-//        }
-//    }
-
-//    private Channel getSelectedChannel() {
-//        return channels.get(selectedChannelIndex);
-//    }
+    private void setFragment() {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        if (mSelectedChannel != -1) {
+            transaction.replace(R.id.fragmentContainer,
+                    ChannelFragment.newInstance(mChannels.get(mSelectedChannel)));
+            transaction.commit();
+        } else {
+            transaction.replace(R.id.fragmentContainer, SequencerFragment.newInstance(mSequence));
+            transaction.commit();
+            getFragmentManager().executePendingTransactions();
+        }
+    }
 
     public void onPlayClicked(View view) {
         ImageButton imageButton = (ImageButton) view;
@@ -328,9 +337,9 @@ implements OnStepChangedListener, OnPatchChangedListener {
         alertDialog.setCanceledOnTouchOutside(true);
         alertDialog.show();
                 
-        mTempoText = (TextView) layout.findViewById(R.id.tempo_value);
+        mTempoText = (TextView) layout.findViewById(R.id.tempoValue);
         mTempoText.setText(" " + mTempo);
-        SeekBar tempoSeekBar = (SeekBar) layout.findViewById(R.id.tempo_seekbar);
+        SeekBar tempoSeekBar = (SeekBar) layout.findViewById(R.id.tempoSeekbar);
         tempoSeekBar.setProgress(mTempo);
         tempoSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -348,9 +357,9 @@ implements OnStepChangedListener, OnPatchChangedListener {
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
-        mShuffleText = (TextView) layout.findViewById(R.id.shuffle_value); 
+        mShuffleText = (TextView) layout.findViewById(R.id.shuffleValue); 
         mShuffleText.setText(" " + mShuffle);
-        SeekBar shuffleSeekBar = (SeekBar) layout.findViewById(R.id.shuffle_seekbar);
+        SeekBar shuffleSeekBar = (SeekBar) layout.findViewById(R.id.shuffleSeekbar);
         shuffleSeekBar.setProgress(mShuffle);
         shuffleSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -371,74 +380,30 @@ implements OnStepChangedListener, OnPatchChangedListener {
     public void onResetClicked(View view) {
         mSequence = new int[GROUPS * STEPS];
         sendSequence();
-        SequencerView sequencer = (SequencerView) findViewById(R.id.sequencer);
-        if (sequencer != null) {
-            sequencer.setChecked(mSequence);
+        if (mSelectedChannel == -1) {
+            SequencerView sequencer = (SequencerView) findViewById(R.id.sequencer);
+            if (sequencer != null) {
+                sequencer.setChecked(mSequence);
+            }    
         }
-//        if (selectedChannelIndex == -1) {
-//            ((RelativeLayout) findViewById(R.id.fragment_container)).removeAllViews();
-//            setFragment();
-//        }
-        System.out.println("onResetClicked");
     }
 
     public void onChannelClicked(View view) {
-//        RadioGroup group = (RadioGroup) channel.getParent();
-//        int index = group.indexOfChild(channel);
-//        if (index != -1) {
-//            if (index == selectedChannelIndex) {
-//                group.clearCheck();
-//                selectedChannelIndex = -1;
-//            } else {
-//                selectedChannelIndex = index;
-//            }
-//            setFragment();
-//        }
-//      
         ImageButton channel = (ImageButton) view;
         LinearLayout channels = (LinearLayout) channel.getParent();
         int index = channels.indexOfChild(channel);
         
-        if (index != -1) {
-            if (index == mSelectedChannel) {
-                mSelectedChannel = -1;
-                channel.setSelected(false);
-            } else {
-                ImageButton oldChannel = (ImageButton) channels.getChildAt(mSelectedChannel);
-                if (oldChannel != null) {
-                    oldChannel.setSelected(false);
-                }
-                mSelectedChannel = index;
-                channel.setSelected(true);
+        if (index == mSelectedChannel) {
+            mSelectedChannel = -1;
+            channel.setSelected(false);
+        } else {
+            ImageButton oldChannel = (ImageButton) channels.getChildAt(mSelectedChannel);
+            if (oldChannel != null) {
+                oldChannel.setSelected(false);
             }
+            mSelectedChannel = index;
+            channel.setSelected(true);
         }
-//        System.out.println("onChannelClicked " + channel.isSelected());
-    }
-    
-    public void onSettingClicked(View channel) {
-        System.out.println("onSettingClicked");
-    }
-
-    @Override
-    public void onStepChanged(int channel, int step) {
-        int mask = channel % (CHANNELS / GROUPS);
-        int group = channel / (CHANNELS / GROUPS);
-        int index = (group * STEPS) + step; 
-        mSequence[index] ^= MASKS[mask];
-        PdBase.sendList("step", new Object[]{group, step, mSequence[index]});
-    }
-
-    @Override
-    public void onSettingIndexChanged(int index) {
-//        getSelectedChannel().getPatch().setSelectedSettingIndex(index);
-    }
-
-    @Override
-    public void onSettingPosChanged(PointF pos) {
-//        getSelectedChannel().getPatch().setSelectedPos(pos);
-//        String name = getSelectedChannel().getName();
-//        int index = getSelectedChannel().getPatch().getSelectedSettingIndex();
-//        PdBase.sendFloat(name + (2 * index), pos.getX());
-//        PdBase.sendFloat(name + (2 * index + 1), pos.getY());
+        setFragment();
     }
 }

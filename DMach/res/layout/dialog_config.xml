@@ -18,47 +18,47 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/settings_dialog"
+    android:id="@+id/configDialog"
     android:layout_height="wrap_content"
     android:layout_width="wrap_content">
     
     <TextView
-        android:id="@+id/tempo_text"
+        android:id="@+id/tempoText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tempo:" />
     
     <TextView
-        android:id="@+id/tempo_value"
+        android:id="@+id/tempoValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/tempo_text" />
+        android:layout_toRightOf="@+id/tempoText" />
     
     <SeekBar
-        android:id="@+id/tempo_seekbar"
+        android:id="@+id/tempoSeekbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tempo_text"
+        android:layout_below="@+id/tempoText"
         android:max="239" />
     
     <TextView
-        android:id="@+id/shuffle_text"
+        android:id="@+id/shuffleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tempo_seekbar"
+        android:layout_below="@+id/tempoSeekbar"
         android:text="Shuffle:" />
     
     <TextView
-        android:id="@+id/shuffle_value"
+        android:id="@+id/shuffleValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tempo_seekbar"
-        android:layout_toRightOf="@+id/shuffle_text" />
+        android:layout_below="@+id/tempoSeekbar"
+        android:layout_toRightOf="@+id/shuffleText" />
 
     <SeekBar
-        android:id="@+id/shuffle_seekbar"
+        android:id="@+id/shuffleSeekbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/shuffle_text"
+        android:layout_below="@+id/shuffleText"
         android:max="50" />
 </RelativeLayout>

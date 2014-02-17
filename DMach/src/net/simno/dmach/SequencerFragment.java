@@ -17,19 +17,21 @@
 
 package net.simno.dmach;
 
+import org.puredata.core.PdBase;
+
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnLayoutChangeListener;
-
 import net.simno.dmach.R;
 import net.simno.dmach.view.ProgressBarView;
 import net.simno.dmach.view.SequencerView;
 import net.simno.dmach.view.SequencerView.OnStepChangedListener;
 
-public class SequencerFragment extends Fragment {
+public class SequencerFragment extends Fragment
+implements OnStepChangedListener, OnLayoutChangeListener {
 
     public SequencerFragment() {
         super();
@@ -50,10 +52,10 @@ public class SequencerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (null == savedInstanceState) {
+        if (savedInstanceState == null) {
             savedInstanceState = getArguments();
         }
-        if (null != savedInstanceState) {
+        if (savedInstanceState != null) {
             mSequence = savedInstanceState.getIntArray(TAG_SEQUENCER);
         }
     }
@@ -63,25 +65,34 @@ public class SequencerFragment extends Fragment {
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sequencer, container, false);
         mSequencerView = (SequencerView) view.findViewById(R.id.sequencer);
-        mSequencerView.setOnStepChangedListener((OnStepChangedListener) getActivity());
-        mSequencerView.addOnLayoutChangeListener(new OnLayoutChangeListener() {            
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right,
-                    int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                if (null != mSequence) {
-                    mSequencerView.setChecked(mSequence);
-                }
-            }
-        });
+        mSequencerView.setOnStepChangedListener(this);
+        mSequencerView.addOnLayoutChangeListener(this);
         return view;
     }
     
     @Override
     public void onDestroyView() {
-        ProgressBarView p = ((ProgressBarView) getActivity().findViewById(R.id.progress_bar));
-        if (null != p) {
+        ProgressBarView p = ((ProgressBarView) getActivity().findViewById(R.id.progressBar));
+        if (p != null) {
             p.cleanup();
         }
         super.onDestroyView();
+    }
+
+    @Override
+    public void onStepChanged(int channel, int step) {
+        int mask = channel % (DMach.CHANNELS / DMach.GROUPS);
+        int group = channel / (DMach.CHANNELS / DMach.GROUPS);
+        int index = (group * DMach.STEPS) + step; 
+        mSequence[index] ^= DMach.MASKS[mask];
+        PdBase.sendList("step", new Object[]{group, step, mSequence[index]});
+    }
+
+    @Override
+    public void onLayoutChange(View v, int left, int top, int right,
+            int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+        if (mSequence != null) {
+            mSequencerView.setChecked(mSequence);
+        }
     }
 }

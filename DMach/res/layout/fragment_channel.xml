@@ -60,8 +60,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         
     </LinearLayout>
 
-    <net.simno.dmach.view.PatchView
-        android:id="@+id/patchView"
+    <net.simno.dmach.view.SettingView
+        android:id="@+id/settingView"
         android:layout_height="match_parent"
         android:layout_width="match_parent" />
 

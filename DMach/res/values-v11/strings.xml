@@ -36,6 +36,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="setting6">6</string>
 
     <string name="saved_sequence">net.simno.dmach.SAVED_SEQUENCE</string>
+    <string name="saved_channels">net.simno.dmach.SAVED_CHANNELS</string>
     <string name="saved_tempo">net.simno.dmach.TEMPO</string>
     <string name="saved_shuffle">net.simno.dmach.SHUFFLE</string>
     <string name="saved_channel">net.simno.dmach.CHANNEL</string>

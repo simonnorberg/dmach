@@ -25,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         android:layout_width="match_parent" />
     
     <net.simno.dmach.view.ProgressBarView
-        android:id="@+id/progress_bar"
+        android:id="@+id/progressBar"
         android:layout_height="match_parent"
         android:layout_width="match_parent" />
     
