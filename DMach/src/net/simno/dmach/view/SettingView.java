@@ -151,10 +151,10 @@ public final class SettingView extends View {
     }
 
     public void setSetting(Setting setting) {
-        mX = pdToX(setting.getX());
-        mY = pdToY(setting.getY());
-        mHText = setting.getHText();
-        mVText = setting.getVText();
+        mX = pdToX(setting.x);
+        mY = pdToY(setting.y);
+        mHText = setting.hText;
+        mVText = setting.vText;
 
         mTextPaint.getTextBounds(mHText, 0, mHText.length(), mHBounds);
         mOriginX = (float) ((getWidth() / 2.0) - mHBounds.centerX());

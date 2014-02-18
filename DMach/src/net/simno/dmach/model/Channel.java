@@ -49,12 +49,16 @@ public final class Channel implements Parcelable {
         return mSelectedSetting;
     }
 
-    public void selectSetting(int index) {
-        mSelectedSetting = index;
+    public void selectSetting(int selection) {
+        mSelectedSetting = selection;
     }
     
-    public Setting getSelectedSetting() {
+    public Setting getSetting() {
         return mSettings.get(mSelectedSetting);
+    }
+    
+    public List<Setting> getSettings() {
+        return mSettings;
     }
 
     public int getCount() {

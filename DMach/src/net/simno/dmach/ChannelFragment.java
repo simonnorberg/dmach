@@ -91,34 +91,31 @@ implements OnClickListener, OnSettingChangedListener, OnLayoutChangeListener {
 
     @Override
     public void onClick(View view) {
-        ImageButton setting = (ImageButton) view;
-        LinearLayout settings = (LinearLayout) setting.getParent();
-        int index = settings.indexOfChild(setting);
+        ImageButton button = (ImageButton) view;
+        LinearLayout layout = (LinearLayout) button.getParent();
+        int index = layout.indexOfChild(button);
         if (index != mChannel.getSelection()) {
-            ImageButton oldSetting = (ImageButton) settings.getChildAt(mChannel.getSelection());
-            if (oldSetting != null) {
-                oldSetting.setSelected(false);
+            ImageButton oldButton = (ImageButton) layout.getChildAt(mChannel.getSelection());
+            if (oldButton != null) {
+                oldButton.setSelected(false);
             }
             mChannel.selectSetting(index);
-            setting.setSelected(true);
-            mSettingView.setSetting(mChannel.getSelectedSetting());
+            button.setSelected(true);
+            mSettingView.setSetting(mChannel.getSetting());
         }
     }
 
     @Override
     public void onSettingChanged(float x, float y) {
         String name = mChannel.getName();
-        int index = mChannel.getSelection();                                                                                                                                           
-        PdBase.sendList(name, new Object[]{2 * index, x});
-        PdBase.sendList(name, new Object[]{2 * (index + 1), y});
-        mChannel.getSelectedSetting().setX(x);
-        mChannel.getSelectedSetting().setY(y);
-        System.out.println("x " + x + " y " + y);        
+        PdBase.sendList(name, new Object[]{mChannel.getSetting().hIndex, x});
+        PdBase.sendList(name, new Object[]{mChannel.getSetting().vIndex, y});
+        mChannel.getSetting().setXY(x, y);
     }
     
     @Override
     public void onLayoutChange(View v, int left, int top, int right,
             int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-        mSettingView.setSetting(mChannel.getSelectedSetting());
+        mSettingView.setSetting(mChannel.getSetting());
     }
 }

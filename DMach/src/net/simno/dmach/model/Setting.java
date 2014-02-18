@@ -21,44 +21,29 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public final class Setting implements Parcelable {
-    private String mHText;
-    private String mVText;
-    private float mX;
-    private float mY;
+    public String hText;
+    public String vText;
+    public float x;
+    public float y;
+    public int hIndex;
+    public int vIndex;
 
-    public Setting(String hText, String vText, float x, float y) {
-        mHText = hText;
-        mVText = vText;
-        mX = x;
-        mY = y;
+    public Setting(String hText, String vText, float x, float y, int hIndex, int vIndex) {
+        this.hText = hText;
+        this.vText = vText;
+        this.x = x;
+        this.y = y;
+        this.hIndex = hIndex;
+        this.vIndex = vIndex;
     }
 
     public Setting(Parcel in) {
         readFromParcel(in);
     }
 
-    public String getHText() {
-        return mHText;
-    }
-
-    public String getVText() {
-        return mVText;
-    }
-
-    public float getX() {
-        return mX;
-    }
-    
-    public float getY() {
-        return mY;
-    }
-
-    public void setX(float x) {
-        mX = x;
-    }
-    
-    public void setY(float y) {
-        mY = y;
+    public void setXY(float x, float y) {
+        this.x = x;
+        this.y = y;
     }
 
     public static final Parcelable.Creator<Setting> CREATOR = new Parcelable.Creator<Setting>() {
@@ -92,10 +77,12 @@ public final class Setting implements Parcelable {
      */
     @Override
     public void writeToParcel(Parcel out, int flags) {
-        out.writeString(mHText);
-        out.writeString(mVText);
-        out.writeFloat(mX);
-        out.writeFloat(mY);
+        out.writeString(hText);
+        out.writeString(vText);
+        out.writeFloat(x);
+        out.writeFloat(y);
+        out.writeInt(hIndex);
+        out.writeInt(vIndex);
     }
 
     /**
@@ -105,9 +92,11 @@ public final class Setting implements Parcelable {
      * @param in The parcel to read the settings's names and values from
      */
     private void readFromParcel(Parcel in) {
-        mHText = in.readString();
-        mVText = in.readString();
-        mX = in.readFloat();
-        mY = in.readFloat();
+        hText = in.readString();
+        vText = in.readString();
+        x = in.readFloat();
+        y = in.readFloat();
+        hIndex = in.readInt();
+        vIndex = in.readInt();
     }
 }

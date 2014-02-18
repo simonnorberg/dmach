@@ -88,7 +88,6 @@ public class DMach extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        initChannels();
         restoreSettings();
         initGui();
         initSystemServices();
@@ -143,44 +142,44 @@ public class DMach extends Activity {
         mChannels = new ArrayList<Channel>();
 
         Channel bd = new Channel("bd");
-        bd.addSetting(new Setting("Pitch A", "Gain", .4f, .49f));
-        bd.addSetting(new Setting("Low-pass", "Square", .7f, 0));
-        bd.addSetting(new Setting("Pitch B", "Curve Time", .4f, .4f));
-        bd.addSetting(new Setting("Decay", "Noise Level", .49f, .7f));
+        bd.addSetting(new Setting("Pitch A", "Gain", .4f, .49f, 0, 7));
+        bd.addSetting(new Setting("Low-pass", "Square", .7f, 0, 5, 3));
+        bd.addSetting(new Setting("Pitch B", "Curve Time", .4f, .4f, 1, 2));
+        bd.addSetting(new Setting("Decay", "Noise Level", .49f, .7f, 6, 4));
         mChannels.add(bd);
 
         Channel sd = new Channel("sd");
-        sd.addSetting(new Setting("Pitch", "Gain", .49f , .45f));
-        sd.addSetting(new Setting("Low-pass", "Noise", .6f, .8f));
-        sd.addSetting(new Setting("X-fade", "Attack", .35f, .55f));
-        sd.addSetting(new Setting("Decay", "Body Decay", .55f, .42f));
-        sd.addSetting(new Setting("Band-pass", "Band-pass Q", .7f, .6f));
+        sd.addSetting(new Setting("Pitch", "Gain", .49f , .45f, 0, 9));
+        sd.addSetting(new Setting("Low-pass", "Noise", .6f, .8f, 7, 1));
+        sd.addSetting(new Setting("X-fade", "Attack", .35f, .55f, 8, 6));
+        sd.addSetting(new Setting("Decay", "Body Decay", .55f, .42f, 4, 5));
+        sd.addSetting(new Setting("Band-pass", "Band-pass Q", .7f, .6f, 2, 3));
         mChannels.add(sd);
         
         Channel cp = new Channel("cp");
-        cp.addSetting(new Setting("Pitch", "Filter Q", .49f , .45f));
-        cp.addSetting(new Setting("Filter From", "Filter To", .6f, .8f));
-        cp.addSetting(new Setting("Delay 1", "Delay 2", .35f, .55f));
-        cp.addSetting(new Setting("Decay", "Gain", .55f, .42f));
+        cp.addSetting(new Setting("Pitch", "Gain", .55f , .3f, 0, 7));
+        cp.addSetting(new Setting("Delay 1", "Delay 2", .3f, .3f, 4, 5));
+        cp.addSetting(new Setting("Decay", "Filter Q", .59f, .2f, 6, 1));
+        cp.addSetting(new Setting("Filter From", "Filter To", .9f, .15f, 2, 3));
         mChannels.add(cp);
 
         Channel tt = new Channel("tt");
-        tt.addSetting(new Setting("Pitch", "Gain", .499f, .49f));
+        tt.addSetting(new Setting("Pitch", "Gain", .499f, .49f, 0, 1));
         mChannels.add(tt);
 
         Channel cb = new Channel("cb");
-        cb.addSetting(new Setting("Pitch", "Decay 1", .49f , .45f));
-        cb.addSetting(new Setting("Decay 2", "Vcf", .6f, .8f));
-        cb.addSetting(new Setting("Vcf Q", "Gain", .35f, .55f));
+        cb.addSetting(new Setting("Pitch", "Gain", .3f , .49f, 0, 5));
+        cb.addSetting(new Setting("Decay 1", "Decay 2", .1f, .75f, 1, 2));
+        cb.addSetting(new Setting("Vcf", "Vcf Q", .3f, 0, 3, 4));
         mChannels.add(cb);
         
         Channel hh = new Channel("hh");
-        hh.addSetting(new Setting("Pitch", "Gain", .45f, .4f));
-        hh.addSetting(new Setting("Low-pass", "Snap", .8f, .1f));
-        hh.addSetting(new Setting("Noise Pitch", "Noise", .55f, .6f));
-        hh.addSetting(new Setting("Ratio B", "Ratio A", .9f, 1));
-        hh.addSetting(new Setting("Release", "Attack", .55f, .4f));
-        hh.addSetting(new Setting("Filter", "Filter Q", .7f, .6f));
+        hh.addSetting(new Setting("Pitch", "Gain", .45f, .4f, 0, 11));
+        hh.addSetting(new Setting("Low-pass", "Snap", .8f, .1f, 10, 5));
+        hh.addSetting(new Setting("Noise Pitch", "Noise", .55f, .6f, 4, 3));
+        hh.addSetting(new Setting("Ratio B", "Ratio A", .9f, 1, 2, 1));
+        hh.addSetting(new Setting("Release", "Attack", .55f, .4f, 7, 6));
+        hh.addSetting(new Setting("Filter", "Filter Q", .7f, .6f, 8, 9));
         mChannels.add(hh);
     }
 
@@ -239,6 +238,7 @@ public class DMach extends Activity {
         PdBase.sendFloat("shuffle", mShuffle / 100.0f);
         PdBase.sendFloat("tempo", mTempo);
         sendSequence();
+        sendSettings();
     }
     
     private void sendSequence() {
@@ -248,6 +248,16 @@ public class DMach extends Activity {
         }
     }
 
+    private void sendSettings() {
+        for (Channel channel : mChannels) {
+            for (Setting setting : channel.getSettings()) {
+                String name = channel.getName();
+                PdBase.sendList(name, new Object[]{setting.hIndex, setting.x});
+                PdBase.sendList(name, new Object[]{setting.vIndex, setting.y});
+            }
+        }
+    }
+    
     private void startAudio() {
         synchronized (mLock) {
             if (mPdService == null) {
