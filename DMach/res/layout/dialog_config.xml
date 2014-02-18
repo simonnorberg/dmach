@@ -26,18 +26,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         android:id="@+id/tempoText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tempo:" />
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/tempo" />
     
     <TextView
         android:id="@+id/tempoValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:layout_toRightOf="@+id/tempoText" />
     
     <SeekBar
         android:id="@+id/tempoSeekbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="12dp"
         android:layout_below="@+id/tempoText"
         android:max="239" />
     
@@ -45,8 +49,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         android:id="@+id/shuffleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
         android:layout_below="@+id/tempoSeekbar"
-        android:text="Shuffle:" />
+        android:text="@string/shuffle" />
     
     <TextView
         android:id="@+id/shuffleValue"
@@ -59,6 +64,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         android:id="@+id/shuffleSeekbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="12dp"
         android:layout_below="@+id/shuffleText"
         android:max="50" />
 </RelativeLayout>

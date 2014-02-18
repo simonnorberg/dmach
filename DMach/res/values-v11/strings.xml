@@ -25,21 +25,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="play_listener">onPlayClicked</string>
     <string name="config_listener">onConfigClicked</string>
     <string name="reset_listener">onResetClicked</string>
-    <string name="setting_listener">onSettingClicked</string>
     <string name="channel_listener">onChannelClicked</string>
-    
-    <string name="setting1">1</string>
-    <string name="setting2">2</string>
-    <string name="setting3">3</string>
-    <string name="setting4">4</string>
-    <string name="setting5">5</string>
-    <string name="setting6">6</string>
+
+    <string name="tempo">Tempo:</string>
+    <string name="shuffle">Shuffle:</string>
 
     <string name="saved_sequence">net.simno.dmach.SAVED_SEQUENCE</string>
     <string name="saved_channels">net.simno.dmach.SAVED_CHANNELS</string>
     <string name="saved_tempo">net.simno.dmach.TEMPO</string>
     <string name="saved_shuffle">net.simno.dmach.SHUFFLE</string>
     <string name="saved_channel">net.simno.dmach.CHANNEL</string>
-    <string name="margin_dp">3</string>
 
 </resources>

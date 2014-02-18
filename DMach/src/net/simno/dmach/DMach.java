@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Typeface;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
@@ -62,7 +63,8 @@ public class DMach extends Activity {
     public static final int GROUPS = 2;
     public static final int CHANNELS = 6;
     public static final int STEPS = 16;
-
+    
+    private Typeface mTypeface;
     private int[] mSequence;
     private boolean mIsRunning;
     private List<Channel> mChannels;
@@ -184,6 +186,7 @@ public class DMach extends Activity {
     }
 
     private void initGui() {
+        mTypeface = Typeface.createFromAsset(getAssets(), "fonts/saxmono.ttf");
         setContentView(R.layout.activity_dmach);
         
         if (mSelectedChannel != -1) {
@@ -346,9 +349,14 @@ public class DMach extends Activity {
         AlertDialog alertDialog = new AlertDialog.Builder(this).setView(layout).create();
         alertDialog.setCanceledOnTouchOutside(true);
         alertDialog.show();
-                
+        
+        ((TextView) layout.findViewById(R.id.tempoText)).setTypeface(mTypeface);
+        ((TextView) layout.findViewById(R.id.shuffleText)).setTypeface(mTypeface);
+
         mTempoText = (TextView) layout.findViewById(R.id.tempoValue);
+        mTempoText.setTypeface(mTypeface);
         mTempoText.setText(" " + mTempo);
+        
         SeekBar tempoSeekBar = (SeekBar) layout.findViewById(R.id.tempoSeekbar);
         tempoSeekBar.setProgress(mTempo);
         tempoSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -367,8 +375,10 @@ public class DMach extends Activity {
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
-        mShuffleText = (TextView) layout.findViewById(R.id.shuffleValue); 
+        mShuffleText = (TextView) layout.findViewById(R.id.shuffleValue);
+        mShuffleText.setTypeface(mTypeface);
         mShuffleText.setText(" " + mShuffle);
+        
         SeekBar shuffleSeekBar = (SeekBar) layout.findViewById(R.id.shuffleSeekbar);
         shuffleSeekBar.setProgress(mShuffle);
         shuffleSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
