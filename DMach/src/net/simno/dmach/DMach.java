@@ -36,6 +36,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -85,6 +86,41 @@ public class DMach extends Activity {
         }
         @Override
         public void onServiceDisconnected(ComponentName name) {}
+    };
+    private OnSeekBarChangeListener mTempoListener = new OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
+            switch (seekBar.getId()) {
+            case R.id.tempoSeekbar10:
+                mTempo = (progress + 1) * 10 + (mTempo % 10);
+                break;
+            case R.id.tempoSeekbar1:
+                mTempo = Math.max((mTempo / 10) * 10 + progress, 1);
+                break;
+            }
+            PdBase.sendFloat("tempo", mTempo);
+            if (mTempoText != null) {
+                mTempoText.setText(" " + mTempo);
+            }
+        }
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {}
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {}
+    };
+    private OnSeekBarChangeListener mShuffleListener = new OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
+            PdBase.sendFloat("shuffle", progress / 100.0f);
+            if (mShuffleText != null) {
+                mShuffleText.setText(" " + progress);
+            }
+            mShuffle = progress;
+        }
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {}
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {}
     };
 
     @Override
@@ -357,23 +393,13 @@ public class DMach extends Activity {
         mTempoText.setTypeface(mTypeface);
         mTempoText.setText(" " + mTempo);
         
-        SeekBar tempoSeekBar = (SeekBar) layout.findViewById(R.id.tempoSeekbar);
-        tempoSeekBar.setProgress(mTempo);
-        tempoSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
-                int tempo = progress + 1;
-                PdBase.sendFloat("tempo", tempo);
-                if (mTempoText != null) {
-                    mTempoText.setText(" " + tempo);
-                }
-                mTempo = tempo;
-            }
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
-        });
+        SeekBar tempoSeekBar10 = (SeekBar) layout.findViewById(R.id.tempoSeekbar10);
+        tempoSeekBar10.setProgress(mTempo / 10);
+        tempoSeekBar10.setOnSeekBarChangeListener(mTempoListener);
+        
+        SeekBar tempoSeekBar1 = (SeekBar) layout.findViewById(R.id.tempoSeekbar1);
+        tempoSeekBar1.setProgress(mTempo % 10);
+        tempoSeekBar1.setOnSeekBarChangeListener(mTempoListener);
 
         mShuffleText = (TextView) layout.findViewById(R.id.shuffleValue);
         mShuffleText.setTypeface(mTypeface);
@@ -381,30 +407,15 @@ public class DMach extends Activity {
         
         SeekBar shuffleSeekBar = (SeekBar) layout.findViewById(R.id.shuffleSeekbar);
         shuffleSeekBar.setProgress(mShuffle);
-        shuffleSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
-                PdBase.sendFloat("shuffle", progress / 100.0f);
-                if (mShuffleText != null) {
-                    mShuffleText.setText(" " + progress);
-                }
-                mShuffle = progress;
-            }
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
-        });
+        shuffleSeekBar.setOnSeekBarChangeListener(mShuffleListener);
     }
 
     public void onResetClicked(View view) {
         mSequence = new int[GROUPS * STEPS];
         sendSequence();
-        if (mSelectedChannel == -1) {
-            SequencerView sequencer = (SequencerView) findViewById(R.id.sequencer);
-            if (sequencer != null) {
-                sequencer.setChecked(mSequence);
-            }    
+        SequencerView sequencer = (SequencerView) findViewById(R.id.sequencer);
+        if (sequencer != null) {
+            sequencer.setChecked(mSequence);
         }
     }
 
