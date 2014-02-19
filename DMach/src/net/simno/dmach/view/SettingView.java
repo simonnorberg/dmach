@@ -9,6 +9,7 @@ import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -17,13 +18,16 @@ public final class SettingView extends View {
         public void onSettingChanged(float x, float y);
     }
 
-    private static final float CIRCLE_RADIUS = 36f;
-    private static final float CIRCLE_STROKE_WIDTH = 8f;
-    private static final float TEXT_SIZE = 40f;
+    private static final int CIRCLE_RADIUS = 18;
+    private static final int CIRCLE_STROKE_WIDTH = 4;
+    private static final int TEXT_SIZE = 22;
     private static final int BACKGROUND_COLOR = Color.parseColor("#E9950A");
     private static final int CIRCLE_COLOR = Color.parseColor("#EBEBAF");
-    private static final int TEXT_COLOR = Color.parseColor("#B57400");
+    private static final int TEXT_COLOR = Color.parseColor("#302E2C");
 
+    private float mCircleRadius;
+    private float mCircleStrokeWidth;
+    private float mTextSize;
     private Paint mCirclePaint;
     private Paint mTextPaint;
     private OnSettingChangedListener mListener;
@@ -58,14 +62,19 @@ public final class SettingView extends View {
         setMinimumHeight(100);
         setMinimumWidth(100);
 
+        DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
+        mCircleRadius = Math.round(CIRCLE_RADIUS * (dm.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+        mCircleStrokeWidth = Math.round(CIRCLE_STROKE_WIDTH * (dm.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+        mTextSize = Math.round(TEXT_SIZE * (dm.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+        
         mCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mCirclePaint.setColor(CIRCLE_COLOR);
-        mCirclePaint.setStrokeWidth(CIRCLE_STROKE_WIDTH);
+        mCirclePaint.setStrokeWidth(mCircleStrokeWidth);
         mCirclePaint.setStyle(Paint.Style.STROKE);
         
         mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTextPaint.setColor(TEXT_COLOR);
-        mTextPaint.setTextSize(TEXT_SIZE);
+        mTextPaint.setTextSize(mTextSize);
         mTextPaint.setStyle(Paint.Style.FILL);
         Typeface saxmono = Typeface.createFromAsset(getContext().getAssets(), "fonts/saxmono.ttf");
         mTextPaint.setTypeface(saxmono);
@@ -73,7 +82,7 @@ public final class SettingView extends View {
     }
 
     private float getMinX() {
-        return CIRCLE_RADIUS + (CIRCLE_STROKE_WIDTH / 2);
+        return mCircleRadius + (mCircleStrokeWidth / 2);
     }
 
     private float getMinY() {
@@ -158,15 +167,15 @@ public final class SettingView extends View {
 
         mTextPaint.getTextBounds(mHText, 0, mHText.length(), mHBounds);
         mOriginX = (float) ((getWidth() / 2.0) - mHBounds.centerX());
-        mOriginY = (float) (getHeight() - 10.0);
+        mOriginY = getHeight() - (mTextSize * 0.4f);
 
         mTextPaint.getTextBounds(mVText, 0, mVText.length(), mVBounds);
         mPath.reset();
         mPath.moveTo(0, (float) ((getHeight() / 2.0) + mVBounds.centerX()));
         mPath.lineTo(0, 0);
         mHOffset = 0;
-        mVOffset = mVBounds.height();
-        
+        mVOffset = (int) mTextSize;
+
         invalidate();
     }
     
@@ -179,7 +188,7 @@ public final class SettingView extends View {
         if (!mVText.isEmpty()) {
             canvas.drawTextOnPath(mVText, mPath, mHOffset, mVOffset, mTextPaint);
         }
-        canvas.drawCircle(mX, mY, CIRCLE_RADIUS, mCirclePaint);
+        canvas.drawCircle(mX, mY, mCircleRadius, mCirclePaint);
     }
 
 

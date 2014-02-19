@@ -40,6 +40,7 @@ public final class SequencerView extends View {
     private static final int BACKGROUND_COLOR = Color.parseColor("#EBEBAF");
     private static final int UNCHECKED_COLOR = Color.parseColor("#C1BF87");
     private static final int CHECKED_COLOR = Color.parseColor("#B02B2F");
+    private static final int MARGIN = 3;
 
     private final ArrayList<Step> mSequence = new ArrayList<Step>();
     private OnStepChangedListener mListener;
@@ -116,7 +117,7 @@ public final class SequencerView extends View {
         mCheckedPaint.setStyle(Paint.Style.FILL);
         
         DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
-        mMargin = Math.round(3 * (dm.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+        mMargin = Math.round(MARGIN * (dm.xdpi / DisplayMetrics.DENSITY_DEFAULT));
         
         for (int channel = 0; channel < DMach.CHANNELS; ++channel) {
             for (int step = 0; step < DMach.STEPS; ++step) {
