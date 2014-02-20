@@ -1,27 +1,21 @@
-/**
- * Copyright (C) 2014 Simon Norberg
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+/*
+* Copyright (C) 2014 Simon Norberg
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
 
 package net.simno.dmach.view;
-
-import net.simno.dmach.DMach;
-
-import org.puredata.android.utils.PdUiDispatcher;
-import org.puredata.core.PdBase;
-import org.puredata.core.PdListener;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -31,6 +25,12 @@ import android.graphics.drawable.shapes.RectShape;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.View;
+
+import net.simno.dmach.DMach;
+
+import org.puredata.android.utils.PdUiDispatcher;
+import org.puredata.core.PdBase;
+import org.puredata.core.PdListener;
 
 public final class ProgressBarView extends View {
 
@@ -44,7 +44,7 @@ public final class ProgressBarView extends View {
     private float mStepWidthMargin;
     private PdUiDispatcher mDispatcher;
     private ShapeDrawable mProgressBar;
-    
+
     public ProgressBarView(Context context) {
         super(context);
         init();
@@ -73,19 +73,20 @@ public final class ProgressBarView extends View {
                 int right = (int) (left + mStepWidth);
                 mProgressBar.setBounds(left, 0, right, mHeight);
                 if (x > 0) {
-                    invalidate(mDirtyLeft, 0, right, mHeight);    
+                    invalidate(mDirtyLeft, 0, right, mHeight);
                 } else {
                     invalidate();
                 }
                 mDirtyLeft = left;
             }
         });
-        
+
         mProgressBar = new ShapeDrawable(new RectShape());
         mProgressBar.getPaint().setColor(BAR_COLOR);
         mProgressBar.setAlpha(BAR_TRANSPARENCY);
     }
-        @Override
+
+    @Override
     protected void onDraw(Canvas canvas) {
         mProgressBar.draw(canvas);
     }

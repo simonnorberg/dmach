@@ -1,6 +1,22 @@
+/*
+* Copyright (C) 2014 Simon Norberg
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package net.simno.dmach.view;
 
-import net.simno.dmach.model.Setting;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -13,17 +29,20 @@ import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 
+import net.simno.dmach.model.Setting;
+
 public final class SettingView extends View {
+
     public interface OnSettingChangedListener {
         public void onSettingChanged(float x, float y);
     }
 
-    private static final int CIRCLE_RADIUS = 18;
-    private static final int CIRCLE_STROKE_WIDTH = 4;
-    private static final int TEXT_SIZE = 22;
     private static final int BACKGROUND_COLOR = Color.parseColor("#E9950A");
     private static final int CIRCLE_COLOR = Color.parseColor("#EBEBAF");
     private static final int TEXT_COLOR = Color.parseColor("#302E2C");
+    private static final int CIRCLE_RADIUS = 18;
+    private static final int CIRCLE_STROKE_WIDTH = 4;
+    private static final int TEXT_SIZE = 22;
 
     private float mCircleRadius;
     private float mCircleStrokeWidth;
@@ -59,26 +78,22 @@ public final class SettingView extends View {
     }
 
     private void init() {
-        setMinimumHeight(100);
-        setMinimumWidth(100);
-
         DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
         mCircleRadius = Math.round(CIRCLE_RADIUS * (dm.xdpi / DisplayMetrics.DENSITY_DEFAULT));
         mCircleStrokeWidth = Math.round(CIRCLE_STROKE_WIDTH * (dm.xdpi / DisplayMetrics.DENSITY_DEFAULT));
         mTextSize = Math.round(TEXT_SIZE * (dm.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-        
+
         mCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mCirclePaint.setColor(CIRCLE_COLOR);
         mCirclePaint.setStrokeWidth(mCircleStrokeWidth);
         mCirclePaint.setStyle(Paint.Style.STROKE);
-        
+
         mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTextPaint.setColor(TEXT_COLOR);
         mTextPaint.setTextSize(mTextSize);
         mTextPaint.setStyle(Paint.Style.FILL);
         Typeface saxmono = Typeface.createFromAsset(getContext().getAssets(), "fonts/saxmono.ttf");
         mTextPaint.setTypeface(saxmono);
-        
     }
 
     private float getMinX() {
@@ -120,17 +135,17 @@ public final class SettingView extends View {
         }
         return y;
     }
-    
+
     private float pdToX(float pdX) {
         float width = getMaxX() - getMinX();
         return (pdX * width) + getMinX();
     }
-    
+
     private float pdToY(float pdY) {
         float height = getMaxY() - getMinY();
         return ((1 - pdY) * height) + getMinY();
     }
-    
+
     private float xToPd(float x) {
         float width = getMaxX() - getMinX();
         float pdX = x - getMinX();
@@ -154,7 +169,7 @@ public final class SettingView extends View {
             mListener.onSettingChanged(xToPd(mX), yToPd(mY));
         }
     }
-    
+
     public void setOnSettingChangedListener(OnSettingChangedListener listener) {
         mListener = listener;
     }
@@ -178,7 +193,7 @@ public final class SettingView extends View {
 
         invalidate();
     }
-    
+
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawColor(BACKGROUND_COLOR);
@@ -190,7 +205,6 @@ public final class SettingView extends View {
         }
         canvas.drawCircle(mX, mY, mCircleRadius, mCirclePaint);
     }
-
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {

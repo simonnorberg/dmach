@@ -1,23 +1,21 @@
-/**
- * Copyright (C) 2013 Simon Norberg
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+/*
+* Copyright (C) 2014 Simon Norberg
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
 
 package net.simno.dmach;
-
-import org.puredata.core.PdBase;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -25,10 +23,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnLayoutChangeListener;
+
 import net.simno.dmach.R;
 import net.simno.dmach.view.ProgressBarView;
 import net.simno.dmach.view.SequencerView;
 import net.simno.dmach.view.SequencerView.OnStepChangedListener;
+
+import org.puredata.core.PdBase;
 
 public class SequencerFragment extends Fragment
 implements OnStepChangedListener, OnLayoutChangeListener {
@@ -37,10 +38,11 @@ implements OnStepChangedListener, OnLayoutChangeListener {
         super();
     }
 
-    private static final String TAG_SEQUENCER = "sequencer";
+    private static final String TAG_SEQUENCER = "net.simno.dmach.TAG_SEQUENCER";
+
     private int[] mSequence;
     private SequencerView mSequencerView;
-    
+
     public static SequencerFragment newInstance(int[] sequence) {
         SequencerFragment sf = new SequencerFragment();
         Bundle args = new Bundle();
@@ -48,7 +50,7 @@ implements OnStepChangedListener, OnLayoutChangeListener {
         sf.setArguments(args);
         return sf;
     }
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +71,7 @@ implements OnStepChangedListener, OnLayoutChangeListener {
         mSequencerView.addOnLayoutChangeListener(this);
         return view;
     }
-    
+
     @Override
     public void onDestroyView() {
         ProgressBarView p = ((ProgressBarView) getActivity().findViewById(R.id.progressBar));

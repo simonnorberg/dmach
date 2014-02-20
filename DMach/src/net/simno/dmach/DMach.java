@@ -1,24 +1,22 @@
-/**
- * Copyright (C) 2013 Simon Norberg
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+/*
+* Copyright (C) 2014 Simon Norberg
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
 
 package net.simno.dmach;
 
-import android.os.Bundle;
-import android.os.IBinder;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
@@ -29,6 +27,8 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Typeface;
+import android.os.Bundle;
+import android.os.IBinder;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
@@ -59,12 +59,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DMach extends Activity {
-    
+
+    private static final String SAVED_SEQUENCE = "net.simno.dmach.SAVED_SEQUENCE";
+    private static final String SAVED_CHANNELS = "net.simno.dmach.SAVED_CHANNELS";
+    private static final String SAVED_TEMPO = "net.simno.dmach.SAVED_TEMPO";
+    private static final String SAVED_SHUFFLE= "net.simno.dmach.SAVED_SHUFFLE";
+    private static final String SAVED_CHANNEL = "net.simno.dmach.SAVED_CHANNEL";
+
     public static final int[] MASKS = {1, 2, 4};
     public static final int GROUPS = 2;
     public static final int CHANNELS = 6;
     public static final int STEPS = 16;
-    
+
     private Typeface mTypeface;
     private int[] mSequence;
     private boolean mIsRunning;
@@ -148,34 +154,34 @@ public class DMach extends Activity {
         Editor editor = getPreferences(MODE_PRIVATE).edit();
         String mSequenceJson = new Gson().toJson(mSequence);
         String mChannelsJson = new Gson().toJson(mChannels);
-        editor.putString(getString(R.string.saved_sequence), mSequenceJson)
-        .putString(getString(R.string.saved_channels), mChannelsJson)
-        .putInt(getString(R.string.saved_tempo), mTempo)
-        .putInt(getString(R.string.saved_shuffle), mShuffle)
-        .putInt(getString(R.string.saved_channel), mSelectedChannel)
+        editor.putString(SAVED_SEQUENCE, mSequenceJson)
+        .putString(SAVED_CHANNELS, mChannelsJson)
+        .putInt(SAVED_TEMPO, mTempo)
+        .putInt(SAVED_SHUFFLE, mShuffle)
+        .putInt(SAVED_CHANNEL, mSelectedChannel)
         .commit();
     }
 
     private void restoreSettings() {
         SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-        String mSequenceJson = prefs.getString(getString(R.string.saved_sequence), "");
+        String mSequenceJson = prefs.getString(SAVED_SEQUENCE, "");
         if (!mSequenceJson.isEmpty()) {
-            mSequence = new Gson().fromJson(mSequenceJson, int[].class);    
+            mSequence = new Gson().fromJson(mSequenceJson, int[].class);
         } else {
             mSequence = new int[GROUPS * STEPS];
         }
         Type type = new TypeToken<ArrayList<Channel>>() {}.getType();
-        String mChannelsJson = prefs.getString(getString(R.string.saved_channels), "");
+        String mChannelsJson = prefs.getString(SAVED_CHANNELS, "");
         if (!mChannelsJson.isEmpty()) {
-            mChannels = new Gson().fromJson(mChannelsJson, type);    
+            mChannels = new Gson().fromJson(mChannelsJson, type);
         } else {
             initChannels();
         }
-        mTempo = prefs.getInt(getString(R.string.saved_tempo), 120);
-        mShuffle = prefs.getInt(getString(R.string.saved_shuffle), 0);
-        mSelectedChannel = prefs.getInt(getString(R.string.saved_channel), -1);
+        mTempo = prefs.getInt(SAVED_TEMPO, 120);
+        mShuffle = prefs.getInt(SAVED_SHUFFLE, 0);
+        mSelectedChannel = prefs.getInt(SAVED_CHANNEL, -1);
     }
-    
+
     private void initChannels() {
         mChannels = new ArrayList<Channel>();
 
@@ -193,7 +199,7 @@ public class DMach extends Activity {
         sd.addSetting(new Setting("Decay", "Body Decay", .55f, .42f, 4, 5));
         sd.addSetting(new Setting("Band-pass", "Band-pass Q", .7f, .6f, 2, 3));
         mChannels.add(sd);
-        
+
         Channel cp = new Channel("cp");
         cp.addSetting(new Setting("Pitch", "Gain", .55f , .3f, 0, 7));
         cp.addSetting(new Setting("Delay 1", "Delay 2", .3f, .3f, 4, 5));
@@ -210,7 +216,7 @@ public class DMach extends Activity {
         cb.addSetting(new Setting("Decay 1", "Decay 2", .1f, .75f, 1, 2));
         cb.addSetting(new Setting("Vcf", "Vcf Q", .3f, 0, 3, 4));
         mChannels.add(cb);
-        
+
         Channel hh = new Channel("hh");
         hh.addSetting(new Setting("Pitch", "Gain", .45f, .4f, 0, 11));
         hh.addSetting(new Setting("Low-pass", "Snap", .8f, .1f, 10, 5));
@@ -224,7 +230,7 @@ public class DMach extends Activity {
     private void initGui() {
         mTypeface = Typeface.createFromAsset(getAssets(), "fonts/saxmono.ttf");
         setContentView(R.layout.activity_dmach);
-        
+
         if (mSelectedChannel != -1) {
             LinearLayout channels = (LinearLayout) findViewById(R.id.channels);
             ImageButton channel = (ImageButton) channels.getChildAt(mSelectedChannel);
@@ -279,7 +285,7 @@ public class DMach extends Activity {
         sendSequence();
         sendSettings();
     }
-    
+
     private void sendSequence() {
         for (int step = 0; step < STEPS; ++step) {
             PdBase.sendList("step", new Object[]{0, step, mSequence[step]});
@@ -296,7 +302,7 @@ public class DMach extends Activity {
             }
         }
     }
-    
+
     private void startAudio() {
         synchronized (mLock) {
             if (mPdService == null) {
@@ -385,18 +391,18 @@ public class DMach extends Activity {
         AlertDialog alertDialog = new AlertDialog.Builder(this).setView(layout).create();
         alertDialog.setCanceledOnTouchOutside(true);
         alertDialog.show();
-        
+
         ((TextView) layout.findViewById(R.id.tempoText)).setTypeface(mTypeface);
         ((TextView) layout.findViewById(R.id.shuffleText)).setTypeface(mTypeface);
 
         mTempoText = (TextView) layout.findViewById(R.id.tempoValue);
         mTempoText.setTypeface(mTypeface);
         mTempoText.setText(" " + mTempo);
-        
+
         SeekBar tempoSeekBar10 = (SeekBar) layout.findViewById(R.id.tempoSeekbar10);
         tempoSeekBar10.setProgress(mTempo / 10);
         tempoSeekBar10.setOnSeekBarChangeListener(mTempoListener);
-        
+
         SeekBar tempoSeekBar1 = (SeekBar) layout.findViewById(R.id.tempoSeekbar1);
         tempoSeekBar1.setProgress(mTempo % 10);
         tempoSeekBar1.setOnSeekBarChangeListener(mTempoListener);
@@ -404,7 +410,7 @@ public class DMach extends Activity {
         mShuffleText = (TextView) layout.findViewById(R.id.shuffleValue);
         mShuffleText.setTypeface(mTypeface);
         mShuffleText.setText(" " + mShuffle);
-        
+
         SeekBar shuffleSeekBar = (SeekBar) layout.findViewById(R.id.shuffleSeekbar);
         shuffleSeekBar.setProgress(mShuffle);
         shuffleSeekBar.setOnSeekBarChangeListener(mShuffleListener);
@@ -423,7 +429,7 @@ public class DMach extends Activity {
         ImageButton channel = (ImageButton) view;
         LinearLayout channels = (LinearLayout) channel.getParent();
         int index = channels.indexOfChild(channel);
-        
+
         if (index == mSelectedChannel) {
             mSelectedChannel = -1;
             channel.setSelected(false);

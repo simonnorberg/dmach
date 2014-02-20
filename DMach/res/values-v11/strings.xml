@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 
-Copyright (C) 2013 Simon Norberg
+Copyright (C) 2014 Simon Norberg
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -9,31 +9,19 @@ the Free Software Foundation, either version 3 of the License, or
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
- You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
-
 <resources>
-
-    <string name="app_name">DMach</string>
-
-    <string name="none"></string>
-
-    <string name="play_listener">onPlayClicked</string>
-    <string name="config_listener">onConfigClicked</string>
-    <string name="reset_listener">onResetClicked</string>
-    <string name="channel_listener">onChannelClicked</string>
-
-    <string name="tempo">Tempo:</string>
-    <string name="shuffle">Shuffle:</string>
-
-    <string name="saved_sequence">net.simno.dmach.SAVED_SEQUENCE</string>
-    <string name="saved_channels">net.simno.dmach.SAVED_CHANNELS</string>
-    <string name="saved_tempo">net.simno.dmach.TEMPO</string>
-    <string name="saved_shuffle">net.simno.dmach.SHUFFLE</string>
-    <string name="saved_channel">net.simno.dmach.CHANNEL</string>
-
+  <string name="app_name">DMach</string>
+  <string name="none"></string>
+  <string name="play_listener">onPlayClicked</string>
+  <string name="config_listener">onConfigClicked</string>
+  <string name="reset_listener">onResetClicked</string>
+  <string name="channel_listener">onChannelClicked</string>
+  <string name="tempo">Tempo:</string>
+  <string name="shuffle">Shuffle:</string>
 </resources>
