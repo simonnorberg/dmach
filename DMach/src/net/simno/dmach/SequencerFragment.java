@@ -66,7 +66,7 @@ implements OnStepChangedListener, OnLayoutChangeListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sequencer, container, false);
-        mSequencerView = (SequencerView) view.findViewById(R.id.sequencer);
+        mSequencerView = (SequencerView) view.findViewById(R.id.sequencer_view);
         mSequencerView.setOnStepChangedListener(this);
         mSequencerView.addOnLayoutChangeListener(this);
         return view;
@@ -74,7 +74,7 @@ implements OnStepChangedListener, OnLayoutChangeListener {
 
     @Override
     public void onDestroyView() {
-        ProgressBarView p = ((ProgressBarView) getActivity().findViewById(R.id.progressBar));
+        ProgressBarView p = ((ProgressBarView) getActivity().findViewById(R.id.progress_bar_view));
         if (p != null) {
             p.cleanup();
         }

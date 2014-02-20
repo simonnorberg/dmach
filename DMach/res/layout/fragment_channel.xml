@@ -26,32 +26,32 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     android:layout_marginRight="3dp"
     android:orientation="vertical">
     <ImageButton
-      android:id="@+id/setting1"
+      android:id="@+id/setting_1"
       android:contentDescription="@string/none"
       style="@style/Setting.1" />
     <ImageButton
-      android:id="@+id/setting2"
+      android:id="@+id/setting_2"
       android:contentDescription="@string/none"
       style="@style/Setting.2" />
     <ImageButton
-      android:id="@+id/setting3"
+      android:id="@+id/setting_3"
       android:contentDescription="@string/none"
       style="@style/Setting.3" />
     <ImageButton
-      android:id="@+id/setting4"
+      android:id="@+id/setting_4"
       android:contentDescription="@string/none"
       style="@style/Setting.4" />
     <ImageButton
-      android:id="@+id/setting5"
+      android:id="@+id/setting_5"
       android:contentDescription="@string/none"
       style="@style/Setting.5" />
     <ImageButton
-      android:id="@+id/setting6"
+      android:id="@+id/setting_6"
       android:contentDescription="@string/none"
       style="@style/Setting.6" />
   </LinearLayout>
   <net.simno.dmach.view.SettingView
-    android:id="@+id/settingView"
+    android:id="@+id/setting_view"
     android:layout_height="match_parent"
     android:layout_width="match_parent" />
 </LinearLayout>

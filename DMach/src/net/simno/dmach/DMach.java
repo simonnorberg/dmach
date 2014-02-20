@@ -97,10 +97,10 @@ public class DMach extends Activity {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
             switch (seekBar.getId()) {
-            case R.id.tempoSeekbar10:
+            case R.id.tempo_seekbar_10:
                 mTempo = (progress + 1) * 10 + (mTempo % 10);
                 break;
-            case R.id.tempoSeekbar1:
+            case R.id.tempo_seekbar_1:
                 mTempo = Math.max((mTempo / 10) * 10 + progress, 1);
                 break;
             }
@@ -236,11 +236,11 @@ public class DMach extends Activity {
             ImageButton channel = (ImageButton) channels.getChildAt(mSelectedChannel);
             if (channel != null) {
                 channel.setSelected(true);
-                getFragmentManager().beginTransaction().add(R.id.fragmentContainer,
+                getFragmentManager().beginTransaction().add(R.id.fragment_container,
                         ChannelFragment.newInstance(mChannels.get(mSelectedChannel))).commit();
             }
         } else {
-            getFragmentManager().beginTransaction().add(R.id.fragmentContainer,
+            getFragmentManager().beginTransaction().add(R.id.fragment_container,
                   SequencerFragment.newInstance(mSequence)).commit();
         }
     }
@@ -363,11 +363,11 @@ public class DMach extends Activity {
     private void setFragment() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         if (mSelectedChannel != -1) {
-            transaction.replace(R.id.fragmentContainer,
+            transaction.replace(R.id.fragment_container,
                     ChannelFragment.newInstance(mChannels.get(mSelectedChannel)));
             transaction.commit();
         } else {
-            transaction.replace(R.id.fragmentContainer, SequencerFragment.newInstance(mSequence));
+            transaction.replace(R.id.fragment_container, SequencerFragment.newInstance(mSequence));
             transaction.commit();
             getFragmentManager().executePendingTransactions();
         }
@@ -392,26 +392,26 @@ public class DMach extends Activity {
         alertDialog.setCanceledOnTouchOutside(true);
         alertDialog.show();
 
-        ((TextView) layout.findViewById(R.id.tempoText)).setTypeface(mTypeface);
-        ((TextView) layout.findViewById(R.id.shuffleText)).setTypeface(mTypeface);
+        ((TextView) layout.findViewById(R.id.tempo_text)).setTypeface(mTypeface);
+        ((TextView) layout.findViewById(R.id.shuffle_text)).setTypeface(mTypeface);
 
-        mTempoText = (TextView) layout.findViewById(R.id.tempoValue);
+        mTempoText = (TextView) layout.findViewById(R.id.tempo_value);
         mTempoText.setTypeface(mTypeface);
         mTempoText.setText(" " + mTempo);
 
-        SeekBar tempoSeekBar10 = (SeekBar) layout.findViewById(R.id.tempoSeekbar10);
+        SeekBar tempoSeekBar10 = (SeekBar) layout.findViewById(R.id.tempo_seekbar_10);
         tempoSeekBar10.setProgress(mTempo / 10);
         tempoSeekBar10.setOnSeekBarChangeListener(mTempoListener);
 
-        SeekBar tempoSeekBar1 = (SeekBar) layout.findViewById(R.id.tempoSeekbar1);
+        SeekBar tempoSeekBar1 = (SeekBar) layout.findViewById(R.id.tempo_seekbar_1);
         tempoSeekBar1.setProgress(mTempo % 10);
         tempoSeekBar1.setOnSeekBarChangeListener(mTempoListener);
 
-        mShuffleText = (TextView) layout.findViewById(R.id.shuffleValue);
+        mShuffleText = (TextView) layout.findViewById(R.id.shuffle_value);
         mShuffleText.setTypeface(mTypeface);
         mShuffleText.setText(" " + mShuffle);
 
-        SeekBar shuffleSeekBar = (SeekBar) layout.findViewById(R.id.shuffleSeekbar);
+        SeekBar shuffleSeekBar = (SeekBar) layout.findViewById(R.id.shuffle_seekbar);
         shuffleSeekBar.setProgress(mShuffle);
         shuffleSeekBar.setOnSeekBarChangeListener(mShuffleListener);
     }
@@ -419,7 +419,7 @@ public class DMach extends Activity {
     public void onResetClicked(View view) {
         mSequence = new int[GROUPS * STEPS];
         sendSequence();
-        SequencerView sequencer = (SequencerView) findViewById(R.id.sequencer);
+        SequencerView sequencer = (SequencerView) findViewById(R.id.sequencer_view);
         if (sequencer != null) {
             sequencer.setChecked(mSequence);
         }

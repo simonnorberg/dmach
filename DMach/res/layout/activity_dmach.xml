@@ -17,7 +17,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
-  android:id="@+id/root"
   android:keepScreenOn="true"
   android:layout_height="match_parent"
   android:layout_width="match_parent"
@@ -33,15 +32,15 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     android:layout_width="match_parent"
     android:layout_weight="1">
     <ImageButton
-      android:id="@+id/playButton"
+      android:id="@+id/play_button"
       android:contentDescription="@string/none"
       style="@style/Control.Play" />
     <ImageButton
-      android:id="@+id/configButton"
+      android:id="@+id/config_button"
       android:contentDescription="@string/none"
       style="@style/Control.Config" />
     <ImageButton
-      android:id="@+id/resetButton"
+      android:id="@+id/reset_button"
       android:contentDescription="@string/none"
       style="@style/Control.Reset" />
     <ImageView
@@ -92,7 +91,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         style="@style/Channel.HH" />
     </LinearLayout>
     <RelativeLayout
-      android:id="@+id/fragmentContainer"
+      android:id="@+id/fragment_container"
       android:layout_height="match_parent"
       android:layout_width="match_parent" />
   </LinearLayout>

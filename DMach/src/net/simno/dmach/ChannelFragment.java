@@ -69,7 +69,7 @@ implements OnClickListener, OnSettingChangedListener, OnLayoutChangeListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_channel, container, false);
-        mSettingView = (SettingView) view.findViewById(R.id.settingView);
+        mSettingView = (SettingView) view.findViewById(R.id.setting_view);
         if (mChannel != null) {
             mSettingView.setOnSettingChangedListener(this);
             mSettingView.addOnLayoutChangeListener(this);
