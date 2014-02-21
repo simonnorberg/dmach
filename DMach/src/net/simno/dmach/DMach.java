@@ -47,7 +47,6 @@ import com.google.gson.reflect.TypeToken;
 import net.simno.dmach.R;
 import net.simno.dmach.model.Channel;
 import net.simno.dmach.model.Setting;
-import net.simno.dmach.view.SequencerView;
 
 import org.puredata.android.io.AudioParameters;
 import org.puredata.android.service.PdService;
@@ -376,13 +375,13 @@ public class DMach extends Activity {
     }
 
     public void onPlayClicked(View view) {
-        ImageButton imageButton = (ImageButton) view;
+        ImageButton playButton = (ImageButton) view;
         if (mIsRunning) {
             PdBase.sendBang("stop");
-            imageButton.setImageResource(R.drawable.control_play);
+            playButton.setImageResource(R.drawable.control_play);
         } else {
             PdBase.sendBang("play");
-            imageButton.setImageResource(R.drawable.control_stop);
+            playButton.setImageResource(R.drawable.control_stop);
         }
         mIsRunning = !mIsRunning;
     }
@@ -429,10 +428,7 @@ public class DMach extends Activity {
     public void onResetClicked(View view) {
         mSequence = new int[GROUPS * STEPS];
         sendSequence();
-        SequencerView sequencer = (SequencerView) findViewById(R.id.sequencer_view);
-        if (sequencer != null) {
-            sequencer.setChecked(mSequence);
-        }
+        setFragment();
     }
 
     public void onChannelClicked(View view) {
