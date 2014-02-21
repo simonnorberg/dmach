@@ -193,7 +193,7 @@ public class DMach extends Activity {
         mChannels.add(bd);
 
         Channel sd = new Channel("sd");
-        sd.addSetting(new Setting("Pitch", "Gain", .49f , .45f, 0, 9));
+        sd.addSetting(new Setting("Pitch", "Gain", .49f, .45f, 0, 9));
         sd.addSetting(new Setting("Low-pass", "Noise", .6f, .8f, 7, 1));
         sd.addSetting(new Setting("X-fade", "Attack", .35f, .55f, 8, 6));
         sd.addSetting(new Setting("Decay", "Body Decay", .55f, .42f, 4, 5));
@@ -201,18 +201,18 @@ public class DMach extends Activity {
         mChannels.add(sd);
 
         Channel cp = new Channel("cp");
-        cp.addSetting(new Setting("Pitch", "Gain", .55f , .3f, 0, 7));
+        cp.addSetting(new Setting("Pitch", "Gain", .55f, .3f, 0, 7));
         cp.addSetting(new Setting("Delay 1", "Delay 2", .3f, .3f, 4, 5));
         cp.addSetting(new Setting("Decay", "Filter Q", .59f, .2f, 6, 1));
         cp.addSetting(new Setting("Filter From", "Filter To", .9f, .15f, 2, 3));
         mChannels.add(cp);
 
         Channel tt = new Channel("tt");
-        tt.addSetting(new Setting("Pitch", "Gain", .499f, .49f, 0, 1));
+        tt.addSetting(new Setting("Pitch", "Gain", .49f, .49f, 0, 1));
         mChannels.add(tt);
 
         Channel cb = new Channel("cb");
-        cb.addSetting(new Setting("Pitch", "Gain", .3f , .49f, 0, 5));
+        cb.addSetting(new Setting("Pitch", "Gain", .3f, .49f, 0, 5));
         cb.addSetting(new Setting("Decay 1", "Decay 2", .1f, .75f, 1, 2));
         cb.addSetting(new Setting("Vcf", "Vcf Q", .3f, 0, 3, 4));
         mChannels.add(cb);
