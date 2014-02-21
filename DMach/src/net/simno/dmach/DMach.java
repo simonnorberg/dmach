@@ -22,6 +22,8 @@ import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
@@ -386,10 +388,18 @@ public class DMach extends Activity {
     }
 
     public void onConfigClicked(View view) {
+        final ImageButton configButton = (ImageButton) view;
+        configButton.setSelected(true);
         LayoutInflater inflater = LayoutInflater.from(this);
         View layout = inflater.inflate(R.layout.dialog_config, null);
         AlertDialog alertDialog = new AlertDialog.Builder(this).setView(layout).create();
         alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                configButton.setSelected(false);                
+            }
+        });
         alertDialog.show();
 
         ((TextView) layout.findViewById(R.id.tempo_text)).setTypeface(mTypeface);

@@ -21,9 +21,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     <item name="android:windowBackground">@color/colonial</item>
     <item name="android:textSize">20sp</item>
   </style>
-  <style name="Config">
-    <item name="android:layout_margin">6dp</item>
-  </style>
   <style name="Control">
     <item name="android:background">@drawable/sel_control</item>
     <item name="android:layout_height">match_parent</item>
@@ -36,6 +33,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     <item name="android:src">@drawable/control_play</item>
   </style>
   <style name="Control.Config">
+      <item name="android:background">@drawable/sel_control_selected</item>
     <item name="android:layout_marginLeft">6dp</item>
     <item name="android:layout_toRightOf">@+id/play_button</item>
     <item name="android:onClick">@string/config_listener</item>
