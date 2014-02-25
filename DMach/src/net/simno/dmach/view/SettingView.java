@@ -26,9 +26,9 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
-
 import net.simno.dmach.model.Setting;
 
 public final class SettingView extends View {
@@ -79,9 +79,9 @@ public final class SettingView extends View {
 
     private void init() {
         DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
-        mCircleRadius = Math.round(CIRCLE_RADIUS * (dm.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-        mCircleStrokeWidth = Math.round(CIRCLE_STROKE_WIDTH * (dm.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-        mTextSize = Math.round(TEXT_SIZE * (dm.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+        mCircleRadius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, CIRCLE_RADIUS, dm);
+        mCircleStrokeWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, CIRCLE_STROKE_WIDTH, dm);
+        mTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE, dm);
 
         mCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mCirclePaint.setColor(CIRCLE_COLOR);

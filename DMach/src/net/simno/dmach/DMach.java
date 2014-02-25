@@ -233,7 +233,7 @@ public class DMach extends Activity {
         setContentView(R.layout.activity_dmach);
 
         if (mSelectedChannel != -1) {
-            LinearLayout channels = (LinearLayout) findViewById(R.id.channels);
+            LinearLayout channels = (LinearLayout) findViewById(R.id.channel_container);
             ImageButton channel = (ImageButton) channels.getChildAt(mSelectedChannel);
             if (channel != null) {
                 channel.setSelected(true);

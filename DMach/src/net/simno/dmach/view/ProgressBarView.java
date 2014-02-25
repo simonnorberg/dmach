@@ -23,9 +23,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
-
 import net.simno.dmach.DMach;
 
 import org.puredata.android.utils.PdUiDispatcher;
@@ -36,6 +35,7 @@ public final class ProgressBarView extends View {
 
     private static final int BAR_COLOR = Color.YELLOW;
     private static final int BAR_TRANSPARENCY = 127;
+    private static final int MARGIN = 3;
 
     private int mHeight;
     private int mMargin;
@@ -61,8 +61,8 @@ public final class ProgressBarView extends View {
     }
 
     private void init() {
-        DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
-        mMargin = Math.round(3 * (dm.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+        mMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                MARGIN, getResources().getDisplayMetrics());
 
         mDispatcher = new PdUiDispatcher();
         PdBase.setReceiver(mDispatcher);
@@ -70,7 +70,7 @@ public final class ProgressBarView extends View {
             @Override
             public void receiveFloat(String source, float x) {
                 int left  = (int) (x * mStepWidthMargin);
-                int right = (int) (left + mStepWidth);
+                int right = (int) Math.ceil(left + mStepWidth);
                 mProgressBar.setBounds(left, 0, right, mHeight);
                 if (x > 0) {
                     invalidate(mDirtyLeft, 0, right, mHeight);

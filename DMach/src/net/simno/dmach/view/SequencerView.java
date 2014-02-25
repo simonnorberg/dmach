@@ -23,10 +23,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
-
 import net.simno.dmach.DMach;
 
 import java.util.ArrayList;
@@ -114,8 +113,8 @@ public final class SequencerView extends View {
         mCheckedPaint.setColor(CHECKED_COLOR);
         mCheckedPaint.setStyle(Paint.Style.FILL);
 
-        DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
-        mMargin = Math.round(MARGIN * (dm.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+        mMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                MARGIN, getResources().getDisplayMetrics());
 
         for (int channel = 0; channel < DMach.CHANNELS; ++channel) {
             for (int step = 0; step < DMach.STEPS; ++step) {

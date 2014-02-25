@@ -20,7 +20,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
   android:layout_width="match_parent"
   android:orientation="horizontal">
   <LinearLayout
-    android:id="@+id/settings"
+    android:id="@+id/setting_container"
     android:layout_height="match_parent"
     android:layout_width="60dp"
     android:layout_marginRight="3dp"

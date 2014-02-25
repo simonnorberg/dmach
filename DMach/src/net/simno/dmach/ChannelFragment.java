@@ -73,7 +73,7 @@ implements OnClickListener, OnSettingChangedListener, OnLayoutChangeListener {
         if (mChannel != null) {
             mSettingView.setOnSettingChangedListener(this);
             mSettingView.addOnLayoutChangeListener(this);
-            LinearLayout settings = (LinearLayout) view.findViewById(R.id.settings);
+            LinearLayout settings = (LinearLayout) view.findViewById(R.id.setting_container);
             int selected = mChannel.getSelection();
             int count = mChannel.getCount();
             for (int i = 0; i < settings.getChildCount(); ++i) {

@@ -20,14 +20,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
   android:keepScreenOn="true"
   android:layout_height="match_parent"
   android:layout_width="match_parent"
-  android:layout_marginLeft="3dp"
-  android:layout_marginTop="6dp"
-  android:layout_marginRight="3dp"
-  android:layout_marginBottom="3dp"
+  android:layout_margin="3dp"
   android:orientation="vertical"
   tools:context=".MainActivity">
   <RelativeLayout
-    android:id="@+id/controls"
     android:layout_height="0dp"
     android:layout_width="match_parent"
     android:layout_weight="1">
@@ -44,7 +40,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
       android:contentDescription="@string/none"
       style="@style/Control.Reset" />
     <ImageView
-      android:id="@+id/logo"
       android:contentDescription="@string/none"
       android:layout_alignParentRight="true"
       android:layout_centerVertical="true"
@@ -53,40 +48,39 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
       android:src="@drawable/logo" />
   </RelativeLayout>
   <LinearLayout
-    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="0dp"
     android:layout_weight="6"
-    android:layout_marginTop="6dp"
+    android:layout_marginTop="3dp"
     android:orientation="horizontal">
     <LinearLayout
-      android:id="@+id/channels"
+      android:id="@+id/channel_container"
       android:layout_height="match_parent"
       android:layout_width="60dp"
       android:layout_marginRight="3dp"
       android:orientation="vertical">
       <ImageButton
-        android:id="@+id/bd"
+        android:id="@+id/channel_bd"
         android:contentDescription="@string/none"
         style="@style/Channel.BD" />
       <ImageButton
-        android:id="@+id/sd"
+        android:id="@+id/channel_sd"
         android:contentDescription="@string/none"
         style="@style/Channel.SD" />
       <ImageButton
-        android:id="@+id/cp"
+        android:id="@+id/channel_cp"
         android:contentDescription="@string/none"
         style="@style/Channel.CP" />
       <ImageButton
-        android:id="@+id/tt"
+        android:id="@+id/channel_tt"
         android:contentDescription="@string/none"
         style="@style/Channel.TT" />
       <ImageButton
-        android:id="@+id/cb"
+        android:id="@+id/channel_cb"
         android:contentDescription="@string/none"
         style="@style/Channel.CB" />
       <ImageButton
-        android:id="@+id/hh"
+        android:id="@+id/channel_hh"
         android:contentDescription="@string/none"
         style="@style/Channel.HH" />
     </LinearLayout>
