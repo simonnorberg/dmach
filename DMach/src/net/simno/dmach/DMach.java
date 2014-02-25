@@ -205,7 +205,7 @@ public class DMach extends Activity {
         cp.addSetting(new Setting("Pitch", "Gain", .55f, .3f, 0, 7));
         cp.addSetting(new Setting("Delay 1", "Delay 2", .3f, .3f, 4, 5));
         cp.addSetting(new Setting("Decay", "Filter Q", .59f, .2f, 6, 1));
-        cp.addSetting(new Setting("Filter From", "Filter To", .9f, .15f, 2, 3));
+        cp.addSetting(new Setting("Filter 1", "Filter 2", .9f, .15f, 2, 3));
         mChannels.add(cp);
 
         Channel tt = new Channel("tt");
