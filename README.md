@@ -1,15 +1,17 @@
-DMach 0.2 (2014)
-Simon Norberg <simon.norberg@gmail.com>
+DMach 0.2
+=========
 
 DMach is a drum machine for Android with 6 channels, a 16 step sequencer and Pure Data sound synthesis.
 
-Sound synthesis:
-DIY2 library by hardoff
-http://puredata.hurleur.com/sujet-1982-diy2-effects-sample-players-synths-sound-synthesis
-http://puredata.hurleur.com/attachment.php?item=4815
+![Screenshot](https://raw.github.com/simonnorberg/dmach/master/art/dmach-0.2-screenshot-1-small.png)
 
-Font:
-saxMono http://www.saxsoft.de/
+![Screenshot](https://raw.github.com/simonnorberg/dmach/master/art/dmach-0.2-screenshot-2-small.png)
 
-Icons:
-DefaultIcon v2.0 http://www.interactivemania.com/
+#####Sound synthesis
+[DIY2 library by hardoff](http://puredata.hurleur.com/sujet-1982-diy2-effects-sample-players-synths-sound-synthesis)
+
+#####Font
+[saxMono](http://www.saxsoft.de)
+
+#####Icons
+[DefaultIcon v2.0](http://www.interactivemania.com)
