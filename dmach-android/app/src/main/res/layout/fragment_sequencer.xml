@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 
+<!--
 Copyright (C) 2014 Simon Norberg
 
 This program is free software: you can redistribute it and/or modify
@@ -15,13 +15,15 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
-<resources>
-    <string name="app_name">DMach</string>
-    <string name="none"></string>
-    <string name="play_listener">onPlayClicked</string>
-    <string name="config_listener">onConfigClicked</string>
-    <string name="reset_listener">onResetClicked</string>
-    <string name="channel_listener">onChannelClicked</string>
-    <string name="tempo">Tempo:</string>
-    <string name="shuffle">Shuffle:</string>
-</resources>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <net.simno.dmach.view.SequencerView
+        android:id="@+id/sequencer_view"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent" />
+    <net.simno.dmach.view.ProgressBarView
+        android:id="@+id/progress_bar_view"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent" />
+</RelativeLayout>
