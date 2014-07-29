@@ -62,8 +62,8 @@ public final class ProgressBarView extends View {
     }
 
     private void init() {
-        mMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                MARGIN, getResources().getDisplayMetrics());
+        mMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, MARGIN,
+                getResources().getDisplayMetrics());
 
         mDispatcher = new PdUiDispatcher();
         PdBase.setReceiver(mDispatcher);

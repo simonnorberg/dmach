@@ -18,10 +18,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 <resources>
     <string name="app_name">DMach</string>
     <string name="none"></string>
-    <string name="play_listener">onPlayClicked</string>
-    <string name="config_listener">onConfigClicked</string>
-    <string name="reset_listener">onResetClicked</string>
-    <string name="channel_listener">onChannelClicked</string>
     <string name="tempo">Tempo:</string>
     <string name="shuffle">Shuffle:</string>
 </resources>

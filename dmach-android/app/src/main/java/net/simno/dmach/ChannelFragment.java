@@ -56,10 +56,10 @@ public class ChannelFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (null == savedInstanceState) {
+        if (savedInstanceState == null) {
             savedInstanceState = getArguments();
         }
-        if (null != savedInstanceState) {
+        if (savedInstanceState != null) {
             mChannel = savedInstanceState.getParcelable(TAG_CHANNEL);
         }
     }
@@ -79,7 +79,7 @@ public class ChannelFragment extends Fragment
                 ImageButton ib = (ImageButton) settings.getChildAt(i);
                 ib.setOnClickListener(this);
                 if (i < count) {
-                    ib.setSelected(i == selected ? true : false);
+                    ib.setSelected(i == selected);
                 } else {
                     ib.setEnabled(false);
                 }
@@ -113,8 +113,8 @@ public class ChannelFragment extends Fragment
     }
 
     @Override
-    public void onLayoutChange(View v, int left, int top, int right,
-                               int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+    public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft,
+                               int oldTop, int oldRight, int oldBottom) {
         mSettingView.setSetting(mChannel.getSetting());
     }
 }

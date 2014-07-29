@@ -98,7 +98,7 @@ public final class SequencerView extends View {
                     int mask = DMachActivity.MASKS[c % (DMachActivity.CHANNELS / DMachActivity.GROUPS)];
                     int index = s + ((c / (DMachActivity.CHANNELS / DMachActivity.GROUPS)) * DMachActivity.STEPS);
                     int value = sequence[index] & mask;
-                    i.next().checked = value != 0 ? true : false;
+                    i.next().checked = value != 0;
                 }
             }
         }
@@ -114,8 +114,8 @@ public final class SequencerView extends View {
         mCheckedPaint.setColor(CHECKED_COLOR);
         mCheckedPaint.setStyle(Paint.Style.FILL);
 
-        mMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                MARGIN, getResources().getDisplayMetrics());
+        mMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, MARGIN,
+                getResources().getDisplayMetrics());
 
         for (int channel = 0; channel < DMachActivity.CHANNELS; ++channel) {
             for (int step = 0; step < DMachActivity.STEPS; ++step) {
@@ -169,10 +169,7 @@ public final class SequencerView extends View {
     }
 
     private boolean isValidXY(float x, float y) {
-        if (x < 0 || y < 0 || x > mWidth || y > mHeight) {
-            return false;
-        }
-        return true;
+        return !(x < 0 || y < 0 || x > mWidth || y > mHeight);
     }
 
     @Override

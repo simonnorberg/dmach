@@ -91,7 +91,8 @@ public class DMachActivity extends Activity {
             initPd();
         }
         @Override
-        public void onServiceDisconnected(ComponentName name) {}
+        public void onServiceDisconnected(ComponentName name) {
+        }
     };
     private OnSeekBarChangeListener mTempoListener = new OnSeekBarChangeListener() {
         @Override
@@ -110,9 +111,11 @@ public class DMachActivity extends Activity {
             }
         }
         @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {}
+        public void onStartTrackingTouch(SeekBar seekBar) {
+        }
         @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {}
+        public void onStopTrackingTouch(SeekBar seekBar) {
+        }
     };
     private OnSeekBarChangeListener mShuffleListener = new OnSeekBarChangeListener() {
         @Override
@@ -124,9 +127,11 @@ public class DMachActivity extends Activity {
             mShuffle = progress;
         }
         @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {}
+        public void onStartTrackingTouch(SeekBar seekBar) {
+        }
         @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {}
+        public void onStopTrackingTouch(SeekBar seekBar) {
+        }
     };
 
     @Override
@@ -246,8 +251,8 @@ public class DMachActivity extends Activity {
     }
 
     private void initSystemServices() {
-        TelephonyManager telephonyManager =
-                (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager telephonyManager = (TelephonyManager)
+                getSystemService(Context.TELEPHONY_SERVICE);
         telephonyManager.listen(new PhoneStateListener() {
             @Override
             public void onCallStateChanged(int state, String incomingNumber) {
@@ -273,8 +278,8 @@ public class DMachActivity extends Activity {
         new Thread() {
             @Override
             public void run() {
-                bindService(new Intent(DMachActivity.this, PdService.class),
-                        mPdConnection, BIND_AUTO_CREATE);
+                bindService(new Intent(DMachActivity.this, PdService.class), mPdConnection,
+                        BIND_AUTO_CREATE);
             }
         }.start();
     }
@@ -328,7 +333,8 @@ public class DMachActivity extends Activity {
                 }
                 try {
                     Thread.sleep(500);
-                } catch (InterruptedException e) {}
+                } catch (InterruptedException e) {
+                }
             }
             mPdService.startAudio(new Intent(this, DMachActivity.class),
                     R.drawable.ic_stat_notify_dmach, "DMach", "Return to DMach.");

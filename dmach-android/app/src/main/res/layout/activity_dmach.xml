@@ -30,14 +30,17 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <ImageButton
             android:id="@+id/play_button"
             android:contentDescription="@string/none"
+            android:onClick="onPlayClicked"
             style="@style/Control.Play" />
         <ImageButton
             android:id="@+id/config_button"
             android:contentDescription="@string/none"
+            android:onClick="onConfigClicked"
             style="@style/Control.Config" />
         <ImageButton
             android:id="@+id/reset_button"
             android:contentDescription="@string/none"
+            android:onClick="onResetClicked"
             style="@style/Control.Reset" />
         <ImageView
             android:contentDescription="@string/none"
@@ -62,26 +65,32 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             <ImageButton
                 android:id="@+id/channel_bd"
                 android:contentDescription="@string/none"
+                android:onClick="onChannelClicked"
                 style="@style/Channel.BD" />
             <ImageButton
                 android:id="@+id/channel_sd"
                 android:contentDescription="@string/none"
+                android:onClick="onChannelClicked"
                 style="@style/Channel.SD" />
             <ImageButton
                 android:id="@+id/channel_cp"
                 android:contentDescription="@string/none"
+                android:onClick="onChannelClicked"
                 style="@style/Channel.CP" />
             <ImageButton
                 android:id="@+id/channel_tt"
                 android:contentDescription="@string/none"
+                android:onClick="onChannelClicked"
                 style="@style/Channel.TT" />
             <ImageButton
                 android:id="@+id/channel_cb"
                 android:contentDescription="@string/none"
+                android:onClick="onChannelClicked"
                 style="@style/Channel.CB" />
             <ImageButton
                 android:id="@+id/channel_hh"
                 android:contentDescription="@string/none"
+                android:onClick="onChannelClicked"
                 style="@style/Channel.HH" />
         </LinearLayout>
         <RelativeLayout

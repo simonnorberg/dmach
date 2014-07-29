@@ -90,8 +90,8 @@ public class SequencerFragment extends Fragment
     }
 
     @Override
-    public void onLayoutChange(View v, int left, int top, int right,
-                               int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+    public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft,
+                               int oldTop, int oldRight, int oldBottom) {
         if (mSequence != null) {
             mSequencerView.setChecked(mSequence);
         }
