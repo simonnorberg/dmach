@@ -103,6 +103,8 @@ public final class ProgressBarView extends View {
     }
 
     public void cleanup() {
-        mDispatcher.release();
+        if (mDispatcher != null) {
+            mDispatcher.release();
+        }
     }
 }
