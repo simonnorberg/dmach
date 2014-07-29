@@ -38,16 +38,18 @@ public final class SequencerView extends View {
         public void onStepChanged(int channel, int step);
     }
 
-    private static final int BACKGROUND_COLOR = Color.parseColor("#EBEBAF");
-    private static final int CHECKED_COLOR = Color.parseColor("#B02B2F");
-    private static final int UNCHECKED_COLOR = Color.parseColor("#C1BF87");
+    private static final int BACKGROUND = Color.parseColor("#EBEBAF");
+    private static final int CHECKED = Color.parseColor("#B02B2F");
+    private static final int UNCHECKED_LIGHT = Color.parseColor("#C1BF87");
+    private static final int UNCHECKED_DARK = Color.parseColor("#94926F");
     private static final int MARGIN = 3;
 
     private final ArrayList<Step> mSequence = new ArrayList<Step>();
     private OnStepChangedListener mListener;
-    private Paint mUncheckedPaint;
-    private Paint mCheckedPaint;
-    private boolean mChecked;
+    private Paint mUncheckedLight;
+    private Paint mUncheckedDark;
+    private Paint mChecked;
+    private boolean mIsChecked;
     private int mWidth;
     private int mHeight;
     private int mMargin;
@@ -106,13 +108,17 @@ public final class SequencerView extends View {
     }
 
     private void init() {
-        mUncheckedPaint = new Paint();
-        mUncheckedPaint.setColor(UNCHECKED_COLOR);
-        mUncheckedPaint.setStyle(Paint.Style.FILL);
+        mUncheckedLight = new Paint();
+        mUncheckedLight.setColor(UNCHECKED_LIGHT);
+        mUncheckedLight.setStyle(Paint.Style.FILL);
 
-        mCheckedPaint = new Paint();
-        mCheckedPaint.setColor(CHECKED_COLOR);
-        mCheckedPaint.setStyle(Paint.Style.FILL);
+        mUncheckedDark = new Paint();
+        mUncheckedDark.setColor(UNCHECKED_DARK);
+        mUncheckedDark.setStyle(Paint.Style.FILL);
+
+        mChecked = new Paint();
+        mChecked.setColor(CHECKED);
+        mChecked.setStyle(Paint.Style.FILL);
 
         mMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, MARGIN,
                 getResources().getDisplayMetrics());
@@ -146,7 +152,7 @@ public final class SequencerView extends View {
         int step = (int) (x / mStepWidthMargin);
         int index = channel * DMachActivity.STEPS + step;
 
-        mChecked = mSequence.get(index).checked;
+        mIsChecked = mSequence.get(index).checked;
         mSequence.get(index).toggle();
         notifyOnStepChanged(channel, step);
         invalidate();
@@ -161,7 +167,7 @@ public final class SequencerView extends View {
         int step = (int) (x / mStepWidthMargin);
         int index = channel * DMachActivity.STEPS + step;
 
-        if (mSequence.get(index).checked == mChecked) {
+        if (mSequence.get(index).checked == mIsChecked) {
             mSequence.get(index).toggle();
             notifyOnStepChanged(channel, step);
             invalidate();
@@ -174,9 +180,21 @@ public final class SequencerView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawColor(BACKGROUND_COLOR);
-        for (Step s : mSequence) {
-            canvas.drawRect(s.rect, s.checked ? mCheckedPaint : mUncheckedPaint);
+        canvas.drawColor(BACKGROUND);
+//        for (Step s : mSequence) {
+//            canvas.drawRect(s.rect, s.checked ? mChecked : mUncheckedLight);
+//        }
+        for (int i = 0; i < mSequence.size(); ++i) {
+            Step step = mSequence.get(i);
+            if (step.checked) {
+                canvas.drawRect(step.rect, mChecked);
+            } else {
+                if ((i % 8) < 4) {
+                    canvas.drawRect(step.rect, mUncheckedLight);
+                } else {
+                    canvas.drawRect(step.rect, mUncheckedDark);
+                }
+            }
         }
     }
 
