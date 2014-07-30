@@ -63,7 +63,7 @@ public class DMachActivity extends Activity {
     private static final String SAVED_SEQUENCE = "net.simno.dmach.SAVED_SEQUENCE";
     private static final String SAVED_CHANNELS = "net.simno.dmach.SAVED_CHANNELS";
     private static final String SAVED_TEMPO = "net.simno.dmach.SAVED_TEMPO";
-    private static final String SAVED_SHUFFLE= "net.simno.dmach.SAVED_SHUFFLE";
+    private static final String SAVED_SWING = "net.simno.dmach.SAVED_SWING";
     private static final String SAVED_CHANNEL = "net.simno.dmach.SAVED_CHANNEL";
 
     public static final int[] MASKS = {1, 2, 4};
@@ -77,9 +77,9 @@ public class DMachActivity extends Activity {
     private List<Channel> mChannels;
     private int mSelectedChannel;
     private int mTempo;
-    private int mShuffle;
+    private int mSwing;
     private TextView mTempoText;
-    private TextView mShuffleText;
+    private TextView mSwingText;
     private int mPdPatch;
     private PdService mPdService;
     private final Object mLock = new Object();
@@ -117,14 +117,14 @@ public class DMachActivity extends Activity {
         public void onStopTrackingTouch(SeekBar seekBar) {
         }
     };
-    private OnSeekBarChangeListener mShuffleListener = new OnSeekBarChangeListener() {
+    private OnSeekBarChangeListener mSwingListener = new OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
-            PdBase.sendFloat("shuffle", progress / 100.0f);
-            if (mShuffleText != null) {
-                mShuffleText.setText(" " + progress);
+            PdBase.sendFloat("swing", progress / 100.0f);
+            if (mSwingText != null) {
+                mSwingText.setText(" " + progress);
             }
-            mShuffle = progress;
+            mSwing = progress;
         }
         @Override
         public void onStartTrackingTouch(SeekBar seekBar) {
@@ -162,7 +162,7 @@ public class DMachActivity extends Activity {
         editor.putString(SAVED_SEQUENCE, mSequenceJson)
                 .putString(SAVED_CHANNELS, mChannelsJson)
                 .putInt(SAVED_TEMPO, mTempo)
-                .putInt(SAVED_SHUFFLE, mShuffle)
+                .putInt(SAVED_SWING, mSwing)
                 .putInt(SAVED_CHANNEL, mSelectedChannel)
                 .commit();
     }
@@ -183,7 +183,7 @@ public class DMachActivity extends Activity {
             initChannels();
         }
         mTempo = prefs.getInt(SAVED_TEMPO, 120);
-        mShuffle = prefs.getInt(SAVED_SHUFFLE, 0);
+        mSwing = prefs.getInt(SAVED_SWING, 0);
         mSelectedChannel = prefs.getInt(SAVED_CHANNEL, -1);
     }
 
@@ -285,7 +285,7 @@ public class DMachActivity extends Activity {
     }
 
     private void initPd() {
-        PdBase.sendFloat("shuffle", mShuffle / 100.0f);
+        PdBase.sendFloat("swing", mSwing / 100.0f);
         PdBase.sendFloat("tempo", mTempo);
         sendSequence();
         sendSettings();
@@ -408,7 +408,7 @@ public class DMachActivity extends Activity {
         alertDialog.show();
 
         ((TextView) layout.findViewById(R.id.tempo_text)).setTypeface(mTypeface);
-        ((TextView) layout.findViewById(R.id.shuffle_text)).setTypeface(mTypeface);
+        ((TextView) layout.findViewById(R.id.swing_text)).setTypeface(mTypeface);
 
         mTempoText = (TextView) layout.findViewById(R.id.tempo_value);
         mTempoText.setTypeface(mTypeface);
@@ -422,13 +422,13 @@ public class DMachActivity extends Activity {
         tempoSeekBar1.setProgress(mTempo % 10);
         tempoSeekBar1.setOnSeekBarChangeListener(mTempoListener);
 
-        mShuffleText = (TextView) layout.findViewById(R.id.shuffle_value);
-        mShuffleText.setTypeface(mTypeface);
-        mShuffleText.setText(" " + mShuffle);
+        mSwingText = (TextView) layout.findViewById(R.id.swing_value);
+        mSwingText.setTypeface(mTypeface);
+        mSwingText.setText(" " + mSwing);
 
-        SeekBar shuffleSeekBar = (SeekBar) layout.findViewById(R.id.shuffle_seekbar);
-        shuffleSeekBar.setProgress(mShuffle);
-        shuffleSeekBar.setOnSeekBarChangeListener(mShuffleListener);
+        SeekBar swingSeekBar = (SeekBar) layout.findViewById(R.id.swing_seekbar);
+        swingSeekBar.setProgress(mSwing);
+        swingSeekBar.setOnSeekBarChangeListener(mSwingListener);
     }
 
     public void onResetClicked(View view) {

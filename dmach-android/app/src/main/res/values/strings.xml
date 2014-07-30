@@ -19,5 +19,5 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     <string name="app_name">DMach</string>
     <string name="none"></string>
     <string name="tempo">Tempo:</string>
-    <string name="shuffle">Shuffle:</string>
+    <string name="swing">Swing:</string>
 </resources>
