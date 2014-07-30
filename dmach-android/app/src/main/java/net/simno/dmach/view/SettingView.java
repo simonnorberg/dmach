@@ -20,36 +20,26 @@ package net.simno.dmach.view;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
-import android.graphics.Typeface;
+import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.MotionEvent;
-import android.view.View;
 
 import net.simno.dmach.model.Setting;
 
-public final class SettingView extends View {
+public final class SettingView extends PdView {
 
     public interface OnSettingChangedListener {
         public void onSettingChanged(float x, float y);
     }
 
-    private static final int BACKGROUND_COLOR = Color.parseColor("#E9950A");
-    private static final int CIRCLE_COLOR = Color.parseColor("#EBEBAF");
-    private static final int TEXT_COLOR = Color.parseColor("#302E2C");
     private static final int CIRCLE_RADIUS = 18;
-    private static final int CIRCLE_STROKE_WIDTH = 4;
-    private static final int TEXT_SIZE = 22;
+    private static final int CIRCLE_COLOR = Color.parseColor("#EBEBAF");
+    private static final int BACKGROUND_COLOR = Color.parseColor("#E9950A");
 
     private float mCircleRadius;
-    private float mCircleStrokeWidth;
-    private float mTextSize;
-    private Paint mCirclePaint;
-    private Paint mTextPaint;
     private OnSettingChangedListener mListener;
     private Rect mHBounds = new Rect();
     private Rect mVBounds = new Rect();
@@ -65,104 +55,41 @@ public final class SettingView extends View {
 
     public SettingView(Context context) {
         super(context);
-        init();
     }
 
     public SettingView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
     }
 
     public SettingView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init();
     }
 
-    private void init() {
-        DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
-        mCircleRadius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, CIRCLE_RADIUS, dm);
-        mCircleStrokeWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, CIRCLE_STROKE_WIDTH, dm);
-        mTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE, dm);
-
-        mCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mCirclePaint.setColor(CIRCLE_COLOR);
-        mCirclePaint.setStrokeWidth(mCircleStrokeWidth);
-        mCirclePaint.setStyle(Paint.Style.STROKE);
-
-        mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mTextPaint.setColor(TEXT_COLOR);
-        mTextPaint.setTextSize(mTextSize);
-        mTextPaint.setStyle(Paint.Style.FILL);
-        Typeface saxmono = Typeface.createFromAsset(getContext().getAssets(), "fonts/saxmono.ttf");
-        mTextPaint.setTypeface(saxmono);
+    @Override
+    protected void init() {
+        super.init();
+        mCircleRadius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, CIRCLE_RADIUS, mDm);
+        mShapePaint.setColor(CIRCLE_COLOR);
     }
 
-    private float getMinX() {
-        return mCircleRadius + (mCircleStrokeWidth / 2);
+    @Override
+    protected float getMinX() {
+        return mCircleRadius + (mShapeStrokeWidth / 2f);
     }
 
-    private float getMinY() {
+    @Override
+    protected float getMinY() {
         return getMinX();
     }
 
-    private float getMaxX() {
+    @Override
+    protected float getMaxX() {
         return getWidth() - getMinX();
     }
 
-    private float getMaxY() {
+    @Override
+    protected float getMaxY() {
         return getHeight() - getMinY();
-    }
-
-    private float getValidX(float x) {
-        float min = getMinX();
-        if (x < min) {
-            return min;
-        }
-        float max = getMaxX();
-        if (x > max) {
-            return max;
-        }
-        return x;
-    }
-
-    private float getValidY(float y) {
-        float min = getMinY();
-        if (y < min) {
-            return min;
-        }
-        float max = getMaxY();
-        if (y > max) {
-            return max;
-        }
-        return y;
-    }
-
-    private float pdToX(float pdX) {
-        float width = getMaxX() - getMinX();
-        return (pdX * width) + getMinX();
-    }
-
-    private float pdToY(float pdY) {
-        float height = getMaxY() - getMinY();
-        return ((1 - pdY) * height) + getMinY();
-    }
-
-    private float xToPd(float x) {
-        float width = getMaxX() - getMinX();
-        float pdX = x - getMinX();
-        if (pdX > 0) {
-            pdX /= width;
-        }
-        return pdX;
-    }
-
-    private float yToPd(float y) {
-        float height = getMaxY() - getMinY();
-        float pdY = y - getMinY();
-        if (pdY > 0) {
-            pdY /= height;
-        }
-        return 1 - pdY;
     }
 
     private void notifyOnSettingChanged() {
@@ -182,12 +109,12 @@ public final class SettingView extends View {
         mVText = setting.vText;
 
         mTextPaint.getTextBounds(mHText, 0, mHText.length(), mHBounds);
-        mOriginX = (float) ((getWidth() / 2.0) - mHBounds.centerX());
+        mOriginX = (getWidth() / 2f) - mHBounds.centerX();
         mOriginY = getHeight() - (mTextSize * 0.4f);
 
         mTextPaint.getTextBounds(mVText, 0, mVText.length(), mVBounds);
         mPath.reset();
-        mPath.moveTo(0, (float) ((getHeight() / 2.0) + mVBounds.centerX()));
+        mPath.moveTo(0, (getHeight() / 2f) + mVBounds.centerX());
         mPath.lineTo(0, 0);
         mHOffset = 0;
         mVOffset = (int) mTextSize;
@@ -198,13 +125,13 @@ public final class SettingView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawColor(BACKGROUND_COLOR);
-        if (!mHText.isEmpty()) {
+        if (!TextUtils.isEmpty(mHText)) {
             canvas.drawText(mHText, mOriginX, mOriginY, mTextPaint);
         }
-        if (!mVText.isEmpty()) {
+        if (!TextUtils.isEmpty(mVText)) {
             canvas.drawTextOnPath(mVText, mPath, mHOffset, mVOffset, mTextPaint);
         }
-        canvas.drawCircle(mX, mY, mCircleRadius, mCirclePaint);
+        canvas.drawCircle(mX, mY, mCircleRadius, mShapePaint);
     }
 
     @Override

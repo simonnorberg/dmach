@@ -27,9 +27,11 @@ public final class Channel implements Parcelable {
     private String mName;
     private List<Setting> mSettings;
     private int mSelectedSetting;
+    private float mPan;
 
-    public Channel(String name) {
+    public Channel(String name, float pan) {
         mName = name;
+        mPan = pan;
         mSettings = new ArrayList<Setting>();
     }
 
@@ -43,6 +45,14 @@ public final class Channel implements Parcelable {
 
     public String getName() {
         return mName;
+    }
+
+    public float getPan() {
+        return mPan;
+    }
+
+    public void setPan(float pan) {
+        mPan = pan;
     }
 
     public int getSelection() {
@@ -97,6 +107,7 @@ public final class Channel implements Parcelable {
     @Override
     public void writeToParcel(Parcel out, int flags) {
         out.writeString(mName);
+        out.writeFloat(mPan);
         out.writeList(mSettings);
         out.writeInt(mSelectedSetting);
     }
@@ -109,6 +120,7 @@ public final class Channel implements Parcelable {
      */
     private void readFromParcel(Parcel in) {
         mName = in.readString();
+        mPan = in.readFloat();
         in.readList(mSettings, Setting.class.getClassLoader());
         mSelectedSetting = in.readInt();
     }

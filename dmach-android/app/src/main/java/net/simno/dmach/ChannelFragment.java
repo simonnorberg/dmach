@@ -19,6 +19,7 @@ package net.simno.dmach;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,17 +29,20 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import net.simno.dmach.model.Channel;
+import net.simno.dmach.view.PanView;
+import net.simno.dmach.view.PanView.OnPanChangedListener;
 import net.simno.dmach.view.SettingView;
 import net.simno.dmach.view.SettingView.OnSettingChangedListener;
 
 import org.puredata.core.PdBase;
 
 public class ChannelFragment extends Fragment
-        implements OnClickListener, OnSettingChangedListener, OnLayoutChangeListener {
+        implements OnClickListener, OnPanChangedListener, OnSettingChangedListener {
 
     private static final String TAG_CHANNEL = "net.simno.dmach.TAG_CHANNEL";
 
     private Channel mChannel;
+    private PanView mPanView;
     private SettingView mSettingView;
 
     public ChannelFragment() {
@@ -68,10 +72,28 @@ public class ChannelFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_channel, container, false);
+        mPanView = (PanView) view.findViewById(R.id.pan_view);
         mSettingView = (SettingView) view.findViewById(R.id.setting_view);
+
         if (mChannel != null) {
+            mPanView.addOnLayoutChangeListener(new OnLayoutChangeListener() {
+                @Override
+                public void onLayoutChange(View v, int left, int top, int right, int bottom,
+                                           int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                    mPanView.setPan(mChannel.getPan());
+                }
+            });
+            mPanView.setOnPanChangedListener(this);
+
+            mSettingView.addOnLayoutChangeListener(new OnLayoutChangeListener() {
+                @Override
+                public void onLayoutChange(View v, int left, int top, int right, int bottom,
+                                           int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                    mSettingView.setSetting(mChannel.getSetting());
+                }
+            });
             mSettingView.setOnSettingChangedListener(this);
-            mSettingView.addOnLayoutChangeListener(this);
+
             LinearLayout settings = (LinearLayout) view.findViewById(R.id.setting_container);
             int selected = mChannel.getSelection();
             int count = mChannel.getCount();
@@ -85,6 +107,7 @@ public class ChannelFragment extends Fragment
                 }
             }
         }
+
         return view;
     }
 
@@ -105,16 +128,17 @@ public class ChannelFragment extends Fragment
     }
 
     @Override
+    public void onPanChanged(float pan) {
+        String name = mChannel.getName();
+        PdBase.sendFloat(name + "p", pan);
+        mChannel.setPan(pan);
+    }
+
+    @Override
     public void onSettingChanged(float x, float y) {
         String name = mChannel.getName();
         PdBase.sendList(name, new Object[]{mChannel.getSetting().hIndex, x});
         PdBase.sendList(name, new Object[]{mChannel.getSetting().vIndex, y});
         mChannel.getSetting().setXY(x, y);
-    }
-
-    @Override
-    public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft,
-                               int oldTop, int oldRight, int oldBottom) {
-        mSettingView.setSetting(mChannel.getSetting());
     }
 }

@@ -190,14 +190,14 @@ public class DMachActivity extends Activity {
     private void initChannels() {
         mChannels = new ArrayList<Channel>();
 
-        Channel bd = new Channel("bd");
+        Channel bd = new Channel("bd", 0f);
         bd.addSetting(new Setting("Pitch A", "Gain", .4f, .49f, 0, 7));
         bd.addSetting(new Setting("Low-pass", "Square", .7f, 0, 5, 3));
         bd.addSetting(new Setting("Pitch B", "Curve Time", .4f, .4f, 1, 2));
         bd.addSetting(new Setting("Decay", "Noise Level", .49f, .7f, 6, 4));
         mChannels.add(bd);
 
-        Channel sd = new Channel("sd");
+        Channel sd = new Channel("sd", 0.25f);
         sd.addSetting(new Setting("Pitch", "Gain", .49f, .45f, 0, 9));
         sd.addSetting(new Setting("Low-pass", "Noise", .6f, .8f, 7, 1));
         sd.addSetting(new Setting("X-fade", "Attack", .35f, .55f, 8, 6));
@@ -205,24 +205,24 @@ public class DMachActivity extends Activity {
         sd.addSetting(new Setting("Band-pass", "Band-pass Q", .7f, .6f, 2, 3));
         mChannels.add(sd);
 
-        Channel cp = new Channel("cp");
+        Channel cp = new Channel("cp", 0.5f);
         cp.addSetting(new Setting("Pitch", "Gain", .55f, .3f, 0, 7));
         cp.addSetting(new Setting("Delay 1", "Delay 2", .3f, .3f, 4, 5));
         cp.addSetting(new Setting("Decay", "Filter Q", .59f, .2f, 6, 1));
         cp.addSetting(new Setting("Filter 1", "Filter 2", .9f, .15f, 2, 3));
         mChannels.add(cp);
 
-        Channel tt = new Channel("tt");
+        Channel tt = new Channel("tt", 0.75f);
         tt.addSetting(new Setting("Pitch", "Gain", .49f, .49f, 0, 1));
         mChannels.add(tt);
 
-        Channel cb = new Channel("cb");
+        Channel cb = new Channel("cb", 0.9f);
         cb.addSetting(new Setting("Pitch", "Gain", .3f, .49f, 0, 5));
         cb.addSetting(new Setting("Decay 1", "Decay 2", .1f, .75f, 1, 2));
         cb.addSetting(new Setting("Vcf", "Vcf Q", .3f, 0, 3, 4));
         mChannels.add(cb);
 
-        Channel hh = new Channel("hh");
+        Channel hh = new Channel("hh", 1f);
         hh.addSetting(new Setting("Pitch", "Gain", .45f, .4f, 0, 11));
         hh.addSetting(new Setting("Low-pass", "Snap", .8f, .1f, 10, 5));
         hh.addSetting(new Setting("Noise Pitch", "Noise", .55f, .6f, 4, 3));
@@ -300,8 +300,9 @@ public class DMachActivity extends Activity {
 
     private void sendSettings() {
         for (Channel channel : mChannels) {
+            String name = channel.getName();
+            PdBase.sendFloat(name + "p", channel.getPan());
             for (Setting setting : channel.getSettings()) {
-                String name = channel.getName();
                 PdBase.sendList(name, new Object[]{setting.hIndex, setting.x});
                 PdBase.sendList(name, new Object[]{setting.vIndex, setting.y});
             }

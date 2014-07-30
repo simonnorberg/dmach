@@ -50,8 +50,20 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             android:contentDescription="@string/none"
             style="@style/Setting.6" />
     </LinearLayout>
-    <net.simno.dmach.view.SettingView
-        android:id="@+id/setting_view"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_width="match_parent" />
+        android:orientation="horizontal" >
+        <net.simno.dmach.view.SettingView
+            android:id="@+id/setting_view"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:layout_marginRight="3dp" />
+        <net.simno.dmach.view.PanView
+            android:id="@+id/pan_view"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
 </LinearLayout>
