@@ -23,6 +23,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -62,6 +63,7 @@ public final class ProgressBarView extends View {
     }
 
     private void init() {
+        Log.v("ProgressBarView", "INIT");
         mMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, MARGIN,
                 getResources().getDisplayMetrics());
 

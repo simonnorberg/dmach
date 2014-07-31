@@ -35,10 +35,12 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -65,6 +67,7 @@ public class DMachActivity extends Activity {
     private static final String SAVED_TEMPO = "net.simno.dmach.SAVED_TEMPO";
     private static final String SAVED_SWING = "net.simno.dmach.SAVED_SWING";
     private static final String SAVED_CHANNEL = "net.simno.dmach.SAVED_CHANNEL";
+    private static final String SAVED_PROGRESS = "net.simno.dmach.SAVED_PROGRESS";
 
     public static final int[] MASKS = {1, 2, 4};
     public static final int GROUPS = 2;
@@ -74,6 +77,7 @@ public class DMachActivity extends Activity {
     private Typeface mTypeface;
     private int[] mSequence;
     private boolean mIsRunning;
+    private boolean mShowProgress;
     private List<Channel> mChannels;
     private int mSelectedChannel;
     private int mTempo;
@@ -164,6 +168,7 @@ public class DMachActivity extends Activity {
                 .putInt(SAVED_TEMPO, mTempo)
                 .putInt(SAVED_SWING, mSwing)
                 .putInt(SAVED_CHANNEL, mSelectedChannel)
+                .putBoolean(SAVED_PROGRESS, mShowProgress)
                 .commit();
     }
 
@@ -185,6 +190,7 @@ public class DMachActivity extends Activity {
         mTempo = prefs.getInt(SAVED_TEMPO, 120);
         mSwing = prefs.getInt(SAVED_SWING, 0);
         mSelectedChannel = prefs.getInt(SAVED_CHANNEL, -1);
+        mShowProgress = prefs.getBoolean(SAVED_PROGRESS, true);
     }
 
     private void initChannels() {
@@ -246,7 +252,7 @@ public class DMachActivity extends Activity {
             }
         } else {
             getFragmentManager().beginTransaction().add(R.id.fragment_container,
-                    SequencerFragment.newInstance(mSequence)).commit();
+                    SequencerFragment.newInstance(mSequence, mShowProgress)).commit();
         }
     }
 
@@ -374,7 +380,8 @@ public class DMachActivity extends Activity {
                     ChannelFragment.newInstance(mChannels.get(mSelectedChannel)));
             transaction.commit();
         } else {
-            transaction.replace(R.id.fragment_container, SequencerFragment.newInstance(mSequence));
+            transaction.replace(R.id.fragment_container,
+                    SequencerFragment.newInstance(mSequence, mShowProgress));
             transaction.commit();
             getFragmentManager().executePendingTransactions();
         }
@@ -397,18 +404,9 @@ public class DMachActivity extends Activity {
         configButton.setSelected(true);
         LayoutInflater inflater = LayoutInflater.from(this);
         View layout = inflater.inflate(R.layout.dialog_config, null);
-        AlertDialog alertDialog = new AlertDialog.Builder(this).setView(layout).create();
-        alertDialog.setCanceledOnTouchOutside(true);
-        alertDialog.setOnDismissListener(new OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                configButton.setSelected(false);
-            }
-        });
-        alertDialog.show();
 
-        ((TextView) layout.findViewById(R.id.tempo_text)).setTypeface(mTypeface);
-        ((TextView) layout.findViewById(R.id.swing_text)).setTypeface(mTypeface);
+        ((TextView) layout.findViewById(R.id.tempo_label)).setTypeface(mTypeface);
+        ((TextView) layout.findViewById(R.id.swing_label)).setTypeface(mTypeface);
 
         mTempoText = (TextView) layout.findViewById(R.id.tempo_value);
         mTempoText.setTypeface(mTypeface);
@@ -429,6 +427,32 @@ public class DMachActivity extends Activity {
         SeekBar swingSeekBar = (SeekBar) layout.findViewById(R.id.swing_seekbar);
         swingSeekBar.setProgress(mSwing);
         swingSeekBar.setOnSeekBarChangeListener(mSwingListener);
+
+        Switch progressBarSwitch = (Switch) layout.findViewById(R.id.progress_bar_switch);
+        progressBarSwitch.setTypeface(mTypeface);
+        progressBarSwitch.setTextColor(mSwingText.getCurrentTextColor());
+        progressBarSwitch.setChecked(mShowProgress);
+        progressBarSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (mShowProgress != isChecked) {
+                    mShowProgress = isChecked;
+                    if (mSelectedChannel == -1) {
+                        setFragment();
+                    }
+                }
+            }
+        });
+
+        AlertDialog alertDialog = new AlertDialog.Builder(this).setView(layout).create();
+        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                configButton.setSelected(false);
+            }
+        });
+        alertDialog.show();
     }
 
     public void onResetClicked(View view) {

@@ -19,7 +19,6 @@ package net.simno.dmach;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,7 +38,7 @@ import org.puredata.core.PdBase;
 public class ChannelFragment extends Fragment
         implements OnClickListener, OnPanChangedListener, OnSettingChangedListener {
 
-    private static final String TAG_CHANNEL = "net.simno.dmach.TAG_CHANNEL";
+    private static final String PARAM_CHANNEL = "channel";
 
     private Channel mChannel;
     private PanView mPanView;
@@ -52,7 +51,7 @@ public class ChannelFragment extends Fragment
     public static ChannelFragment newInstance(Channel channel) {
         ChannelFragment pf = new ChannelFragment();
         Bundle args = new Bundle();
-        args.putParcelable(TAG_CHANNEL, channel);
+        args.putParcelable(PARAM_CHANNEL, channel);
         pf.setArguments(args);
         return pf;
     }
@@ -64,7 +63,7 @@ public class ChannelFragment extends Fragment
             savedInstanceState = getArguments();
         }
         if (savedInstanceState != null) {
-            mChannel = savedInstanceState.getParcelable(TAG_CHANNEL);
+            mChannel = savedInstanceState.getParcelable(PARAM_CHANNEL);
         }
     }
 

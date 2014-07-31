@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     android:layout_height="wrap_content"
     android:layout_width="wrap_content">
     <TextView
-        android:id="@+id/tempo_text"
+        android:id="@+id/tempo_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="12dp"
@@ -30,13 +30,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:layout_toRightOf="@+id/tempo_text" />
+        android:layout_toRightOf="@+id/tempo_label" />
     <SeekBar
         android:id="@+id/tempo_seekbar_10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
-        android:layout_below="@+id/tempo_text"
+        android:layout_below="@+id/tempo_label"
         android:max="23" />
     <SeekBar
         android:id="@+id/tempo_seekbar_1"
@@ -48,7 +48,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:layout_below="@+id/tempo_seekbar_10"
         android:max="9" />
     <TextView
-        android:id="@+id/swing_text"
+        android:id="@+id/swing_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="12dp"
@@ -59,12 +59,19 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tempo_seekbar_1"
-        android:layout_toRightOf="@+id/swing_text" />
+        android:layout_toRightOf="@+id/swing_label" />
     <SeekBar
         android:id="@+id/swing_seekbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
-        android:layout_below="@+id/swing_text"
+        android:layout_below="@+id/swing_label"
         android:max="50" />
+    <Switch
+        android:id="@+id/progress_bar_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:layout_below="@+id/swing_seekbar"
+        android:text="@string/progress_bar" />
 </RelativeLayout>

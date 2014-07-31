@@ -20,4 +20,5 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     <string name="none"></string>
     <string name="tempo">Tempo:</string>
     <string name="swing">Swing:</string>
+    <string name="progress_bar">Progress bar</string>
 </resources>

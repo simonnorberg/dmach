@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnLayoutChangeListener;
+import android.widget.RelativeLayout;
 
 import net.simno.dmach.view.ProgressBarView;
 import net.simno.dmach.view.SequencerView;
@@ -37,15 +38,19 @@ public class SequencerFragment extends Fragment
         super();
     }
 
-    private static final String TAG_SEQUENCER = "net.simno.dmach.TAG_SEQUENCER";
+    private static final String PARAM_SEQUENCE = "sequence";
+    private static final String PARAM_PROGRESS = "progress";
 
     private int[] mSequence;
+    private boolean mShowProgress;
     private SequencerView mSequencerView;
+    private ProgressBarView mProgressBarView;
 
-    public static SequencerFragment newInstance(int[] sequence) {
+    public static SequencerFragment newInstance(int[] sequence, boolean showProgress) {
         SequencerFragment sf = new SequencerFragment();
         Bundle args = new Bundle();
-        args.putIntArray(TAG_SEQUENCER, sequence);
+        args.putIntArray(PARAM_SEQUENCE, sequence);
+        args.putBoolean(PARAM_PROGRESS, showProgress);
         sf.setArguments(args);
         return sf;
     }
@@ -57,7 +62,8 @@ public class SequencerFragment extends Fragment
             savedInstanceState = getArguments();
         }
         if (savedInstanceState != null) {
-            mSequence = savedInstanceState.getIntArray(TAG_SEQUENCER);
+            mSequence = savedInstanceState.getIntArray(PARAM_SEQUENCE);
+            mShowProgress = savedInstanceState.getBoolean(PARAM_PROGRESS);
         }
     }
 
@@ -65,17 +71,24 @@ public class SequencerFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sequencer, container, false);
+
         mSequencerView = (SequencerView) view.findViewById(R.id.sequencer_view);
         mSequencerView.setOnStepChangedListener(this);
         mSequencerView.addOnLayoutChangeListener(this);
+
+        if (mShowProgress) {
+            RelativeLayout layout = (RelativeLayout)  view.findViewById(R.id.sequencer_layout);
+            mProgressBarView = new ProgressBarView(getActivity());
+            layout.addView(mProgressBarView);
+        }
+
         return view;
     }
 
     @Override
     public void onDestroyView() {
-        ProgressBarView p = ((ProgressBarView) getActivity().findViewById(R.id.progress_bar_view));
-        if (p != null) {
-            p.cleanup();
+        if (mProgressBarView != null) {
+            mProgressBarView.cleanup();
         }
         super.onDestroyView();
     }

@@ -16,14 +16,11 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sequencer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <net.simno.dmach.view.SequencerView
         android:id="@+id/sequencer_view"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent" />
-    <net.simno.dmach.view.ProgressBarView
-        android:id="@+id/progress_bar_view"
         android:layout_height="match_parent"
         android:layout_width="match_parent" />
 </RelativeLayout>
