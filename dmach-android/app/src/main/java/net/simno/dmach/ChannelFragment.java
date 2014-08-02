@@ -27,7 +27,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import net.simno.dmach.model.Channel;
-import net.simno.dmach.view.ChannelButton;
+import net.simno.dmach.view.CustomFontButton;
 import net.simno.dmach.view.PanView;
 import net.simno.dmach.view.PanView.OnPanChangedListener;
 import net.simno.dmach.view.SettingView;
@@ -97,7 +97,7 @@ public class ChannelFragment extends Fragment
             int selected = mChannel.getSelection();
             int count = mChannel.getCount();
             for (int i = 0; i < settings.getChildCount(); ++i) {
-                ChannelButton ib = (ChannelButton) settings.getChildAt(i);
+                CustomFontButton ib = (CustomFontButton) settings.getChildAt(i);
                 ib.setOnClickListener(this);
                 if (i < count) {
                     ib.setSelected(i == selected);
@@ -112,11 +112,11 @@ public class ChannelFragment extends Fragment
 
     @Override
     public void onClick(View view) {
-        ChannelButton button = (ChannelButton) view;
+        CustomFontButton button = (CustomFontButton) view;
         LinearLayout layout = (LinearLayout) button.getParent();
         int index = layout.indexOfChild(button);
         if (index != mChannel.getSelection()) {
-            ChannelButton oldButton = (ChannelButton) layout.getChildAt(mChannel.getSelection());
+            CustomFontButton oldButton = (CustomFontButton) layout.getChildAt(mChannel.getSelection());
             if (oldButton != null) {
                 oldButton.setSelected(false);
             }

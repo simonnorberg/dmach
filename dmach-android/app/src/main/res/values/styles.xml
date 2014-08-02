@@ -53,7 +53,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginRight">@dimen/margin_logo</item>
-        <item name="android:layout_centerVertical">true</item>
+        <item name="android:gravity">bottom</item> <!--this is weird-->
         <item name="android:background">@drawable/rect_colonial</item>
         <item name="android:textColor">@color/dune</item>
         <item name="android:textSize">@dimen/text_size_logo</item>

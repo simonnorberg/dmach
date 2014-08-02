@@ -47,7 +47,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             android:contentDescription="@string/none"
             android:onClick="onSaveClicked"
             style="@style/Control.Save" />
-        <net.simno.dmach.view.ChannelButton
+        <net.simno.dmach.view.CustomFontButton
             android:contentDescription="@string/none"
             android:onClick="onLogoClicked"
             style="@style/Logo" />
@@ -64,32 +64,32 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             android:layout_width="@dimen/button_small_width"
             android:layout_marginRight="@dimen/margin"
             android:orientation="vertical">
-            <net.simno.dmach.view.ChannelButton
+            <net.simno.dmach.view.CustomFontButton
                 android:id="@+id/channel_bd"
                 android:contentDescription="@string/none"
                 android:onClick="onChannelClicked"
                 style="@style/Channel.BD" />
-            <net.simno.dmach.view.ChannelButton
+            <net.simno.dmach.view.CustomFontButton
                 android:id="@+id/channel_sd"
                 android:contentDescription="@string/none"
                 android:onClick="onChannelClicked"
                 style="@style/Channel.SD" />
-            <net.simno.dmach.view.ChannelButton
+            <net.simno.dmach.view.CustomFontButton
                 android:id="@+id/channel_cp"
                 android:contentDescription="@string/none"
                 android:onClick="onChannelClicked"
                 style="@style/Channel.CP" />
-            <net.simno.dmach.view.ChannelButton
+            <net.simno.dmach.view.CustomFontButton
                 android:id="@+id/channel_tt"
                 android:contentDescription="@string/none"
                 android:onClick="onChannelClicked"
                 style="@style/Channel.TT" />
-            <net.simno.dmach.view.ChannelButton
+            <net.simno.dmach.view.CustomFontButton
                 android:id="@+id/channel_cb"
                 android:contentDescription="@string/none"
                 android:onClick="onChannelClicked"
                 style="@style/Channel.CB" />
-            <net.simno.dmach.view.ChannelButton
+            <net.simno.dmach.view.CustomFontButton
                 android:id="@+id/channel_hh"
                 android:contentDescription="@string/none"
                 android:onClick="onChannelClicked"

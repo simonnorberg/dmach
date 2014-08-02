@@ -21,17 +21,17 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.Button;
 
-public class ChannelButton extends Button {
-    public ChannelButton(Context context) {
+public class CustomFontButton extends Button {
+    public CustomFontButton(Context context) {
         super(context);
     }
 
-    public ChannelButton(Context context, AttributeSet attrs) {
+    public CustomFontButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         CustomFontHelper.setCustomFont(this, context, attrs);
     }
 
-    public ChannelButton(Context context, AttributeSet attrs, int defStyle) {
+    public CustomFontButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         CustomFontHelper.setCustomFont(this, context, attrs);
     }

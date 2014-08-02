@@ -17,12 +17,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
 <resources>
     <dimen name="margin">3dp</dimen>
-    <dimen name="margin_control">4dp</dimen>
+    <dimen name="margin_control">6dp</dimen>
     <dimen name="margin_logo">10dp</dimen>
     <dimen name="margin_dialog">10dp</dimen>
 
-    <dimen name="button_small_width">44dp</dimen>
-    <dimen name="button_large_width">56dp</dimen>
+    <dimen name="button_small_width">48dp</dimen>
+    <dimen name="button_large_width">64dp</dimen>
 
     <dimen name="shape_stroke_width">4dp</dimen>
     <dimen name="circle_radius">16dp</dimen>

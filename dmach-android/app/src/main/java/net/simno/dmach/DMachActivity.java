@@ -49,7 +49,8 @@ import com.google.gson.reflect.TypeToken;
 
 import net.simno.dmach.model.Channel;
 import net.simno.dmach.model.Setting;
-import net.simno.dmach.view.ChannelButton;
+import net.simno.dmach.view.CustomFontButton;
+import net.simno.dmach.view.FontCache;
 
 import org.puredata.android.io.AudioParameters;
 import org.puredata.android.service.PdService;
@@ -77,6 +78,8 @@ public class DMachActivity extends Activity {
     public static final int STEPS = 16;
 
     private Typeface mTypeface;
+    private int mPlayDrawableId;
+    private int mStopDrawableId;
     private int[] mSequence;
     private boolean mIsRunning;
     private boolean mShowProgress;
@@ -241,12 +244,28 @@ public class DMachActivity extends Activity {
     }
 
     private void initGui() {
-        mTypeface = Typeface.createFromAsset(getAssets(), "fonts/saxmono.ttf");
+        mTypeface = FontCache.get("fonts/saxmono.ttf", this);
+
+        int screenWidthDp = getResources().getConfiguration().screenWidthDp;
+        if (screenWidthDp >= 1200) {
+            mPlayDrawableId = R.drawable.ic_control_play_xlarge;
+            mStopDrawableId = R.drawable.ic_control_stop_xlarge;
+        } else if (screenWidthDp >= 800) {
+            mPlayDrawableId = R.drawable.ic_control_play_large;
+            mStopDrawableId = R.drawable.ic_control_stop_large;
+        } else if (screenWidthDp >= 500) {
+            mPlayDrawableId = R.drawable.ic_control_play_normal;
+            mStopDrawableId = R.drawable.ic_control_stop_normal;
+        } else {
+            mPlayDrawableId = R.drawable.ic_control_play_small;
+            mStopDrawableId = R.drawable.ic_control_stop_small;
+        }
+
         setContentView(R.layout.activity_dmach);
 
         if (mSelectedChannel != -1) {
             LinearLayout channels = (LinearLayout) findViewById(R.id.channel_container);
-            ChannelButton channel = (ChannelButton) channels.getChildAt(mSelectedChannel);
+            CustomFontButton channel = (CustomFontButton) channels.getChildAt(mSelectedChannel);
             if (channel != null) {
                 channel.setSelected(true);
                 getFragmentManager().beginTransaction().add(R.id.fragment_container,
@@ -393,10 +412,10 @@ public class DMachActivity extends Activity {
         ImageButton playButton = (ImageButton) view;
         if (mIsRunning) {
             PdBase.sendBang("stop");
-            playButton.setImageResource(R.drawable.control_play);
+            playButton.setImageResource(mPlayDrawableId);
         } else {
             PdBase.sendBang("play");
-            playButton.setImageResource(R.drawable.control_stop);
+            playButton.setImageResource(mStopDrawableId);
         }
         mIsRunning = !mIsRunning;
     }
@@ -470,7 +489,7 @@ public class DMachActivity extends Activity {
     }
 
     public void onChannelClicked(View view) {
-        ChannelButton channel = (ChannelButton) view;
+        CustomFontButton channel = (CustomFontButton) view;
         LinearLayout channels = (LinearLayout) channel.getParent();
         int index = channels.indexOfChild(channel);
 

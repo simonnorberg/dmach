@@ -25,27 +25,27 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:layout_width="@dimen/button_small_width"
         android:layout_marginRight="@dimen/margin"
         android:orientation="vertical">
-        <net.simno.dmach.view.ChannelButton
+        <net.simno.dmach.view.CustomFontButton
             android:id="@+id/setting_1"
             android:contentDescription="@string/none"
             style="@style/Setting.1" />
-        <net.simno.dmach.view.ChannelButton
+        <net.simno.dmach.view.CustomFontButton
             android:id="@+id/setting_2"
             android:contentDescription="@string/none"
             style="@style/Setting.2" />
-        <net.simno.dmach.view.ChannelButton
+        <net.simno.dmach.view.CustomFontButton
             android:id="@+id/setting_3"
             android:contentDescription="@string/none"
             style="@style/Setting.3" />
-        <net.simno.dmach.view.ChannelButton
+        <net.simno.dmach.view.CustomFontButton
             android:id="@+id/setting_4"
             android:contentDescription="@string/none"
             style="@style/Setting.4" />
-        <net.simno.dmach.view.ChannelButton
+        <net.simno.dmach.view.CustomFontButton
             android:id="@+id/setting_5"
             android:contentDescription="@string/none"
             style="@style/Setting.5" />
-        <net.simno.dmach.view.ChannelButton
+        <net.simno.dmach.view.CustomFontButton
             android:id="@+id/setting_6"
             android:contentDescription="@string/none"
             style="@style/Setting.6" />
