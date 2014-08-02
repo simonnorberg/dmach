@@ -35,6 +35,7 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -48,6 +49,7 @@ import com.google.gson.reflect.TypeToken;
 
 import net.simno.dmach.model.Channel;
 import net.simno.dmach.model.Setting;
+import net.simno.dmach.view.ChannelButton;
 
 import org.puredata.android.io.AudioParameters;
 import org.puredata.android.service.PdService;
@@ -244,7 +246,7 @@ public class DMachActivity extends Activity {
 
         if (mSelectedChannel != -1) {
             LinearLayout channels = (LinearLayout) findViewById(R.id.channel_container);
-            ImageButton channel = (ImageButton) channels.getChildAt(mSelectedChannel);
+            ChannelButton channel = (ChannelButton) channels.getChildAt(mSelectedChannel);
             if (channel != null) {
                 channel.setSelected(true);
                 getFragmentManager().beginTransaction().add(R.id.fragment_container,
@@ -461,8 +463,14 @@ public class DMachActivity extends Activity {
         setFragment();
     }
 
+    public void onSaveClicked(View view) {
+    }
+
+    public void onLogoClicked(View view) {
+    }
+
     public void onChannelClicked(View view) {
-        ImageButton channel = (ImageButton) view;
+        ChannelButton channel = (ChannelButton) view;
         LinearLayout channels = (LinearLayout) channel.getParent();
         int index = channels.indexOfChild(channel);
 
@@ -470,7 +478,7 @@ public class DMachActivity extends Activity {
             mSelectedChannel = -1;
             channel.setSelected(false);
         } else {
-            ImageButton oldChannel = (ImageButton) channels.getChildAt(mSelectedChannel);
+            Button oldChannel = (Button) channels.getChildAt(mSelectedChannel);
             if (oldChannel != null) {
                 oldChannel.setSelected(false);
             }

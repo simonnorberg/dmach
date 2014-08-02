@@ -13,11 +13,11 @@
    height="108"
    id="svg30807"
    version="1.1"
-   inkscape:version="0.48.4 r9939"
-   sodipodi:docname="reset.svg"
-   inkscape:export-filename="/home/simon/android/dmach/DMach/res/drawable-mdpi/reset.png"
-   inkscape:export-xdpi="30"
-   inkscape:export-ydpi="30">
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="ic_control_reset.svg"
+   inkscape:export-filename="/Users/simon/android/dmach/art/xxhdpi/ic_control_reset_xlarge.png"
+   inkscape:export-xdpi="180"
+   inkscape:export-ydpi="180">
   <defs
      id="defs30809" />
   <sodipodi:namedview
@@ -28,8 +28,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.75"
-     inkscape:cx="-72.549089"
-     inkscape:cy="76.96052"
+     inkscape:cx="54.935934"
+     inkscape:cy="60.22695"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -37,9 +37,9 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:window-width="1364"
-     inkscape:window-height="751"
-     inkscape:window-x="0"
+     inkscape:window-width="471"
+     inkscape:window-height="412"
+     inkscape:window-x="276"
      inkscape:window-y="15"
      inkscape:window-maximized="0" />
   <metadata

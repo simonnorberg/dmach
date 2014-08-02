@@ -17,8 +17,23 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
 <resources>
     <string name="app_name">DMach</string>
+    <string name="logo">DMACH</string>
     <string name="none"></string>
     <string name="tempo">Tempo:</string>
     <string name="swing">Swing:</string>
     <string name="progress_bar">Progress bar</string>
+
+    <string name="channel_bd">BD</string>
+    <string name="channel_sd">SD</string>
+    <string name="channel_cp">CP</string>
+    <string name="channel_tt">TT</string>
+    <string name="channel_cb">CB</string>
+    <string name="channel_hh">HH</string>
+
+    <string name="setting_1">1</string>
+    <string name="setting_2">2</string>
+    <string name="setting_3">3</string>
+    <string name="setting_4">4</string>
+    <string name="setting_5">5</string>
+    <string name="setting_6">6</string>
 </resources>

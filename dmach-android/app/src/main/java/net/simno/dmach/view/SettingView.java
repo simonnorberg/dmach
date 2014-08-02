@@ -19,14 +19,13 @@ package net.simno.dmach.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.MotionEvent;
 
+import net.simno.dmach.R;
 import net.simno.dmach.model.Setting;
 
 public final class SettingView extends PdView {
@@ -35,10 +34,7 @@ public final class SettingView extends PdView {
         public void onSettingChanged(float x, float y);
     }
 
-    private static final int CIRCLE_RADIUS = 18;
-    private static final int CIRCLE_COLOR = Color.parseColor("#EBEBAF");
-    private static final int BACKGROUND_COLOR = Color.parseColor("#E9950A");
-
+    private int mBackgroundColor;
     private float mCircleRadius;
     private OnSettingChangedListener mListener;
     private Rect mHBounds = new Rect();
@@ -67,9 +63,11 @@ public final class SettingView extends PdView {
 
     @Override
     protected void init() {
+        mBackgroundColor = getResources().getColor(R.color.gamboge);
+        mTextSize = getResources().getDimension(R.dimen.text_size_setting);
+        mCircleRadius = getResources().getDimension(R.dimen.circle_radius);
         super.init();
-        mCircleRadius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, CIRCLE_RADIUS, mDm);
-        mShapePaint.setColor(CIRCLE_COLOR);
+        mShapePaint.setColor(getResources().getColor(R.color.colonial));
     }
 
     @Override
@@ -124,7 +122,7 @@ public final class SettingView extends PdView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawColor(BACKGROUND_COLOR);
+        canvas.drawColor(mBackgroundColor);
         if (!TextUtils.isEmpty(mHText)) {
             canvas.drawText(mHText, mOriginX, mOriginY, mTextPaint);
         }

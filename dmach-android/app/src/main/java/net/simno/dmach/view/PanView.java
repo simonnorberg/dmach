@@ -1,3 +1,20 @@
+/*
+* Copyright (C) 2014 Simon Norberg
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package net.simno.dmach.view;
 
 import android.content.Context;
@@ -5,19 +22,19 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.TypedValue;
+import android.util.Log;
 import android.view.MotionEvent;
 
-public class PanView extends PdView {
+import net.simno.dmach.R;
+
+public final class PanView extends PdView {
 
     public interface OnPanChangedListener {
         public void onPanChanged(float pan);
     }
 
-    private static final String L = "L";
-    private static final String R = "R";
-    private static final int RECT_HEIGHT = 36;
-    private static final int RECT_COLOR = Color.parseColor("#E9950A");
+    private static final String LEFT = "L";
+    private static final String RIGHT = "R";
 
     private OnPanChangedListener mListener;
     private float mPan;
@@ -45,9 +62,10 @@ public class PanView extends PdView {
 
     @Override
     protected void init() {
+        mTextSize = getResources().getDimension(R.dimen.text_size_channel);
+        mRectHeight = getResources().getDimension(R.dimen.rect_height);
         super.init();
-        mShapePaint.setColor(RECT_COLOR);
-        mRectHeight = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, RECT_HEIGHT, mDm);
+        mShapePaint.setColor(getResources().getColor(R.color.gamboge));
         mOffset = (mShapeStrokeWidth / 2f) + (mRectHeight / 2f);
     }
 
@@ -92,9 +110,9 @@ public class PanView extends PdView {
         mCenterLeft = mCenter + (mOffset / 2f);
         mCenterRight = mCenter - (mOffset / 2f);
 
-        mTextPaint.getTextBounds(R, 0, R.length(), mBounds);
+        mTextPaint.getTextBounds(RIGHT, 0, RIGHT.length(), mBounds);
         mOriginX = (getWidth() / 2f) - mBounds.centerX();
-        mOriginYL = getHeight() - (mTextSize * 0.5f);
+        mOriginYL = getMaxY() + (mTextSize * 0.25f);
         mOriginYR = getMinY() + (mTextSize * 0.25f);
 
         if (pan == 0.5f) {
@@ -114,8 +132,8 @@ public class PanView extends PdView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawText(R, mOriginX, mOriginYR, mTextPaint);
-        canvas.drawText(L, mOriginX, mOriginYL, mTextPaint);
+        canvas.drawText(RIGHT, mOriginX, mOriginYR, mTextPaint);
+        canvas.drawText(LEFT, mOriginX, mOriginYL, mTextPaint);
 
         float panOffset = mPan - mOffset;
         canvas.drawRect(getMinX(), panOffset, getMaxX(), panOffset + mRectHeight, mShapePaint);

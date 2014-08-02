@@ -18,27 +18,19 @@
 package net.simno.dmach.view;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.View;
 
-public abstract class PdView extends View {
+import net.simno.dmach.R;
 
-    protected static final int SHAPE_STROKE_WIDTH = 4;
-    protected static final int TEXT_COLOR = Color.parseColor("#302E2C");
-    protected static final int TEXT_SIZE = 24;
+public abstract class PdView extends View {
 
     protected float mShapeStrokeWidth;
     protected float mTextSize;
     protected Paint mShapePaint;
     protected Paint mTextPaint;
-
-    protected DisplayMetrics mDm;
 
     public PdView(Context context) {
         super(context);
@@ -56,20 +48,16 @@ public abstract class PdView extends View {
     }
 
     protected void init() {
-        mDm = getContext().getResources().getDisplayMetrics();
-        mShapeStrokeWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, SHAPE_STROKE_WIDTH, mDm);
-        mTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE, mDm);
-
+        mShapeStrokeWidth = getResources().getDimension(R.dimen.shape_stroke_width);
         mShapePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mShapePaint.setStrokeWidth(mShapeStrokeWidth);
         mShapePaint.setStyle(Paint.Style.STROKE);
 
         mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mTextPaint.setColor(TEXT_COLOR);
+        mTextPaint.setColor(getResources().getColor(R.color.dune));
         mTextPaint.setTextSize(mTextSize);
         mTextPaint.setStyle(Paint.Style.FILL);
-        Typeface saxmono = Typeface.createFromAsset(getContext().getAssets(), "fonts/saxmono.ttf");
-        mTextPaint.setTypeface(saxmono);
+        mTextPaint.setTypeface(FontCache.get("fonts/saxmono.ttf", getContext()));
     }
 
     protected abstract float getMinX();

@@ -23,11 +23,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 
 import net.simno.dmach.DMachActivity;
+import net.simno.dmach.R;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -38,12 +38,6 @@ public final class SequencerView extends View {
         public void onStepChanged(int channel, int step);
     }
 
-    private static final int BACKGROUND = Color.parseColor("#EBEBAF");
-    private static final int CHECKED = Color.parseColor("#B02B2F");
-    private static final int UNCHECKED_LIGHT = Color.parseColor("#C1BF87");
-    private static final int UNCHECKED_DARK = Color.parseColor("#94926F");
-    private static final int MARGIN = 3;
-
     private final ArrayList<Step> mSequence = new ArrayList<Step>();
     private OnStepChangedListener mListener;
     private Paint mUncheckedLight;
@@ -52,7 +46,7 @@ public final class SequencerView extends View {
     private boolean mIsChecked;
     private int mWidth;
     private int mHeight;
-    private int mMargin;
+    private float mMargin;
     private float mStepWidth;
     private float mStepHeight;
     private float mStepWidthMargin;
@@ -109,19 +103,18 @@ public final class SequencerView extends View {
 
     private void init() {
         mUncheckedLight = new Paint();
-        mUncheckedLight.setColor(UNCHECKED_LIGHT);
+        mUncheckedLight.setColor(getResources().getColor(R.color.khaki));
         mUncheckedLight.setStyle(Paint.Style.FILL);
 
         mUncheckedDark = new Paint();
-        mUncheckedDark.setColor(UNCHECKED_DARK);
+        mUncheckedDark.setColor(getResources().getColor(R.color.gurkha));
         mUncheckedDark.setStyle(Paint.Style.FILL);
 
         mChecked = new Paint();
-        mChecked.setColor(CHECKED);
+        mChecked.setColor(getResources().getColor(R.color.poppy));
         mChecked.setStyle(Paint.Style.FILL);
 
-        mMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, MARGIN,
-                getResources().getDisplayMetrics());
+        mMargin = getResources().getDimension(R.dimen.margin);
 
         for (int channel = 0; channel < DMachActivity.CHANNELS; ++channel) {
             for (int step = 0; step < DMachActivity.STEPS; ++step) {
@@ -180,10 +173,6 @@ public final class SequencerView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawColor(BACKGROUND);
-//        for (Step s : mSequence) {
-//            canvas.drawRect(s.rect, s.checked ? mChecked : mUncheckedLight);
-//        }
         for (int i = 0; i < mSequence.size(); ++i) {
             Step step = mSequence.get(i);
             if (step.checked) {
@@ -203,8 +192,8 @@ public final class SequencerView extends View {
         if (w != 0 && h != 0) {
             mWidth = w;
             mHeight = h;
-            mStepWidth = (float) ((w - ((DMachActivity.STEPS - 1.0) * mMargin)) / DMachActivity.STEPS);
-            mStepHeight = (float) ((h - ((DMachActivity.CHANNELS - 1.0) * mMargin)) / DMachActivity.CHANNELS);
+            mStepWidth = (w - ((DMachActivity.STEPS - 1f) * mMargin)) / DMachActivity.STEPS;
+            mStepHeight = (h - ((DMachActivity.CHANNELS - 1f) * mMargin)) / DMachActivity.CHANNELS;
             mStepWidthMargin = mStepWidth + mMargin;
             mStepHeightMargin = mStepHeight + mMargin;
             initSteps();

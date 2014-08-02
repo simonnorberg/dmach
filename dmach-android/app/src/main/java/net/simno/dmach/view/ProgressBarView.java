@@ -23,11 +23,10 @@ import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 
 import net.simno.dmach.DMachActivity;
+import net.simno.dmach.R;
 
 import org.puredata.android.utils.PdUiDispatcher;
 import org.puredata.core.PdBase;
@@ -35,12 +34,8 @@ import org.puredata.core.PdListener;
 
 public final class ProgressBarView extends View {
 
-    private static final int BAR_COLOR = Color.YELLOW;
-    private static final int BAR_TRANSPARENCY = 127;
-    private static final int MARGIN = 3;
-
     private int mHeight;
-    private int mMargin;
+    private float mMargin;
     private int mDirtyLeft;
     private float mStepWidth;
     private float mStepWidthMargin;
@@ -63,9 +58,7 @@ public final class ProgressBarView extends View {
     }
 
     private void init() {
-        Log.v("ProgressBarView", "INIT");
-        mMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, MARGIN,
-                getResources().getDisplayMetrics());
+        mMargin = getResources().getDimension(R.dimen.margin);
 
         mDispatcher = new PdUiDispatcher();
         PdBase.setReceiver(mDispatcher);
@@ -85,8 +78,8 @@ public final class ProgressBarView extends View {
         });
 
         mProgressBar = new ShapeDrawable(new RectShape());
-        mProgressBar.getPaint().setColor(BAR_COLOR);
-        mProgressBar.setAlpha(BAR_TRANSPARENCY);
+        mProgressBar.getPaint().setColor(Color.YELLOW);
+        mProgressBar.setAlpha(127);
     }
 
     @Override
@@ -98,7 +91,7 @@ public final class ProgressBarView extends View {
     protected void onSizeChanged (int w, int h, int oldw, int oldh) {
         if (w != 0 && h != 0) {
             mHeight = h;
-            mStepWidth = (float) ((w - ((DMachActivity.STEPS - 1.0) * mMargin)) / DMachActivity.STEPS);
+            mStepWidth = (w - ((DMachActivity.STEPS - 1f) * mMargin)) / DMachActivity.STEPS;
             mStepWidthMargin = mStepWidth + mMargin;
             invalidate();
         }

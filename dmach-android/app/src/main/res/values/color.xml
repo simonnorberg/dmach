@@ -20,4 +20,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     <color name="gamboge">#e9950a</color>
     <color name="gamboge_alpha">#7fe9950a</color>
     <color name="colonial">#ebebaf</color>
+    <color name="poppy">#b02b2f</color>
+    <color name="khaki">#c1bf87</color>
+    <color name="gurkha">#94926f</color>
 </resources>
