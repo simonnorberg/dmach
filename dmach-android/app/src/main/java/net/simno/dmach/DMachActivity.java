@@ -28,7 +28,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.telephony.PhoneStateListener;
@@ -50,7 +49,6 @@ import com.google.gson.reflect.TypeToken;
 import net.simno.dmach.model.Channel;
 import net.simno.dmach.model.Setting;
 import net.simno.dmach.view.CustomFontButton;
-import net.simno.dmach.view.FontCache;
 
 import org.puredata.android.io.AudioParameters;
 import org.puredata.android.service.PdService;
@@ -77,7 +75,6 @@ public class DMachActivity extends Activity {
     public static final int CHANNELS = 6;
     public static final int STEPS = 16;
 
-    private Typeface mTypeface;
     private int mPlayDrawableId;
     private int mStopDrawableId;
     private int[] mSequence;
@@ -244,8 +241,6 @@ public class DMachActivity extends Activity {
     }
 
     private void initGui() {
-        mTypeface = FontCache.get("fonts/saxmono.ttf", this);
-
         int screenWidthDp = getResources().getConfiguration().screenWidthDp;
         if (screenWidthDp >= 1200) {
             mPlayDrawableId = R.drawable.ic_control_play_xlarge;
@@ -426,11 +421,7 @@ public class DMachActivity extends Activity {
         LayoutInflater inflater = LayoutInflater.from(this);
         View layout = inflater.inflate(R.layout.dialog_config, null);
 
-        ((TextView) layout.findViewById(R.id.tempo_label)).setTypeface(mTypeface);
-        ((TextView) layout.findViewById(R.id.swing_label)).setTypeface(mTypeface);
-
         mTempoText = (TextView) layout.findViewById(R.id.tempo_value);
-        mTempoText.setTypeface(mTypeface);
         mTempoText.setText(" " + mTempo);
 
         SeekBar tempoSeekBar10 = (SeekBar) layout.findViewById(R.id.tempo_seekbar_10);
@@ -442,7 +433,6 @@ public class DMachActivity extends Activity {
         tempoSeekBar1.setOnSeekBarChangeListener(mTempoListener);
 
         mSwingText = (TextView) layout.findViewById(R.id.swing_value);
-        mSwingText.setTypeface(mTypeface);
         mSwingText.setText(" " + mSwing);
 
         SeekBar swingSeekBar = (SeekBar) layout.findViewById(R.id.swing_seekbar);
@@ -450,7 +440,6 @@ public class DMachActivity extends Activity {
         swingSeekBar.setOnSeekBarChangeListener(mSwingListener);
 
         Switch progressBarSwitch = (Switch) layout.findViewById(R.id.progress_bar_switch);
-        progressBarSwitch.setTypeface(mTypeface);
         progressBarSwitch.setTextColor(mSwingText.getCurrentTextColor());
         progressBarSwitch.setChecked(mShowProgress);
         progressBarSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -482,7 +471,8 @@ public class DMachActivity extends Activity {
         setFragment();
     }
 
-    public void onSaveClicked(View view) {
+    public void onPatchClicked(View view) {
+        startActivity(new Intent(DMachActivity.this, PatchListActivity.class));
     }
 
     public void onLogoClicked(View view) {

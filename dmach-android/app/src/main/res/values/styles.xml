@@ -21,6 +21,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <item name="android:windowBackground">@color/colonial</item>
         <item name="android:textSize">@dimen/text_size</item>
     </style>
+    <style name="PatchTheme" parent="android:Theme.Holo.NoActionBar.Fullscreen">
+        <item name="android:soundEffectsEnabled">false</item>
+        <item name="android:textSize">@dimen/text_size</item>
+    </style>
+    <style name="CustomFont">
+        <item name="net.simno.dmach:font">fonts/saxmono.ttf</item>
+    </style>
     <style name="Control">
         <item name="android:background">@drawable/sel_control</item>
         <item name="android:layout_height">match_parent</item>
@@ -42,13 +49,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <item name="android:layout_toRightOf">@+id/config_button</item>
         <item name="android:src">@drawable/ic_control_reset_small</item>
     </style>
-    <style name="Control.Save">
+    <style name="Control.Patch">
         <item name="android:background">@drawable/sel_control_selected</item>
         <item name="android:layout_marginLeft">@dimen/margin_control</item>
         <item name="android:layout_toRightOf">@+id/reset_button</item>
         <item name="android:src">@drawable/ic_control_save_small</item>
     </style>
-    <style name="Logo">
+    <style name="Logo" parent="CustomFont">
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -58,9 +65,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <item name="android:textColor">@color/dune</item>
         <item name="android:textSize">@dimen/text_size_logo</item>
         <item name="android:text">@string/logo</item>
-        <item name="net.simno.dmach:font">fonts/saxmono.ttf</item>
     </style>
-    <style name="Channel">
+    <style name="Channel" parent="CustomFont">
         <item name="android:background">@drawable/sel_channel</item>
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_width">match_parent</item>
@@ -68,7 +74,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <item name="android:layout_marginBottom">@dimen/margin</item>
         <item name="android:textColor">@color/colonial</item>
         <item name="android:textSize">@dimen/text_size_channel</item>
-        <item name="net.simno.dmach:font">fonts/saxmono.ttf</item>
     </style>
     <style name="Channel.BD">
         <item name="android:text">@string/channel_bd</item>

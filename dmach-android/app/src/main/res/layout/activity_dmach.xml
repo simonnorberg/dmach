@@ -43,10 +43,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             android:onClick="onResetClicked"
             style="@style/Control.Reset" />
         <ImageButton
-            android:id="@+id/save_button"
+            android:id="@+id/patch_button"
             android:contentDescription="@string/none"
-            android:onClick="onSaveClicked"
-            style="@style/Control.Save" />
+            android:onClick="onPatchClicked"
+            style="@style/Control.Patch" />
         <net.simno.dmach.view.CustomFontButton
             android:contentDescription="@string/none"
             android:onClick="onLogoClicked"

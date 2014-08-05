@@ -37,7 +37,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <item name="android:layout_toRightOf">@+id/config_button</item>
         <item name="android:src">@drawable/ic_control_reset_normal</item>
     </style>
-    <style name="Control.Save">
+    <style name="Control.Patch">
         <item name="android:background">@drawable/sel_control_selected</item>
         <item name="android:layout_marginLeft">@dimen/margin_control</item>
         <item name="android:layout_toRightOf">@+id/reset_button</item>
