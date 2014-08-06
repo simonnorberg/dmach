@@ -24,20 +24,33 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher_dmach"
         android:logo="@drawable/ic_launcher_dmach"
-        android:label="@string/app_name"
-        android:theme="@style/DMachTheme" >
+        android:label="@string/app_name" >
         <activity
             android:name=".DMachActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:screenOrientation="sensorLandscape"
-            android:launchMode="singleTask" >
+            android:launchMode="singleTask"
+            android:theme="@style/DMachTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".PatchListActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="sensorLandscape"
+            android:theme="@style/PatchTheme"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+
+        <provider
+            android:authorities="net.simno.dmach.contentprovider.PatchContentProvider"
+            android:name=".contentprovider.PatchContentProvider">
+        </provider>
+
         <service android:name="org.puredata.android.service.PdService" />
     </application>
 

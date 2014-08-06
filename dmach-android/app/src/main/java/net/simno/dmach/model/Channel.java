@@ -121,6 +121,7 @@ public final class Channel implements Parcelable {
     private void readFromParcel(Parcel in) {
         mName = in.readString();
         mPan = in.readFloat();
+        mSettings = new ArrayList<Setting>();
         in.readList(mSettings, Setting.class.getClassLoader());
         mSelectedSetting = in.readInt();
     }

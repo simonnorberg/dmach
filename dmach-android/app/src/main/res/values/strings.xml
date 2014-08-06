@@ -36,4 +36,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     <string name="setting_4">4</string>
     <string name="setting_5">5</string>
     <string name="setting_6">6</string>
+
+    <string name="save">Save</string>
+    <string name="title">Title</string>
+    <string name="save_label">Save patch</string>
+    <string name="load_label">Load patch</string>
+    <string name="delete">Delete</string>
 </resources>

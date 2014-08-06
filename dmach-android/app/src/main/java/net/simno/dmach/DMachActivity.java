@@ -47,6 +47,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import net.simno.dmach.model.Channel;
+import net.simno.dmach.model.Patch;
 import net.simno.dmach.model.Setting;
 import net.simno.dmach.view.CustomFontButton;
 
@@ -63,23 +64,24 @@ import java.util.List;
 
 public class DMachActivity extends Activity {
 
-    private static final String SAVED_SEQUENCE = "net.simno.dmach.SAVED_SEQUENCE";
-    private static final String SAVED_CHANNELS = "net.simno.dmach.SAVED_CHANNELS";
-    private static final String SAVED_TEMPO = "net.simno.dmach.SAVED_TEMPO";
-    private static final String SAVED_SWING = "net.simno.dmach.SAVED_SWING";
-    private static final String SAVED_CHANNEL = "net.simno.dmach.SAVED_CHANNEL";
-    private static final String SAVED_PROGRESS = "net.simno.dmach.SAVED_PROGRESS";
+    private static final String PREF_TITLE = "net.simno.dmach.PREF_TITLE";
+    private static final String PREF_SEQUENCE = "net.simno.dmach.PREF_SEQUENCE";
+    private static final String PREF_CHANNELS = "net.simno.dmach.PREF_CHANNELS";
+    private static final String PREF_TEMPO = "net.simno.dmach.PREF_TEMPO";
+    private static final String PREF_SWING = "net.simno.dmach.PREF_SWING";
+    private static final String PREF_CHANNEL = "net.simno.dmach.PREF_CHANNEL";
+    private static final String PREF_PROGRESS = "net.simno.dmach.PREF_PROGRESS";
 
+    private static final int PATCH_REQUEST = 1;
     public static final int[] MASKS = {1, 2, 4};
     public static final int GROUPS = 2;
     public static final int CHANNELS = 6;
     public static final int STEPS = 16;
 
-    private int mPlayDrawableId;
-    private int mStopDrawableId;
-    private int[] mSequence;
     private boolean mIsRunning;
     private boolean mShowProgress;
+    private String mTitle;
+    private int[] mSequence;
     private List<Channel> mChannels;
     private int mSelectedChannel;
     private int mTempo;
@@ -165,34 +167,36 @@ public class DMachActivity extends Activity {
         Editor editor = getPreferences(MODE_PRIVATE).edit();
         String mSequenceJson = new Gson().toJson(mSequence);
         String mChannelsJson = new Gson().toJson(mChannels);
-        editor.putString(SAVED_SEQUENCE, mSequenceJson)
-                .putString(SAVED_CHANNELS, mChannelsJson)
-                .putInt(SAVED_TEMPO, mTempo)
-                .putInt(SAVED_SWING, mSwing)
-                .putInt(SAVED_CHANNEL, mSelectedChannel)
-                .putBoolean(SAVED_PROGRESS, mShowProgress)
+        editor.putString(PREF_TITLE, mTitle)
+                .putString(PREF_SEQUENCE, mSequenceJson)
+                .putString(PREF_CHANNELS, mChannelsJson)
+                .putInt(PREF_TEMPO, mTempo)
+                .putInt(PREF_SWING, mSwing)
+                .putInt(PREF_CHANNEL, mSelectedChannel)
+                .putBoolean(PREF_PROGRESS, mShowProgress)
                 .commit();
     }
 
     private void restoreSettings() {
         SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-        String mSequenceJson = prefs.getString(SAVED_SEQUENCE, "");
+        mTitle = prefs.getString(PREF_TITLE, "untitled");
+        String mSequenceJson = prefs.getString(PREF_SEQUENCE, "");
         if (!mSequenceJson.isEmpty()) {
             mSequence = new Gson().fromJson(mSequenceJson, int[].class);
         } else {
             mSequence = new int[GROUPS * STEPS];
         }
         Type type = new TypeToken<ArrayList<Channel>>() {}.getType();
-        String mChannelsJson = prefs.getString(SAVED_CHANNELS, "");
+        String mChannelsJson = prefs.getString(PREF_CHANNELS, "");
         if (!mChannelsJson.isEmpty()) {
             mChannels = new Gson().fromJson(mChannelsJson, type);
         } else {
             initChannels();
         }
-        mTempo = prefs.getInt(SAVED_TEMPO, 120);
-        mSwing = prefs.getInt(SAVED_SWING, 0);
-        mSelectedChannel = prefs.getInt(SAVED_CHANNEL, -1);
-        mShowProgress = prefs.getBoolean(SAVED_PROGRESS, true);
+        mTempo = prefs.getInt(PREF_TEMPO, 120);
+        mSwing = prefs.getInt(PREF_SWING, 0);
+        mSelectedChannel = prefs.getInt(PREF_CHANNEL, -1);
+        mShowProgress = prefs.getBoolean(PREF_PROGRESS, true);
     }
 
     private void initChannels() {
@@ -241,21 +245,6 @@ public class DMachActivity extends Activity {
     }
 
     private void initGui() {
-        int screenWidthDp = getResources().getConfiguration().screenWidthDp;
-        if (screenWidthDp >= 1200) {
-            mPlayDrawableId = R.drawable.ic_control_play_xlarge;
-            mStopDrawableId = R.drawable.ic_control_stop_xlarge;
-        } else if (screenWidthDp >= 800) {
-            mPlayDrawableId = R.drawable.ic_control_play_large;
-            mStopDrawableId = R.drawable.ic_control_stop_large;
-        } else if (screenWidthDp >= 500) {
-            mPlayDrawableId = R.drawable.ic_control_play_normal;
-            mStopDrawableId = R.drawable.ic_control_stop_normal;
-        } else {
-            mPlayDrawableId = R.drawable.ic_control_play_small;
-            mStopDrawableId = R.drawable.ic_control_stop_small;
-        }
-
         setContentView(R.layout.activity_dmach);
 
         if (mSelectedChannel != -1) {
@@ -407,12 +396,11 @@ public class DMachActivity extends Activity {
         ImageButton playButton = (ImageButton) view;
         if (mIsRunning) {
             PdBase.sendBang("stop");
-            playButton.setImageResource(mPlayDrawableId);
         } else {
             PdBase.sendBang("play");
-            playButton.setImageResource(mStopDrawableId);
         }
         mIsRunning = !mIsRunning;
+        playButton.setSelected(mIsRunning);
     }
 
     public void onConfigClicked(View view) {
@@ -472,7 +460,28 @@ public class DMachActivity extends Activity {
     }
 
     public void onPatchClicked(View view) {
-        startActivity(new Intent(DMachActivity.this, PatchListActivity.class));
+        Patch patch = new Patch(mTitle, mSequence, mChannels, mSelectedChannel, mTempo, mSwing);
+        Intent intent = new Intent(this, PatchListActivity.class);
+        intent.putExtra(PatchListActivity.PATCH_EXTRA, patch);
+        startActivityForResult(intent, PATCH_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PATCH_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Patch patch = data.getParcelableExtra(PatchListActivity.PATCH_EXTRA);
+                mTitle = patch.getTitle();
+                mSequence = patch.getSequence();
+                mChannels = patch.getChannels();
+                mSelectedChannel = patch.getSelectedChannel();
+                mTempo = patch.getTempo();
+                mSwing = patch.getSwing();
+                initPd();
+                setFragment();
+                setChannelSelection();
+            }
+        }
     }
 
     public void onLogoClicked(View view) {
@@ -482,18 +491,16 @@ public class DMachActivity extends Activity {
         CustomFontButton channel = (CustomFontButton) view;
         LinearLayout channels = (LinearLayout) channel.getParent();
         int index = channels.indexOfChild(channel);
-
-        if (index == mSelectedChannel) {
-            mSelectedChannel = -1;
-            channel.setSelected(false);
-        } else {
-            Button oldChannel = (Button) channels.getChildAt(mSelectedChannel);
-            if (oldChannel != null) {
-                oldChannel.setSelected(false);
-            }
-            mSelectedChannel = index;
-            channel.setSelected(true);
-        }
+        mSelectedChannel = mSelectedChannel == index ? -1 : index;
         setFragment();
+        setChannelSelection();
+    }
+
+    private void setChannelSelection() {
+        LinearLayout channels = (LinearLayout) findViewById(R.id.channel_container);
+        for (int i = 0; i < CHANNELS; ++i) {
+            Button channel = (Button) channels.getChildAt(i);
+            channel.setSelected(i == mSelectedChannel);
+        }
     }
 }
