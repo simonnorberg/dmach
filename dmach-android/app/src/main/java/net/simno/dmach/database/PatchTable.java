@@ -48,8 +48,8 @@ public class PatchTable {
     }
 
     public static void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.w(PatchTable.class.getName(), "Upgrading database from version " + oldVersion + " to "
-                + newVersion + ", which will destroy all old data");
+        Log.w(PatchTable.class.getName(),
+                "Upgrading database from version " + oldVersion + " to " + newVersion);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PATCH);
         onCreate(db);
     }

@@ -25,8 +25,16 @@ public class PatchDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "dmach.db";
     private static final int DATABASE_VERSION = 1;
+    private static PatchDatabaseHelper singleton;
 
-    public PatchDatabaseHelper(Context context) {
+    public synchronized static PatchDatabaseHelper getInstance(Context context) {
+        if (singleton == null) {
+            singleton = new PatchDatabaseHelper(context.getApplicationContext());
+        }
+        return singleton;
+    }
+
+    private PatchDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

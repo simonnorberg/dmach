@@ -46,7 +46,7 @@ public final class Setting implements Parcelable {
         this.y = y;
     }
 
-    public static final Parcelable.Creator<Setting> CREATOR = new Parcelable.Creator<Setting>() {
+    public static final Creator<Setting> CREATOR = new Creator<Setting>() {
         /**
          * Return a new setting from the data in the specified parcel.
          */

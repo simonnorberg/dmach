@@ -19,10 +19,8 @@ package net.simno.dmach.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import net.simno.dmach.R;

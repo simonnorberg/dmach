@@ -56,8 +56,8 @@ public class PatchContentProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        mDatabase = new PatchDatabaseHelper(getContext());
-        return false;
+        mDatabase = PatchDatabaseHelper.getInstance(getContext());
+        return mDatabase != null;
     }
 
     @Override

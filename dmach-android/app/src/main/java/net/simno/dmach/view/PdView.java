@@ -18,7 +18,6 @@
 package net.simno.dmach.view;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
@@ -57,7 +56,7 @@ public abstract class PdView extends View {
         mTextPaint.setColor(getResources().getColor(R.color.dune));
         mTextPaint.setTextSize(mTextSize);
         mTextPaint.setStyle(Paint.Style.FILL);
-        mTextPaint.setTypeface(FontCache.get("fonts/saxmono.ttf", getContext()));
+        mTextPaint.setTypeface(FontCache.get("fonts/saxmono.ttf", getContext().getApplicationContext()));
     }
 
     protected abstract float getMinX();

@@ -75,7 +75,7 @@ public final class Channel implements Parcelable {
         return mSettings.size();
     }
 
-    public static final Parcelable.Creator<Channel> CREATOR = new Parcelable.Creator<Channel>() {
+    public static final Creator<Channel> CREATOR = new Creator<Channel>() {
         /**
          * Return a new channel from the data in the specified parcel.
          */
