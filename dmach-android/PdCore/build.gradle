@@ -16,8 +16,10 @@ android {
     buildToolsVersion "20.0.0"
 
     defaultConfig {
-        minSdkVersion 3
+        minSdkVersion 15
         targetSdkVersion 19
+        versionCode 1
+        versionName "1.0"
     }
     sourceSets {
         main {
