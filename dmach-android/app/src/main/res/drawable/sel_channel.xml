@@ -22,7 +22,5 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
   <item
     android:state_selected="true"
     android:drawable="@drawable/rect_gamboge" />
-  <item
-    android:state_selected="false"
-    android:drawable="@drawable/rect_dune" />
+  <item android:drawable="@drawable/rect_dune" />
 </selector>

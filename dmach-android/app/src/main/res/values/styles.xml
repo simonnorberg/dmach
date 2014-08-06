@@ -39,7 +39,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <item name="android:src">@drawable/ic_control_play_small</item>
     </style>
     <style name="Control.Config">
-        <item name="android:background">@drawable/sel_control_selected</item>
         <item name="android:layout_marginLeft">@dimen/margin_control</item>
         <item name="android:layout_toRightOf">@+id/play_button</item>
         <item name="android:src">@drawable/ic_control_config_small</item>
@@ -50,10 +49,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <item name="android:src">@drawable/ic_control_reset_small</item>
     </style>
     <style name="Control.Patch">
-        <item name="android:background">@drawable/sel_control_selected</item>
         <item name="android:layout_marginLeft">@dimen/margin_control</item>
         <item name="android:layout_toRightOf">@+id/reset_button</item>
-        <item name="android:src">@drawable/ic_control_save_small</item>
+        <item name="android:src">@drawable/ic_control_patch_small</item>
     </style>
     <style name="Logo" parent="CustomFont">
         <item name="android:layout_alignParentRight">true</item>
