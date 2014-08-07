@@ -349,7 +349,8 @@ public class DMachActivity extends Activity {
                 }
             }
             mPdService.startAudio(new Intent(this, DMachActivity.class),
-                    R.drawable.ic_stat_notify_dmach, "DMach", "Return to DMach.");
+                    R.drawable.ic_stat_notify_dmach, R.drawable.ic_launcher_dmach,
+                    "DMach is running", "Touch to return.");
         }
     }
 

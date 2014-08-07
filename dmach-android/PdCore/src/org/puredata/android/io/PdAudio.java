@@ -54,7 +54,9 @@ public class PdAudio {
      */
     public synchronized static void initAudio(int sampleRate, int inChannels, int outChannels, final int ticksPerBuffer, boolean restart)
             throws IOException {
-        if (isRunning() && !restart) return;
+        if (isRunning() && !restart) {
+            return;
+        }
         stopAudio();
         if (PdBase.openAudio(inChannels, outChannels, sampleRate, null) != 0) {
             throw new IOException("unable to open Pd audio: " + sampleRate + ", " + inChannels + ", " + outChannels);
@@ -105,7 +107,7 @@ public class PdAudio {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    PdBase.pollMidiQueue();  // Flush pending messages.
+                    PdBase.pollMidiQueue(); // Flush pending messages.
                     PdBase.pollPdMessageQueue();
                 }
             });

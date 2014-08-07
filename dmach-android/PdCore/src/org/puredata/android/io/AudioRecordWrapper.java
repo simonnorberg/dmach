@@ -42,9 +42,11 @@ public class AudioRecordWrapper {
         if (minRecSizeBytes <= 0) {
             throw new IOException("bad AudioRecord parameters; sr: " + sampleRate + ", ch: " + inChannels + ", bufSize: " + bufferSizePerChannel);
         }
-        while (recSizeBytes < minRecSizeBytes) recSizeBytes += bufSizeBytes;
+        while (recSizeBytes < minRecSizeBytes) {
+            recSizeBytes += bufSizeBytes;
+        }
         rec = new AudioRecord(MediaRecorder.AudioSource.MIC, sampleRate, channelConfig, ENCODING, recSizeBytes);
-        if (rec != null && rec.getState() != AudioRecord.STATE_INITIALIZED) {
+        if (rec.getState() != AudioRecord.STATE_INITIALIZED) {
             rec.release();
             throw new IOException("unable to initialize AudioRecord instance for sr: " + sampleRate + ", ch: " + inChannels + ", bufSize: " + bufferSizePerChannel);
         }
@@ -63,7 +65,9 @@ public class AudioRecordWrapper {
                     while (nRead < bufSizeShorts && !Thread.interrupted()) {
                         nRead += rec.read(buf, nRead, bufSizeShorts - nRead);
                     }
-                    if (nRead < bufSizeShorts) break;
+                    if (nRead < bufSizeShorts) {
+                        break;
+                    }
                     try {
                         queue.put(buf);
                     } catch (InterruptedException e) {
@@ -74,18 +78,20 @@ public class AudioRecordWrapper {
                     auxBuf = tmp;
                 }
                 rec.stop();
-            };
+            }
         };
         inputThread.start();
     }
 
     public synchronized void stop() {
-        if (inputThread == null) return;
+        if (inputThread == null) {
+            return;
+        }
         inputThread.interrupt();
         try {
             inputThread.join();
         } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();  // Preserve interrupt flag for caller.
+            Thread.currentThread().interrupt(); // Preserve interrupt flag for caller.
         }
         inputThread = null;
     }

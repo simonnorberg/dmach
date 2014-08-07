@@ -63,7 +63,9 @@ public abstract class AudioWrapper {
         if (minTrackSizeBytes <= 0) {
             throw new IOException("bad AudioTrack parameters; sr: " + sampleRate +", ch: " + outChannels + ", bufSize: " + trackSizeBytes);
         }
-        while (trackSizeBytes < minTrackSizeBytes) trackSizeBytes += bufSizeBytes;
+        while (trackSizeBytes < minTrackSizeBytes) {
+            trackSizeBytes += bufSizeBytes;
+        }
         track = new AudioTrack(AudioManager.STREAM_MUSIC, sampleRate, channelConfig, ENCODING, trackSizeBytes, AudioTrack.MODE_STREAM);
         if (track.getState() != AudioTrack.STATE_INITIALIZED) {
             track.release();
@@ -95,7 +97,9 @@ public abstract class AudioWrapper {
             @Override
             public void run() {
                 Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_AUDIO);
-                if (rec != null) rec.start();
+                if (rec != null) {
+                    rec.start();
+                }
                 track.play();
                 short inBuf[];
                 try {
@@ -104,7 +108,9 @@ public abstract class AudioWrapper {
                     return;
                 }
                 while (!Thread.interrupted()) {
-                    if (process(inBuf, outBuf) != 0) break;
+                    if (process(inBuf, outBuf) != 0) {
+                        break;
+                    }
                     track.write(outBuf, 0, bufSizeShorts);
                     if (rec != null) {
                         short newBuf[] = rec.poll();
@@ -115,7 +121,9 @@ public abstract class AudioWrapper {
                         }
                     }
                 }
-                if (rec != null) rec.stop();
+                if (rec != null) {
+                    rec.stop();
+                }
                 track.stop();
             }
         };
@@ -126,12 +134,14 @@ public abstract class AudioWrapper {
      * Stop the audio thread as well as {@link AudioTrack} and {@link AudioRecord} objects
      */
     public synchronized void stop() {
-        if (audioThread == null) return;
+        if (audioThread == null) {
+            return;
+        }
         audioThread.interrupt();
         try {
             audioThread.join();
         } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();  // Preserve interrupt flag for caller.
+            Thread.currentThread().interrupt(); // Preserve interrupt flag for caller.
         }
         audioThread = null;
     }
@@ -143,7 +153,9 @@ public abstract class AudioWrapper {
     public synchronized void release() {
         stop();
         track.release();
-        if (rec != null) rec.release();
+        if (rec != null) {
+            rec.release();
+        }
     }
 
     /**
@@ -157,8 +169,8 @@ public abstract class AudioWrapper {
      * @return the audio session ID, for Gingerbread and later; will throw an exception on older versions
      */
     public synchronized int getAudioSessionId() {
-        if (Build.VERSION.SDK_INT >= 9) {
-            return AudioSessionHandler.getAudioSessionId(track);  // Lazy class loading trick.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+            return AudioSessionHandler.getAudioSessionId(track); // Lazy class loading trick.
         } else {
             throw new UnsupportedOperationException("audio sessions not supported in Android " + Build.VERSION.SDK_INT);
         }

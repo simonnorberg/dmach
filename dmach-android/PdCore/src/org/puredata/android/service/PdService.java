@@ -15,15 +15,20 @@ import org.puredata.android.io.PdAudio;
 import org.puredata.core.PdBase;
 import org.puredata.core.utils.IoUtils;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 /**
@@ -128,7 +133,7 @@ public class PdService extends Service {
             }
         }
         if (millis < 0) {
-            millis = 50.0f;  // conservative choice
+            millis = 50.0f; // conservative choice
         }
         int tpb = (int) (0.001f * millis * srate / PdBase.blockSize()) + 1;
         PdAudio.initAudio(srate, nic, noc, tpb, true);
@@ -153,8 +158,8 @@ public class PdService extends Service {
      * @param title        title of the notification
      * @param description  description of the notification
      */
-    public synchronized void startAudio(Intent intent, int icon, String title, String description) {
-        startForeground(intent, icon, title, description);
+    public synchronized void startAudio(Intent intent, int icon, int largeIcon, String title, String description) {
+        startForeground(intent, icon, largeIcon, title, description);
         PdAudio.startAudio(this);
     }
 
@@ -203,7 +208,7 @@ public class PdService extends Service {
                 IoUtils.extractZipResource(getResources().openRawResource(R.raw.extra_abs), dir, true);
                 abstractionsInstalled = true;
                 PdBase.addToSearchPath(dir.getAbsolutePath());
-                PdBase.addToSearchPath("/data/data/" + getPackageName() + "/lib");  // Location of standard externals.
+                PdBase.addToSearchPath("/data/data/" + getPackageName() + "/lib"); // Location of standard externals.
             } catch (IOException e) {
                 Log.e(PD_SERVICE, "unable to unpack abstractions:" + e.toString());
             }
@@ -216,18 +221,33 @@ public class PdService extends Service {
         release();
     }
 
-    @SuppressWarnings("deprecation")
-    private Notification makeNotification(Intent intent, int icon, String title, String description) {
-        PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
-        Notification notification = new Notification(icon, title, System.currentTimeMillis());
-        notification.setLatestEventInfo(PdService.this, title, description, pi);
-        notification.flags |= Notification.FLAG_ONGOING_EVENT;
-        return notification;
-    }
-
-    private void startForeground(Intent intent, int icon, String title, String description) {
+    @SuppressLint("NewApi")
+    private void startForeground(Intent intent, int icon, int largeIcon, String title, String description) {
         stopForeground();
-        PdService.this.startForeground(NOTIFICATION_ID, makeNotification(intent, icon, title, description));
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), largeIcon);
+        PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
+        Notification notification;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            notification = new Notification.Builder(getApplicationContext())
+                    .setContentTitle(title)
+                    .setContentText(description)
+                    .setSmallIcon(icon)
+                    .setLargeIcon(bitmap)
+                    .setOngoing(true)
+                    .setContentIntent(pi)
+                    .setShowWhen(false) // Added in Jelly Bean MR1
+                    .build(); // Added in Jelly Bean
+        } else {
+            notification = new NotificationCompat.Builder(getApplicationContext())
+                    .setContentTitle(title)
+                    .setContentText(description)
+                    .setSmallIcon(icon)
+                    .setLargeIcon(bitmap)
+                    .setOngoing(true)
+                    .setContentIntent(pi)
+                    .build();
+        }
+        PdService.this.startForeground(NOTIFICATION_ID, notification);
         hasForeground = true;
     }
 

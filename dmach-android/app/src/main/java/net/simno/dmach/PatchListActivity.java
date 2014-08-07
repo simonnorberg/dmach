@@ -198,7 +198,7 @@ public class PatchListActivity extends ListActivity implements LoaderCallbacks<C
                     break;
                 case SAVE_TOKEN:
                     if (cursor.getCount() == 0) {
-                        // Title is not in database
+                        // Title does not exist
                         mHandler.startInsert(0, null, PatchContentProvider.CONTENT_URI, getContentValues());
                     } else {
                         // Ask to overwrite existing title

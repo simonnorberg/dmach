@@ -38,15 +38,17 @@ public class AudioParameters {
      * @param context activity or service that calls this method
      */
     public static synchronized void init(Context context) {
-        if (impl != null) return;
-        if (Build.VERSION.SDK_INT > 16 && context != null) {
+        if (impl != null) {
+            return;
+        }
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN && context != null) {
             impl = JellyBeanMR1OpenSLParameters.getParameters(context);
-        } else if (Build.VERSION.SDK_INT > 16) {
+        } else if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
             Log.w("AudioParameters", "Initializing audio parameters with null context on Android 4.2 or later.");
             impl = new BasicOpenSLParameters(64, 64);
-        } else if (Build.VERSION.SDK_INT == 16) {
+        } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.JELLY_BEAN) {
             impl = JellyBeanOpenSLParameters.getParameters();
-        } else if (Build.VERSION.SDK_INT > 8) {
+        } else if (Build.VERSION.SDK_INT > Build.VERSION_CODES.FROYO) {
             impl = new BasicOpenSLParameters(64, 64);
         } else {
             impl = new JavaAudioParameters();
@@ -155,17 +157,23 @@ public class AudioParameters {
         JavaAudioParameters() {
             int oc = 0;
             for (int n = 1; n < MAX_CHANNELS; n++) {
-                if (checkOutputParameters(COMMON_RATE, n)) oc = n;
+                if (checkOutputParameters(COMMON_RATE, n)) {
+                    oc = n;
+                }
             }
             outputChannels = oc;
             int ic = 0;
             for (int n = 0; n < MAX_CHANNELS; n++) {
-                if (checkInputParameters(COMMON_RATE, n)) ic = n;
+                if (checkInputParameters(COMMON_RATE, n)) {
+                    ic = n;
+                }
             }
             inputChannels = ic;
             int sr = COMMON_RATE;
             for (int n: new int[] {11025, 16000, 22050, 32000, 44100}) {
-                if (checkInputParameters(n, inputChannels) && checkOutputParameters(n, outputChannels))  sr = n;
+                if (checkInputParameters(n, inputChannels) && checkOutputParameters(n, outputChannels)) {
+                    sr = n;
+                }
             }
             sampleRate = sr;
         }
@@ -235,7 +243,7 @@ public class AudioParameters {
 
         static JellyBeanOpenSLParameters getParameters() {
             boolean lowLatency = Build.MODEL.equals("Galaxy Nexus");
-            return new JellyBeanOpenSLParameters(64, 64, lowLatency ? 384 : 64, lowLatency);  // 384 is the magic number for GN + JB (Android 4.1).
+            return new JellyBeanOpenSLParameters(64, 64, lowLatency ? 384 : 64, lowLatency); // 384 is the magic number for GN + JB (Android 4.1).
         }
 
         @Override
@@ -249,7 +257,7 @@ public class AudioParameters {
         }
     }
 
-    @TargetApi(17)  // Using lazy class loading trick to hide new features from old devices.
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1) // Using lazy class loading trick to hide new features from old devices.
     private static class JellyBeanMR1OpenSLParameters extends JellyBeanOpenSLParameters {
         private final int sampleRate;
 
