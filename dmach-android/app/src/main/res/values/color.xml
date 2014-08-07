@@ -23,4 +23,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     <color name="poppy">#b02b2f</color>
     <color name="khaki">#c1bf87</color>
     <color name="gurkha">#94926f</color>
+
+    <color name="holo_dark">#bd292f34</color>
 </resources>

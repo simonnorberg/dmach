@@ -20,7 +20,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     android:keepScreenOn="true"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_margin="@dimen/margin"
+    android:layout_margin="@dimen/margin_small"
     android:orientation="vertical"
     tools:context=".MainActivity">
     <RelativeLayout
@@ -56,13 +56,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="5"
-        android:layout_marginTop="@dimen/margin"
+        android:layout_marginTop="@dimen/margin_small"
         android:orientation="horizontal">
         <LinearLayout
             android:id="@+id/channel_container"
             android:layout_height="match_parent"
             android:layout_width="@dimen/button_small_width"
-            android:layout_marginRight="@dimen/margin"
+            android:layout_marginRight="@dimen/margin_small"
             android:orientation="vertical">
             <net.simno.dmach.view.CustomFontButton
                 android:id="@+id/channel_bd"

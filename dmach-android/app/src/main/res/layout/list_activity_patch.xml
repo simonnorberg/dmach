@@ -19,19 +19,14 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <TextView
-        android:id="@+id/save_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/save_label" />
-
     <EditText
         android:id="@+id/save_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/save_label"
-        android:layout_alignParentLeft="true"
+
         android:layout_toLeftOf="@+id/save_button"
+        android:layout_alignBaseline="@+id/save_button"
+
         android:imeOptions="flagNoExtractUi"
         android:maxLines="1"
         android:maxLength="30"
@@ -42,23 +37,48 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:id="@+id/save_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minWidth="@dimen/button_large_width"
-        android:layout_below="@+id/save_label"
         android:layout_alignParentRight="true"
         android:text="@string/save"
         android:onClick="onSaveClicked" />
 
     <TextView
-        android:id="@+id/load_label"
+        android:id="@+id/title_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/save_text"
-        android:text="@string/load_label" />
+        android:layout_marginTop="@dimen/margin_small"
+        android:paddingTop="@dimen/margin_small"
+        android:paddingBottom="@dimen/margin_small"
+        android:paddingLeft="@dimen/margin_normal"
+
+        android:layout_below="@+id/save_button"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/tempo_header"
+
+        android:background="@color/holo_dark"
+        android:text="@string/title_header"
+        android:lines="1" />
+
+    <TextView
+        android:id="@+id/tempo_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        android:paddingTop="@dimen/margin_small"
+        android:paddingBottom="@dimen/margin_small"
+        android:paddingRight="@dimen/margin_normal"
+
+        android:layout_below="@+id/save_button"
+        android:layout_alignParentRight="true"
+
+        android:background="@color/holo_dark"
+        android:text="@string/tempo_header"
+        android:lines="1" />
 
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/load_label" />
+
+        android:layout_below="@+id/title_header" />
 
 </RelativeLayout>

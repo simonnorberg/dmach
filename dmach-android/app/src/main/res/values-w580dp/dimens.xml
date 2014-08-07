@@ -16,10 +16,9 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
 <resources>
-    <dimen name="margin">4dp</dimen>
-    <dimen name="margin_control">8dp</dimen>
-    <dimen name="margin_logo">12dp</dimen>
-    <dimen name="margin_dialog">12dp</dimen>
+    <dimen name="margin_small">4dp</dimen>
+    <dimen name="margin_normal">8dp</dimen>
+    <dimen name="margin_large">12dp</dimen>
 
     <dimen name="button_small_width">60dp</dimen>
     <dimen name="button_large_width">80dp</dimen>

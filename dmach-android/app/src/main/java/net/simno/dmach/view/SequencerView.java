@@ -113,7 +113,7 @@ public final class SequencerView extends View {
         mChecked.setColor(getResources().getColor(R.color.poppy));
         mChecked.setStyle(Paint.Style.FILL);
 
-        mMargin = getResources().getDimension(R.dimen.margin);
+        mMargin = getResources().getDimension(R.dimen.margin_small);
 
         for (int channel = 0; channel < DMachActivity.CHANNELS; ++channel) {
             for (int step = 0; step < DMachActivity.STEPS; ++step) {

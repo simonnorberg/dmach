@@ -23,7 +23,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:id="@+id/setting_container"
         android:layout_height="match_parent"
         android:layout_width="@dimen/button_small_width"
-        android:layout_marginRight="@dimen/margin"
+        android:layout_marginRight="@dimen/margin_small"
         android:orientation="vertical">
         <net.simno.dmach.view.CustomFontButton
             android:id="@+id/setting_1"
@@ -59,7 +59,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="7"
-            android:layout_marginRight="@dimen/margin" />
+            android:layout_marginRight="@dimen/margin_small" />
         <net.simno.dmach.view.PanView
             android:id="@+id/pan_view"
             android:layout_width="0dp"

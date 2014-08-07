@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     <string name="app_name">DMach</string>
     <string name="logo">DMACH</string>
     <string name="none"></string>
-    <string name="tempo">Tempo:</string>
+    <string name="tempo">BPM:</string>
     <string name="swing">Swing:</string>
     <string name="progress_bar">Progress bar</string>
 
@@ -37,9 +37,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     <string name="setting_5">5</string>
     <string name="setting_6">6</string>
 
-    <string name="save">Save</string>
+    <string name="save">Save current patch</string>
     <string name="title">Title</string>
-    <string name="save_label">Save patch</string>
-    <string name="load_label">Load patch</string>
     <string name="delete">Delete</string>
+    <string name="tempo_header">BPM</string>
+    <string name="title_header">Title</string>
 </resources>

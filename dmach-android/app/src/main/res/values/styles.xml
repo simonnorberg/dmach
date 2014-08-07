@@ -39,17 +39,17 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <item name="android:src">@drawable/ic_control_play_small</item>
     </style>
     <style name="Control.Config">
-        <item name="android:layout_marginLeft">@dimen/margin_control</item>
+        <item name="android:layout_marginLeft">@dimen/margin_normal</item>
         <item name="android:layout_toRightOf">@+id/play_button</item>
         <item name="android:src">@drawable/ic_control_config_small</item>
     </style>
     <style name="Control.Reset">
-        <item name="android:layout_marginLeft">@dimen/margin_control</item>
+        <item name="android:layout_marginLeft">@dimen/margin_normal</item>
         <item name="android:layout_toRightOf">@+id/config_button</item>
         <item name="android:src">@drawable/ic_control_reset_small</item>
     </style>
     <style name="Control.Patch">
-        <item name="android:layout_marginLeft">@dimen/margin_control</item>
+        <item name="android:layout_marginLeft">@dimen/margin_normal</item>
         <item name="android:layout_toRightOf">@+id/reset_button</item>
         <item name="android:src">@drawable/ic_control_patch_small</item>
     </style>
@@ -57,7 +57,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginRight">@dimen/margin_logo</item>
+        <item name="android:layout_marginRight">@dimen/margin_large</item>
         <item name="android:gravity">bottom</item> <!--this is weird-->
         <item name="android:background">@drawable/rect_colonial</item>
         <item name="android:textColor">@color/dune</item>
@@ -69,7 +69,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:layout_marginBottom">@dimen/margin</item>
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
         <item name="android:textColor">@color/colonial</item>
         <item name="android:textSize">@dimen/text_size_channel</item>
     </style>

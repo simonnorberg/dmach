@@ -49,11 +49,20 @@ import net.simno.dmach.model.Patch;
 
 public class PatchListActivity extends ListActivity implements LoaderCallbacks<Cursor> {
 
+    static final String PATCH_EXTRA = "patch";
     private static final int LOAD_TOKEN = 1;
     private static final int SAVE_TOKEN = 2;
     private static final int DELETE_ID = Menu.FIRST + 1;
+
     private static final String TITLE_SELECTION = PatchTable.COLUMN_TITLE + " = ?";
-    static final String PATCH_EXTRA = "patch";
+    private static final String[] FROM = new String[] {
+            PatchTable.COLUMN_TEMPO,
+            PatchTable.COLUMN_TITLE
+    };
+    private static int[] TO = new int[] {
+            R.id.tempo_column,
+            R.id.title_column
+    };
 
     private String[] mSelectionArgs;
     private SimpleCursorAdapter mAdapter;
@@ -77,13 +86,10 @@ public class PatchListActivity extends ListActivity implements LoaderCallbacks<C
             mSaveText.setText(mPatch.getTitle());
             mSaveText.setSelection(mSaveText.getText().length());
 
-            String[] from = new String[] {PatchTable.COLUMN_TITLE};
-            int[] to = new int[] {R.id.row_label};
-            getLoaderManager().initLoader(0, null, this);
-            mAdapter = new SimpleCursorAdapter(this, R.layout.row_patch, null, from, to, 0);
+            mAdapter = new SimpleCursorAdapter(this, R.layout.row_patch, null, FROM, TO, 0);
             setListAdapter(mAdapter);
+            getLoaderManager().initLoader(0, null, this);
 
-            getListView().setDividerHeight(6);
             registerForContextMenu(getListView());
         } else {
             setResult(RESULT_CANCELED);
@@ -118,7 +124,11 @@ public class PatchListActivity extends ListActivity implements LoaderCallbacks<C
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String[] projection = {PatchTable.COLUMN_ID, PatchTable.COLUMN_TITLE};
+        String[] projection = {
+                PatchTable.COLUMN_ID,
+                PatchTable.COLUMN_TITLE,
+                PatchTable.COLUMN_TEMPO
+        };
         return new CursorLoader(this, PatchContentProvider.CONTENT_URI, projection, null, null, null);
     }
 
