@@ -22,8 +22,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
@@ -158,8 +156,8 @@ public class PdService extends Service {
      * @param title        title of the notification
      * @param description  description of the notification
      */
-    public synchronized void startAudio(Intent intent, int icon, int largeIcon, String title, String description) {
-        startForeground(intent, icon, largeIcon, title, description);
+    public synchronized void startAudio(Intent intent, int icon, String title, String description) {
+        startForeground(intent, icon, title, description);
         PdAudio.startAudio(this);
     }
 
@@ -222,9 +220,8 @@ public class PdService extends Service {
     }
 
     @SuppressLint("NewApi")
-    private void startForeground(Intent intent, int icon, int largeIcon, String title, String description) {
+    private void startForeground(Intent intent, int icon, String title, String description) {
         stopForeground();
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), largeIcon);
         PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
         Notification notification;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -232,7 +229,6 @@ public class PdService extends Service {
                     .setContentTitle(title)
                     .setContentText(description)
                     .setSmallIcon(icon)
-                    .setLargeIcon(bitmap)
                     .setOngoing(true)
                     .setContentIntent(pi)
                     .setShowWhen(false) // Added in Jelly Bean MR1
@@ -242,7 +238,6 @@ public class PdService extends Service {
                     .setContentTitle(title)
                     .setContentText(description)
                     .setSmallIcon(icon)
-                    .setLargeIcon(bitmap)
                     .setOngoing(true)
                     .setContentIntent(pi)
                     .build();
