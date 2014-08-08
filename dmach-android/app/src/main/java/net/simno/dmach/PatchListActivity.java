@@ -161,8 +161,11 @@ public class PatchListActivity extends ListActivity implements LoaderCallbacks<C
         mSaveButton.setEnabled(false);
     }
 
-    private void clearTextAndHideKeyboard() {
+    private void clearText() {
         mSaveText.setText("");
+    }
+
+    private void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mSaveText.getWindowToken(), 0);
     }
@@ -225,7 +228,8 @@ public class PatchListActivity extends ListActivity implements LoaderCallbacks<C
                         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                clearTextAndHideKeyboard();
+                                clearText();
+                                hideKeyboard();
                                 enableSaveButton();
                                 dialog.cancel();
                             }
@@ -239,14 +243,14 @@ public class PatchListActivity extends ListActivity implements LoaderCallbacks<C
 
         @Override
         protected void onInsertComplete(int token, Object cookie, Uri uri) {
-            clearTextAndHideKeyboard();
-            enableSaveButton();
+            setResult(RESULT_CANCELED);
+            finish();
         }
 
         @Override
         protected void onUpdateComplete(int token, Object cookie, int result) {
-            clearTextAndHideKeyboard();
-            enableSaveButton();
+            setResult(RESULT_CANCELED);
+            finish();
         }
     }
 }
