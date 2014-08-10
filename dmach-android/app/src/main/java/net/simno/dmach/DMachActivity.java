@@ -32,6 +32,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import android.text.method.LinkMovementMethod;
+import android.text.method.MovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -409,6 +411,16 @@ public class DMachActivity extends Activity {
         LayoutInflater inflater = LayoutInflater.from(this);
         View layout = inflater.inflate(R.layout.dialog_config, null);
 
+        AlertDialog alertDialog = new AlertDialog.Builder(this).setView(layout).create();
+        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                configButton.setSelected(false);
+            }
+        });
+        alertDialog.show();
+
         mTempoText = (TextView) layout.findViewById(R.id.tempo_value);
         mTempoText.setText(" " + mTempo);
 
@@ -441,16 +453,6 @@ public class DMachActivity extends Activity {
                 }
             }
         });
-
-        AlertDialog alertDialog = new AlertDialog.Builder(this).setView(layout).create();
-        alertDialog.setCanceledOnTouchOutside(true);
-        alertDialog.setOnDismissListener(new OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                configButton.setSelected(false);
-            }
-        });
-        alertDialog.show();
     }
 
     public void onResetClicked(View view) {
@@ -460,6 +462,7 @@ public class DMachActivity extends Activity {
     }
 
     public void onPatchClicked(View view) {
+        view.setSelected(true);
         Patch patch = new Patch(mTitle, mSequence, mChannels, mSelectedChannel, mTempo, mSwing);
         Intent intent = new Intent(this, PatchListActivity.class);
         intent.putExtra(PatchListActivity.PATCH_EXTRA, patch);
@@ -468,6 +471,7 @@ public class DMachActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        findViewById(R.id.patch_button).setSelected(false);
         if (requestCode == PATCH_REQUEST) {
             if (resultCode == RESULT_OK) {
                 Patch patch = data.getParcelableExtra(PatchListActivity.PATCH_EXTRA);
@@ -485,6 +489,33 @@ public class DMachActivity extends Activity {
     }
 
     public void onLogoClicked(View view) {
+        final CustomFontButton logo = (CustomFontButton) view;
+        logo.setSelected(true);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View layout = inflater.inflate(R.layout.dialog_notices, null);
+        AlertDialog alertDialog = new AlertDialog.Builder(this).setView(layout).create();
+        alertDialog.setCanceledOnTouchOutside(true);
+        alertDialog.setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                logo.setSelected(false);
+            }
+        });
+        alertDialog.setTitle(getString(R.string.notices));
+        alertDialog.show();
+
+        MovementMethod mm = LinkMovementMethod.getInstance();
+        ((TextView) layout.findViewById(R.id.dmach_header)).setMovementMethod(mm);
+        ((TextView) layout.findViewById(R.id.cyclone_header)).setMovementMethod(mm);
+        ((TextView) layout.findViewById(R.id.diy2_header)).setMovementMethod(mm);
+        ((TextView) layout.findViewById(R.id.gson_header)).setMovementMethod(mm);
+        ((TextView) layout.findViewById(R.id.hcs_header)).setMovementMethod(mm);
+        ((TextView) layout.findViewById(R.id.icomoon_header)).setMovementMethod(mm);
+        ((TextView) layout.findViewById(R.id.libpd_header)).setMovementMethod(mm);
+        ((TextView) layout.findViewById(R.id.pan_header)).setMovementMethod(mm);
+        ((TextView) layout.findViewById(R.id.pdcore_header)).setMovementMethod(mm);
+        ((TextView) layout.findViewById(R.id.saxmono_header)).setMovementMethod(mm);
+        ((TextView) layout.findViewById(R.id.zexy_header)).setMovementMethod(mm);
     }
 
     public void onChannelClicked(View view) {

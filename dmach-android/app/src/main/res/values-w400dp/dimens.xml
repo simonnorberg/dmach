@@ -31,4 +31,5 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     <dimen name="text_size_setting">21dp</dimen>
     <dimen name="text_size_logo">37dp</dimen>
     <dimen name="text_size">18sp</dimen>
+    <dimen name="text_size_notice">12sp</dimen>
 </resources>

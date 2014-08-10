@@ -59,7 +59,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginRight">@dimen/margin_large</item>
         <item name="android:gravity">bottom</item> <!--this is weird-->
-        <item name="android:background">@drawable/rect_colonial</item>
+        <item name="android:background">@drawable/sel_logo</item>
         <item name="android:textColor">@color/dune</item>
         <item name="android:textSize">@dimen/text_size_logo</item>
         <item name="android:text">@string/logo</item>
@@ -113,5 +113,18 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     <style name="Setting.6">
         <item name="android:text">@string/setting_6</item>
         <item name="android:layout_marginBottom">0dp</item>
+    </style>
+
+    <style name="Header">
+        <item name="android:layout_marginTop">@dimen/margin_normal</item>
+    </style>
+    <style name="License">
+        <item name="android:textSize">@dimen/text_size_notice</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:layout_marginBottom">@dimen/margin_normal</item>
+    </style>
+    <style name="License.Author">
+        <item name="android:layout_marginTop">@dimen/margin_normal</item>
+        <item name="android:layout_marginBottom">@dimen/margin_normal</item>
     </style>
 </resources>

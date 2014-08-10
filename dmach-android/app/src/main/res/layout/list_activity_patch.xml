@@ -23,11 +23,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:id="@+id/save_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_toLeftOf="@+id/save_button"
         android:layout_alignBaseline="@+id/save_button"
-
         android:imeOptions="flagNoExtractUi"
+        android:singleLine="true"
         android:maxLines="1"
         android:maxLength="30"
         android:hint="@string/title"
@@ -49,11 +48,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:paddingTop="@dimen/margin_small"
         android:paddingBottom="@dimen/margin_small"
         android:paddingLeft="@dimen/margin_normal"
-
         android:layout_below="@+id/save_button"
         android:layout_alignParentLeft="true"
         android:layout_toLeftOf="@+id/tempo_header"
-
         android:background="@color/holo_dark"
         android:text="@string/title_header"
         android:lines="1" />
@@ -66,10 +63,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:paddingTop="@dimen/margin_small"
         android:paddingBottom="@dimen/margin_small"
         android:paddingRight="@dimen/margin_normal"
-
         android:layout_below="@+id/save_button"
         android:layout_alignParentRight="true"
-
         android:background="@color/holo_dark"
         android:text="@string/tempo_header"
         android:lines="1" />
@@ -78,7 +73,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_below="@+id/title_header" />
 
 </RelativeLayout>
