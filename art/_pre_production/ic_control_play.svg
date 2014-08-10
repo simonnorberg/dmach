@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<!-- Generator: IcoMoon.io -->
 
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -9,41 +9,16 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="81"
-   height="108"
-   id="svg30807"
+   width="426.66675"
+   height="512"
+   viewBox="0 0 426.66675 512"
+   id="svg2"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="ic_control_play.svg"
-   inkscape:export-filename="/Users/simon/android/dmach/art/xxhdpi/ic_control_play_xlarge.png"
-   inkscape:export-xdpi="180"
-   inkscape:export-ydpi="180">
-  <defs
-     id="defs30809" />
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="1.754102"
-     inkscape:cx="30.641906"
-     inkscape:cy="43.442747"
-     inkscape:document-units="px"
-     inkscape:current-layer="layer1"
-     showgrid="false"
-     fit-margin-top="0"
-     fit-margin-left="0"
-     fit-margin-right="0"
-     fit-margin-bottom="0"
-     inkscape:window-width="471"
-     inkscape:window-height="415"
-     inkscape:window-x="474"
-     inkscape:window-y="5"
-     inkscape:window-maximized="0" />
+   sodipodi:docname="play3.svg"
+   style="fill:#000000">
   <metadata
-     id="metadata30812">
+     id="metadata73">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
@@ -54,15 +29,35 @@
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
-     id="layer1"
-     transform="translate(-520.78542,-434.21962)">
-    <path
-       inkscape:connector-curvature="0"
-       id="path15689"
-       style="fill:#ebebaf;fill-opacity:1;fill-rule:nonzero;stroke:none"
-       d="m 520.78542,434.21962 81,54.01551 -81,53.98449 0,-108" />
-  </g>
+  <defs
+     id="defs71" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1148"
+     inkscape:window-height="562"
+     id="namedview69"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="0.4609375"
+     inkscape:cx="-224"
+     inkscape:cy="192"
+     inkscape:window-x="0"
+     inkscape:window-y="31"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg2" />
+  <path
+     d="M 0,0 426.66674,256 0,512 z"
+     id="path67"
+     style="fill:#ebebaf;fill-opacity:1"
+     inkscape:connector-curvature="0" />
 </svg>
