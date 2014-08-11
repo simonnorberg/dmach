@@ -23,7 +23,6 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,15 +32,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.ContextMenu;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 import net.simno.dmach.contentprovider.PatchContentProvider;
 import net.simno.dmach.database.PatchTable;
@@ -85,6 +86,17 @@ public class PatchListActivity extends ListActivity implements LoaderCallbacks<C
             mSaveText = (EditText) findViewById(R.id.save_text);
             mSaveText.setText(mPatch.getTitle());
             mSaveText.setSelection(mSaveText.getText().length());
+            mSaveText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    boolean handled = false;
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        save();
+                        handled = true;
+                    }
+                    return handled;
+                }
+            });
 
             mAdapter = new SimpleCursorAdapter(this, R.layout.row_patch, null, FROM, TO, 0);
             setListAdapter(mAdapter);
@@ -143,6 +155,10 @@ public class PatchListActivity extends ListActivity implements LoaderCallbacks<C
     }
 
     public void onSaveClicked(View v) {
+        save();
+    }
+
+    private void save() {
         mTitle = mSaveText.getText().toString();
         if (!TextUtils.isEmpty(mTitle)) {
             disableSaveButton();
@@ -159,11 +175,6 @@ public class PatchListActivity extends ListActivity implements LoaderCallbacks<C
 
     private void disableSaveButton() {
         mSaveButton.setEnabled(false);
-    }
-
-    private void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(mSaveText.getWindowToken(), 0);
     }
 
     private ContentValues getContentValues() {
@@ -224,7 +235,6 @@ public class PatchListActivity extends ListActivity implements LoaderCallbacks<C
                         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                hideKeyboard();
                                 enableSaveButton();
                                 dialog.cancel();
                             }
