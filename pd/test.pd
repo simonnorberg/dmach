@@ -2,7 +2,7 @@
 #X obj 141 -300 s tempo;
 #X floatatom 141 -322 5 0 0 0 - - -;
 #X obj 436 -298 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 11100 0;
+-1 -1 0 0;
 #X obj 21 -239 hradio 16 1 0 16 empty empty empty 0 -8 0 10 -262144
 -1 -1 0;
 #X obj 21 -262 r beat;
@@ -15,7 +15,7 @@
 #X obj 409 -322 hradio 16 1 0 8 empty empty empty 0 -8 0 10 -262144
 -1 -1 0;
 #X obj 428 -155 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 8400 0;
+-1 -1 0 0;
 #X obj 407 -109 pack f f;
 #X obj 407 -180 hradio 16 1 0 10 empty empty empty 0 -8 0 10 -262144
 -1 -1 0;
@@ -86,26 +86,26 @@
 #X msg 467 -276 0.5;
 #X obj 467 -225 s bdp;
 #X obj 467 -112 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 5500 1;
+-1 -1 0 1;
 #X floatatom 504 -81 5 0 0 0 - - -;
 #X msg 464 -133 0.5;
 #X obj 464 -82 s sdp;
 #X obj 459 30 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 6350 1;
+-1 -1 0 1;
 #X floatatom 496 61 5 0 0 0 - - -;
 #X msg 456 9 0.5;
 #X obj 456 60 s cpp;
 #X obj 769 -258 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 6350 1;
+-1 -1 0 1;
 #X floatatom 806 -227 5 0 0 0 - - -;
 #X msg 766 -279 0.5;
 #X obj 766 -228 s ttp;
 #X obj 760 -112 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 6350 1;
+-1 -1 0 1;
 #X floatatom 797 -81 5 0 0 0 - - -;
 #X msg 757 -133 0.5;
 #X obj 751 24 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 6350 1;
+-1 -1 0 1;
 #X floatatom 788 55 5 0 0 0 - - -;
 #X msg 748 3 0.5;
 #X obj 757 -82 s cbp;
