@@ -20,7 +20,6 @@ import android.media.AudioTrack;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Process;
-import android.util.Log;
 
 /**
  *
@@ -33,7 +32,6 @@ import android.util.Log;
  */
 public abstract class AudioWrapper {
 
-    private static final String AUDIO_WRAPPER = "AudioWrapper";
     private static final int ENCODING = AudioFormat.ENCODING_PCM_16BIT;
     private final AudioRecordWrapper rec;
     private final AudioTrack track;
@@ -116,8 +114,6 @@ public abstract class AudioWrapper {
                         short newBuf[] = rec.poll();
                         if (newBuf != null) {
                             inBuf = newBuf;
-                        } else {
-                            Log.w(AUDIO_WRAPPER, "no input buffer available");
                         }
                     }
                 }
@@ -193,7 +189,6 @@ public abstract class AudioWrapper {
             mp.stop();
             mp.release();
         } catch (Exception e) {
-            Log.e(AUDIO_WRAPPER, e.toString());
         }
     }
 }

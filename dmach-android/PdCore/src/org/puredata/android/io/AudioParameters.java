@@ -15,7 +15,6 @@ import android.media.AudioManager;
 import android.media.AudioRecord;
 import android.media.AudioTrack;
 import android.os.Build;
-import android.util.Log;
 
 /**
  *
@@ -44,7 +43,6 @@ public class AudioParameters {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN && context != null) {
             impl = JellyBeanMR1OpenSLParameters.getParameters(context);
         } else if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
-            Log.w("AudioParameters", "Initializing audio parameters with null context on Android 4.2 or later.");
             impl = new BasicOpenSLParameters(64, 64);
         } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.JELLY_BEAN) {
             impl = JellyBeanOpenSLParameters.getParameters();
@@ -277,9 +275,7 @@ public class AudioParameters {
             try {
                 sr = Integer.parseInt(am.getProperty(AudioManager.PROPERTY_OUTPUT_SAMPLE_RATE));
                 bs = Integer.parseInt(am.getProperty(AudioManager.PROPERTY_OUTPUT_FRAMES_PER_BUFFER));
-                Log.i(TAG, "sample rate: " + sr + ", buffer size: " + bs);
             } catch (Exception e) {
-                Log.e(TAG, "Missing or malformed audio property: " + e.toString());
             }
             return new JellyBeanMR1OpenSLParameters(sr, 64, 64, bs, lowLatency);
         }

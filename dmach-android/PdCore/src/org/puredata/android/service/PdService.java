@@ -27,7 +27,6 @@ import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 /**
  *
@@ -208,7 +207,6 @@ public class PdService extends Service {
                 PdBase.addToSearchPath(dir.getAbsolutePath());
                 PdBase.addToSearchPath("/data/data/" + getPackageName() + "/lib"); // Location of standard externals.
             } catch (IOException e) {
-                Log.e(PD_SERVICE, "unable to unpack abstractions:" + e.toString());
             }
         }
     }
