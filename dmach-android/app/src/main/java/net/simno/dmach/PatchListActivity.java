@@ -50,7 +50,11 @@ import net.simno.dmach.model.Patch;
 
 public class PatchListActivity extends ListActivity implements LoaderCallbacks<Cursor> {
 
+    static final String TITLE_EXTRA = "title";
     static final String PATCH_EXTRA = "patch";
+
+    static final int RESULT_SAVED = RESULT_FIRST_USER;
+    static final int RESULT_LOADED = RESULT_FIRST_USER + 1;
     private static final int LOAD_TOKEN = 1;
     private static final int SAVE_TOKEN = 2;
     private static final int DELETE_ID = Menu.FIRST + 1;
@@ -188,6 +192,13 @@ public class PatchListActivity extends ListActivity implements LoaderCallbacks<C
         return values;
     }
 
+    private void returnTitle() {
+        Intent intent = new Intent();
+        intent.putExtra(TITLE_EXTRA, mTitle);
+        setResult(RESULT_SAVED, intent);
+        finish();
+    }
+
     private class PatchQueryHandler extends AsyncQueryHandler {
 
         private PatchQueryHandler(ContentResolver cr) {
@@ -212,7 +223,7 @@ public class PatchListActivity extends ListActivity implements LoaderCallbacks<C
                         cursor.close();
                         Intent intent = new Intent();
                         intent.putExtra(PATCH_EXTRA, patch);
-                        setResult(RESULT_OK, intent);
+                        setResult(RESULT_LOADED, intent);
                         finish();
                     }
                     break;
@@ -248,14 +259,12 @@ public class PatchListActivity extends ListActivity implements LoaderCallbacks<C
 
         @Override
         protected void onInsertComplete(int token, Object cookie, Uri uri) {
-            setResult(RESULT_CANCELED);
-            finish();
+            returnTitle();
         }
 
         @Override
         protected void onUpdateComplete(int token, Object cookie, int result) {
-            setResult(RESULT_CANCELED);
-            finish();
+            returnTitle();
         }
     }
 }

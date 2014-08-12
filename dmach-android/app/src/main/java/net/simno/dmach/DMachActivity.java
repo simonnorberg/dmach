@@ -473,7 +473,7 @@ public class DMachActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         findViewById(R.id.patch_button).setSelected(false);
         if (requestCode == PATCH_REQUEST) {
-            if (resultCode == RESULT_OK) {
+            if (resultCode == PatchListActivity.RESULT_LOADED) {
                 Patch patch = data.getParcelableExtra(PatchListActivity.PATCH_EXTRA);
                 mTitle = patch.getTitle();
                 mSequence = patch.getSequence();
@@ -484,6 +484,8 @@ public class DMachActivity extends Activity {
                 initPd();
                 setFragment();
                 setChannelSelection();
+            } else if (resultCode == PatchListActivity.RESULT_SAVED) {
+                mTitle = data.getStringExtra(PatchListActivity.TITLE_EXTRA);
             }
         }
     }
