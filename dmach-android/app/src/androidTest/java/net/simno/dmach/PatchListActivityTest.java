@@ -17,11 +17,23 @@
 
 package net.simno.dmach;
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
+import android.test.ActivityInstrumentationTestCase2;
 
-public class ApplicationTest extends ApplicationTestCase<Application> {
-    public ApplicationTest() {
-        super(Application.class);
+public class PatchListActivityTest extends ActivityInstrumentationTestCase2<PatchListActivity> {
+
+    private PatchListActivity mActivity;
+
+    public PatchListActivityTest() {
+        super(PatchListActivity.class);
+    }
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        mActivity = getActivity();
+    }
+
+    public void testExists() throws Exception {
+        assertNotNull(mActivity);
     }
 }
