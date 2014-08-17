@@ -19,6 +19,7 @@ package net.simno.dmach.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -27,9 +28,15 @@ import net.simno.dmach.DMachActivity;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+/**
+ * The Patch class contains all variables used in dmach.pd
+ */
 public class Patch implements Parcelable {
+
+    private static Type CHANNEL_TYPE = new TypeToken<ArrayList<Channel>>() {}.getType();
 
     private String mTitle;
     private int[] mSequence;
@@ -37,11 +44,19 @@ public class Patch implements Parcelable {
     private int mSelectedChannel;
     private int mTempo;
     private int mSwing;
-    private Type mChannelsType = new TypeToken<ArrayList<Channel>>() {}.getType();
 
     public Patch() {
     }
 
+    /**
+     *
+     * @param title  Title of the patch, unique in the database
+     * @param sequence  The sequence that is used in dmach.pd
+     * @param channels  List of channels in the patch
+     * @param selectedChannel  The selected channel index
+     * @param tempo  The tempo in BPM that is used in dmach.pd
+     * @param swing  The swing value that is used in dmach.pd
+     */
     public Patch(String title, int[] sequence, List<Channel> channels, int selectedChannel,
                  int tempo, int swing) {
         mTitle = title;
@@ -72,12 +87,8 @@ public class Patch implements Parcelable {
         mSequence = sequence;
     }
 
-    public String getSequenceAsJson() {
-        return new Gson().toJson(mSequence);
-    }
-
-    public void setSequenceFromJson(String sequenceJson) {
-        mSequence = new Gson().fromJson(sequenceJson, int[].class);
+    public void setSequence(String json) {
+        setSequence(jsonToSequence(json));
     }
 
     public List<Channel> getChannels() {
@@ -88,12 +99,8 @@ public class Patch implements Parcelable {
         mChannels = channels;
     }
 
-    public String getChannelsAsJson() {
-        return new Gson().toJson(mChannels);
-    }
-
-    public void setChannelsFromJson(String channelsJson) {
-        mChannels = new Gson().fromJson(channelsJson, mChannelsType);
+    public void setChannels(String json) {
+        setChannels(jsonToChannels(json));
     }
 
     public int getSelectedChannel() {
@@ -156,5 +163,57 @@ public class Patch implements Parcelable {
         mSelectedChannel = in.readInt();
         mTempo = in.readInt();
         mSwing = in.readInt();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Patch)) {
+            return false;
+        }
+        Patch p = (Patch) o;
+        if (mSelectedChannel != p.mSelectedChannel || mTempo != p.mTempo || mSwing != p.mSwing) {
+            return false;
+        }
+        if (!TextUtils.equals(mTitle, p.mTitle)) {
+            return false;
+        }
+        if (!Arrays.equals(mSequence, p.mSequence)) {
+            return false;
+        }
+        if (!mChannels.equals(p.mChannels)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1337;
+        result = 37 * result + (mTitle != null ? mTitle.hashCode() : 0);
+        result = 37 * result + (mSequence != null ? Arrays.hashCode(mSequence) : 0);
+        result = 37 * result + (mChannels != null ? mChannels.hashCode() : 0);
+        result = 37 * result + mSelectedChannel;
+        result = 37 * result + mTempo;
+        result = 37 * result + mSwing;
+        return result;
+    }
+
+    public static String sequenceToJson(int[] sequence) {
+        return new Gson().toJson(sequence);
+    }
+
+    public static String channelsToJson(List<Channel> channels) {
+        return new Gson().toJson(channels);
+    }
+
+    public static int[] jsonToSequence(String json) {
+        return new Gson().fromJson(json, int[].class);
+    }
+
+    public static List<Channel> jsonToChannels(String json) {
+        return new Gson().fromJson(json, CHANNEL_TYPE);
     }
 }

@@ -42,12 +42,11 @@ public class PdService extends Service {
             return PdService.this;
         }
     }
+
     private static final int NOTIFICATION_ID = 1;
     private final PdBinder binder = new PdBinder();
     private static boolean abstractionsInstalled = false;
     private boolean hasForeground = false;
-
-    private static final String PD_SERVICE = "PD Service";
     private volatile int sampleRate = 0;
     private volatile int inputChannels = 0;
     private volatile int outputChannels = 0;

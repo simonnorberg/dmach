@@ -67,6 +67,14 @@ public final class PanView extends PdView {
         mOffset = (mShapeStrokeWidth / 2f) + (mRectHeight / 2f);
     }
 
+    public float getPdPan() {
+        if (mPan == mCenter){
+            return .5f;
+        } else {
+            return yToPd(mPan);
+        }
+    }
+
     @Override
     protected float getMinX() {
         return mShapeStrokeWidth / 2f;
@@ -90,7 +98,7 @@ public final class PanView extends PdView {
     private void notifyOnPanChanged() {
         if (mListener != null) {
             if (mPan == mCenter){
-                mListener.onPanChanged(0.5f);
+                mListener.onPanChanged(.5f);
             } else {
                 mListener.onPanChanged(yToPd(mPan));
             }

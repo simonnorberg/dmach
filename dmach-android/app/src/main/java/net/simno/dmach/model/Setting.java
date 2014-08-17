@@ -19,15 +19,28 @@ package net.simno.dmach.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
+/**
+ * The Setting class represents two parameters of a channel in dmach.pd
+ */
 public final class Setting implements Parcelable {
-    public String hText;
-    public String vText;
-    public float x;
-    public float y;
-    public int hIndex;
-    public int vIndex;
+    private String hText;
+    private String vText;
+    private float x;
+    private float y;
+    private int hIndex;
+    private int vIndex;
 
+    /**
+     *
+     * @param hText  Text to be displayed horizontally
+     * @param vText  Text to be displayed vertically
+     * @param x  Horizontal value
+     * @param y  Vertical value
+     * @param hIndex  Index of the parameter to change in the Pure Data patch
+     * @param vIndex  Index of the parameter to change in the Pure Data patch
+     */
     public Setting(String hText, String vText, float x, float y, int hIndex, int vIndex) {
         this.hText = hText;
         this.vText = vText;
@@ -41,9 +54,36 @@ public final class Setting implements Parcelable {
         readFromParcel(in);
     }
 
-    public void setXY(float x, float y) {
+    public String getHText() {
+        return hText;
+    }
+
+    public String getVText() {
+        return vText;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setX(float x) {
         this.x = x;
+    }
+
+    public void setY(float y) {
         this.y = y;
+    }
+
+    public int getHIndex() {
+        return hIndex;
+    }
+
+    public int getVIndex() {
+        return vIndex;
     }
 
     public static final Creator<Setting> CREATOR = new Creator<Setting>() {
@@ -98,5 +138,35 @@ public final class Setting implements Parcelable {
         y = in.readFloat();
         hIndex = in.readInt();
         vIndex = in.readInt();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Setting)) {
+            return false;
+        }
+        Setting s = (Setting) o;
+        if (x != s.x || y != s.y || hIndex != s.hIndex || vIndex != s.vIndex) {
+            return false;
+        }
+        if (!TextUtils.equals(hText, s.hText) || !TextUtils.equals(vText, s.vText)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1337;
+        result = 37 * result + (hText != null ? hText.hashCode() : 0);
+        result = 37 * result + (vText != null ? vText.hashCode() : 0);
+        result = 37 * result + Float.floatToIntBits(x);
+        result = 37 * result + Float.floatToIntBits(y);
+        result = 37 * result + hIndex;
+        result = 37 * result + vIndex;
+        return result;
     }
 }

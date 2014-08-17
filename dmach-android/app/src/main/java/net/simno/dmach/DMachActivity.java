@@ -45,9 +45,6 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import net.simno.dmach.model.Channel;
 import net.simno.dmach.model.Patch;
 import net.simno.dmach.model.Setting;
@@ -60,7 +57,6 @@ import org.puredata.core.utils.IoUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -167,31 +163,30 @@ public class DMachActivity extends Activity {
 
     private void storeSettings() {
         Editor editor = getPreferences(MODE_PRIVATE).edit();
-        String mSequenceJson = new Gson().toJson(mSequence);
-        String mChannelsJson = new Gson().toJson(mChannels);
+        String sequenceJson = Patch.sequenceToJson(mSequence);
+        String channelsJson = Patch.channelsToJson(mChannels);
         editor.putString(PREF_TITLE, mTitle)
-                .putString(PREF_SEQUENCE, mSequenceJson)
-                .putString(PREF_CHANNELS, mChannelsJson)
+                .putString(PREF_SEQUENCE, sequenceJson)
+                .putString(PREF_CHANNELS, channelsJson)
                 .putInt(PREF_TEMPO, mTempo)
                 .putInt(PREF_SWING, mSwing)
                 .putInt(PREF_CHANNEL, mSelectedChannel)
                 .putBoolean(PREF_PROGRESS, mShowProgress)
-                .commit();
+                .apply();
     }
 
     private void restoreSettings() {
         SharedPreferences prefs = getPreferences(MODE_PRIVATE);
         mTitle = prefs.getString(PREF_TITLE, "untitled");
-        String mSequenceJson = prefs.getString(PREF_SEQUENCE, "");
-        if (!mSequenceJson.isEmpty()) {
-            mSequence = new Gson().fromJson(mSequenceJson, int[].class);
+        String sequenceJson = prefs.getString(PREF_SEQUENCE, "");
+        if (!sequenceJson.isEmpty()) {
+            mSequence = Patch.jsonToSequence(sequenceJson);
         } else {
             mSequence = new int[GROUPS * STEPS];
         }
-        Type type = new TypeToken<ArrayList<Channel>>() {}.getType();
-        String mChannelsJson = prefs.getString(PREF_CHANNELS, "");
-        if (!mChannelsJson.isEmpty()) {
-            mChannels = new Gson().fromJson(mChannelsJson, type);
+        String channelsJson = prefs.getString(PREF_CHANNELS, "");
+        if (!channelsJson.isEmpty()) {
+            mChannels = Patch.jsonToChannels(channelsJson);
         } else {
             initChannels();
         }
@@ -316,8 +311,8 @@ public class DMachActivity extends Activity {
             String name = channel.getName();
             PdBase.sendFloat(name + "p", channel.getPan());
             for (Setting setting : channel.getSettings()) {
-                PdBase.sendList(name, new Object[]{setting.hIndex, setting.x});
-                PdBase.sendList(name, new Object[]{setting.vIndex, setting.y});
+                PdBase.sendList(name, new Object[]{setting.getHIndex(), setting.getX()});
+                PdBase.sendList(name, new Object[]{setting.getVIndex(), setting.getY()});
             }
         }
     }

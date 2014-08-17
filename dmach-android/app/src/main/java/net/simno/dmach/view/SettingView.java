@@ -70,6 +70,14 @@ public final class SettingView extends PdView {
         mShapePaint.setColor(getResources().getColor(R.color.colonial));
     }
 
+    public float getPdX() {
+        return xToPd(mX);
+    }
+
+    public float getPdY() {
+        return yToPd(mY);
+    }
+
     @Override
     protected float getMinX() {
         return mCircleRadius + (mShapeStrokeWidth / 2f);
@@ -101,10 +109,10 @@ public final class SettingView extends PdView {
     }
 
     public void setSetting(Setting setting) {
-        mX = pdToX(setting.x);
-        mY = pdToY(setting.y);
-        mHText = setting.hText;
-        mVText = setting.vText;
+        mX = pdToX(setting.getX());
+        mY = pdToY(setting.getY());
+        mHText = setting.getHText();
+        mVText = setting.getVText();
 
         mTextPaint.getTextBounds(mHText, 0, mHText.length(), mHBounds);
         mOriginX = (getWidth() / 2f) - mHBounds.centerX();

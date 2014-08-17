@@ -27,7 +27,6 @@ import android.os.Build;
  */
 public class AudioParameters {
 
-    private static final String TAG = "AudioParameters";
     private static AudioParametersImpl impl = null;
 
     /**

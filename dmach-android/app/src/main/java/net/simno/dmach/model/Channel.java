@@ -19,16 +19,25 @@ package net.simno.dmach.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Channel class represents a channel in dmach.pd
+ */
 public final class Channel implements Parcelable {
     private String mName;
     private List<Setting> mSettings;
-    private int mSelectedSetting;
+    private int mSelectedSetting; // Default selection is 0
     private float mPan;
 
+    /**
+     *
+     * @param name  Channel name that must exist in dmach.pd
+     * @param pan  Pan position
+     */
     public Channel(String name, float pan) {
         mName = name;
         mPan = pan;
@@ -124,5 +133,36 @@ public final class Channel implements Parcelable {
         mSettings = new ArrayList<Setting>();
         in.readList(mSettings, Setting.class.getClassLoader());
         mSelectedSetting = in.readInt();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Channel)) {
+            return false;
+        }
+        Channel c = (Channel) o;
+        if (mSelectedSetting != c.mSelectedSetting || mPan != c.mPan) {
+            return false;
+        }
+        if (!TextUtils.equals(mName, c.mName)) {
+            return false;
+        }
+        if (!mSettings.equals(c.mSettings)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1337;
+        result = 37 * result + (mName != null ? mName.hashCode() : 0);
+        result = 37 * result + (mSettings != null ? mSettings.hashCode() : 0);
+        result = 37 * result + mSelectedSetting;
+        result = 37 * result + Float.floatToIntBits(mPan);
+        return result;
     }
 }

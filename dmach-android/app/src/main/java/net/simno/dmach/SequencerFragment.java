@@ -94,11 +94,8 @@ public class SequencerFragment extends Fragment
     }
 
     @Override
-    public void onStepChanged(int channel, int step) {
-        int mask = channel % (DMachActivity.CHANNELS / DMachActivity.GROUPS);
-        int group = channel / (DMachActivity.CHANNELS / DMachActivity.GROUPS);
-        int index = (group * DMachActivity.STEPS) + step;
-        mSequence[index] ^= DMachActivity.MASKS[mask];
+    public void onStepChanged(int group, int step, int mask, int index) {
+        mSequence[index] ^= mask;
         PdBase.sendList("step", new Object[]{group, step, mSequence[index]});
     }
 

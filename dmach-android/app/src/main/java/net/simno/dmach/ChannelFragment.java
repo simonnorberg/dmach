@@ -136,8 +136,9 @@ public class ChannelFragment extends Fragment
     @Override
     public void onSettingChanged(float x, float y) {
         String name = mChannel.getName();
-        PdBase.sendList(name, new Object[]{mChannel.getSetting().hIndex, x});
-        PdBase.sendList(name, new Object[]{mChannel.getSetting().vIndex, y});
-        mChannel.getSetting().setXY(x, y);
+        PdBase.sendList(name, new Object[]{mChannel.getSetting().getHIndex(), x});
+        PdBase.sendList(name, new Object[]{mChannel.getSetting().getVIndex(), y});
+        mChannel.getSetting().setX(x);
+        mChannel.getSetting().setY(y);
     }
 }

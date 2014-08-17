@@ -166,7 +166,7 @@ public class PatchListActivity extends ListActivity implements LoaderCallbacks<C
         mTitle = mSaveText.getText().toString();
         if (!TextUtils.isEmpty(mTitle)) {
             disableSaveButton();
-            // Check if title exists in database
+            // Check if title exists in database. The title column is unique.
             mSelectionArgs = new String[] {mTitle};
             mHandler.startQuery(SAVE_TOKEN, null, PatchContentProvider.CONTENT_URI, null,
                     TITLE_SELECTION, mSelectionArgs, null);
@@ -184,8 +184,8 @@ public class PatchListActivity extends ListActivity implements LoaderCallbacks<C
     private ContentValues getContentValues() {
         final ContentValues values = new ContentValues();
         values.put(PatchTable.COLUMN_TITLE, mTitle);
-        values.put(PatchTable.COLUMN_SEQUENCE, mPatch.getSequenceAsJson());
-        values.put(PatchTable.COLUMN_CHANNELS, mPatch.getChannelsAsJson());
+        values.put(PatchTable.COLUMN_SEQUENCE, Patch.sequenceToJson(mPatch.getSequence()));
+        values.put(PatchTable.COLUMN_CHANNELS, Patch.channelsToJson(mPatch.getChannels()));
         values.put(PatchTable.COLUMN_CHANNEL, mPatch.getSelectedChannel());
         values.put(PatchTable.COLUMN_TEMPO, mPatch.getTempo());
         values.put(PatchTable.COLUMN_SWING, mPatch.getSwing());
@@ -215,8 +215,8 @@ public class PatchListActivity extends ListActivity implements LoaderCallbacks<C
                     if (cursor.moveToFirst()) {
                         Patch patch = new Patch();
                         patch.setTitle(cursor.getString(cursor.getColumnIndex(PatchTable.COLUMN_TITLE)));
-                        patch.setSequenceFromJson(cursor.getString(cursor.getColumnIndex(PatchTable.COLUMN_SEQUENCE)));
-                        patch.setChannelsFromJson(cursor.getString(cursor.getColumnIndex(PatchTable.COLUMN_CHANNELS)));
+                        patch.setSequence(cursor.getString(cursor.getColumnIndex(PatchTable.COLUMN_SEQUENCE)));
+                        patch.setChannels(cursor.getString(cursor.getColumnIndex(PatchTable.COLUMN_CHANNELS)));
                         patch.setSelectedChannel(cursor.getInt(cursor.getColumnIndex(PatchTable.COLUMN_CHANNEL)));
                         patch.setTempo(cursor.getInt(cursor.getColumnIndex(PatchTable.COLUMN_TEMPO)));
                         patch.setSwing(cursor.getInt(cursor.getColumnIndex(PatchTable.COLUMN_SWING)));
@@ -229,7 +229,7 @@ public class PatchListActivity extends ListActivity implements LoaderCallbacks<C
                     break;
                 case SAVE_TOKEN:
                     if (cursor.getCount() == 0) {
-                        // Title does not exist
+                        // Title does not exist and we can insert a new entry
                         mHandler.startInsert(0, null, PatchContentProvider.CONTENT_URI, getContentValues());
                     } else {
                         // Ask to overwrite existing title

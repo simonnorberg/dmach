@@ -34,14 +34,17 @@ import java.util.Iterator;
 public final class SequencerView extends View {
 
     public interface OnStepChangedListener {
-        public void onStepChanged(int channel, int step);
+        public void onStepChanged(int group, int step, int mask, int index);
     }
+
+    private static int CHANNELS_PER_GROUP = DMachActivity.CHANNELS / DMachActivity.GROUPS;
 
     private final ArrayList<Step> mSequence = new ArrayList<Step>();
     private OnStepChangedListener mListener;
     private Paint mUncheckedLight;
     private Paint mUncheckedDark;
     private Paint mChecked;
+    private int mBackground;
     private boolean mIsChecked;
     private int mWidth;
     private int mHeight;
@@ -75,32 +78,9 @@ public final class SequencerView extends View {
         init();
     }
 
-    public void setOnStepChangedListener(OnStepChangedListener listener) {
-        mListener = listener;
-    }
-
-    private void notifyOnStepChanged(int channel, int step) {
-        if (mListener != null) {
-            mListener.onStepChanged(channel, step);
-        }
-    }
-
-    public void setChecked(int[] sequence) {
-        Iterator<Step> i = mSequence.iterator();
-        for (int c = 0; c < (DMachActivity.CHANNELS); ++c) {
-            for (int s = 0; s < DMachActivity.STEPS; ++s) {
-                if (i.hasNext()) {
-                    int mask = DMachActivity.MASKS[c % (DMachActivity.CHANNELS / DMachActivity.GROUPS)];
-                    int index = s + ((c / (DMachActivity.CHANNELS / DMachActivity.GROUPS)) * DMachActivity.STEPS);
-                    int value = sequence[index] & mask;
-                    i.next().checked = value != 0;
-                }
-            }
-        }
-        invalidate();
-    }
-
     private void init() {
+        mBackground = getResources().getColor(R.color.colonial);
+
         mUncheckedLight = new Paint();
         mUncheckedLight.setColor(getResources().getColor(R.color.khaki));
         mUncheckedLight.setStyle(Paint.Style.FILL);
@@ -135,14 +115,89 @@ public final class SequencerView extends View {
         }
     }
 
+    public void setOnStepChangedListener(OnStepChangedListener listener) {
+        mListener = listener;
+    }
+
+    private void notifyOnStepChanged(int channel, int step) {
+        if (mListener != null) {
+            mListener.onStepChanged(
+                    getGroup(channel),
+                    step,
+                    getMask(channel),
+                    getIndex(channel, step));
+        }
+    }
+
+    public void setChecked(int[] sequence) {
+        Iterator<Step> it = mSequence.iterator();
+        for (int channel = 0; channel < (DMachActivity.CHANNELS); ++channel) {
+            for (int step = 0; step < DMachActivity.STEPS; ++step) {
+                if (it.hasNext()) {
+                    int mask = getMask(channel);
+                    int index = getIndex(channel, step);
+                    int value = sequence[index] & mask;
+                    it.next().checked = value != 0;
+                }
+            }
+        }
+        invalidate();
+    }
+
+    public int[] getPdSequence() {
+        int[] sequence = new int[DMachActivity.GROUPS * DMachActivity.STEPS];
+        Iterator<Step> it = mSequence.iterator();
+        for (int channel = 0; channel < (DMachActivity.CHANNELS); ++channel) {
+            for (int step = 0; step < DMachActivity.STEPS; ++step) {
+                if (it.hasNext()) {
+                    int mask = getMask(channel);
+                    int index = getIndex(channel, step);
+                    if (it.next().checked) {
+                        sequence[index] |= mask;
+                    }
+                }
+            }
+        }
+        return sequence;
+    }
+
+    public static int getMask(int channel) {
+        return DMachActivity.MASKS[channel % CHANNELS_PER_GROUP];
+    }
+
+    public static int getGroup(int channel) {
+        return channel / CHANNELS_PER_GROUP;
+    }
+
+    public static int getIndex(int channel, int step) {
+        int offset = getGroup(channel) * DMachActivity.STEPS;
+        return step + offset;
+    }
+
+    public static int getListIndex(int channel, int step) {
+        return channel * DMachActivity.STEPS + step;
+    }
+
+    private int pxToChannel(float px) {
+        return (int) (px / mStepHeightMargin);
+    }
+
+    private int pxToStep(float px) {
+        return (int) (px / mStepWidthMargin);
+    }
+
+    private boolean isValidXY(float x, float y) {
+        return !(x < 0 || y < 0 || x > mWidth || y > mHeight);
+    }
+
     private void onActionDown(float x, float y) {
         if (!isValidXY(x, y)) {
             return;
         }
 
-        int channel = (int) (y / mStepHeightMargin);
-        int step = (int) (x / mStepWidthMargin);
-        int index = channel * DMachActivity.STEPS + step;
+        int channel = pxToChannel(y);
+        int step = pxToStep(x);
+        int index = getListIndex(channel, step);
 
         mIsChecked = mSequence.get(index).checked;
         mSequence.get(index).toggle();
@@ -155,9 +210,9 @@ public final class SequencerView extends View {
             return;
         }
 
-        int channel = (int) (y / mStepHeightMargin);
-        int step = (int) (x / mStepWidthMargin);
-        int index = channel * DMachActivity.STEPS + step;
+        int channel = pxToChannel(y);
+        int step = pxToStep(x);
+        int index = getListIndex(channel, step);
 
         if (mSequence.get(index).checked == mIsChecked) {
             mSequence.get(index).toggle();
@@ -166,12 +221,22 @@ public final class SequencerView extends View {
         }
     }
 
-    private boolean isValidXY(float x, float y) {
-        return !(x < 0 || y < 0 || x > mWidth || y > mHeight);
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                onActionDown(event.getX(), event.getY());
+                break;
+            case MotionEvent.ACTION_MOVE:
+                onActionMove(event.getX(), event.getY());
+                break;
+        }
+        return true;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
+        canvas.drawColor(mBackground);
         for (int i = 0; i < mSequence.size(); ++i) {
             Step step = mSequence.get(i);
             if (step.checked) {
@@ -198,18 +263,5 @@ public final class SequencerView extends View {
             initSteps();
             invalidate();
         }
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                onActionDown(event.getX(), event.getY());
-                break;
-            case MotionEvent.ACTION_MOVE:
-                onActionMove(event.getX(), event.getY());
-                break;
-        }
-        return true;
     }
 }
