@@ -55,6 +55,9 @@ import org.puredata.android.service.PdService;
 import org.puredata.core.PdBase;
 import org.puredata.core.utils.IoUtils;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -75,6 +78,9 @@ public class DMachActivity extends Activity {
     public static final int GROUPS = 2;
     public static final int CHANNELS = 6;
     public static final int STEPS = 16;
+
+    @InjectView(R.id.channel_container) LinearLayout mChannelContainer;
+    @InjectView(R.id.patch_button) ImageButton mPatchButton;
 
     private boolean mIsRunning;
     private boolean mShowProgress;
@@ -243,10 +249,10 @@ public class DMachActivity extends Activity {
 
     private void initGui() {
         setContentView(R.layout.activity_dmach);
+        ButterKnife.inject(this);
 
         if (mSelectedChannel != -1) {
-            LinearLayout channels = (LinearLayout) findViewById(R.id.channel_container);
-            CustomFontButton channel = (CustomFontButton) channels.getChildAt(mSelectedChannel);
+            CustomFontButton channel = (CustomFontButton) mChannelContainer.getChildAt(mSelectedChannel);
             if (channel != null) {
                 channel.setSelected(true);
                 getFragmentManager().beginTransaction().add(R.id.fragment_container,
@@ -466,7 +472,7 @@ public class DMachActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        findViewById(R.id.patch_button).setSelected(false);
+        mPatchButton.setSelected(false);
         if (requestCode == PATCH_REQUEST) {
             if (resultCode == PatchListActivity.RESULT_LOADED) {
                 Patch patch = data.getParcelableExtra(PatchListActivity.PATCH_EXTRA);
@@ -525,9 +531,8 @@ public class DMachActivity extends Activity {
     }
 
     private void setChannelSelection() {
-        LinearLayout channels = (LinearLayout) findViewById(R.id.channel_container);
         for (int i = 0; i < CHANNELS; ++i) {
-            Button channel = (Button) channels.getChildAt(i);
+            Button channel = (Button) mChannelContainer.getChildAt(i);
             channel.setSelected(i == mSelectedChannel);
         }
     }

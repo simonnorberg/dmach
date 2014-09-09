@@ -48,6 +48,9 @@ import net.simno.dmach.contentprovider.PatchContentProvider;
 import net.simno.dmach.database.PatchTable;
 import net.simno.dmach.model.Patch;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class PatchListActivity extends ListActivity implements LoaderCallbacks<Cursor> {
 
     static final String TITLE_EXTRA = "title";
@@ -69,11 +72,12 @@ public class PatchListActivity extends ListActivity implements LoaderCallbacks<C
             R.id.title_column
     };
 
+    @InjectView(R.id.save_button) Button mSaveButton;
+    @InjectView(R.id.save_text) EditText mSaveText;
+
     private String[] mSelectionArgs;
     private SimpleCursorAdapter mAdapter;
     private PatchQueryHandler mHandler;
-    private Button mSaveButton;
-    private EditText mSaveText;
     private Patch mPatch;
     private String mTitle;
 
@@ -81,13 +85,13 @@ public class PatchListActivity extends ListActivity implements LoaderCallbacks<C
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_activity_patch);
+        ButterKnife.inject(this);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mPatch = extras.getParcelable(PATCH_EXTRA);
             mHandler = new PatchQueryHandler(getContentResolver());
-            mSaveButton = (Button) findViewById(R.id.save_button);
-            mSaveText = (EditText) findViewById(R.id.save_text);
+
             mSaveText.setText(mPatch.getTitle());
             mSaveText.setSelection(mSaveText.getText().length());
             mSaveText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
