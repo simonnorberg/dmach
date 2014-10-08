@@ -173,31 +173,40 @@ public class Patch implements Parcelable {
         if (!(o instanceof Patch)) {
             return false;
         }
-        Patch p = (Patch) o;
-        if (mSelectedChannel != p.mSelectedChannel || mTempo != p.mTempo || mSwing != p.mSwing) {
+
+        Patch patch = (Patch) o;
+
+        if (mTitle != null ? !mTitle.equals(patch.mTitle) : patch.mTitle != null) {
             return false;
         }
-        if (!TextUtils.equals(mTitle, p.mTitle)) {
+        if (!Arrays.equals(mSequence, patch.mSequence)) {
             return false;
         }
-        if (!Arrays.equals(mSequence, p.mSequence)) {
+        if (mChannels != null ? !mChannels.equals(patch.mChannels) : patch.mChannels != null) {
             return false;
         }
-        if (!mChannels.equals(p.mChannels)) {
+        if (mSelectedChannel != patch.mSelectedChannel) {
             return false;
         }
+        if (mTempo != patch.mTempo) {
+            return false;
+        }
+        if (mSwing != patch.mSwing) {
+            return false;
+        }
+
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = 1337;
-        result = 37 * result + (mTitle != null ? mTitle.hashCode() : 0);
-        result = 37 * result + (mSequence != null ? Arrays.hashCode(mSequence) : 0);
-        result = 37 * result + (mChannels != null ? mChannels.hashCode() : 0);
-        result = 37 * result + mSelectedChannel;
-        result = 37 * result + mTempo;
-        result = 37 * result + mSwing;
+        int result = 17;
+        result = 31 * result + (mTitle != null ? mTitle.hashCode() : 0);
+        result = 31 * result + (mSequence != null ? Arrays.hashCode(mSequence) : 0);
+        result = 31 * result + (mChannels != null ? mChannels.hashCode() : 0);
+        result = 31 * result + mSelectedChannel;
+        result = 31 * result + mTempo;
+        result = 31 * result + mSwing;
         return result;
     }
 

@@ -148,25 +148,40 @@ public final class Setting implements Parcelable {
         if (!(o instanceof Setting)) {
             return false;
         }
-        Setting s = (Setting) o;
-        if (x != s.x || y != s.y || hIndex != s.hIndex || vIndex != s.vIndex) {
+
+        Setting setting = (Setting) o;
+
+        if (hText != null ? !hText.equals(setting.hText) : setting.hText != null) {
             return false;
         }
-        if (!TextUtils.equals(hText, s.hText) || !TextUtils.equals(vText, s.vText)) {
+        if (vText != null ? !vText.equals(setting.vText) : setting.vText != null) {
             return false;
         }
+        if (Float.compare(setting.x, x) != 0) {
+            return false;
+        }
+        if (Float.compare(setting.y, y) != 0) {
+            return false;
+        }
+        if (hIndex != setting.hIndex) {
+            return false;
+        }
+        if (vIndex != setting.vIndex) {
+            return false;
+        }
+
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = 1337;
-        result = 37 * result + (hText != null ? hText.hashCode() : 0);
-        result = 37 * result + (vText != null ? vText.hashCode() : 0);
-        result = 37 * result + Float.floatToIntBits(x);
-        result = 37 * result + Float.floatToIntBits(y);
-        result = 37 * result + hIndex;
-        result = 37 * result + vIndex;
+        int result = 17;
+        result = 31 * result + (hText != null ? hText.hashCode() : 0);
+        result = 31 * result + (vText != null ? vText.hashCode() : 0);
+        result = 31 * result + (x != +0.0f ? Float.floatToIntBits(x) : 0);
+        result = 31 * result + (y != +0.0f ? Float.floatToIntBits(y) : 0);
+        result = 31 * result + hIndex;
+        result = 31 * result + vIndex;
         return result;
     }
 }

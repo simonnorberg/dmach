@@ -143,26 +143,32 @@ public final class Channel implements Parcelable {
         if (!(o instanceof Channel)) {
             return false;
         }
-        Channel c = (Channel) o;
-        if (mSelectedSetting != c.mSelectedSetting || mPan != c.mPan) {
+
+        Channel channel = (Channel) o;
+
+        if (mName != null ? !mName.equals(channel.mName) : channel.mName != null) {
             return false;
         }
-        if (!TextUtils.equals(mName, c.mName)) {
+        if (mSettings != null ? !mSettings.equals(channel.mSettings) : channel.mSettings != null) {
             return false;
         }
-        if (!mSettings.equals(c.mSettings)) {
+        if (mSelectedSetting != channel.mSelectedSetting) {
             return false;
         }
+        if (Float.compare(channel.mPan, mPan) != 0) {
+            return false;
+        }
+
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = 1337;
-        result = 37 * result + (mName != null ? mName.hashCode() : 0);
-        result = 37 * result + (mSettings != null ? mSettings.hashCode() : 0);
-        result = 37 * result + mSelectedSetting;
-        result = 37 * result + Float.floatToIntBits(mPan);
+        int result = 17;
+        result = 31 * result + (mName != null ? mName.hashCode() : 0);
+        result = 31 * result + (mSettings != null ? mSettings.hashCode() : 0);
+        result = 31 * result + mSelectedSetting;
+        result = 31 * result + (mPan != +0.0f ? Float.floatToIntBits(mPan) : 0);
         return result;
     }
 }
