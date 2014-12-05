@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Copyright (C) 2014 Simon Norberg
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/margin_normal"
+        android:paddingRight="@dimen/margin_normal" >
+
+        <TextView
+            android:id="@+id/dmach_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dmach_header"
+            style="@style/Header" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dmach_author"
+            style="@style/License.Author" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/license_gpl3"
+            style="@style/License" />
+
+        <TextView
+            android:id="@+id/cyclone_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/cyclone_header"
+            style="@style/Header" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/cyclone_author"
+            style="@style/License.Author" />
+
+        <TextView
+            android:id="@+id/diy2_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/diy2_header"
+            style="@style/Header" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/diy2_author"
+            style="@style/License.Author" />
+
+        <TextView
+            android:id="@+id/gson_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/gson_header"
+            style="@style/Header" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/gson_author"
+            style="@style/License.Author" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/license_apache2"
+            style="@style/License" />
+
+        <TextView
+            android:id="@+id/hcs_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/hcs_header"
+            style="@style/Header" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/hcs_author"
+            style="@style/License.Author" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/license_gpl3"
+            style="@style/License" />
+
+        <TextView
+            android:id="@+id/icomoon_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/icomoon_header"
+            style="@style/Header" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/license_gpl3"
+            style="@style/License.Author" />
+
+        <TextView
+            android:id="@+id/libpd_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/libpd_header"
+            style="@style/Header" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/libpd_author"
+            style="@style/License.Author" />
+
+        <TextView
+            android:id="@+id/pan_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pan_header"
+            style="@style/Header" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pan_author"
+            style="@style/License.Author" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/license_gpl2"
+            style="@style/License" />
+
+        <TextView
+            android:id="@+id/pdcore_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pdcore_header"
+            style="@style/Header" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pdcore_author"
+            style="@style/License.Author" />
+
+        <TextView
+            android:id="@+id/saxmono_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/saxmono_header"
+            style="@style/Header" />
+        <TextView
+            android:id="@+id/saxmono_author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/saxmono_author"
+            style="@style/License.Author" />
+
+        <TextView
+            android:id="@+id/zexy_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/zexy_header"
+            style="@style/Header" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/zexy_author"
+            style="@style/License.Author" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/license_gpl2"
+            style="@style/License" />
+
+    </LinearLayout>
+</ScrollView>

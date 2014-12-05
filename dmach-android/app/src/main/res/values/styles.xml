@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Copyright (C) 2014 Simon Norberg
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <style name="DMachTheme" parent="android:Theme.Holo.NoActionBar.Fullscreen">
+        <item name="android:soundEffectsEnabled">false</item>
+        <item name="android:windowBackground">@color/colonial</item>
+        <item name="android:textSize">@dimen/text_size</item>
+    </style>
+    <style name="PatchTheme" parent="android:Theme.Holo.NoActionBar.Fullscreen">
+        <item name="android:soundEffectsEnabled">false</item>
+        <item name="android:textSize">@dimen/text_size</item>
+    </style>
+    <style name="CustomFont">
+        <item name="net.simno.dmach:font">fonts/saxmono.ttf</item>
+    </style>
+    <style name="Control">
+        <item name="android:background">@drawable/sel_control</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">@dimen/button_large_width</item>
+        <item name="android:layout_alignParentTop">true</item>
+    </style>
+    <style name="Control.Play">
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:src">@drawable/ic_control_play_small</item>
+    </style>
+    <style name="Control.Config">
+        <item name="android:layout_marginLeft">@dimen/margin_normal</item>
+        <item name="android:layout_toRightOf">@+id/play_button</item>
+        <item name="android:src">@drawable/ic_control_config_small</item>
+    </style>
+    <style name="Control.Reset">
+        <item name="android:layout_marginLeft">@dimen/margin_normal</item>
+        <item name="android:layout_toRightOf">@+id/config_button</item>
+        <item name="android:src">@drawable/ic_control_reset_small</item>
+    </style>
+    <style name="Control.Patch">
+        <item name="android:layout_marginLeft">@dimen/margin_normal</item>
+        <item name="android:layout_toRightOf">@+id/reset_button</item>
+        <item name="android:src">@drawable/ic_control_patch_small</item>
+    </style>
+    <style name="Logo" parent="CustomFont">
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginRight">@dimen/margin_large</item>
+        <item name="android:gravity">bottom</item> <!--this is weird-->
+        <item name="android:background">@drawable/sel_logo</item>
+        <item name="android:textColor">@color/dune</item>
+        <item name="android:textSize">@dimen/text_size_logo</item>
+        <item name="android:text">@string/logo</item>
+    </style>
+    <style name="Channel" parent="CustomFont">
+        <item name="android:background">@drawable/sel_channel</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
+        <item name="android:textColor">@color/colonial</item>
+        <item name="android:textSize">@dimen/text_size_channel</item>
+    </style>
+    <style name="Channel.BD">
+        <item name="android:text">@string/channel_bd</item>
+    </style>
+    <style name="Channel.SD">
+        <item name="android:text">@string/channel_sd</item>
+    </style>
+    <style name="Channel.CP">
+        <item name="android:text">@string/channel_cp</item>
+    </style>
+    <style name="Channel.TT">
+        <item name="android:text">@string/channel_tt</item>
+    </style>
+    <style name="Channel.CB">
+        <item name="android:text">@string/channel_cb</item>
+    </style>
+    <style name="Channel.HH">
+        <item name="android:text">@string/channel_hh</item>
+        <item name="android:layout_marginBottom">0dp</item>
+    </style>
+    <style name="Setting" parent="Channel">
+        <item name="android:background">@drawable/sel_setting</item>
+    </style>
+    <style name="Setting.1">
+        <item name="android:text">@string/setting_1</item>
+    </style>
+    <style name="Setting.2">
+        <item name="android:text">@string/setting_2</item>
+    </style>
+    <style name="Setting.3">
+        <item name="android:text">@string/setting_3</item>
+    </style>
+    <style name="Setting.4">
+        <item name="android:text">@string/setting_4</item>
+    </style>
+    <style name="Setting.5">
+        <item name="android:text">@string/setting_5</item>
+    </style>
+    <style name="Setting.6">
+        <item name="android:text">@string/setting_6</item>
+        <item name="android:layout_marginBottom">0dp</item>
+    </style>
+
+    <style name="Header">
+        <item name="android:layout_marginTop">@dimen/margin_normal</item>
+    </style>
+    <style name="License">
+        <item name="android:textSize">@dimen/text_size_notice</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:layout_marginBottom">@dimen/margin_normal</item>
+    </style>
+    <style name="License.Author">
+        <item name="android:layout_marginTop">@dimen/margin_normal</item>
+        <item name="android:layout_marginBottom">@dimen/margin_normal</item>
+    </style>
+</resources>
