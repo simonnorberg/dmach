@@ -1,24 +1,15 @@
 language: android
 
-jdk:
-  - oraclejdk7
+jdk: oraclejdk7
 
 android:
   components:
     - tools
     - platform-tools
-
     - build-tools-21.1.2
     - android-21
-
     - extra-android-m2repository
     - extra-android-support
-
-    - sys-img-armeabi-v7a-android-21
-    - sys-img-x86_64-android-21
-    - sys-img-x86-android-21
-
-script: ./dmach-android/gradlew build
 
 notifications:
   email: false
