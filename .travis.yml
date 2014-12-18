@@ -19,3 +19,6 @@ android:
     - sys-img-x86-android-21
 
 script: ./dmach-android/gradlew build
+
+notifications:
+  email: false
