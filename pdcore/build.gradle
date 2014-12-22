@@ -36,11 +36,7 @@ dependencies {
 apply plugin: 'me.tatarka.retrolambda'
 
 retrolambda {
-    Properties properties = new Properties()
-    properties.load(project.rootProject.file('local.properties').newDataInputStream())
-    jdk properties.getProperty('java8_home')
-    oldJdk properties.getProperty('java7_home')
+    jdk '/usr/lib/jvm/java-8-oracle'
+    oldJdk '/usr/lib/jvm/java-7-oracle'
     javaVersion JavaVersion.VERSION_1_7
-    println jdk
-    println oldJdk
 }
