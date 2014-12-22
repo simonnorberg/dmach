@@ -26,7 +26,6 @@ import android.text.TextUtils;
 
 import net.simno.dmach.DMachActivity;
 import net.simno.dmach.database.PatchTable;
-import net.simno.dmach.model.Channel;
 import net.simno.dmach.model.Patch;
 
 import java.util.ArrayList;
@@ -50,7 +49,7 @@ public class PatchContentProviderTest extends ProviderTestCase2<PatchContentProv
         mPatch = new Patch(
                 "title",
                 new int[DMachActivity.STEPS * DMachActivity.GROUPS],
-                new ArrayList<Channel>(),
+                new ArrayList<>(),
                 -1, 120, 5);
         mSelectionArgs = new String[] {mPatch.getTitle()};
     }

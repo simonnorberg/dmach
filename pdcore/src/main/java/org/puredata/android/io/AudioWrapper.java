@@ -43,7 +43,7 @@ public abstract class AudioWrapper {
      * Constructor; initializes {@link android.media.AudioTrack} and
      * {@link android.media.AudioRecord} objects
      *
-     * @param sampleRate
+     * @param sampleRate sample rate
      * @param inChannels  number of input channels
      * @param outChannels number of output channels
      * @param bufferSizePerChannel  number of samples per buffer per channel
@@ -200,7 +200,6 @@ public abstract class AudioWrapper {
             Thread.sleep(10);
             mp.stop();
             mp.release();
-        } catch (Exception e) {
-        }
+        } catch (Exception e) { /*NOP*/ }
     }
 }

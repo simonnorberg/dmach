@@ -17,13 +17,12 @@
 
 package net.simno.dmach;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
@@ -37,7 +36,6 @@ import android.text.method.MovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -350,8 +348,7 @@ public class DMachActivity extends Activity {
                 }
                 try {
                     Thread.sleep(500);
-                } catch (InterruptedException e) {
-                }
+                } catch (InterruptedException e) { /*NOP*/ }
             }
             mPdService.startAudio(new Intent(this, DMachActivity.class),
                     R.drawable.ic_stat_notify_dmach, "DMach is running", "Touch to return.");
@@ -408,6 +405,7 @@ public class DMachActivity extends Activity {
         playButton.setSelected(mIsRunning);
     }
 
+    @SuppressLint("InflateParams")
     public void onConfigClicked(View view) {
         final ImageButton configButton = (ImageButton) view;
         configButton.setSelected(true);
@@ -416,12 +414,7 @@ public class DMachActivity extends Activity {
 
         AlertDialog alertDialog = new AlertDialog.Builder(this).setView(layout).create();
         alertDialog.setCanceledOnTouchOutside(true);
-        alertDialog.setOnDismissListener(new OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                configButton.setSelected(false);
-            }
-        });
+        alertDialog.setOnDismissListener(dialog -> configButton.setSelected(false));
         alertDialog.show();
 
         mTempoText = (TextView) layout.findViewById(R.id.tempo_value);
@@ -445,14 +438,11 @@ public class DMachActivity extends Activity {
         Switch progressBarSwitch = (Switch) layout.findViewById(R.id.progress_bar_switch);
         progressBarSwitch.setTextColor(mSwingText.getCurrentTextColor());
         progressBarSwitch.setChecked(mShowProgress);
-        progressBarSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (mShowProgress != isChecked) {
-                    mShowProgress = isChecked;
-                    if (mSelectedChannel == -1) {
-                        setFragment();
-                    }
+        progressBarSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (mShowProgress != isChecked) {
+                mShowProgress = isChecked;
+                if (mSelectedChannel == -1) {
+                    setFragment();
                 }
             }
         });
@@ -493,6 +483,7 @@ public class DMachActivity extends Activity {
         }
     }
 
+    @SuppressLint("InflateParams")
     public void onLogoClicked(View view) {
         final CustomFontButton logo = (CustomFontButton) view;
         logo.setSelected(true);
@@ -500,12 +491,7 @@ public class DMachActivity extends Activity {
         View layout = inflater.inflate(R.layout.dialog_notices, null, false);
         AlertDialog alertDialog = new AlertDialog.Builder(this).setView(layout).create();
         alertDialog.setCanceledOnTouchOutside(true);
-        alertDialog.setOnDismissListener(new OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                logo.setSelected(false);
-            }
-        });
+        alertDialog.setOnDismissListener(dialog -> logo.setSelected(false));
         alertDialog.setTitle(getString(R.string.notices));
         alertDialog.show();
 

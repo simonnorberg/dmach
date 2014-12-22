@@ -281,8 +281,7 @@ public class AudioParameters {
             try {
                 sr = Integer.parseInt(am.getProperty(AudioManager.PROPERTY_OUTPUT_SAMPLE_RATE));
                 bs = Integer.parseInt(am.getProperty(AudioManager.PROPERTY_OUTPUT_FRAMES_PER_BUFFER));
-            } catch (Exception e) {
-            }
+            } catch (Exception e) { /*NOP*/ }
             return new JellyBeanMR1OpenSLParameters(sr, 64, 64, bs, lowLatency);
         }
     }

@@ -35,7 +35,7 @@ public class SequencerViewTest extends AndroidTestCase {
         super.setUp();
 
         LayoutInflater inflater = LayoutInflater.from(getContext());
-        View root = inflater.inflate(R.layout.fragment_sequencer, null);
+        View root = inflater.inflate(R.layout.fragment_sequencer, null, false);
 
         mSequencerView = (SequencerView) root.findViewById(R.id.sequencer_view);
         mSequencerView.measure(1920, 1080);

@@ -34,7 +34,7 @@ public class PanViewTest extends AndroidTestCase {
         super.setUp();
 
         LayoutInflater inflater = LayoutInflater.from(getContext());
-        View root = inflater.inflate(R.layout.fragment_channel, null);
+        View root = inflater.inflate(R.layout.fragment_channel, null, false);
 
         mPanView = (PanView) root.findViewById(R.id.pan_view);
         mPanView.measure(1920, 1080);

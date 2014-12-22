@@ -35,7 +35,7 @@ public class SettingViewTest extends AndroidTestCase {
         super.setUp();
 
         LayoutInflater inflater = LayoutInflater.from(getContext());
-        View root = inflater.inflate(R.layout.fragment_channel, null);
+        View root = inflater.inflate(R.layout.fragment_channel, null, false);
 
         mSettingView = (SettingView) root.findViewById(R.id.setting_view);
         mSettingView.measure(1920, 1080);

@@ -80,7 +80,7 @@ public final class PdBase {
 
     private PdBase() {
         // do nothing
-    };
+    }
 
     /**
      * Releases resources held by native bindings (receiver objects and subscriptions, as well as

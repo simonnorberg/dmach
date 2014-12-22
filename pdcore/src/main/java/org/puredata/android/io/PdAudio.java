@@ -109,12 +109,9 @@ public class PdAudio {
         if (PdBase.implementsAudio()) {
             PdBase.pauseAudio();
             handler.removeCallbacks(pollRunner);
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    PdBase.pollMidiQueue(); // Flush pending messages.
-                    PdBase.pollPdMessageQueue();
-                }
+            handler.post(() -> {
+                PdBase.pollMidiQueue(); // Flush pending messages.
+                PdBase.pollPdMessageQueue();
             });
         } else {
             if (!isRunning()) return;

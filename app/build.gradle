@@ -13,8 +13,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     buildTypes {
         release {
@@ -35,4 +35,16 @@ dependencies {
     compile project(':pdcore')
     compile 'com.jakewharton:butterknife:6.0.0'
     compile 'com.google.code.gson:gson:2.3.1'
+}
+
+apply plugin: 'me.tatarka.retrolambda'
+
+retrolambda {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    jdk properties.getProperty('java8_home')
+    oldJdk properties.getProperty('java7_home')
+    javaVersion JavaVersion.VERSION_1_7
+    println jdk
+    println oldJdk
 }

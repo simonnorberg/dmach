@@ -113,12 +113,9 @@ public class IoUtils {
     public static List<File> find(File dir, String pattern) {
         final List<File> hits = new ArrayList<>();
         final Pattern p = Pattern.compile(pattern);
-        traverseTree(dir, new FileProcessor() {
-            @Override
-            public void processFile(File file) {
-                if (p.matcher(file.getName()).matches()) {
-                    hits.add(file);
-                }
+        traverseTree(dir, file -> {
+            if (p.matcher(file.getName()).matches()) {
+                hits.add(file);
             }
         });
         return hits;

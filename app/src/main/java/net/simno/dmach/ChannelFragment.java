@@ -22,7 +22,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnLayoutChangeListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
@@ -75,22 +74,12 @@ public class ChannelFragment extends Fragment
         mSettingView = (SettingView) view.findViewById(R.id.setting_view);
 
         if (mChannel != null) {
-            mPanView.addOnLayoutChangeListener(new OnLayoutChangeListener() {
-                @Override
-                public void onLayoutChange(View v, int left, int top, int right, int bottom,
-                                           int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                    mPanView.setPan(mChannel.getPan());
-                }
-            });
+            mPanView.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom)
+                    -> mPanView.setPan(mChannel.getPan()));
             mPanView.setOnPanChangedListener(this);
 
-            mSettingView.addOnLayoutChangeListener(new OnLayoutChangeListener() {
-                @Override
-                public void onLayoutChange(View v, int left, int top, int right, int bottom,
-                                           int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                    mSettingView.setSetting(mChannel.getSetting());
-                }
-            });
+            mSettingView.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom)
+                    -> mSettingView.setSetting(mChannel.getSetting()));
             mSettingView.setOnSettingChangedListener(this);
 
             LinearLayout settings = (LinearLayout) view.findViewById(R.id.setting_container);
