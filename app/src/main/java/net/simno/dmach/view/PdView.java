@@ -18,45 +18,21 @@
 package net.simno.dmach.view;
 
 import android.content.Context;
-import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
-import net.simno.dmach.R;
-
 public abstract class PdView extends View {
-
-    protected float mShapeStrokeWidth;
-    protected float mTextSize;
-    protected Paint mShapePaint;
-    protected Paint mTextPaint;
 
     public PdView(Context context) {
         super(context);
-        init();
     }
 
     public PdView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
     }
 
     public PdView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init();
-    }
-
-    protected void init() {
-        mShapeStrokeWidth = getResources().getDimension(R.dimen.shape_stroke_width);
-        mShapePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mShapePaint.setStrokeWidth(mShapeStrokeWidth);
-        mShapePaint.setStyle(Paint.Style.STROKE);
-
-        mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mTextPaint.setColor(getResources().getColor(R.color.dune));
-        mTextPaint.setTextSize(mTextSize);
-        mTextPaint.setStyle(Paint.Style.FILL);
-        mTextPaint.setTypeface(FontCache.get("fonts/saxmono.ttf", getContext().getApplicationContext()));
     }
 
     protected abstract float getMinX();

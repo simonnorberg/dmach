@@ -19,6 +19,7 @@ package net.simno.dmach.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
@@ -36,6 +37,10 @@ public final class PanView extends PdView {
     private static final String RIGHT = "R";
 
     private OnPanChangedListener mListener;
+    private Paint mShapePaint;
+    private Paint mTextPaint;
+    private float mShapeStrokeWidth;
+    private float mTextSize;
     private float mPan;
     private float mRectHeight;
     private float mOffset;
@@ -49,21 +54,34 @@ public final class PanView extends PdView {
 
     public PanView(Context context) {
         super(context);
+        init();
     }
 
     public PanView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
     public PanView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        init();
     }
 
-    @Override
     protected void init() {
         mTextSize = getResources().getDimension(R.dimen.text_size_channel);
         mRectHeight = getResources().getDimension(R.dimen.rect_height);
-        super.init();
+
+        mShapeStrokeWidth = getResources().getDimension(R.dimen.shape_stroke_width);
+        mShapePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mShapePaint.setStrokeWidth(mShapeStrokeWidth);
+        mShapePaint.setStyle(Paint.Style.STROKE);
+
+        mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mTextPaint.setColor(getResources().getColor(R.color.dune));
+        mTextPaint.setTextSize(mTextSize);
+        mTextPaint.setStyle(Paint.Style.FILL);
+        mTextPaint.setTypeface(FontCache.get("fonts/saxmono.ttf", getContext().getApplicationContext()));
+
         mShapePaint.setColor(getResources().getColor(R.color.gamboge));
         mOffset = (mShapeStrokeWidth / 2f) + (mRectHeight / 2f);
     }

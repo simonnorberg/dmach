@@ -19,6 +19,7 @@ package net.simno.dmach.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
@@ -35,6 +36,10 @@ public final class SettingView extends PdView {
         public void onSettingChanged(float x, float y);
     }
 
+    private Paint mShapePaint;
+    private Paint mTextPaint;
+    private float mShapeStrokeWidth;
+    private float mTextSize;
     private int mBackgroundColor;
     private float mCircleRadius;
     private OnSettingChangedListener mListener;
@@ -52,22 +57,35 @@ public final class SettingView extends PdView {
 
     public SettingView(Context context) {
         super(context);
+        init();
     }
 
     public SettingView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
     public SettingView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        init();
     }
 
-    @Override
     protected void init() {
         mBackgroundColor = getResources().getColor(R.color.gamboge);
         mTextSize = getResources().getDimension(R.dimen.text_size_setting);
         mCircleRadius = getResources().getDimension(R.dimen.circle_radius);
-        super.init();
+
+        mShapeStrokeWidth = getResources().getDimension(R.dimen.shape_stroke_width);
+        mShapePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mShapePaint.setStrokeWidth(mShapeStrokeWidth);
+        mShapePaint.setStyle(Paint.Style.STROKE);
+
+        mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mTextPaint.setColor(getResources().getColor(R.color.dune));
+        mTextPaint.setTextSize(mTextSize);
+        mTextPaint.setStyle(Paint.Style.FILL);
+        mTextPaint.setTypeface(FontCache.get("fonts/saxmono.ttf", getContext().getApplicationContext()));
+
         mShapePaint.setColor(getResources().getColor(R.color.colonial));
     }
 
