@@ -17,34 +17,32 @@
 
 package net.simno.dmach.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import net.simno.dmach.DMachActivity;
+import org.parceler.Parcel;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * The Patch class contains all variables used in dmach.pd
  */
-public class Patch implements Parcelable {
+@Parcel
+public class Patch {
 
     private static Type CHANNEL_TYPE = new TypeToken<ArrayList<Channel>>() {}.getType();
 
-    private String mTitle;
-    private int[] mSequence;
-    private List<Channel> mChannels;
-    private int mSelectedChannel;
-    private int mTempo;
-    private int mSwing;
+    String mTitle;
+    int[] mSequence;
+    List<Channel> mChannels;
+    int mSelectedChannel;
+    int mTempo;
+    int mSwing;
 
     public Patch() {
+        // Required by parceler
     }
 
     /**
@@ -64,10 +62,6 @@ public class Patch implements Parcelable {
         mSelectedChannel = selectedChannel;
         mTempo = tempo;
         mSwing = swing;
-    }
-
-    public Patch(Parcel in) {
-        readFromParcel(in);
     }
 
     public String getTitle() {
@@ -124,89 +118,6 @@ public class Patch implements Parcelable {
 
     public void setSwing(int swing) {
         mSwing = swing;
-    }
-
-    public static final Creator<Patch> CREATOR = new Creator<Patch>() {
-        @Override
-        public Patch createFromParcel(Parcel in) {
-            return new Patch(in);
-        }
-
-        @Override
-        public Patch[] newArray(int size) {
-            return new Patch[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel out, int flags) {
-        out.writeString(mTitle);
-        out.writeIntArray(mSequence);
-        out.writeList(mChannels);
-        out.writeInt(mSelectedChannel);
-        out.writeInt(mTempo);
-        out.writeInt(mSwing);
-    }
-
-    private void readFromParcel(Parcel in) {
-        mTitle = in.readString();
-        mSequence = new int[DMachActivity.GROUPS * DMachActivity.STEPS];
-        in.readIntArray(mSequence);
-        mChannels = new ArrayList<>();
-        in.readList(mChannels, Channel.class.getClassLoader());
-        mSelectedChannel = in.readInt();
-        mTempo = in.readInt();
-        mSwing = in.readInt();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Patch)) {
-            return false;
-        }
-
-        Patch patch = (Patch) o;
-
-        if (mTitle != null ? !mTitle.equals(patch.mTitle) : patch.mTitle != null) {
-            return false;
-        }
-        if (!Arrays.equals(mSequence, patch.mSequence)) {
-            return false;
-        }
-        if (mChannels != null ? !mChannels.equals(patch.mChannels) : patch.mChannels != null) {
-            return false;
-        }
-        if (mSelectedChannel != patch.mSelectedChannel) {
-            return false;
-        }
-        if (mTempo != patch.mTempo) {
-            return false;
-        }
-        if (mSwing != patch.mSwing) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = 17;
-        result = 31 * result + (mTitle != null ? mTitle.hashCode() : 0);
-        result = 31 * result + (mSequence != null ? Arrays.hashCode(mSequence) : 0);
-        result = 31 * result + (mChannels != null ? mChannels.hashCode() : 0);
-        result = 31 * result + mSelectedChannel;
-        result = 31 * result + mTempo;
-        result = 31 * result + mSwing;
-        return result;
     }
 
     public static String sequenceToJson(int[] sequence) {

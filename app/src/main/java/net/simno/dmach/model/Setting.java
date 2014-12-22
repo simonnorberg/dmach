@@ -17,19 +17,23 @@
 
 package net.simno.dmach.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import org.parceler.Parcel;
 
 /**
  * The Setting class represents two parameters of a channel in dmach.pd
  */
-public final class Setting implements Parcelable {
-    private String hText;
-    private String vText;
-    private float x;
-    private float y;
-    private int hIndex;
-    private int vIndex;
+@Parcel
+public final class Setting {
+    String hText;
+    String vText;
+    float x;
+    float y;
+    int hIndex;
+    int vIndex;
+
+    public Setting() {
+        // Required by parceler
+    }
 
     /**
      *
@@ -47,10 +51,6 @@ public final class Setting implements Parcelable {
         this.y = y;
         this.hIndex = hIndex;
         this.vIndex = vIndex;
-    }
-
-    public Setting(Parcel in) {
-        readFromParcel(in);
     }
 
     public String getHText() {
@@ -83,104 +83,5 @@ public final class Setting implements Parcelable {
 
     public int getVIndex() {
         return vIndex;
-    }
-
-    public static final Creator<Setting> CREATOR = new Creator<Setting>() {
-        /**
-         * Return a new setting from the data in the specified parcel.
-         */
-        @Override
-        public Setting createFromParcel(Parcel in) {
-            return new Setting(in);
-        }
-
-        /**
-         * Return an array of settings of the specified size.
-         */
-        @Override
-        public Setting[] newArray(int size) {
-            return new Setting[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    /**
-     * Write this setting to the specified parcel. To restore a setting from
-     * a parcel, use readFromParcel()
-     *
-     * @param out The parcel to write the settings's names and values into
-     */
-    @Override
-    public void writeToParcel(Parcel out, int flags) {
-        out.writeString(hText);
-        out.writeString(vText);
-        out.writeFloat(x);
-        out.writeFloat(y);
-        out.writeInt(hIndex);
-        out.writeInt(vIndex);
-    }
-
-    /**
-     * Set the setting's names and values from the data stored in the specified
-     * parcel. To write a setting to a parcel, call writeToParcel().
-     *
-     * @param in The parcel to read the settings's names and values from
-     */
-    private void readFromParcel(Parcel in) {
-        hText = in.readString();
-        vText = in.readString();
-        x = in.readFloat();
-        y = in.readFloat();
-        hIndex = in.readInt();
-        vIndex = in.readInt();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Setting)) {
-            return false;
-        }
-
-        Setting setting = (Setting) o;
-
-        if (hText != null ? !hText.equals(setting.hText) : setting.hText != null) {
-            return false;
-        }
-        if (vText != null ? !vText.equals(setting.vText) : setting.vText != null) {
-            return false;
-        }
-        if (Float.compare(setting.x, x) != 0) {
-            return false;
-        }
-        if (Float.compare(setting.y, y) != 0) {
-            return false;
-        }
-        if (hIndex != setting.hIndex) {
-            return false;
-        }
-        if (vIndex != setting.vIndex) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = 17;
-        result = 31 * result + (hText != null ? hText.hashCode() : 0);
-        result = 31 * result + (vText != null ? vText.hashCode() : 0);
-        result = 31 * result + (x != +0.0f ? Float.floatToIntBits(x) : 0);
-        result = 31 * result + (y != +0.0f ? Float.floatToIntBits(y) : 0);
-        result = 31 * result + hIndex;
-        result = 31 * result + vIndex;
-        return result;
     }
 }

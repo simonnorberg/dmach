@@ -48,6 +48,8 @@ import net.simno.dmach.model.Patch;
 import net.simno.dmach.model.Setting;
 import net.simno.dmach.view.CustomFontButton;
 
+import org.parceler.Parcels;
+
 import org.puredata.android.io.AudioParameters;
 import org.puredata.android.service.PdService;
 import org.puredata.core.PdBase;
@@ -458,7 +460,7 @@ public class DMachActivity extends Activity {
         view.setSelected(true);
         Patch patch = new Patch(mTitle, mSequence, mChannels, mSelectedChannel, mTempo, mSwing);
         Intent intent = new Intent(this, PatchListActivity.class);
-        intent.putExtra(PatchListActivity.PATCH_EXTRA, patch);
+        intent.putExtra(PatchListActivity.PATCH_EXTRA, Parcels.wrap(patch));
         startActivityForResult(intent, PATCH_REQUEST);
     }
 
@@ -467,7 +469,7 @@ public class DMachActivity extends Activity {
         mPatchButton.setSelected(false);
         if (requestCode == PATCH_REQUEST) {
             if (resultCode == PatchListActivity.RESULT_LOADED) {
-                Patch patch = data.getParcelableExtra(PatchListActivity.PATCH_EXTRA);
+                Patch patch = Parcels.unwrap(data.getParcelableExtra(PatchListActivity.PATCH_EXTRA));
                 mTitle = patch.getTitle();
                 mSequence = patch.getSequence();
                 mChannels = patch.getChannels();

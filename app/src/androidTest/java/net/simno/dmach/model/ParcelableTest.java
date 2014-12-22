@@ -17,10 +17,12 @@
 
 package net.simno.dmach.model;
 
-import android.os.Parcel;
+import android.os.Parcelable;
 import android.test.AndroidTestCase;
 
 import net.simno.dmach.DMachActivity;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,35 +67,28 @@ public class ParcelableTest extends AndroidTestCase {
     }
 
     public void testSetting() throws Exception {
-        Parcel parcel = Parcel.obtain();
-        mSetting.writeToParcel(parcel, 0);
-        parcel.setDataPosition(0);
-        Setting parceledSetting = Setting.CREATOR.createFromParcel(parcel);
+        Parcelable parcelable = Parcels.wrap(mSetting);
+        Setting parceledSetting = Parcels.unwrap(parcelable);
         assertEquals(mSetting, parceledSetting);
     }
 
     public void testChannel() throws Exception {
-        Parcel parcel = Parcel.obtain();
-        mChannel1.writeToParcel(parcel, 0);
-        parcel.setDataPosition(0);
-        Channel parceledChannel = Channel.CREATOR.createFromParcel(parcel);
+        Parcelable parcelable = Parcels.wrap(mChannel1);
+        Channel parceledChannel = Parcels.unwrap(parcelable);
         assertEquals(mChannel1, parceledChannel);
     }
 
     public void testPatch() throws Exception {
-        String channelsJson = Patch.channelsToJson(mPatch.getChannels());
-        String sequenceJson = Patch.sequenceToJson(mPatch.getSequence());
+        final String channelsJson = Patch.channelsToJson(mPatch.getChannels());
+        final String sequenceJson = Patch.sequenceToJson(mPatch.getSequence());
 
-        Parcel parcel = Parcel.obtain();
-        mPatch.writeToParcel(parcel, 0);
-        parcel.setDataPosition(0);
-        Patch parceledPatch = Patch.CREATOR.createFromParcel(parcel);
+        Parcelable parcelable = Parcels.wrap(mPatch);
+        Patch parceledPatch = Parcels.unwrap(parcelable);
         assertEquals(mPatch, parceledPatch);
 
         mPatch.setChannels(channelsJson);
-        assertEquals(mChannels, mPatch.getChannels());
-
-        assertEquals(mSequence, mPatch.getSequence());
         mPatch.setSequence(sequenceJson);
+        assertEquals(channelsJson, Patch.channelsToJson(mPatch.getChannels()));
+        assertEquals(sequenceJson, Patch.sequenceToJson(mPatch.getSequence()));
     }
 }

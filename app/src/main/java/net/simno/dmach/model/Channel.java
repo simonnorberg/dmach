@@ -17,8 +17,7 @@
 
 package net.simno.dmach.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import org.parceler.Parcel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +25,16 @@ import java.util.List;
 /**
  * The Channel class represents a channel in dmach.pd
  */
-public final class Channel implements Parcelable {
-    private String mName;
-    private List<Setting> mSettings;
-    private int mSelectedSetting; // Default selection is 0
-    private float mPan;
+@Parcel
+public final class Channel {
+    String mName;
+    List<Setting> mSettings;
+    int mSelectedSetting; // Default selection is 0
+    float mPan;
+
+    public Channel() {
+        // Required by parceler
+    }
 
     /**
      *
@@ -41,10 +45,6 @@ public final class Channel implements Parcelable {
         mName = name;
         mPan = pan;
         mSettings = new ArrayList<>();
-    }
-
-    public Channel(Parcel in) {
-        readFromParcel(in);
     }
 
     public void addSetting(Setting s) {
@@ -81,93 +81,5 @@ public final class Channel implements Parcelable {
 
     public int getCount() {
         return mSettings.size();
-    }
-
-    public static final Creator<Channel> CREATOR = new Creator<Channel>() {
-        /**
-         * Return a new channel from the data in the specified parcel.
-         */
-        @Override
-        public Channel createFromParcel(Parcel in) {
-            return new Channel(in);
-        }
-
-        /**
-         * Return an array of channels of the specified size.
-         */
-        @Override
-        public Channel[] newArray(int size) {
-            return new Channel[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    /**
-     * Write this channel to the specified parcel. To restore a channel from
-     * a parcel, use readFromParcel()
-     *
-     * @param out The parcel to write the channel's settings and selection into
-     */
-    @Override
-    public void writeToParcel(Parcel out, int flags) {
-        out.writeString(mName);
-        out.writeFloat(mPan);
-        out.writeList(mSettings);
-        out.writeInt(mSelectedSetting);
-    }
-
-    /**
-     * Set the channel's settings and selection from the data stored in the specified
-     * parcel. To write a channel to a parcel, call writeToParcel().
-     *
-     * @param in The parcel to read the patch's settings and selection from
-     */
-    private void readFromParcel(Parcel in) {
-        mName = in.readString();
-        mPan = in.readFloat();
-        mSettings = new ArrayList<>();
-        in.readList(mSettings, Setting.class.getClassLoader());
-        mSelectedSetting = in.readInt();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Channel)) {
-            return false;
-        }
-
-        Channel channel = (Channel) o;
-
-        if (mName != null ? !mName.equals(channel.mName) : channel.mName != null) {
-            return false;
-        }
-        if (mSettings != null ? !mSettings.equals(channel.mSettings) : channel.mSettings != null) {
-            return false;
-        }
-        if (mSelectedSetting != channel.mSelectedSetting) {
-            return false;
-        }
-        if (Float.compare(channel.mPan, mPan) != 0) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = 17;
-        result = 31 * result + (mName != null ? mName.hashCode() : 0);
-        result = 31 * result + (mSettings != null ? mSettings.hashCode() : 0);
-        result = 31 * result + mSelectedSetting;
-        result = 31 * result + (mPan != +0.0f ? Float.floatToIntBits(mPan) : 0);
-        return result;
     }
 }

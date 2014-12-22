@@ -45,6 +45,8 @@ import net.simno.dmach.contentprovider.PatchContentProvider;
 import net.simno.dmach.database.PatchTable;
 import net.simno.dmach.model.Patch;
 
+import org.parceler.Parcels;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -86,7 +88,7 @@ public class PatchListActivity extends ListActivity implements LoaderCallbacks<C
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            mPatch = extras.getParcelable(PATCH_EXTRA);
+            mPatch = Parcels.unwrap(extras.getParcelable(PATCH_EXTRA));
             mHandler = new PatchQueryHandler(getContentResolver());
 
             mSaveText.setText(mPatch.getTitle());
@@ -220,7 +222,7 @@ public class PatchListActivity extends ListActivity implements LoaderCallbacks<C
                         patch.setSwing(cursor.getInt(cursor.getColumnIndex(PatchTable.COLUMN_SWING)));
                         cursor.close();
                         Intent intent = new Intent();
-                        intent.putExtra(PATCH_EXTRA, patch);
+                        intent.putExtra(PATCH_EXTRA, Parcels.wrap(patch));
                         setResult(RESULT_LOADED, intent);
                         finish();
                     }

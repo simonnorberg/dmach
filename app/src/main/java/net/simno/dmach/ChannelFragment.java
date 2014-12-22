@@ -32,6 +32,7 @@ import net.simno.dmach.view.PanView.OnPanChangedListener;
 import net.simno.dmach.view.SettingView;
 import net.simno.dmach.view.SettingView.OnSettingChangedListener;
 
+import org.parceler.Parcels;
 import org.puredata.core.PdBase;
 
 public class ChannelFragment extends Fragment
@@ -50,7 +51,7 @@ public class ChannelFragment extends Fragment
     public static ChannelFragment newInstance(Channel channel) {
         ChannelFragment pf = new ChannelFragment();
         Bundle args = new Bundle();
-        args.putParcelable(PARAM_CHANNEL, channel);
+        args.putParcelable(PARAM_CHANNEL, Parcels.wrap(channel));
         pf.setArguments(args);
         return pf;
     }
@@ -62,7 +63,7 @@ public class ChannelFragment extends Fragment
             savedInstanceState = getArguments();
         }
         if (savedInstanceState != null) {
-            mChannel = savedInstanceState.getParcelable(PARAM_CHANNEL);
+            mChannel = Parcels.unwrap(savedInstanceState.getParcelable(PARAM_CHANNEL));
         }
     }
 
