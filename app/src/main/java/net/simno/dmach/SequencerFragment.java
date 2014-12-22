@@ -96,7 +96,7 @@ public class SequencerFragment extends Fragment
     @Override
     public void onStepChanged(int group, int step, int mask, int index) {
         mSequence[index] ^= mask;
-        PdBase.sendList("step", new Object[]{group, step, mSequence[index]});
+        PdBase.sendList("step", group, step, mSequence[index]);
     }
 
     @Override

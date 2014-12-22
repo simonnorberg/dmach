@@ -307,8 +307,8 @@ public class DMachActivity extends Activity {
 
     private void sendSequence() {
         for (int step = 0; step < STEPS; ++step) {
-            PdBase.sendList("step", new Object[]{0, step, mSequence[step]});
-            PdBase.sendList("step", new Object[]{1, step, mSequence[step + STEPS]});
+            PdBase.sendList("step", 0, step, mSequence[step]);
+            PdBase.sendList("step", 1, step, mSequence[step + STEPS]);
         }
     }
 
@@ -317,8 +317,8 @@ public class DMachActivity extends Activity {
             String name = channel.getName();
             PdBase.sendFloat(name + "p", channel.getPan());
             for (Setting setting : channel.getSettings()) {
-                PdBase.sendList(name, new Object[]{setting.getHIndex(), setting.getX()});
-                PdBase.sendList(name, new Object[]{setting.getVIndex(), setting.getY()});
+                PdBase.sendList(name, setting.getHIndex(), setting.getX());
+                PdBase.sendList(name, setting.getVIndex(), setting.getY());
             }
         }
     }

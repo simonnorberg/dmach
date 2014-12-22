@@ -24,7 +24,6 @@ import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.CursorLoader;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -32,7 +31,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.ContextMenu;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,7 +40,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
 
 import net.simno.dmach.contentprovider.PatchContentProvider;
 import net.simno.dmach.database.PatchTable;
@@ -94,16 +91,13 @@ public class PatchListActivity extends ListActivity implements LoaderCallbacks<C
 
             mSaveText.setText(mPatch.getTitle());
             mSaveText.setSelection(mSaveText.getText().length());
-            mSaveText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    boolean handled = false;
-                    if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        save();
-                        handled = true;
-                    }
-                    return handled;
+            mSaveText.setOnEditorActionListener((v, actionId, event) -> {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    save();
+                    handled = true;
                 }
+                return handled;
             });
 
             mAdapter = new SimpleCursorAdapter(this, R.layout.row_patch, null, FROM, TO, 0);
@@ -239,20 +233,14 @@ public class PatchListActivity extends ListActivity implements LoaderCallbacks<C
                         // Ask to overwrite existing title
                         AlertDialog.Builder builder = new AlertDialog.Builder(PatchListActivity.this);
                         builder.setMessage("Overwrite " + mTitle + "?");
-                        builder.setPositiveButton("Overwrite", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                mHandler.startUpdate(0, null, PatchContentProvider.CONTENT_URI,
-                                        getContentValues(), TITLE_SELECTION, mSelectionArgs);
-                                dialog.dismiss();
-                            }
+                        builder.setPositiveButton("Overwrite", (dialog, which) -> {
+                            mHandler.startUpdate(0, null, PatchContentProvider.CONTENT_URI,
+                                    getContentValues(), TITLE_SELECTION, mSelectionArgs);
+                            dialog.dismiss();
                         });
-                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                enableSaveButton();
-                                dialog.cancel();
-                            }
+                        builder.setNegativeButton("Cancel", (dialog, which) -> {
+                            enableSaveButton();
+                            dialog.cancel();
                         });
                         builder.show();
                     }

@@ -29,7 +29,6 @@ public class ParcelableTest extends AndroidTestCase {
 
     private Setting mSetting;
     private Channel mChannel1;
-    private Channel mChannel2;
     private List<Channel> mChannels;
     private Patch mPatch;
     private int[] mSequence;
@@ -46,7 +45,7 @@ public class ParcelableTest extends AndroidTestCase {
         mChannel1.addSetting(new Setting("Pitch B", "Curve Time", .4f, .4f, 1, 2));
         mChannel1.addSetting(new Setting("Decay", "Noise Level", .49f, .7f, 6, 4));
 
-        mChannel2 = new Channel("sd", 0.5f);
+        Channel mChannel2 = new Channel("sd", 0.5f);
         mChannel2.addSetting(new Setting("Pitch", "Gain", .49f, .45f, 0, 9));
         mChannel2.addSetting(new Setting("Low-pass", "Noise", .6f, .8f, 7, 1));
         mChannel2.addSetting(new Setting("X-fade", "Attack", .35f, .55f, 8, 6));
