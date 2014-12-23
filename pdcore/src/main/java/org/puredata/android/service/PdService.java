@@ -196,6 +196,7 @@ public class PdService extends Service {
         return false;
     }
 
+    @SuppressLint("SdCardPath")
     @Override
     public void onCreate() {
         super.onCreate();
@@ -207,7 +208,8 @@ public class PdService extends Service {
                 abstractionsInstalled = true;
                 PdBase.addToSearchPath(dir.getAbsolutePath());
                 PdBase.addToSearchPath("/data/data/" + getPackageName() + "/lib"); // Location of standard externals.
-            } catch (IOException e) { /*NOP*/ }
+            } catch (IOException ignored) {
+            }
         }
     }
 

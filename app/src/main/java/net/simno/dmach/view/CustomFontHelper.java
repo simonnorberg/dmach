@@ -25,7 +25,7 @@ import android.widget.TextView;
 
 import net.simno.dmach.R;
 
-public class CustomFontHelper {
+class CustomFontHelper {
 
     public static void setCustomFont(TextView textView, Context context, AttributeSet attrs) {
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CustomFont);
@@ -34,7 +34,7 @@ public class CustomFontHelper {
         array.recycle();
     }
 
-    public static void setCustomFont(TextView textView, String font, Context context) {
+    private static void setCustomFont(TextView textView, String font, Context context) {
         if (font == null) {
             return;
         }

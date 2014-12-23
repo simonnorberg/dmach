@@ -32,7 +32,7 @@ import java.util.List;
 @Parcel
 public class Patch {
 
-    private static Type CHANNEL_TYPE = new TypeToken<ArrayList<Channel>>() {}.getType();
+    private static final Type CHANNEL_TYPE = new TypeToken<ArrayList<Channel>>() {}.getType();
 
     String mTitle;
     int[] mSequence;
@@ -42,7 +42,6 @@ public class Patch {
     int mSwing;
 
     public Patch() {
-        // Required by parceler
     }
 
     /**
@@ -76,7 +75,7 @@ public class Patch {
         return mSequence;
     }
 
-    public void setSequence(int[] sequence) {
+    void setSequence(int[] sequence) {
         mSequence = sequence;
     }
 
@@ -88,7 +87,7 @@ public class Patch {
         return mChannels;
     }
 
-    public void setChannels(List<Channel> channels) {
+    void setChannels(List<Channel> channels) {
         mChannels = channels;
     }
 

@@ -43,9 +43,9 @@ public final class SettingView extends PdView {
     private int mBackgroundColor;
     private float mCircleRadius;
     private OnSettingChangedListener mListener;
-    private Rect mHBounds = new Rect();
-    private Rect mVBounds = new Rect();
-    private Path mPath = new Path();
+    private final Rect mHBounds = new Rect();
+    private final Rect mVBounds = new Rect();
+    private final Path mPath = new Path();
     private String mHText;
     private String mVText;
     private float mX;
@@ -70,7 +70,7 @@ public final class SettingView extends PdView {
         init();
     }
 
-    protected void init() {
+    private void init() {
         mBackgroundColor = getResources().getColor(R.color.gamboge);
         mTextSize = getResources().getDimension(R.dimen.text_size_setting);
         mCircleRadius = getResources().getDimension(R.dimen.circle_radius);

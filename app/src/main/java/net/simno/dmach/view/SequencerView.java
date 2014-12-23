@@ -38,7 +38,7 @@ public final class SequencerView extends View {
         public void onStepChanged(int group, int step, int mask, int index);
     }
 
-    private static int CHANNELS_PER_GROUP = DMachActivity.CHANNELS / DMachActivity.GROUPS;
+    private static final int CHANNELS_PER_GROUP = DMachActivity.CHANNELS / DMachActivity.GROUPS;
 
     private final ArrayList<Step> mSequence = new ArrayList<>();
     private OnStepChangedListener mListener;
@@ -187,12 +187,12 @@ public final class SequencerView extends View {
         return (int) (px / mStepWidthMargin);
     }
 
-    private boolean isValidXY(float x, float y) {
-        return !(x < 0 || y < 0 || x > mWidth || y > mHeight);
+    private boolean isOutsideView(float x, float y) {
+        return x < 0 || y < 0 || x > mWidth || y > mHeight;
     }
 
     private void onActionDown(float x, float y) {
-        if (!isValidXY(x, y)) {
+        if (isOutsideView(x, y)) {
             return;
         }
 
@@ -207,7 +207,7 @@ public final class SequencerView extends View {
     }
 
     private void onActionMove(float x, float y) {
-        if (!isValidXY(x, y)) {
+        if (isOutsideView(x, y)) {
             return;
         }
 

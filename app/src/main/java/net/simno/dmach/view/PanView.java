@@ -50,7 +50,7 @@ public final class PanView extends PdView {
     private float mOriginX;
     private float mOriginYL;
     private float mOriginYR;
-    private Rect mBounds = new Rect();
+    private final Rect mBounds = new Rect();
 
     public PanView(Context context) {
         super(context);
@@ -67,7 +67,7 @@ public final class PanView extends PdView {
         init();
     }
 
-    protected void init() {
+    private void init() {
         mTextSize = getResources().getDimension(R.dimen.text_size_channel);
         mRectHeight = getResources().getDimension(R.dimen.rect_height);
 

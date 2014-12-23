@@ -31,9 +31,7 @@ public class ParcelableTest extends AndroidTestCase {
 
     private Setting mSetting;
     private Channel mChannel1;
-    private List<Channel> mChannels;
     private Patch mPatch;
-    private int[] mSequence;
 
     @Override
     public void setUp() throws Exception {
@@ -41,24 +39,24 @@ public class ParcelableTest extends AndroidTestCase {
 
         mSetting = new Setting("Pitch A", "Gain", .4f, .49f, 0, 7);
 
-        mChannel1 = new Channel("bd", 0.5f);
+        mChannel1 = new Channel("bd");
         mChannel1.addSetting(new Setting("Pitch A", "Gain", .4f, .49f, 0, 7));
         mChannel1.addSetting(new Setting("Low-pass", "Square", .7f, 0, 5, 3));
         mChannel1.addSetting(new Setting("Pitch B", "Curve Time", .4f, .4f, 1, 2));
         mChannel1.addSetting(new Setting("Decay", "Noise Level", .49f, .7f, 6, 4));
 
-        Channel mChannel2 = new Channel("sd", 0.5f);
+        Channel mChannel2 = new Channel("sd");
         mChannel2.addSetting(new Setting("Pitch", "Gain", .49f, .45f, 0, 9));
         mChannel2.addSetting(new Setting("Low-pass", "Noise", .6f, .8f, 7, 1));
         mChannel2.addSetting(new Setting("X-fade", "Attack", .35f, .55f, 8, 6));
         mChannel2.addSetting(new Setting("Decay", "Body Decay", .55f, .42f, 4, 5));
         mChannel2.addSetting(new Setting("Band-pass", "Band-pass Q", .7f, .6f, 2, 3));
 
-        mChannels = new ArrayList<>();
+        List<Channel> mChannels = new ArrayList<>();
         mChannels.add(mChannel1);
         mChannels.add(mChannel2);
 
-        mSequence = new int[DMachActivity.GROUPS * DMachActivity.STEPS];
+        int[] mSequence = new int[DMachActivity.GROUPS * DMachActivity.STEPS];
         String title = "title";
         int selectedChannel = 2;
         int tempo = 124;

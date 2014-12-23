@@ -33,17 +33,15 @@ public final class Channel {
     float mPan;
 
     public Channel() {
-        // Required by parceler
     }
 
     /**
+     *  @param name  Channel name that must exist in dmach.pd
      *
-     * @param name  Channel name that must exist in dmach.pd
-     * @param pan  Pan position
      */
-    public Channel(String name, float pan) {
+    public Channel(String name) {
         mName = name;
-        mPan = pan;
+        mPan = 0.5f;
         mSettings = new ArrayList<>();
     }
 

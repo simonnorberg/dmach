@@ -22,9 +22,9 @@ import android.graphics.Typeface;
 
 import java.util.Hashtable;
 
-public class FontCache {
+class FontCache {
 
-    private static Hashtable<String, Typeface> fontCache = new Hashtable<>();
+    private static final Hashtable<String, Typeface> fontCache = new Hashtable<>();
 
     public static Typeface get(String name, Context context) {
         Typeface typeface = fontCache.get(name);

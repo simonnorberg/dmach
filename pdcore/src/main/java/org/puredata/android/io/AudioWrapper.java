@@ -200,6 +200,7 @@ public abstract class AudioWrapper {
             Thread.sleep(10);
             mp.stop();
             mp.release();
-        } catch (Exception e) { /*NOP*/ }
+        } catch (Exception ignored) {
+        }
     }
 }

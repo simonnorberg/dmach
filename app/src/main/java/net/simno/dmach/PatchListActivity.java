@@ -66,7 +66,7 @@ public class PatchListActivity extends ListActivity implements LoaderCallbacks<C
             PatchTable.COLUMN_TEMPO,
             PatchTable.COLUMN_TITLE
     };
-    private static int[] TO = new int[] {
+    private static final int[] TO = new int[] {
             R.id.tempo_column,
             R.id.title_column
     };

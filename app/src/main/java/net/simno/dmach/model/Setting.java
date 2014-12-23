@@ -32,7 +32,6 @@ public final class Setting {
     int vIndex;
 
     public Setting() {
-        // Required by parceler
     }
 
     /**

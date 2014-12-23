@@ -43,7 +43,7 @@ public abstract class PdView extends View {
 
     protected abstract float getMaxY();
 
-    protected final float getValidX(float x) {
+    final float getValidX(float x) {
         float min = getMinX();
         if (x < min) {
             return min;
@@ -55,7 +55,7 @@ public abstract class PdView extends View {
         return x;
     }
 
-    protected final float getValidY(float y) {
+    final float getValidY(float y) {
         float min = getMinY();
         if (y < min) {
             return min;
@@ -67,17 +67,17 @@ public abstract class PdView extends View {
         return y;
     }
 
-    protected final float pdToX(float pdX) {
+    final float pdToX(float pdX) {
         float width = getMaxX() - getMinX();
         return (pdX * width) + getMinX();
     }
 
-    protected final float pdToY(float pdY) {
+    final float pdToY(float pdY) {
         float height = getMaxY() - getMinY();
         return ((1 - pdY) * height) + getMinY();
     }
 
-    protected final float xToPd(float x) {
+    final float xToPd(float x) {
         float width = getMaxX() - getMinX();
         float pdX = x - getMinX();
         if (pdX > 0) {
@@ -86,7 +86,7 @@ public abstract class PdView extends View {
         return pdX;
     }
 
-    protected final float yToPd(float y) {
+    final float yToPd(float y) {
         float height = getMaxY() - getMinY();
         float pdY = y - getMinY();
         if (pdY > 0) {
