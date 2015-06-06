@@ -165,7 +165,7 @@ public class PatchActivity extends AppCompatActivity implements PatchAdapter.OnP
                 .title(title)
                 .sequence(Patch.sequenceToJson(patch.getSequence()))
                 .channels(Patch.channelsToJson(patch.getChannels()))
-                .channel(patch.getSelectedChannel())
+                .selected(patch.getSelectedChannel())
                 .tempo(patch.getTempo())
                 .swing(patch.getSwing())
                 .build();
@@ -175,7 +175,7 @@ public class PatchActivity extends AppCompatActivity implements PatchAdapter.OnP
         return new PatchTable.Builder()
                 .sequence(Patch.sequenceToJson(patch.getSequence()))
                 .channels(Patch.channelsToJson(patch.getChannels()))
-                .channel(patch.getSelectedChannel())
+                .selected(patch.getSelectedChannel())
                 .tempo(patch.getTempo())
                 .swing(patch.getSwing())
                 .build();

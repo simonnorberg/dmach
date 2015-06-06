@@ -57,37 +57,46 @@ public class PatchTable {
         Timber.tag(PatchTable.class.getName())
                 .w("Upgrading database from version " + oldVersion + " to " + newVersion);
         if (oldVersion == 1 && newVersion == 2) {
-            db.execSQL("alter table patch rename to old_patch;");
-            onCreate(db);
-            db.execSQL("insert into patch(title, sequence, channels, selected, tempo, swing) "
-                    + "select title, sequence, channels, channel, tempo, swing from old_patch;");
-            db.execSQL("drop table if exists old_patch");
-
-            Cursor cursor = db.rawQuery("select title, channels from patch", null);
-            Map<String, String> data = new HashMap<>();
-            //noinspection TryFinallyCanBeTryWithResources
             try {
-                while (cursor.moveToNext()) {
-                    data.put(Db.getString(cursor, "title"), Db.getString(cursor, "channels"));
-                }
-            } finally {
-                cursor.close();
-            }
-            if (data.isEmpty()) {
-                return;
-            }
-            for (Map.Entry<String, String> entry : data.entrySet()) {
-                String oldJson = entry.getValue();
-                String newJson = oldJson.replace("mName", "name")
-                        .replace("mPan", "pan")
-                        .replace("mSelectedSetting", "selectedSetting")
-                        .replace("mSettings", "settings");
-                db.update(TABLE, new Builder().channels(newJson).build(), "title = ?",
-                        new String[]{entry.getKey()});
+                upgrade(db);
+            } catch (Exception e) {
+                db.execSQL("drop table if exists " + TABLE);
+                onCreate(db);
             }
         } else {
             db.execSQL("drop table if exists " + TABLE);
             onCreate(db);
+        }
+    }
+
+    private static void upgrade(SQLiteDatabase db) throws Exception {
+        db.execSQL("alter table patch rename to old_patch;");
+        onCreate(db);
+        db.execSQL("insert into patch(title, sequence, channels, selected, tempo, swing) "
+                + "select title, sequence, channels, channel, tempo, swing from old_patch;");
+        db.execSQL("drop table if exists old_patch");
+
+        Cursor cursor = db.rawQuery("select title, channels from patch", null);
+        Map<String, String> data = new HashMap<>();
+        //noinspection TryFinallyCanBeTryWithResources
+        try {
+            while (cursor.moveToNext()) {
+                data.put(Db.getString(cursor, "title"), Db.getString(cursor, "channels"));
+            }
+        } finally {
+            cursor.close();
+        }
+        if (data.isEmpty()) {
+            return;
+        }
+        for (Map.Entry<String, String> entry : data.entrySet()) {
+            String oldJson = entry.getValue();
+            String newJson = oldJson.replace("mName", "name")
+                    .replace("mPan", "pan")
+                    .replace("mSelectedSetting", "selectedSetting")
+                    .replace("mSettings", "settings");
+            db.update(TABLE, new Builder().channels(newJson).build(), "title = ?",
+                    new String[]{entry.getKey()});
         }
     }
 
@@ -109,8 +118,8 @@ public class PatchTable {
             return this;
         }
 
-        public Builder channel(int channel) {
-            values.put(SELECTED, channel);
+        public Builder selected(int selected) {
+            values.put(SELECTED, selected);
             return this;
         }
 
