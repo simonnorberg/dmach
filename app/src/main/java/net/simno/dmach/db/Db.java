@@ -38,7 +38,7 @@ public final class Db {
         return cursor.getInt(cursor.getColumnIndexOrThrow(columnName));
     }
 
-    public static final String QUERY_PATCH = "select * from patch";
+    public static final String QUERY_PATCH = "select * from patch order by title";
 
     public static final Func1<SqlBrite.Query, List<Patch>> MAP_PATCH = new Func1<SqlBrite.Query, List<Patch>>() {
         @Override

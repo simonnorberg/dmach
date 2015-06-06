@@ -31,6 +31,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:layout_toStartOf="@+id/save_button"
         android:layout_marginStart="@dimen/margin_small"
         android:textColor="@color/dune"
+        android:textColorHint="@color/gurkha"
         android:imeOptions="actionDone|flagNoExtractUi"
         android:singleLine="true"
         android:maxLines="1"
