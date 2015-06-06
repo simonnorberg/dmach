@@ -21,7 +21,7 @@ public interface PdListener {
      *
      * @param source symbol to which the bang was sent
      */
-    public void receiveBang(String source);
+    void receiveBang(String source);
 
     /**
      * Receive float from Pd
@@ -29,7 +29,7 @@ public interface PdListener {
      * @param source symbol to which the float was sent
      * @param x float value
      */
-    public void receiveFloat(String source, float x);
+    void receiveFloat(String source, float x);
 
     /**
      * Receive symbol from Pd
@@ -37,7 +37,7 @@ public interface PdListener {
      * @param source symbol to which the float was sent
      * @param symbol String value
      */
-    public void receiveSymbol(String source, String symbol);
+    void receiveSymbol(String source, String symbol);
 
     /**
      * Receive a list from Pd
@@ -45,7 +45,7 @@ public interface PdListener {
      * @param source symbol to which the list was sent
      * @param args elements may be of type Integer, Float, or String
      */
-    public void receiveList(String source, Object... args);
+    void receiveList(String source, Object... args);
 
     /**
      * Receive a typed message from Pd; e.g., [;foo bar a b c( corresponds to the call
@@ -55,12 +55,12 @@ public interface PdListener {
      * @param symbol name of the typed message
      * @param args elements may be of type Integer, Float, or String
      */
-    public void receiveMessage(String source, String symbol, Object... args);
+    void receiveMessage(String source, String symbol, Object... args);
 
     /**
      * Adapter for PdListener implementations that only need to handle a subset of Pd messages
      */
-    public class Adapter implements PdListener {
+    class Adapter implements PdListener {
         @Override
         public void receiveBang(String source) {}
 

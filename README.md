@@ -1,4 +1,4 @@
-DMach 1.3 [![Build Status](https://travis-ci.org/simonnorberg/dmach.svg?branch=master)](https://travis-ci.org/simonnorberg/dmach)
+DMach 1.4 [![Build Status](https://travis-ci.org/simonnorberg/dmach.svg?branch=master)](https://travis-ci.org/simonnorberg/dmach)
 =========
 
 DMach is a drum machine for Android with 6 channels, a 16 step sequencer and real-time sound synthesis. 
@@ -8,24 +8,3 @@ DMach is a drum machine for Android with 6 channels, a 16 step sequencer and rea
 
 ![Screenshot](https://raw.github.com/simonnorberg/dmach/master/art/screenshots/dmach-1.3-screenshot-3-small.png)
 ![Screenshot](https://raw.github.com/simonnorberg/dmach/master/art/screenshots/dmach-1.3-screenshot-4-small.png)
-
-#####Open source projects used in DMach:
-[Cyclone](http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html)
-
-[DIY2](http://forum.pdpatchrepo.info/topic/1877/diy2-effects-sample-players-synths-and-sound-synthesis)
-
-[Gson](https://code.google.com/p/google-gson/)
-
-[Hcs](http://puredata.info/downloads/hcs)
-
-[IcoMoon](http://icomoon.io)
-
-[Libpd](http://libpd.cc/)
-
-[Pan](http://puredata.info/downloads/pan)
-
-[PdCore](https://github.com/libpd/pd-for-android)
-
-[saxMono](http://www.saxsoft.de/)
-
-[Zexy](http://puredata.info/downloads/zexy)

@@ -22,82 +22,228 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     android:layout_width="match_parent"
     android:layout_margin="@dimen/margin_small"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context="net.simno.dmach.ui.activity.DMachActivity">
+
     <RelativeLayout
         android:layout_height="0dp"
         android:layout_width="match_parent"
         android:layout_weight="1">
+
         <ImageButton
             android:id="@+id/play_button"
-            android:contentDescription="@string/none"
-            android:onClick="onPlayClicked"
+            android:layout_width="@dimen/button_large_width"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:contentDescription="@string/description_play"
             style="@style/Control.Play" />
+
         <ImageButton
             android:id="@+id/config_button"
-            android:contentDescription="@string/none"
-            android:onClick="onConfigClicked"
+            android:layout_width="@dimen/button_large_width"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@+id/play_button"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:contentDescription="@string/description_config"
             style="@style/Control.Config" />
+
         <ImageButton
             android:id="@+id/reset_button"
-            android:contentDescription="@string/none"
-            android:onClick="onResetClicked"
+            android:layout_width="@dimen/button_large_width"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@+id/config_button"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:contentDescription="@string/description_reset"
             style="@style/Control.Reset" />
+
         <ImageButton
             android:id="@+id/patch_button"
-            android:contentDescription="@string/none"
-            android:onClick="onPatchClicked"
+            android:layout_width="@dimen/button_large_width"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@+id/reset_button"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:contentDescription="@string/description_patch"
             style="@style/Control.Patch" />
-        <net.simno.dmach.view.CustomFontButton
-            android:contentDescription="@string/none"
-            android:onClick="onLogoClicked"
+
+        <net.simno.dmach.ui.view.CustomFontTextView
+            android:id="@+id/logo_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/patch_button"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:gravity="bottom|end"
             style="@style/Logo" />
+
     </RelativeLayout>
-    <LinearLayout
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="5"
-        android:layout_marginTop="@dimen/margin_small"
-        android:orientation="horizontal">
+        android:layout_marginTop="@dimen/margin_small">
+
         <LinearLayout
             android:id="@+id/channel_container"
-            android:layout_height="match_parent"
             android:layout_width="@dimen/button_small_width"
-            android:layout_marginRight="@dimen/margin_small"
-            android:orientation="vertical">
-            <net.simno.dmach.view.CustomFontButton
-                android:id="@+id/channel_bd"
-                android:contentDescription="@string/none"
-                android:onClick="onChannelClicked"
-                style="@style/Channel.BD" />
-            <net.simno.dmach.view.CustomFontButton
-                android:id="@+id/channel_sd"
-                android:contentDescription="@string/none"
-                android:onClick="onChannelClicked"
-                style="@style/Channel.SD" />
-            <net.simno.dmach.view.CustomFontButton
-                android:id="@+id/channel_cp"
-                android:contentDescription="@string/none"
-                android:onClick="onChannelClicked"
-                style="@style/Channel.CP" />
-            <net.simno.dmach.view.CustomFontButton
-                android:id="@+id/channel_tt"
-                android:contentDescription="@string/none"
-                android:onClick="onChannelClicked"
-                style="@style/Channel.TT" />
-            <net.simno.dmach.view.CustomFontButton
-                android:id="@+id/channel_cb"
-                android:contentDescription="@string/none"
-                android:onClick="onChannelClicked"
-                style="@style/Channel.CB" />
-            <net.simno.dmach.view.CustomFontButton
-                android:id="@+id/channel_hh"
-                android:contentDescription="@string/none"
-                android:onClick="onChannelClicked"
-                style="@style/Channel.HH" />
-        </LinearLayout>
-        <RelativeLayout
-            android:id="@+id/fragment_container"
             android:layout_height="match_parent"
-            android:layout_width="match_parent" />
-    </LinearLayout>
+            android:weightSum="6"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:orientation="vertical">
+
+            <net.simno.dmach.ui.view.CustomFontButton
+                android:id="@+id/channel_bd"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:contentDescription="@string/description_channel"
+                style="@style/Channel.BD" />
+
+            <net.simno.dmach.ui.view.CustomFontButton
+                android:id="@+id/channel_sd"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:contentDescription="@string/description_channel"
+                style="@style/Channel.SD" />
+
+            <net.simno.dmach.ui.view.CustomFontButton
+                android:id="@+id/channel_cp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:contentDescription="@string/description_channel"
+                style="@style/Channel.CP" />
+
+            <net.simno.dmach.ui.view.CustomFontButton
+                android:id="@+id/channel_tt"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:contentDescription="@string/description_channel"
+                style="@style/Channel.TT" />
+
+            <net.simno.dmach.ui.view.CustomFontButton
+                android:id="@+id/channel_cb"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:contentDescription="@string/description_channel"
+                style="@style/Channel.CB" />
+
+            <net.simno.dmach.ui.view.CustomFontButton
+                android:id="@+id/channel_hh"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/description_channel"
+                style="@style/Channel.HH" />
+
+        </LinearLayout>
+
+        <net.simno.dmach.ui.view.SequencerView
+            android:id="@+id/sequencer_view"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_toEndOf="@+id/channel_container" />
+
+        <RelativeLayout
+            android:id="@+id/patch_container"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_toEndOf="@+id/channel_container"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/setting_container"
+                android:layout_width="@dimen/button_small_width"
+                android:layout_height="match_parent"
+                android:weightSum="6"
+                android:layout_marginEnd="@dimen/margin_small"
+                android:orientation="vertical">
+
+                <net.simno.dmach.ui.view.CustomFontButton
+                    android:id="@+id/setting_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:contentDescription="@string/description_setting"
+                    style="@style/Setting.1" />
+
+                <net.simno.dmach.ui.view.CustomFontButton
+                    android:id="@+id/setting_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:contentDescription="@string/description_setting"
+                    style="@style/Setting.2" />
+
+                <net.simno.dmach.ui.view.CustomFontButton
+                    android:id="@+id/setting_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:contentDescription="@string/description_setting"
+                    style="@style/Setting.3" />
+
+                <net.simno.dmach.ui.view.CustomFontButton
+                    android:id="@+id/setting_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:contentDescription="@string/description_setting"
+                    style="@style/Setting.4" />
+
+                <net.simno.dmach.ui.view.CustomFontButton
+                    android:id="@+id/setting_5"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:contentDescription="@string/description_setting"
+                    style="@style/Setting.5" />
+
+                <net.simno.dmach.ui.view.CustomFontButton
+                    android:id="@+id/setting_6"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/description_setting"
+                    style="@style/Setting.6" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toEndOf="@+id/setting_container"
+                android:orientation="horizontal">
+
+                <net.simno.dmach.ui.view.SettingView
+                    android:id="@+id/setting_view"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7"
+                    android:layout_marginEnd="@dimen/margin_small" />
+
+                <net.simno.dmach.ui.view.PanView
+                    android:id="@+id/pan_view"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
 </LinearLayout>

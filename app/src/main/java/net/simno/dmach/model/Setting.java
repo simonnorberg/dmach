@@ -35,7 +35,6 @@ public final class Setting {
     }
 
     /**
-     *
      * @param hText  Text to be displayed horizontally
      * @param vText  Text to be displayed vertically
      * @param x  Horizontal value

@@ -22,12 +22,12 @@ public interface PdReceiver extends PdListener {
      *
      * @param s String to be printed
      */
-    public void print(String s);
+    void print(String s);
 
     /**
      * Adapter for PdReceiver implementations that only need to handle a subset of Pd messages
      */
-    public static class Adapter extends PdListener.Adapter implements PdReceiver {
+    class Adapter extends PdListener.Adapter implements PdReceiver {
         @Override
         public void print(String s) {}
     }

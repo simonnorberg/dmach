@@ -131,7 +131,7 @@ public class AudioParameters {
         return impl.checkOutputParameters(srate, nout);
     }
 
-    private static interface AudioParametersImpl {
+    private interface AudioParametersImpl {
         boolean supportsLowLatency();
         boolean checkOutputParameters(int srate, int nout);
         boolean checkInputParameters(int srate, int nin);
@@ -204,7 +204,7 @@ public class AudioParameters {
         }
     }
 
-    private static class BasicOpenSLParameters  implements AudioParametersImpl {
+    private static class BasicOpenSLParameters implements AudioParametersImpl {
         private final int inputBufferSize;
         private final int outputBufferSize;
 

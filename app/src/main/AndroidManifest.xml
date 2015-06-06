@@ -16,47 +16,46 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="net.simno.dmach" >
+    package="net.simno.dmach">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
+        android:name=".DMachApp"
         android:allowBackup="true"
+        android:label="@string/app_name"
         android:icon="@drawable/ic_launcher_dmach"
         android:logo="@drawable/ic_launcher_dmach"
-        android:label="@string/app_name" >
+        android:supportsRtl="false">
+
         <activity
-            android:name=".DMachActivity"
+            android:name=".ui.activity.DMachActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
-            android:screenOrientation="sensorLandscape"
             android:launchMode="singleTask"
-            android:theme="@style/DMachTheme" >
+            android:screenOrientation="sensorLandscape"
+            android:theme="@style/DMachTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
+            android:name=".ui.activity.PatchActivity"
             android:exported="false"
-            android:name=".PatchListActivity"
             android:label="@string/app_name"
             android:screenOrientation="sensorLandscape"
             android:theme="@style/PatchTheme"
-            android:windowSoftInputMode="stateHidden" >
+            android:windowSoftInputMode="stateHidden">
         </activity>
 
-        <provider
-            android:exported="false"
-            android:authorities="net.simno.dmach.contentprovider.PatchContentProvider"
-            android:name=".contentprovider.PatchContentProvider">
-        </provider>
-
         <service
-            android:exported="false"
-            android:name="org.puredata.android.service.PdService">
+            android:name="org.puredata.android.service.PdService"
+            android:exported="false" >
         </service>
+
     </application>
 
 </manifest>

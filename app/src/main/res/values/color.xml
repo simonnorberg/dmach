@@ -16,6 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
 <resources>
+
     <color name="dune">#302e2c</color>
     <color name="gamboge">#e9950a</color>
     <color name="gamboge_alpha">#7fe9950a</color>
@@ -23,5 +24,5 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     <color name="poppy">#b02b2f</color>
     <color name="khaki">#c1bf87</color>
     <color name="gurkha">#94926f</color>
-    <color name="holo_dark">#bd292f34</color>
+
 </resources>

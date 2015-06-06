@@ -44,7 +44,12 @@ public class PdUiDispatcher extends PdDispatcher {
         if (Thread.currentThread().equals(target)) {
             PdUiDispatcher.super.receiveBang(source);
         } else {
-            handler.post(() -> PdUiDispatcher.super.receiveBang(source));
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    PdUiDispatcher.super.receiveBang(source);
+                }
+            });
         }
     }
 
@@ -53,7 +58,12 @@ public class PdUiDispatcher extends PdDispatcher {
         if (Thread.currentThread().equals(target)) {
             PdUiDispatcher.super.receiveFloat(source, x);
         } else {
-            handler.post(() -> PdUiDispatcher.super.receiveFloat(source, x));
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    PdUiDispatcher.super.receiveFloat(source, x);
+                }
+            });
         }
     }
 
@@ -62,7 +72,12 @@ public class PdUiDispatcher extends PdDispatcher {
         if (Thread.currentThread().equals(target)) {
             PdUiDispatcher.super.receiveSymbol(source, symbol);
         } else {
-            handler.post(() -> PdUiDispatcher.super.receiveSymbol(source, symbol));
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    PdUiDispatcher.super.receiveSymbol(source, symbol);
+                }
+            });
         }
     }
 
@@ -71,7 +86,12 @@ public class PdUiDispatcher extends PdDispatcher {
         if (Thread.currentThread().equals(target)) {
             PdUiDispatcher.super.receiveList(source, args);
         } else {
-            handler.post(() -> PdUiDispatcher.super.receiveList(source, args));
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    PdUiDispatcher.super.receiveList(source, args);
+                }
+            });
         }
     }
 
@@ -81,7 +101,12 @@ public class PdUiDispatcher extends PdDispatcher {
         if (Thread.currentThread().equals(target)) {
             PdUiDispatcher.super.receiveMessage(source, symbol, args);
         } else {
-            handler.post(() -> PdUiDispatcher.super.receiveMessage(source, symbol, args));
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    PdUiDispatcher.super.receiveMessage(source, symbol, args);
+                }
+            });
         }
     }
 }

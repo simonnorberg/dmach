@@ -34,12 +34,12 @@ public class Patch {
 
     private static final Type CHANNEL_TYPE = new TypeToken<ArrayList<Channel>>() {}.getType();
 
-    String mTitle;
-    int[] mSequence;
-    List<Channel> mChannels;
-    int mSelectedChannel;
-    int mTempo;
-    int mSwing;
+    String title;
+    int[] sequence;
+    List<Channel> channels;
+    int selectedChannel;
+    int tempo;
+    int swing;
 
     public Patch() {
     }
@@ -55,68 +55,36 @@ public class Patch {
      */
     public Patch(String title, int[] sequence, List<Channel> channels, int selectedChannel,
                  int tempo, int swing) {
-        mTitle = title;
-        mSequence = sequence;
-        mChannels = channels;
-        mSelectedChannel = selectedChannel;
-        mTempo = tempo;
-        mSwing = swing;
+        this.title = title;
+        this.sequence = sequence;
+        this.channels = channels;
+        this.selectedChannel = selectedChannel;
+        this.tempo = tempo;
+        this.swing = swing;
     }
 
     public String getTitle() {
-        return mTitle;
-    }
-
-    public void setTitle(String title) {
-        mTitle = title;
+        return title;
     }
 
     public int[] getSequence() {
-        return mSequence;
-    }
-
-    void setSequence(int[] sequence) {
-        mSequence = sequence;
-    }
-
-    public void setSequence(String json) {
-        setSequence(jsonToSequence(json));
+        return sequence;
     }
 
     public List<Channel> getChannels() {
-        return mChannels;
-    }
-
-    void setChannels(List<Channel> channels) {
-        mChannels = channels;
-    }
-
-    public void setChannels(String json) {
-        setChannels(jsonToChannels(json));
+        return channels;
     }
 
     public int getSelectedChannel() {
-        return mSelectedChannel;
-    }
-
-    public void setSelectedChannel(int selectedChannel) {
-        mSelectedChannel = selectedChannel;
+        return selectedChannel;
     }
 
     public int getTempo() {
-        return mTempo;
-    }
-
-    public void setTempo(int tempo) {
-        mTempo = tempo;
+        return tempo;
     }
 
     public int getSwing() {
-        return mSwing;
-    }
-
-    public void setSwing(int swing) {
-        mSwing = swing;
+        return swing;
     }
 
     public static String sequenceToJson(int[] sequence) {
@@ -133,5 +101,17 @@ public class Patch {
 
     public static List<Channel> jsonToChannels(String json) {
         return new Gson().fromJson(json, CHANNEL_TYPE);
+    }
+
+    public static Patch create(String title, String sequence, String channels, int selectedChannel,
+                               int tempo, int swing) {
+        return new Patch(
+                title,
+                jsonToSequence(sequence),
+                jsonToChannels(channels),
+                selectedChannel,
+                tempo,
+                swing
+        );
     }
 }
