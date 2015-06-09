@@ -18,7 +18,6 @@
 package net.simno.dmach.ui.adapter;
 
 import android.app.Activity;
-import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +25,7 @@ import android.view.ViewGroup;
 
 import net.simno.dmach.R;
 import net.simno.dmach.model.Patch;
+import net.simno.dmach.ui.view.CustomFontTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,8 +55,9 @@ public class PatchAdapter extends RecyclerView.Adapter<PatchAdapter.ViewHolder> 
             void onLongClick(int position);
         }
 
-        @FindView(R.id.title_text) AppCompatTextView title;
-        @FindView(R.id.tempo_text) AppCompatTextView tempo;
+        @FindView(R.id.title_text) CustomFontTextView title;
+        @FindView(R.id.swing_text) CustomFontTextView swing;
+        @FindView(R.id.tempo_text) CustomFontTextView tempo;
         private final OnClickListener listener;
 
         public ViewHolder(View view, OnClickListener listener) {
@@ -113,6 +114,7 @@ public class PatchAdapter extends RecyclerView.Adapter<PatchAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         Patch patch = dataset.get(position);
         holder.title.setText(patch.getTitle());
+        holder.swing.setText(String.valueOf(patch.getSwing()));
         holder.tempo.setText(String.valueOf(patch.getTempo()));
     }
 

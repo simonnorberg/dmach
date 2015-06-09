@@ -33,4 +33,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     <dimen name="text_size_logo">37dp</dimen>
     <dimen name="text_size">18sp</dimen>
 
+    <dimen name="patch_swing_width">80dp</dimen>
+    <dimen name="patch_tempo_width">70dp</dimen>
+
 </resources>

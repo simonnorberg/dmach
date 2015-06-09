@@ -32,6 +32,16 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:paddingStart="@dimen/margin_normal"
         android:paddingEnd="0dp"
         android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/swing_text"
+        android:lines="1" />
+
+    <net.simno.dmach.ui.view.CustomFontTextView
+        android:id="@+id/swing_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="@dimen/patch_swing_width"
+        android:paddingStart="0dp"
+        android:paddingEnd="@dimen/margin_normal"
         android:layout_toStartOf="@+id/tempo_text"
         android:lines="1" />
 
@@ -39,6 +49,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:id="@+id/tempo_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:minWidth="@dimen/patch_tempo_width"
         android:paddingStart="0dp"
         android:paddingEnd="@dimen/margin_normal"
         android:layout_alignParentEnd="true"

@@ -36,7 +36,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:singleLine="true"
         android:maxLines="1"
         android:maxLength="50"
-        android:hint="@string/name"
+        android:hint="@string/patch_name"
         android:inputType="text" />
 
     <net.simno.dmach.ui.view.CustomFontButton
@@ -48,7 +48,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:paddingStart="@dimen/margin_large"
         android:paddingEnd="@dimen/margin_large"
         android:layout_margin="@dimen/margin_small"
-        android:text="@string/save"
+        android:text="@string/patch_save"
         style="@style/Button" />
 
     <net.simno.dmach.ui.view.CustomFontTextView
@@ -62,15 +62,32 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:paddingEnd="0dp"
         android:layout_below="@+id/save_button"
         android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/swing_text"
+        android:textAllCaps="true"
+        android:text="@string/patch_name"
+        android:lines="1" />
+
+    <net.simno.dmach.ui.view.CustomFontTextView
+        android:id="@+id/swing_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="@dimen/patch_swing_width"
+        android:layout_marginTop="@dimen/margin_small"
+        android:paddingTop="@dimen/margin_small"
+        android:paddingBottom="@dimen/margin_small"
+        android:paddingStart="0dp"
+        android:paddingEnd="@dimen/margin_normal"
+        android:layout_below="@+id/save_button"
         android:layout_toStartOf="@+id/tempo_text"
         android:textAllCaps="true"
-        android:text="@string/name"
+        android:text="@string/patch_swing"
         android:lines="1" />
 
     <net.simno.dmach.ui.view.CustomFontTextView
         android:id="@+id/tempo_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:minWidth="@dimen/patch_tempo_width"
         android:layout_marginTop="@dimen/margin_small"
         android:paddingTop="@dimen/margin_small"
         android:paddingBottom="@dimen/margin_small"
@@ -79,7 +96,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:layout_below="@+id/save_button"
         android:layout_alignParentEnd="true"
         android:textAllCaps="true"
-        android:text="@string/bpm"
+        android:text="@string/patch_bpm"
         android:lines="1" />
 
     <android.support.v7.widget.RecyclerView

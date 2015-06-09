@@ -19,8 +19,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
     <string name="app_name">DMach</string>
 
-    <string name="tempo">BPM:</string>
-    <string name="swing">Swing:</string>
+    <string name="dialog_bpm">BPM:</string>
+    <string name="dialog_swing">Swing:</string>
 
     <string name="channel_bd">BD</string>
     <string name="channel_sd">SD</string>
@@ -36,9 +36,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     <string name="setting_5">5</string>
     <string name="setting_6">6</string>
 
-    <string name="save">Save patch</string>
-    <string name="name">Name</string>
-    <string name="bpm">BPM</string>
+    <string name="patch_save">Save patch</string>
+    <string name="patch_name">Name</string>
+    <string name="patch_swing">Swing</string>
+    <string name="patch_bpm">BPM</string>
 
     <string name="description_play">play</string>
     <string name="description_config">configure</string>

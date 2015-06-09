@@ -24,7 +24,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:id="@+id/tempo_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/tempo" />
+        android:text="@string/dialog_bpm" />
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/tempo_value"
@@ -54,7 +54,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tempo_seekbar_1"
-        android:text="@string/swing" />
+        android:text="@string/dialog_swing" />
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/swing_value"
