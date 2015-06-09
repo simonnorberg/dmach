@@ -1,5 +1,5 @@
-DMach 1.4 [![Build Status](https://travis-ci.org/simonnorberg/dmach.svg?branch=master)](https://travis-ci.org/simonnorberg/dmach)
-=========
+DMach [![Build Status](https://travis-ci.org/simonnorberg/dmach.svg?branch=master)](https://travis-ci.org/simonnorberg/dmach)
+=====
 
 DMach is a drum machine for Android with 6 channels, a 16 step sequencer and real-time sound synthesis. 
 
