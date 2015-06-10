@@ -32,7 +32,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.squareup.sqlbrite.SqlBrite;
+import com.squareup.sqlbrite.BriteDatabase;
 
 import net.simno.dmach.DMachApp;
 import net.simno.dmach.ui.adapter.PatchAdapter;
@@ -62,7 +62,7 @@ public class PatchActivity extends AppCompatActivity implements PatchAdapter.OnP
     static final int RESULT_SAVED = RESULT_FIRST_USER;
     static final int RESULT_LOADED = RESULT_FIRST_USER + 1;
 
-    @Inject SqlBrite db;
+    @Inject BriteDatabase db;
     @FindView(R.id.recycler_view) RecyclerView recyclerView;
     @FindView(R.id.save_button) AppCompatButton saveButton;
     @FindView(R.id.save_text) AppCompatEditText saveText;

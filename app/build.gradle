@@ -85,7 +85,7 @@ dependencies {
 
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.2-SNAPSHOT'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.2-SNAPSHOT'
-    compile 'com.squareup.sqlbrite:sqlbrite:0.1.1-SNAPSHOT'
+    compile 'com.squareup.sqlbrite:sqlbrite:0.2.0-SNAPSHOT'
 
     compile 'io.reactivex:rxandroid:0.24.0'
 

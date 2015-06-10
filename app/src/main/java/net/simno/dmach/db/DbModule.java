@@ -20,6 +20,7 @@ package net.simno.dmach.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
 
 import net.simno.dmach.BuildConfig;
@@ -39,17 +40,19 @@ public class DbModule {
     }
 
     @Provides @Singleton
-    SqlBrite provideSqlBrite(SQLiteOpenHelper sqLiteOpenHelper) {
-        SqlBrite db = SqlBrite.create(sqLiteOpenHelper);
-        if (BuildConfig.DEBUG) {
-            db.setLogger(new SqlBrite.Logger() {
-                @Override
-                public void log(String s) {
-                    Timber.tag("Database").v(s);
-                }
-            });
-            db.setLoggingEnabled(true);
-        }
+    SqlBrite provideSqlBrite() {
+        return SqlBrite.create(new SqlBrite.Logger() {
+            @Override
+            public void log(String message) {
+                Timber.tag("Database").v(message);
+            }
+        });
+    }
+
+    @Provides @Singleton
+    BriteDatabase provideDatabase(SqlBrite sqlBrite, SQLiteOpenHelper helper) {
+        BriteDatabase db = sqlBrite.wrapDatabaseHelper(helper);
+        db.setLoggingEnabled(BuildConfig.DEBUG);
         return db;
     }
 }
