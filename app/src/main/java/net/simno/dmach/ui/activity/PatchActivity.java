@@ -47,8 +47,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.FindView;
 import butterknife.OnClick;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -63,9 +63,9 @@ public class PatchActivity extends AppCompatActivity implements PatchAdapter.OnP
     static final int RESULT_LOADED = RESULT_FIRST_USER + 1;
 
     @Inject BriteDatabase db;
-    @FindView(R.id.recycler_view) RecyclerView recyclerView;
-    @FindView(R.id.save_button) AppCompatButton saveButton;
-    @FindView(R.id.save_text) AppCompatEditText saveText;
+    @Bind(R.id.recycler_view) RecyclerView recyclerView;
+    @Bind(R.id.save_button) AppCompatButton saveButton;
+    @Bind(R.id.save_text) AppCompatEditText saveText;
     private PatchAdapter adapter;
     private Patch patch;
     private String title;

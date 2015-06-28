@@ -30,11 +30,11 @@ import net.simno.dmach.ui.view.CustomFontTextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.BindColor;
 import butterknife.ButterKnife;
-import butterknife.FindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
-import butterknife.ResourceColor;
 
 public class PatchAdapter extends RecyclerView.Adapter<PatchAdapter.ViewHolder> {
 
@@ -43,8 +43,8 @@ public class PatchAdapter extends RecyclerView.Adapter<PatchAdapter.ViewHolder> 
         void onPatchLongClick(Patch patch);
     }
 
-    @ResourceColor(R.color.khaki) int khaki;
-    @ResourceColor(R.color.gurkha) int gurkha;
+    @BindColor(R.color.khaki) int khaki;
+    @BindColor(R.color.gurkha) int gurkha;
     private final List<Patch> dataset = new ArrayList<>();
     private final OnPatchClickListener listener;
 
@@ -55,9 +55,9 @@ public class PatchAdapter extends RecyclerView.Adapter<PatchAdapter.ViewHolder> 
             void onLongClick(int position);
         }
 
-        @FindView(R.id.title_text) CustomFontTextView title;
-        @FindView(R.id.swing_text) CustomFontTextView swing;
-        @FindView(R.id.tempo_text) CustomFontTextView tempo;
+        @Bind(R.id.title_text) CustomFontTextView title;
+        @Bind(R.id.swing_text) CustomFontTextView swing;
+        @Bind(R.id.tempo_text) CustomFontTextView tempo;
         private final OnClickListener listener;
 
         public ViewHolder(View view, OnClickListener listener) {
