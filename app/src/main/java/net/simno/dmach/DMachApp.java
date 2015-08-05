@@ -20,8 +20,6 @@ package net.simno.dmach;
 import android.app.Application;
 import android.content.Context;
 
-import com.squareup.leakcanary.LeakCanary;
-
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
@@ -32,7 +30,6 @@ public class DMachApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        LeakCanary.install(this);
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
             ButterKnife.setDebug(true);
