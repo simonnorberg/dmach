@@ -26,8 +26,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import net.simno.dmach.ui.activity.DMachActivity;
 import net.simno.dmach.R;
+import net.simno.dmach.ui.activity.DMachActivity;
 
 import java.util.ArrayList;
 import java.util.Iterator;

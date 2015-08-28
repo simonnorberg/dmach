@@ -35,11 +35,11 @@ import android.widget.Toast;
 import com.squareup.sqlbrite.BriteDatabase;
 
 import net.simno.dmach.DMachApp;
-import net.simno.dmach.ui.adapter.PatchAdapter;
 import net.simno.dmach.R;
 import net.simno.dmach.db.Db;
 import net.simno.dmach.db.PatchTable;
 import net.simno.dmach.model.Patch;
+import net.simno.dmach.ui.adapter.PatchAdapter;
 
 import org.parceler.Parcels;
 
