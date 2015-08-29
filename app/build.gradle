@@ -20,7 +20,7 @@ apply plugin: 'com.neenbedankt.android-apt'
 
 def versionMajor = 1
 def versionMinor = 4
-def versionPatch = 1
+def versionPatch = 2
 def versionBuild = 0
 
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
@@ -58,6 +58,16 @@ android {
             output.outputFile = new File(
                 output.outputFile.parent,
                 output.outputFile.name.replace(".apk", "-${variant.versionName}.apk"))
+        }
+        // delete unaligned apk
+        variant.assemble.doLast {
+            variant.outputs.each { output ->
+                File unaligned = output.packageApplication.outputFile;
+                File aligned = output.outputFile
+                if (!unaligned.getName().equalsIgnoreCase(aligned.getName())) {
+                    unaligned.delete()
+                }
+            }
         }
     }
     sourceSets {
