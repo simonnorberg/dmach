@@ -26,6 +26,11 @@ def versionBuild = 0
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
 
+if (project.hasProperty("dmach.signing")
+        && new File(project.property("dmach.signing") + ".gradle").exists()) {
+    apply from: project.property("dmach.signing") + ".gradle";
+}
+
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
