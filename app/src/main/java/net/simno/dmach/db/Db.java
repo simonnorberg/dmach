@@ -30,38 +30,14 @@ import rx.functions.Func1;
 
 public final class Db {
 
-    static String getString(Cursor cursor, String columnName) {
+    public static String getString(Cursor cursor, String columnName) {
         return cursor.getString(cursor.getColumnIndexOrThrow(columnName));
     }
 
-    static int getInt(Cursor cursor, String columnName) {
+    public static int getInt(Cursor cursor, String columnName) {
         return cursor.getInt(cursor.getColumnIndexOrThrow(columnName));
     }
 
     public static final String QUERY_PATCH = "select * from patch order by title";
 
-    public static final Func1<SqlBrite.Query, List<Patch>> MAP_PATCH = new Func1<SqlBrite.Query, List<Patch>>() {
-        @Override
-        public List<Patch> call(SqlBrite.Query query) {
-            Cursor cursor = query.run();
-            //noinspection TryFinallyCanBeTryWithResources
-            try {
-                List<Patch> patches = new ArrayList<>();
-                while (cursor.moveToNext()) {
-                    String title = getString(cursor, PatchTable.TITLE);
-                    String sequence = getString(cursor, PatchTable.SEQUENCE);
-                    String channels = getString(cursor, PatchTable.CHANNELS);
-                    int selectedChannel = getInt(cursor, PatchTable.SELECTED);
-                    int tempo = getInt(cursor, PatchTable.TEMPO);
-                    int swing = getInt(cursor, PatchTable.SWING);
-
-                    Patch patch = Patch.create(title, sequence, channels, selectedChannel, tempo, swing);
-                    patches.add(patch);
-                }
-                return patches;
-            } finally {
-                cursor.close();
-            }
-        }
-    };
 }

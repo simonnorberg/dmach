@@ -17,8 +17,13 @@
 
 package net.simno.dmach.model;
 
+import android.database.Cursor;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import net.simno.dmach.db.Db;
+import net.simno.dmach.db.PatchTable;
 
 import org.parceler.Parcel;
 
@@ -26,11 +31,26 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.functions.Func1;
+
 /**
  * The Patch class contains all variables used in dmach.pd
  */
 @Parcel
 public class Patch {
+
+    public static final Func1<Cursor, Patch> MAPPER = new Func1<Cursor, Patch>() {
+        @Override
+        public Patch call(Cursor cursor) {
+            String title = Db.getString(cursor, PatchTable.TITLE);
+            String sequence = Db.getString(cursor, PatchTable.SEQUENCE);
+            String channels = Db.getString(cursor, PatchTable.CHANNELS);
+            int selectedChannel = Db.getInt(cursor, PatchTable.SELECTED);
+            int tempo = Db.getInt(cursor, PatchTable.TEMPO);
+            int swing = Db.getInt(cursor, PatchTable.SWING);
+            return create(title, sequence, channels, selectedChannel, tempo, swing);
+        }
+    };
 
     private static final Type CHANNEL_TYPE = new TypeToken<ArrayList<Channel>>() {}.getType();
 

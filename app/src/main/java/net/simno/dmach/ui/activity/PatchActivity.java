@@ -30,7 +30,6 @@ import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.squareup.sqlbrite.BriteDatabase;
 
@@ -43,14 +42,11 @@ import net.simno.dmach.ui.adapter.PatchAdapter;
 
 import org.parceler.Parcels;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
@@ -62,10 +58,11 @@ public class PatchActivity extends AppCompatActivity implements PatchAdapter.OnP
     static final int RESULT_SAVED = RESULT_FIRST_USER;
     static final int RESULT_LOADED = RESULT_FIRST_USER + 1;
 
-    @Inject BriteDatabase db;
     @Bind(R.id.recycler_view) RecyclerView recyclerView;
     @Bind(R.id.save_button) AppCompatButton saveButton;
     @Bind(R.id.save_text) AppCompatEditText saveText;
+
+    @Inject BriteDatabase db;
     private PatchAdapter adapter;
     private Patch patch;
     private String title;
@@ -89,9 +86,6 @@ public class PatchActivity extends AppCompatActivity implements PatchAdapter.OnP
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             recyclerView.setHasFixedSize(true);
             recyclerView.setAdapter(adapter);
-
-            subscriptions = new CompositeSubscription();
-            loadPatches();
         } else {
             setResult(RESULT_CANCELED);
             finish();
@@ -99,32 +93,20 @@ public class PatchActivity extends AppCompatActivity implements PatchAdapter.OnP
     }
 
     @Override
-    protected void onDestroy() {
-        subscriptions.unsubscribe();
-        super.onDestroy();
-    }
-
-    private void loadPatches() {
+    protected void onResume() {
+        super.onResume();
+        subscriptions = new CompositeSubscription();
         subscriptions.add(db.createQuery(PatchTable.TABLE, Db.QUERY_PATCH)
-                .map(Db.MAP_PATCH)
+                .mapToList(Patch.MAPPER)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<Patch>>() {
-                    @Override
-                    public void onCompleted() {
-                    }
+                .subscribe(adapter));
+    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Toast.makeText(PatchActivity.this, "Error loading patches.",
-                                Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onNext(List<Patch> patches) {
-                        adapter.set(patches);
-                    }
-                }));
+    @Override
+    protected void onPause() {
+        super.onPause();
+        subscriptions.unsubscribe();
     }
 
     @OnClick(R.id.save_button)

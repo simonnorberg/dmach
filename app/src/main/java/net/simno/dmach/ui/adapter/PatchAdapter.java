@@ -35,8 +35,10 @@ import butterknife.BindColor;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+import rx.functions.Action1;
 
-public class PatchAdapter extends RecyclerView.Adapter<PatchAdapter.ViewHolder> {
+public class PatchAdapter extends RecyclerView.Adapter<PatchAdapter.ViewHolder>
+        implements Action1<List<Patch>> {
 
     public interface OnPatchClickListener {
         void onPatchClick(Patch patch);
@@ -45,8 +47,9 @@ public class PatchAdapter extends RecyclerView.Adapter<PatchAdapter.ViewHolder> 
 
     @BindColor(R.color.khaki) int khaki;
     @BindColor(R.color.gurkha) int gurkha;
-    private final List<Patch> dataset = new ArrayList<>();
+
     private final OnPatchClickListener listener;
+    private List<Patch> patches = new ArrayList<>();
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -58,6 +61,7 @@ public class PatchAdapter extends RecyclerView.Adapter<PatchAdapter.ViewHolder> 
         @Bind(R.id.title_text) CustomFontTextView title;
         @Bind(R.id.swing_text) CustomFontTextView swing;
         @Bind(R.id.tempo_text) CustomFontTextView tempo;
+
         private final OnClickListener listener;
 
         public ViewHolder(View view, OnClickListener listener) {
@@ -91,6 +95,12 @@ public class PatchAdapter extends RecyclerView.Adapter<PatchAdapter.ViewHolder> 
     }
 
     @Override
+    public void call(List<Patch> patches) {
+        this.patches = patches;
+        notifyDataSetChanged();
+    }
+
+    @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.item_patch, parent, false);
@@ -99,20 +109,20 @@ public class PatchAdapter extends RecyclerView.Adapter<PatchAdapter.ViewHolder> 
             @Override
             public void onClick(int position) {
                 if (listener != null) {
-                    listener.onPatchClick(dataset.get(position));
+                    listener.onPatchClick(patches.get(position));
                 }
             }
 
             @Override
             public void onLongClick(int position) {
-                listener.onPatchLongClick(dataset.get(position));
+                listener.onPatchLongClick(patches.get(position));
             }
         });
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Patch patch = dataset.get(position);
+        Patch patch = patches.get(position);
         holder.title.setText(patch.getTitle());
         holder.swing.setText(String.valueOf(patch.getSwing()));
         holder.tempo.setText(String.valueOf(patch.getTempo()));
@@ -120,7 +130,7 @@ public class PatchAdapter extends RecyclerView.Adapter<PatchAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return dataset.size();
+        return patches.size();
     }
 
     @Override
@@ -129,11 +139,5 @@ public class PatchAdapter extends RecyclerView.Adapter<PatchAdapter.ViewHolder> 
             return 1;
         }
         return 0;
-    }
-
-    public void set(List<Patch> patches) {
-        dataset.clear();
-        dataset.addAll(patches);
-        notifyDataSetChanged();
     }
 }
