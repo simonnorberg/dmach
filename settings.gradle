@@ -1,1 +1,1 @@
-include ':app', ':pdcore'
+include ':app'

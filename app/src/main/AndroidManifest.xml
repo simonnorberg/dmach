@@ -18,7 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.simno.dmach">
 
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <application
         android:name=".DMachApp"
@@ -36,9 +36,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             android:screenOrientation="sensorLandscape"
             android:theme="@style/DMachTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
@@ -53,8 +53,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
         <service
             android:name="org.puredata.android.service.PdService"
-            android:exported="false" >
-        </service>
+            android:exported="false"/>
 
     </application>
 

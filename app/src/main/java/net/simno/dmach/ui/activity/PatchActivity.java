@@ -24,7 +24,6 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,6 +31,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 
 import com.squareup.sqlbrite.BriteDatabase;
+import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import net.simno.dmach.DMachApp;
 import net.simno.dmach.R;
@@ -42,6 +42,8 @@ import net.simno.dmach.ui.adapter.PatchAdapter;
 
 import org.parceler.Parcels;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.Bind;
@@ -51,7 +53,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-public class PatchActivity extends AppCompatActivity implements PatchAdapter.OnPatchClickListener {
+public class PatchActivity extends RxAppCompatActivity implements PatchAdapter.OnPatchClickListener {
 
     static final String TITLE_EXTRA = "title";
     static final String PATCH_EXTRA = "patch";
@@ -98,6 +100,7 @@ public class PatchActivity extends AppCompatActivity implements PatchAdapter.OnP
         subscriptions = new CompositeSubscription();
         subscriptions.add(db.createQuery(PatchTable.TABLE, Db.QUERY_PATCH)
                 .mapToList(Patch.MAPPER)
+                .compose(this.<List<Patch>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(adapter));

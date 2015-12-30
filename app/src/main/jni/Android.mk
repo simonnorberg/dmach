@@ -14,14 +14,15 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 LOCAL_PATH := $(call my-dir)
-
-PD_C_INCLUDES := $(LOCAL_PATH)/../../../../PdCore/jni/libpd/pure-data/src
+PD_CORE_PATH := $(LOCAL_PATH)/../../../../../pd-for-android/PdCore
+PD_CORE_LIBS := $(PD_CORE_PATH)/libs/$(TARGET_ARCH_ABI)
+PD_CORE_SRC := $(PD_CORE_PATH)/jni/libpd/pure-data/src
 
 #---------------------------------------------------------------
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := shared
-LOCAL_C_INCLUDES := $(PD_C_INCLUDES)
+LOCAL_C_INCLUDES := $(PD_CORE_SRC)
 LOCAL_CFLAGS := -DPD
 LOCAL_SRC_FILES := cyclone-0.1-alpha55/shared.c
 include $(BUILD_STATIC_LIBRARY)
@@ -30,7 +31,7 @@ include $(BUILD_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := loud
-LOCAL_C_INCLUDES := $(PD_C_INCLUDES)
+LOCAL_C_INCLUDES := $(PD_CORE_SRC)
 LOCAL_CFLAGS := -DPD
 LOCAL_SRC_FILES := cyclone-0.1-alpha55/loud.c
 include $(BUILD_STATIC_LIBRARY)
@@ -39,7 +40,7 @@ include $(BUILD_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := sic
-LOCAL_C_INCLUDES := $(PD_C_INCLUDES)
+LOCAL_C_INCLUDES := $(PD_CORE_SRC)
 LOCAL_CFLAGS := -DPD
 LOCAL_SRC_FILES := cyclone-0.1-alpha55/sic.c
 LOCAL_STATIC_LIBRARIES := shared loud
@@ -49,35 +50,31 @@ include $(BUILD_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := tanh_tilde
-LOCAL_C_INCLUDES := $(PD_C_INCLUDES)
+LOCAL_C_INCLUDES := $(PD_CORE_SRC)
 LOCAL_CFLAGS := -DPD
 LOCAL_SRC_FILES := cyclone-0.1-alpha55/tanh.c
-LOCAL_LDLIBS := -L$(LOCAL_PATH)/../../../../PdCore/libs/$(TARGET_ARCH_ABI) -lpd
+LOCAL_LDLIBS := -L$(PD_CORE_LIBS) -lpd
 LOCAL_STATIC_LIBRARIES := sic
 include $(BUILD_SHARED_LIBRARY)
 
 #---------------------------------------------------------------
 
-#---------------------------------------------------------------
-
 include $(CLEAR_VARS)
 LOCAL_MODULE := limiter_tilde
-LOCAL_C_INCLUDES := $(PD_C_INCLUDES)
+LOCAL_C_INCLUDES := $(PD_CORE_SRC)
 LOCAL_CFLAGS := -DPD
 LOCAL_SRC_FILES := zexy-2.2.4/limiter~.c
-LOCAL_LDLIBS := -L$(LOCAL_PATH)/../../../../PdCore/libs/$(TARGET_ARCH_ABI) -lpd
+LOCAL_LDLIBS := -L$(PD_CORE_LIBS) -lpd
 include $(BUILD_SHARED_LIBRARY)
-
-#---------------------------------------------------------------
 
 #---------------------------------------------------------------
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := z_tilde
-LOCAL_C_INCLUDES := $(PD_C_INCLUDES)
+LOCAL_C_INCLUDES := $(PD_CORE_SRC)
 LOCAL_CFLAGS := -DPD
 LOCAL_SRC_FILES := zexy-2.2.4/z~.c
-LOCAL_LDLIBS := -L$(LOCAL_PATH)/../../../../PdCore/libs/$(TARGET_ARCH_ABI) -lpd
+LOCAL_LDLIBS := -L$(PD_CORE_LIBS) -lpd
 include $(BUILD_SHARED_LIBRARY)
 
 #---------------------------------------------------------------

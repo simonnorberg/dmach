@@ -17,10 +17,11 @@
 
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.getkeepsafe.dexcount'
 
 def versionMajor = 1
 def versionMinor = 4
-def versionPatch = 2
+def versionPatch = 3
 def versionBuild = 0
 
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
@@ -32,13 +33,13 @@ if (project.hasProperty("dmach.signing")
 }
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "23.0.1"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
 
     defaultConfig {
         applicationId "net.simno.dmach"
         minSdkVersion 17
-        targetSdkVersion 22
+        targetSdkVersion 23
 
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
@@ -46,6 +47,7 @@ android {
         buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
         buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
     }
+
     buildTypes {
         debug {
             debuggable true
@@ -58,62 +60,83 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            output.outputFile = new File(
-                output.outputFile.parent,
-                output.outputFile.name.replace(".apk", "-${variant.versionName}.apk"))
-        }
-        // delete unaligned apk
-        variant.assemble.doLast {
-            variant.outputs.each { output ->
-                File unaligned = output.packageApplication.outputFile;
-                File aligned = output.outputFile
-                if (!unaligned.getName().equalsIgnoreCase(aligned.getName())) {
-                    unaligned.delete()
-                }
-            }
-        }
-    }
+
     sourceSets {
         main {
             assets.srcDirs = ['src/main/assets']
             jni.srcDirs = [] // disable automatic ndk-build call
+            jniLibs.srcDir 'src/main/libs' // set .so files location to libs
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
+
     lintOptions {
         abortOnError false
     }
+
     packagingOptions {
         exclude 'LICENSE.txt'
     }
+
+    tasks.create(name: 'buildNative', type: Exec, description: 'Compile JNI source via NDK') {
+        commandLine getNdkBuildExecutablePath(),
+                '-C', file('src/main/jni').absolutePath,
+                '-j', Runtime.runtime.availableProcessors(),
+                'all',
+                'NDK_DEBUG=1'
+    }
+
+    tasks.create(name: 'cleanNative', type: Exec, description: 'Clean JNI object files') {
+        commandLine getNdkBuildExecutablePath(), '-C', file('src/main/jni').absolutePath, 'clean'
+    }
+
+    clean.dependsOn 'cleanNative'
+
+    tasks.withType(JavaCompile) {
+        compileTask -> compileTask.dependsOn 'buildNative'
+    }
+}
+
+def getNdkBuildExecutablePath() {
+    File ndkDir = android.ndkDirectory
+    if (ndkDir == null) {
+        throw new Exception('NDK location not found. Define location with ndk.dir in the ' +
+                'local.properties file or with an ANDROID_NDK_HOME environment variable.')
+    }
+    def isWindows = System.properties['os.name'].toLowerCase().contains('windows')
+    def ndkBuildFile = new File(ndkDir, isWindows ? 'ndk-build.cmd' : 'ndk-build')
+    if (!ndkBuildFile.exists()) {
+        throw new Exception("ndk-build executable not found: $ndkBuildFile.absolutePath")
+    }
+    ndkBuildFile.absolutePath
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':pdcore')
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:recyclerview-v7:23.1.1'
 
-    compile 'com.android.support:appcompat-v7:22.2.1'
-    compile 'com.android.support:recyclerview-v7:22.2.1'
-
-    compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.google.code.gson:gson:2.5'
     compile 'com.google.dagger:dagger:2.1-SNAPSHOT'
     apt 'com.google.dagger:dagger-compiler:2.1-SNAPSHOT'
 
     compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.jakewharton.timber:timber:3.1.0'
+    compile 'com.jakewharton.timber:timber:4.1.0'
 
-    compile 'com.squareup.sqlbrite:sqlbrite:0.3.1'
+    compile 'com.squareup.sqlbrite:sqlbrite:0.5.0'
 
-    compile 'io.reactivex:rxandroid:1.0.1'
-    compile 'io.reactivex:rxjava:1.0.14'
+    compile 'com.trello:rxlifecycle-components:0.4.0'
+
+    compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'io.reactivex:rxjava:1.1.0'
 
     provided 'org.glassfish:javax.annotation:10.0-b28'
 
-    compile 'org.parceler:parceler-api:1.0.3'
-    apt 'org.parceler:parceler:1.0.3'
+    compile 'org.parceler:parceler-api:1.0.4'
+    apt 'org.parceler:parceler:1.0.4'
+
+    compile 'org.puredata.android:pd-core:1.0.0-rc4'
 }

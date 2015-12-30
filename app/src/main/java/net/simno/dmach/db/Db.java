@@ -19,15 +19,6 @@ package net.simno.dmach.db;
 
 import android.database.Cursor;
 
-import com.squareup.sqlbrite.SqlBrite;
-
-import net.simno.dmach.model.Patch;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import rx.functions.Func1;
-
 public final class Db {
 
     public static String getString(Cursor cursor, String columnName) {
@@ -39,5 +30,4 @@ public final class Db {
     }
 
     public static final String QUERY_PATCH = "select * from patch order by title";
-
 }
