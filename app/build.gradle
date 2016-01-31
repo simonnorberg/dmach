@@ -120,8 +120,8 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.1.1'
 
     compile 'com.google.code.gson:gson:2.5'
-    compile 'com.google.dagger:dagger:2.1-SNAPSHOT'
-    apt 'com.google.dagger:dagger-compiler:2.1-SNAPSHOT'
+    compile 'com.google.dagger:dagger:2.0.2'
+    apt 'com.google.dagger:dagger-compiler:2.0.2'
 
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.jakewharton.timber:timber:4.1.0'
@@ -138,5 +138,5 @@ dependencies {
     compile 'org.parceler:parceler-api:1.0.4'
     apt 'org.parceler:parceler:1.0.4'
 
-    compile 'org.puredata.android:pd-core:1.0.0-rc4'
+    compile 'org.puredata.android:pd-core:1.0.0'
 }
