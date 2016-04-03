@@ -15,23 +15,20 @@
 * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0-alpha5'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.4.3'
-    }
-}
+package net.simno.dmach;
 
-allprojects {
-    repositories {
-        jcenter()
-    }
-}
+import net.simno.dmach.ui.activity.PatchActivity;
+import net.simno.dmach.ui.view.CustomFontButton;
+import net.simno.dmach.ui.view.CustomFontEditText;
+import net.simno.dmach.ui.view.CustomFontTextView;
+import net.simno.dmach.ui.view.PanView;
+import net.simno.dmach.ui.view.SettingView;
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+public interface AppComponent {
+    void inject(PatchActivity activity);
+    void inject(CustomFontButton button);
+    void inject(CustomFontTextView textView);
+    void inject(CustomFontEditText editText);
+    void inject(SettingView view);
+    void inject(PanView view);
 }

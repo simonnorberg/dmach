@@ -27,10 +27,15 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import net.simno.dmach.R;
-import net.simno.dmach.ui.activity.DMachActivity;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import static android.support.v4.content.ContextCompat.getColor;
+import static net.simno.dmach.ui.activity.DMachActivity.CHANNELS;
+import static net.simno.dmach.ui.activity.DMachActivity.GROUPS;
+import static net.simno.dmach.ui.activity.DMachActivity.MASKS;
+import static net.simno.dmach.ui.activity.DMachActivity.STEPS;
 
 public final class SequencerView extends View {
 
@@ -38,7 +43,7 @@ public final class SequencerView extends View {
         void onStepChanged(int group, int step, int mask, int index);
     }
 
-    private static final int CHANNELS_PER_GROUP = DMachActivity.CHANNELS / DMachActivity.GROUPS;
+    private static final int CHANNELS_PER_GROUP = CHANNELS / GROUPS;
 
     private final ArrayList<Step> sequence = new ArrayList<>();
     private OnStepChangedListener listener;
@@ -66,51 +71,51 @@ public final class SequencerView extends View {
 
     public SequencerView(Context context) {
         super(context);
-        init();
+        init(context);
     }
 
     public SequencerView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context);
     }
 
     public SequencerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init();
+        init(context);
     }
 
-    private void init() {
-        background = getResources().getColor(R.color.colonial);
+    private void init(Context context) {
+        background = getColor(context, R.color.colonial);
 
         uncheckedLight = new Paint();
-        uncheckedLight.setColor(getResources().getColor(R.color.khaki));
+        uncheckedLight.setColor(getColor(context, R.color.khaki));
         uncheckedLight.setStyle(Paint.Style.FILL);
 
         uncheckedDark = new Paint();
-        uncheckedDark.setColor(getResources().getColor(R.color.gurkha));
+        uncheckedDark.setColor(getColor(context, R.color.gurkha));
         uncheckedDark.setStyle(Paint.Style.FILL);
 
         checked = new Paint();
-        checked.setColor(getResources().getColor(R.color.poppy));
+        checked.setColor(getColor(context, R.color.poppy));
         checked.setStyle(Paint.Style.FILL);
 
         margin = getResources().getDimension(R.dimen.margin_small);
 
-        for (int channel = 0; channel < DMachActivity.CHANNELS; ++channel) {
-            for (int step = 0; step < DMachActivity.STEPS; ++step) {
+        for (int channel = 0; channel < CHANNELS; ++channel) {
+            for (int step = 0; step < STEPS; ++step) {
                 sequence.add(new Step());
             }
         }
     }
 
     private void initSteps() {
-        for (int channel = 0; channel < DMachActivity.CHANNELS; ++channel) {
-            for (int step = 0; step < DMachActivity.STEPS; ++step) {
+        for (int channel = 0; channel < CHANNELS; ++channel) {
+            for (int step = 0; step < STEPS; ++step) {
                 float left = step * stepWidthMargin;
                 float right = left + stepWidth;
                 float top = channel * stepHeightMargin;
                 float bottom = top + stepHeight;
-                int index = (channel * DMachActivity.STEPS) + step;
+                int index = (channel * STEPS) + step;
                 sequence.get(index).rect = new RectF(left, top, right, bottom);
             }
         }
@@ -128,8 +133,8 @@ public final class SequencerView extends View {
 
     public void setChecked(int[] seq) {
         Iterator<Step> it = sequence.iterator();
-        for (int channel = 0; channel < (DMachActivity.CHANNELS); ++channel) {
-            for (int step = 0; step < DMachActivity.STEPS; ++step) {
+        for (int channel = 0; channel < (CHANNELS); ++channel) {
+            for (int step = 0; step < STEPS; ++step) {
                 if (it.hasNext()) {
                     int mask = getMask(channel);
                     int index = getIndex(channel, step);
@@ -142,7 +147,7 @@ public final class SequencerView extends View {
     }
 
     private static int getMask(int channel) {
-        return DMachActivity.MASKS[channel % CHANNELS_PER_GROUP];
+        return MASKS[channel % CHANNELS_PER_GROUP];
     }
 
     private static int getGroup(int channel) {
@@ -150,12 +155,12 @@ public final class SequencerView extends View {
     }
 
     private static int getIndex(int channel, int step) {
-        int offset = getGroup(channel) * DMachActivity.STEPS;
+        int offset = getGroup(channel) * STEPS;
         return step + offset;
     }
 
     private static int getListIndex(int channel, int step) {
-        return channel * DMachActivity.STEPS + step;
+        return channel * STEPS + step;
     }
 
     private int pxToChannel(float px) {
@@ -236,8 +241,8 @@ public final class SequencerView extends View {
         if (w != 0 && h != 0) {
             width = w;
             height = h;
-            stepWidth = (w - ((DMachActivity.STEPS - 1f) * margin)) / DMachActivity.STEPS;
-            stepHeight = (h - ((DMachActivity.CHANNELS - 1f) * margin)) / DMachActivity.CHANNELS;
+            stepWidth = (w - ((STEPS - 1f) * margin)) / STEPS;
+            stepHeight = (h - ((CHANNELS - 1f) * margin)) / CHANNELS;
             stepWidthMargin = stepWidth + margin;
             stepHeightMargin = stepHeight + margin;
             initSteps();

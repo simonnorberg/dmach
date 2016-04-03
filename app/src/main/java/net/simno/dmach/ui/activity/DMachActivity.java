@@ -129,7 +129,8 @@ public class DMachActivity extends AppCompatActivity {
             }
             PdBase.sendFloat("tempo", tempo);
             if (tempoText != null) {
-                tempoText.setText(" " + tempo);
+                tempoText.setText(" ");
+                tempoText.append(String.valueOf(tempo));
             }
         }
         @Override
@@ -144,7 +145,8 @@ public class DMachActivity extends AppCompatActivity {
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
             PdBase.sendFloat("swing", progress / 100.0f);
             if (swingText != null) {
-                swingText.setText(" " + progress);
+                swingText.setText(" ");
+                swingText.append(String.valueOf(progress));
             }
             swing = progress;
         }
@@ -396,7 +398,8 @@ public class DMachActivity extends AppCompatActivity {
         });
         alertDialog.show();
         tempoText = findById(layout, R.id.tempo_value);
-        tempoText.setText(" " + tempo);
+        tempoText.setText(" ");
+        tempoText.append(String.valueOf(tempo));
 
         SeekBar tempoSeekBar10 = (SeekBar) layout.findViewById(R.id.tempo_seekbar_10);
         tempoSeekBar10.setProgress((tempo / 10) - 1);
@@ -407,7 +410,8 @@ public class DMachActivity extends AppCompatActivity {
         tempoSeekBar1.setOnSeekBarChangeListener(tempoListener);
 
         swingText = findById(layout, R.id.swing_value);
-        swingText.setText(" " + swing);
+        swingText.setText(" ");
+        swingText.append(String.valueOf(swing));
 
         SeekBar swingSeekBar = (SeekBar) layout.findViewById(R.id.swing_seekbar);
         swingSeekBar.setProgress(swing);

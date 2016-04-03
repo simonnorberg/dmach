@@ -50,7 +50,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class PatchActivity extends RxAppCompatActivity implements PatchAdapter.OnPatchClickListener {
@@ -74,7 +73,7 @@ public class PatchActivity extends RxAppCompatActivity implements PatchAdapter.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patch);
-        DMachApp.get(this).getComponent().inject(this);
+        DMachApp.get(this).component().inject(this);
         ButterKnife.bind(this);
 
         Bundle extras = getIntent().getExtras();
@@ -101,7 +100,6 @@ public class PatchActivity extends RxAppCompatActivity implements PatchAdapter.O
         subscriptions.add(db.createQuery(PatchTable.TABLE, Db.QUERY_PATCH)
                 .mapToList(Patch.MAPPER)
                 .compose(this.<List<Patch>>bindToLifecycle())
-                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(adapter));
     }

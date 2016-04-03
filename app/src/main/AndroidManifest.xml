@@ -16,6 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="net.simno.dmach">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
@@ -26,7 +27,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:label="@string/app_name"
         android:icon="@drawable/ic_launcher_dmach"
         android:logo="@drawable/ic_launcher_dmach"
-        android:supportsRtl="false">
+        android:supportsRtl="false"
+        tools:ignore="AllowBackup">
 
         <activity
             android:name=".ui.activity.DMachActivity"

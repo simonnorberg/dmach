@@ -45,7 +45,7 @@ public class CustomFontEditText extends AppCompatEditText {
     }
 
     private void init(Context context) {
-        DMachApp.get(context).getComponent().inject(this);
+        DMachApp.get(context).component().inject(this);
         setTypeface(typeface);
     }
 }

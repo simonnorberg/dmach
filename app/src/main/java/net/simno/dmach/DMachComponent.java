@@ -17,25 +17,11 @@
 
 package net.simno.dmach;
 
-import net.simno.dmach.ui.activity.PatchActivity;
-import net.simno.dmach.ui.view.CustomFontButton;
-import net.simno.dmach.ui.view.CustomFontEditText;
-import net.simno.dmach.ui.view.CustomFontTextView;
-import net.simno.dmach.ui.view.PanView;
-import net.simno.dmach.ui.view.SettingView;
-
 import javax.inject.Singleton;
 
 import dagger.Component;
 
 @Singleton
 @Component(modules = DMachModule.class)
-public interface DMachComponent {
-    void inject(DMachApp app);
-    void inject(PatchActivity activity);
-    void inject(CustomFontButton button);
-    void inject(CustomFontTextView textView);
-    void inject(CustomFontEditText editText);
-    void inject(SettingView view);
-    void inject(PanView view);
+public interface DMachComponent extends AppComponent {
 }

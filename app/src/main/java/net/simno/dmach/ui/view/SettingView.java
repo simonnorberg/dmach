@@ -35,6 +35,8 @@ import net.simno.dmach.model.Setting;
 
 import javax.inject.Inject;
 
+import static android.support.v4.content.ContextCompat.getColor;
+
 public final class SettingView extends PdView {
 
     public interface OnSettingChangedListener {
@@ -78,9 +80,9 @@ public final class SettingView extends PdView {
     }
 
     private void init(Context context) {
-        DMachApp.get(context).getComponent().inject(this);
+        DMachApp.get(context).component().inject(this);
 
-        backgroundColor = getResources().getColor(R.color.gamboge);
+        backgroundColor = getColor(context, R.color.gamboge);
         textSize = getResources().getDimension(R.dimen.text_size_setting);
         circleRadius = getResources().getDimension(R.dimen.circle_radius);
         shapeStrokeWidth = getResources().getDimension(R.dimen.shape_stroke_width);
@@ -88,10 +90,10 @@ public final class SettingView extends PdView {
         shapePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         shapePaint.setStrokeWidth(shapeStrokeWidth);
         shapePaint.setStyle(Paint.Style.STROKE);
-        shapePaint.setColor(getResources().getColor(R.color.colonial));
+        shapePaint.setColor(getColor(context, R.color.colonial));
 
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        textPaint.setColor(getResources().getColor(R.color.dune));
+        textPaint.setColor(getColor(context, R.color.dune));
         textPaint.setTextSize(textSize);
         textPaint.setStyle(Paint.Style.FILL);
         textPaint.setTypeface(typeface);

@@ -46,7 +46,7 @@ public class CustomFontButton extends AppCompatButton {
     }
 
     private void init(Context context) {
-        DMachApp.get(context).getComponent().inject(this);
+        DMachApp.get(context).component().inject(this);
         setTypeface(typeface);
     }
 }

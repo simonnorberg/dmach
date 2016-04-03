@@ -20,8 +20,8 @@ apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'com.getkeepsafe.dexcount'
 
 def versionMajor = 1
-def versionMinor = 4
-def versionPatch = 3
+def versionMinor = 5
+def versionPatch = 0
 def versionBuild = 0
 
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
@@ -34,7 +34,7 @@ if (project.hasProperty("dmach.signing")
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "net.simno.dmach"
@@ -116,27 +116,27 @@ def getNdkBuildExecutablePath() {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.android.support:appcompat-v7:23.2.1'
+    compile 'com.android.support:recyclerview-v7:23.2.1'
 
-    compile 'com.google.code.gson:gson:2.5'
-    compile 'com.google.dagger:dagger:2.0.2'
-    apt 'com.google.dagger:dagger-compiler:2.0.2'
+    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.google.dagger:dagger:2.2'
+    apt 'com.google.dagger:dagger-compiler:2.2'
 
     compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.jakewharton.timber:timber:4.1.0'
+    compile 'com.jakewharton.timber:timber:4.1.2'
 
-    compile 'com.squareup.sqlbrite:sqlbrite:0.5.0'
+    compile 'com.squareup.sqlbrite:sqlbrite:0.6.2'
 
-    compile 'com.trello:rxlifecycle-components:0.4.0'
+    compile 'com.trello:rxlifecycle-components:0.5.0'
 
     compile 'io.reactivex:rxandroid:1.1.0'
-    compile 'io.reactivex:rxjava:1.1.0'
+    compile 'io.reactivex:rxjava:1.1.2'
 
     provided 'org.glassfish:javax.annotation:10.0-b28'
 
     compile 'org.parceler:parceler-api:1.0.4'
     apt 'org.parceler:parceler:1.0.4'
 
-    compile 'org.puredata.android:pd-core:1.0.0'
+    compile 'org.puredata.android:pd-core:1.0.1'
 }

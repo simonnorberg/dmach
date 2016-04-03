@@ -20,32 +20,28 @@ package net.simno.dmach;
 import android.app.Application;
 import android.content.Context;
 
-import butterknife.ButterKnife;
 import timber.log.Timber;
 
 public class DMachApp extends Application {
 
-    private DMachComponent component;
+    private final AppComponent appComponent = createComponent();
 
     @Override
     public void onCreate() {
         super.onCreate();
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
-            ButterKnife.setDebug(true);
         }
-        buildComponentAndInject();
     }
 
-    private void buildComponentAndInject() {
-        component = DaggerDMachComponent.builder()
+    protected AppComponent createComponent() {
+        return DaggerDMachComponent.builder()
                 .dMachModule(new DMachModule(this))
                 .build();
-        component.inject(this);
     }
 
-    public DMachComponent getComponent() {
-        return component;
+    public AppComponent component() {
+        return appComponent;
     }
 
     public static DMachApp get(Context context) {

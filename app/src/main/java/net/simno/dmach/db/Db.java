@@ -21,6 +21,8 @@ import android.database.Cursor;
 
 public final class Db {
 
+    public static final String QUERY_PATCH = "select * from patch order by title";
+
     public static String getString(Cursor cursor, String columnName) {
         return cursor.getString(cursor.getColumnIndexOrThrow(columnName));
     }
@@ -29,5 +31,7 @@ public final class Db {
         return cursor.getInt(cursor.getColumnIndexOrThrow(columnName));
     }
 
-    public static final String QUERY_PATCH = "select * from patch order by title";
+    private Db() {
+        throw new AssertionError("No instances");
+    }
 }

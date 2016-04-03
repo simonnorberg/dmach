@@ -25,19 +25,15 @@ import android.view.ViewGroup;
 
 import net.simno.dmach.R;
 import net.simno.dmach.model.Patch;
-import net.simno.dmach.ui.view.CustomFontTextView;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import butterknife.Bind;
 import butterknife.BindColor;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.OnLongClick;
 import rx.functions.Action1;
 
-public class PatchAdapter extends RecyclerView.Adapter<PatchAdapter.ViewHolder>
+public class PatchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements Action1<List<Patch>> {
 
     public interface OnPatchClickListener {
@@ -49,48 +45,11 @@ public class PatchAdapter extends RecyclerView.Adapter<PatchAdapter.ViewHolder>
     @BindColor(R.color.gurkha) int gurkha;
 
     private final OnPatchClickListener listener;
-    private List<Patch> patches = new ArrayList<>();
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-
-        public interface OnClickListener {
-            void onClick(int position);
-            void onLongClick(int position);
-        }
-
-        @Bind(R.id.title_text) CustomFontTextView title;
-        @Bind(R.id.swing_text) CustomFontTextView swing;
-        @Bind(R.id.tempo_text) CustomFontTextView tempo;
-
-        private final OnClickListener listener;
-
-        public ViewHolder(View view, OnClickListener listener) {
-            super(view);
-            ButterKnife.bind(this, view);
-            this.listener = listener;
-        }
-
-        @OnClick(R.id.item_patch)
-        public void onClicked() {
-            final int position = getAdapterPosition();
-            if (position >= 0 && listener != null) {
-                listener.onClick(position);
-            }
-        }
-
-        @OnLongClick(R.id.item_patch)
-        public boolean onLongClicked() {
-            final int position = getAdapterPosition();
-            if (position >= 0 && listener != null) {
-                listener.onLongClick(position);
-                return true;
-            }
-            return false;
-        }
-    }
+    private List<Patch> patches = Collections.emptyList();
 
     public PatchAdapter(Activity activity) {
         this.listener = (OnPatchClickListener) activity;
+        ButterKnife.bind(this, activity);
         ButterKnife.bind(this, activity);
     }
 
@@ -101,16 +60,16 @@ public class PatchAdapter extends RecyclerView.Adapter<PatchAdapter.ViewHolder>
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+
         View view = inflater.inflate(R.layout.item_patch, parent, false);
         view.setBackgroundColor(viewType == 1 ? khaki : gurkha);
-        return new ViewHolder(view, new ViewHolder.OnClickListener() {
+
+        return new PatchViewHolder(view, new PatchViewHolder.OnClickListener() {
             @Override
             public void onClick(int position) {
-                if (listener != null) {
-                    listener.onPatchClick(patches.get(position));
-                }
+                listener.onPatchClick(patches.get(position));
             }
 
             @Override
@@ -121,11 +80,8 @@ public class PatchAdapter extends RecyclerView.Adapter<PatchAdapter.ViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Patch patch = patches.get(position);
-        holder.title.setText(patch.getTitle());
-        holder.swing.setText(String.valueOf(patch.getSwing()));
-        holder.tempo.setText(String.valueOf(patch.getTempo()));
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        ((PatchViewHolder) holder).bindModel(patches.get(position));
     }
 
     @Override
@@ -135,9 +91,6 @@ public class PatchAdapter extends RecyclerView.Adapter<PatchAdapter.ViewHolder>
 
     @Override
     public int getItemViewType(int position) {
-        if (position % 2 == 0) {
-            return 1;
-        }
-        return 0;
+        return (position % 2 == 0) ? 1 : 0;
     }
 }

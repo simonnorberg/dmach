@@ -32,6 +32,8 @@ import net.simno.dmach.model.Channel;
 
 import javax.inject.Inject;
 
+import static android.support.v4.content.ContextCompat.getColor;
+
 public final class PanView extends PdView {
 
     public interface OnPanChangedListener {
@@ -75,7 +77,7 @@ public final class PanView extends PdView {
     }
 
     private void init(Context context) {
-        DMachApp.get(context).getComponent().inject(this);
+        DMachApp.get(context).component().inject(this);
 
         textSize = getResources().getDimension(R.dimen.text_size_channel);
         rectHeight = getResources().getDimension(R.dimen.rect_height);
@@ -85,10 +87,10 @@ public final class PanView extends PdView {
         shapePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         shapePaint.setStrokeWidth(shapeStrokeWidth);
         shapePaint.setStyle(Paint.Style.STROKE);
-        shapePaint.setColor(getResources().getColor(R.color.gamboge));
+        shapePaint.setColor(getColor(context, R.color.gamboge));
 
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        textPaint.setColor(getResources().getColor(R.color.dune));
+        textPaint.setColor(getColor(context, R.color.dune));
         textPaint.setTextSize(textSize);
         textPaint.setStyle(Paint.Style.FILL);
         textPaint.setTypeface(typeface);
