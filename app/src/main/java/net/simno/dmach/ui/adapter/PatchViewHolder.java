@@ -24,7 +24,7 @@ import net.simno.dmach.R;
 import net.simno.dmach.model.Patch;
 import net.simno.dmach.ui.view.CustomFontTextView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
@@ -36,9 +36,9 @@ public class PatchViewHolder extends RecyclerView.ViewHolder {
         void onLongClick(int position);
     }
 
-    @Bind(R.id.title_text) CustomFontTextView title;
-    @Bind(R.id.swing_text) CustomFontTextView swing;
-    @Bind(R.id.tempo_text) CustomFontTextView tempo;
+    @BindView(R.id.title_text) CustomFontTextView title;
+    @BindView(R.id.swing_text) CustomFontTextView swing;
+    @BindView(R.id.tempo_text) CustomFontTextView tempo;
 
     private final OnClickListener listener;
 

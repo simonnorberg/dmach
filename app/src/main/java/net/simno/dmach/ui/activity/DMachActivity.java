@@ -61,7 +61,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
@@ -83,15 +83,15 @@ public class DMachActivity extends AppCompatActivity {
     public static final int CHANNELS = 6;
     public static final int STEPS = 16;
 
-    @Bind(R.id.play_button) ImageButton playButton;
-    @Bind(R.id.config_button) ImageButton configButton;
-    @Bind(R.id.patch_button) ImageButton patchButton;
-    @Bind(R.id.channel_container) LinearLayout channelContainer;
-    @Bind(R.id.setting_container) LinearLayout settingContainer;
-    @Bind(R.id.patch_container) RelativeLayout patchContainer;
-    @Bind(R.id.sequencer_view) SequencerView sequencerView;
-    @Bind(R.id.setting_view) SettingView settingView;
-    @Bind(R.id.pan_view) PanView panView;
+    @BindView(R.id.play_button) ImageButton playButton;
+    @BindView(R.id.config_button) ImageButton configButton;
+    @BindView(R.id.patch_button) ImageButton patchButton;
+    @BindView(R.id.channel_container) LinearLayout channelContainer;
+    @BindView(R.id.setting_container) LinearLayout settingContainer;
+    @BindView(R.id.patch_container) RelativeLayout patchContainer;
+    @BindView(R.id.sequencer_view) SequencerView sequencerView;
+    @BindView(R.id.setting_view) SettingView settingView;
+    @BindView(R.id.pan_view) PanView panView;
 
     private boolean isRunning;
     private int[] sequence;

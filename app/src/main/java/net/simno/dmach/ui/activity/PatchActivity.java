@@ -46,7 +46,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
@@ -59,9 +59,9 @@ public class PatchActivity extends RxAppCompatActivity implements PatchAdapter.O
     static final int RESULT_SAVED = RESULT_FIRST_USER;
     static final int RESULT_LOADED = RESULT_FIRST_USER + 1;
 
-    @Bind(R.id.recycler_view) RecyclerView recyclerView;
-    @Bind(R.id.save_button) AppCompatButton saveButton;
-    @Bind(R.id.save_text) AppCompatEditText saveText;
+    @BindView(R.id.recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.save_button) AppCompatButton saveButton;
+    @BindView(R.id.save_text) AppCompatEditText saveText;
 
     @Inject BriteDatabase db;
     private PatchAdapter adapter;
