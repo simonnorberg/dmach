@@ -22,6 +22,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     <string name="dialog_bpm">BPM:</string>
     <string name="dialog_swing">Swing:</string>
 
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="overwrite">Overwrite</string>
+    <string name="delete_patch">Delete %1$s?</string>
+    <string name="overwrite_patch">%1$s already exists</string>
+
     <string name="channel_bd">BD</string>
     <string name="channel_sd">SD</string>
     <string name="channel_cp">CP</string>

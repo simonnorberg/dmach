@@ -17,6 +17,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:keepScreenOn="true"
     android:layout_height="match_parent"
@@ -36,7 +37,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:contentDescription="@string/description_play"
-            style="@style/Control.Play"/>
+            app:srcCompat="@drawable/ic_control_play"
+            style="@style/Control"/>
 
         <android.support.v7.widget.AppCompatImageButton
             android:id="@+id/config_button"
@@ -45,7 +47,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             android:layout_toEndOf="@+id/play_button"
             android:layout_marginStart="@dimen/margin_normal"
             android:contentDescription="@string/description_config"
-            style="@style/Control.Config"/>
+            app:srcCompat="@drawable/ic_control_config"
+            style="@style/Control"/>
 
         <android.support.v7.widget.AppCompatImageButton
             android:id="@+id/reset_button"
@@ -54,7 +57,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             android:layout_toEndOf="@+id/config_button"
             android:layout_marginStart="@dimen/margin_normal"
             android:contentDescription="@string/description_reset"
-            style="@style/Control.Reset"/>
+            app:srcCompat="@drawable/ic_control_reset"
+            style="@style/Control"/>
 
         <android.support.v7.widget.AppCompatImageButton
             android:id="@+id/patch_button"
@@ -63,7 +67,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             android:layout_toEndOf="@+id/reset_button"
             android:layout_marginStart="@dimen/margin_normal"
             android:contentDescription="@string/description_patch"
-            style="@style/Control.Patch"/>
+            app:srcCompat="@drawable/ic_control_patch"
+            style="@style/Control"/>
 
         <net.simno.dmach.ui.view.TypefaceTextView
             android:id="@+id/logo_text"
@@ -98,7 +103,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                 android:layout_weight="1"
                 android:layout_marginBottom="@dimen/margin_small"
                 android:contentDescription="@string/description_channel"
-                style="@style/Channel.BD"/>
+                android:text="@string/channel_bd"
+                style="@style/Channel"/>
 
             <net.simno.dmach.ui.view.TypefaceButton
                 android:id="@+id/channel_sd"
@@ -107,7 +113,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                 android:layout_weight="1"
                 android:layout_marginBottom="@dimen/margin_small"
                 android:contentDescription="@string/description_channel"
-                style="@style/Channel.SD"/>
+                android:text="@string/channel_sd"
+                style="@style/Channel"/>
 
             <net.simno.dmach.ui.view.TypefaceButton
                 android:id="@+id/channel_cp"
@@ -116,7 +123,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                 android:layout_weight="1"
                 android:layout_marginBottom="@dimen/margin_small"
                 android:contentDescription="@string/description_channel"
-                style="@style/Channel.CP"/>
+                android:text="@string/channel_cp"
+                style="@style/Channel"/>
 
             <net.simno.dmach.ui.view.TypefaceButton
                 android:id="@+id/channel_tt"
@@ -125,7 +133,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                 android:layout_weight="1"
                 android:layout_marginBottom="@dimen/margin_small"
                 android:contentDescription="@string/description_channel"
-                style="@style/Channel.TT"/>
+                android:text="@string/channel_tt"
+                style="@style/Channel"/>
 
             <net.simno.dmach.ui.view.TypefaceButton
                 android:id="@+id/channel_cb"
@@ -134,7 +143,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                 android:layout_weight="1"
                 android:layout_marginBottom="@dimen/margin_small"
                 android:contentDescription="@string/description_channel"
-                style="@style/Channel.CB"/>
+                android:text="@string/channel_cb"
+                style="@style/Channel"/>
 
             <net.simno.dmach.ui.view.TypefaceButton
                 android:id="@+id/channel_hh"
@@ -142,7 +152,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:contentDescription="@string/description_channel"
-                style="@style/Channel.HH"/>
+                android:text="@string/channel_hh"
+                style="@style/Channel"/>
 
         </LinearLayout>
 
@@ -174,7 +185,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                     android:layout_weight="1"
                     android:layout_marginBottom="@dimen/margin_small"
                     android:contentDescription="@string/description_setting"
-                    style="@style/Setting.1"/>
+                    android:text="@string/setting_1"
+                    style="@style/Setting"/>
 
                 <net.simno.dmach.ui.view.TypefaceButton
                     android:id="@+id/setting_2"
@@ -183,7 +195,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                     android:layout_weight="1"
                     android:layout_marginBottom="@dimen/margin_small"
                     android:contentDescription="@string/description_setting"
-                    style="@style/Setting.2"/>
+                    android:text="@string/setting_2"
+                    style="@style/Setting"/>
 
                 <net.simno.dmach.ui.view.TypefaceButton
                     android:id="@+id/setting_3"
@@ -192,7 +205,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                     android:layout_weight="1"
                     android:layout_marginBottom="@dimen/margin_small"
                     android:contentDescription="@string/description_setting"
-                    style="@style/Setting.3"/>
+                    android:text="@string/setting_3"
+                    style="@style/Setting"/>
 
                 <net.simno.dmach.ui.view.TypefaceButton
                     android:id="@+id/setting_4"
@@ -201,7 +215,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                     android:layout_weight="1"
                     android:layout_marginBottom="@dimen/margin_small"
                     android:contentDescription="@string/description_setting"
-                    style="@style/Setting.4"/>
+                    android:text="@string/setting_4"
+                    style="@style/Setting"/>
 
                 <net.simno.dmach.ui.view.TypefaceButton
                     android:id="@+id/setting_5"
@@ -210,7 +225,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                     android:layout_weight="1"
                     android:layout_marginBottom="@dimen/margin_small"
                     android:contentDescription="@string/description_setting"
-                    style="@style/Setting.5"/>
+                    android:text="@string/setting_5"
+                    style="@style/Setting"/>
 
                 <net.simno.dmach.ui.view.TypefaceButton
                     android:id="@+id/setting_6"
@@ -218,7 +234,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:contentDescription="@string/description_setting"
-                    style="@style/Setting.6"/>
+                    android:text="@string/setting_6"
+                    style="@style/Setting"/>
 
             </LinearLayout>
 

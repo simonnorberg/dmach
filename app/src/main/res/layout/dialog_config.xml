@@ -21,17 +21,19 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     android:layout_width="wrap_content"
     android:padding="@dimen/margin_large">
 
-    <android.support.v7.widget.AppCompatTextView
+    <net.simno.dmach.ui.view.TypefaceTextView
         android:id="@+id/tempo_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/dialog_bpm"/>
+        android:text="@string/dialog_bpm"
+        style="@style/Dialog"/>
 
-    <android.support.v7.widget.AppCompatTextView
+    <net.simno.dmach.ui.view.TypefaceTextView
         android:id="@+id/tempo_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/tempo_label"/>
+        android:layout_toEndOf="@+id/tempo_label"
+        style="@style/Dialog"/>
 
     <android.support.v7.widget.AppCompatSeekBar
         android:id="@+id/tempo_seekbar_10"
@@ -50,19 +52,21 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:layout_below="@+id/tempo_seekbar_10"
         android:max="9"/>
 
-    <android.support.v7.widget.AppCompatTextView
+    <net.simno.dmach.ui.view.TypefaceTextView
         android:id="@+id/swing_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tempo_seekbar_1"
-        android:text="@string/dialog_swing"/>
+        android:text="@string/dialog_swing"
+        style="@style/Dialog"/>
 
-    <android.support.v7.widget.AppCompatTextView
+    <net.simno.dmach.ui.view.TypefaceTextView
         android:id="@+id/swing_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tempo_seekbar_1"
-        android:layout_toEndOf="@+id/swing_label"/>
+        android:layout_toEndOf="@+id/swing_label"
+        style="@style/Dialog"/>
 
     <android.support.v7.widget.AppCompatSeekBar
         android:id="@+id/swing_seekbar"

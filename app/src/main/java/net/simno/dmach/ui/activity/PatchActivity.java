@@ -17,19 +17,21 @@
 
 package net.simno.dmach.ui.activity;
 
-import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
@@ -49,8 +51,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.subscriptions.CompositeSubscription;
 
 public class PatchActivity extends RxAppCompatActivity implements PatchAdapter.OnPatchClickListener {
 
@@ -67,7 +69,7 @@ public class PatchActivity extends RxAppCompatActivity implements PatchAdapter.O
     private PatchAdapter adapter;
     private Patch patch;
     private String title;
-    private CompositeSubscription subscriptions;
+    private Subscription subscription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,51 +98,59 @@ public class PatchActivity extends RxAppCompatActivity implements PatchAdapter.O
     @Override
     protected void onResume() {
         super.onResume();
-        subscriptions = new CompositeSubscription();
-        subscriptions.add(db.createQuery(PatchTable.TABLE, Db.QUERY_PATCH)
+        subscription = db.createQuery(PatchTable.TABLE, Db.QUERY_PATCH)
                 .mapToList(Patch.MAPPER)
                 .compose(this.<List<Patch>>bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(adapter));
+                .subscribe(adapter);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        subscriptions.unsubscribe();
+        if (subscription != null && !subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
+        }
     }
 
     @OnClick(R.id.save_button)
     public void onSaveClicked() {
         title = saveText.getText().toString();
         if (!TextUtils.isEmpty(title) && patch != null) {
-            disableSaveButton();
+            saveButton.setEnabled(false);
             try {
                 db.insert(PatchTable.TABLE, getInsertValues(), SQLiteDatabase.CONFLICT_FAIL);
                 returnResultSaved();
             } catch (SQLiteConstraintException e) {
-                // Ask to overwrite existing title
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Overwrite " + title + "?");
-                builder.setPositiveButton("Overwrite", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        db.update(PatchTable.TABLE, getUpdateValues(),
-                                SQLiteDatabase.CONFLICT_REPLACE, "title = ?", title);
-                        dialog.dismiss();
-                        returnResultSaved();
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        enableSaveButton();
-                        dialog.cancel();
-                    }
-                });
-                builder.show();
+                showOverwriteDialog();
             }
         }
+    }
+
+    private void showOverwriteDialog() {
+        new MaterialDialog.Builder(this)
+                .backgroundColorRes(R.color.dune)
+                .contentColorRes(R.color.colonial)
+                .positiveColorRes(R.color.gamboge)
+                .negativeColorRes(R.color.colonial)
+                .content(getString(R.string.overwrite_patch, title))
+                .positiveText(R.string.overwrite)
+                .negativeText(R.string.cancel)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        db.update(PatchTable.TABLE, getUpdateValues(),
+                                SQLiteDatabase.CONFLICT_REPLACE, "title = ?", title);
+                        returnResultSaved();
+                    }
+                })
+                .dismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        saveButton.setEnabled(true);
+                    }
+                })
+                .show();
     }
 
     private ContentValues getInsertValues() {
@@ -164,14 +174,6 @@ public class PatchActivity extends RxAppCompatActivity implements PatchAdapter.O
                 .build();
     }
 
-    private void enableSaveButton() {
-        saveButton.setEnabled(true);
-    }
-
-    private void disableSaveButton() {
-        saveButton.setEnabled(false);
-    }
-
     private void returnResultSaved() {
         Intent intent = new Intent();
         intent.putExtra(TITLE_EXTRA, title);
@@ -189,21 +191,20 @@ public class PatchActivity extends RxAppCompatActivity implements PatchAdapter.O
 
     @Override
     public void onPatchLongClick(final Patch patch) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Delete " + patch.getTitle() + "?");
-        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                db.delete(PatchTable.TABLE, "title = ?", patch.getTitle());
-                dialog.dismiss();
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        builder.show();
+        new MaterialDialog.Builder(this)
+                .backgroundColorRes(R.color.dune)
+                .contentColorRes(R.color.colonial)
+                .positiveColorRes(R.color.gamboge)
+                .negativeColorRes(R.color.colonial)
+                .content(getString(R.string.delete_patch, patch.getTitle()))
+                .positiveText(R.string.delete)
+                .negativeText(R.string.cancel)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        db.delete(PatchTable.TABLE, "title = ?", patch.getTitle());
+                    }
+                })
+                .show();
     }
 }

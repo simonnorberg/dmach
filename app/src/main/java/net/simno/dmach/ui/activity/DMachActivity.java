@@ -17,15 +17,12 @@
 
 package net.simno.dmach.ui.activity;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
@@ -33,7 +30,6 @@ import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
@@ -41,6 +37,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import net.simno.dmach.R;
 import net.simno.dmach.model.Channel;
@@ -180,10 +178,10 @@ public class DMachActivity extends AppCompatActivity {
     }
 
     private void storeSettings() {
-        Editor editor = getPreferences(MODE_PRIVATE).edit();
         String sequenceJson = Patch.sequenceToJson(sequence);
         String channelsJson = Patch.channelsToJson(channels);
-        editor.putString(PREF_TITLE, title)
+        getPreferences(MODE_PRIVATE).edit()
+                .putString(PREF_TITLE, title)
                 .putString(PREF_SEQUENCE, sequenceJson)
                 .putString(PREF_CHANNELS, channelsJson)
                 .putInt(PREF_TEMPO, tempo)
@@ -381,41 +379,45 @@ public class DMachActivity extends AppCompatActivity {
         playButton.setSelected(isRunning);
     }
 
-    @SuppressLint("InflateParams")
     @OnClick(R.id.config_button)
     public void onConfigClicked() {
         configButton.setSelected(true);
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View layout = inflater.inflate(R.layout.dialog_config, null, false);
 
-        AlertDialog alertDialog = new AlertDialog.Builder(this).setView(layout).create();
-        alertDialog.setCanceledOnTouchOutside(true);
-        alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                configButton.setSelected(false);
-            }
-        });
-        alertDialog.show();
-        tempoText = findById(layout, R.id.tempo_value);
+        MaterialDialog dialog = new MaterialDialog.Builder(this)
+                .customView(R.layout.dialog_config, false)
+                .backgroundColorRes(R.color.dune)
+                .dismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        configButton.setSelected(false);
+                    }
+                })
+                .show();
+
+        View dialogView = dialog.getCustomView();
+        if (dialogView == null) {
+            return;
+        }
+
+        tempoText = findById(dialogView, R.id.tempo_value);
         tempoText.setText(" ");
         tempoText.append(String.valueOf(tempo));
 
-        SeekBar tempoSeekBar10 = (SeekBar) layout.findViewById(R.id.tempo_seekbar_10);
-        tempoSeekBar10.setProgress((tempo / 10) - 1);
-        tempoSeekBar10.setOnSeekBarChangeListener(tempoListener);
+        SeekBar tempoTenSeek = findById(dialogView, R.id.tempo_seekbar_10);
+        tempoTenSeek.setProgress((tempo / 10) - 1);
+        tempoTenSeek.setOnSeekBarChangeListener(tempoListener);
 
-        SeekBar tempoSeekBar1 = (SeekBar) layout.findViewById(R.id.tempo_seekbar_1);
-        tempoSeekBar1.setProgress(tempo % 10);
-        tempoSeekBar1.setOnSeekBarChangeListener(tempoListener);
+        SeekBar tempoOneSeek = findById(dialogView, R.id.tempo_seekbar_1);
+        tempoOneSeek.setProgress(tempo % 10);
+        tempoOneSeek.setOnSeekBarChangeListener(tempoListener);
 
-        swingText = findById(layout, R.id.swing_value);
+        swingText = findById(dialogView, R.id.swing_value);
         swingText.setText(" ");
         swingText.append(String.valueOf(swing));
 
-        SeekBar swingSeekBar = (SeekBar) layout.findViewById(R.id.swing_seekbar);
-        swingSeekBar.setProgress(swing);
-        swingSeekBar.setOnSeekBarChangeListener(swingListener);
+        SeekBar swingSeek = findById(dialogView, R.id.swing_seekbar);
+        swingSeek.setProgress(swing);
+        swingSeek.setOnSeekBarChangeListener(swingListener);
     }
 
     @OnClick(R.id.reset_button)
@@ -434,17 +436,20 @@ public class DMachActivity extends AppCompatActivity {
         startActivityForResult(intent, PATCH_REQUEST);
     }
 
-    @SuppressWarnings("SameReturnValue")
-    @SuppressLint("InflateParams")
     @OnLongClick(R.id.logo_text)
     public boolean onLogoClicked() {
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View layout = inflater.inflate(R.layout.dialog_licenses, null, false);
-        AlertDialog alertDialog = new AlertDialog.Builder(this).setView(layout).create();
-        alertDialog.setCanceledOnTouchOutside(true);
-        WebView webView = findById(layout, R.id.web_view);
+        MaterialDialog dialog = new MaterialDialog.Builder(this)
+                .customView(R.layout.dialog_licenses, false)
+                .show();
+
+        View dialogView = dialog.getCustomView();
+        if (dialogView == null) {
+            return true;
+        }
+
+        WebView webView = findById(dialogView, R.id.web_view);
         webView.loadUrl("file:///android_asset/licenses.html");
-        alertDialog.show();
+
         return true;
     }
 

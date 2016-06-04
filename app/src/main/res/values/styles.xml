@@ -28,6 +28,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <item name="android:soundEffectsEnabled">false</item>
         <item name="android:windowBackground">@color/colonial</item>
         <item name="android:textSize">@dimen/text_size</item>
+        <item name="colorControlActivated">@color/gamboge</item>
     </style>
 
     <style name="PatchTheme" parent="DMachTheme">
@@ -39,22 +40,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <item name="android:padding">@dimen/margin_large</item>
         <item name="android:scaleType">centerInside</item>
         <item name="android:background">@drawable/sel_control</item>
-    </style>
-
-    <style name="Control.Play">
-        <item name="srcCompat">@drawable/ic_control_play</item>
-    </style>
-
-    <style name="Control.Config">
-        <item name="srcCompat">@drawable/ic_control_config</item>
-    </style>
-
-    <style name="Control.Reset">
-        <item name="srcCompat">@drawable/ic_control_reset</item>
-    </style>
-
-    <style name="Control.Patch">
-        <item name="srcCompat">@drawable/ic_control_patch</item>
     </style>
 
     <style name="Logo">
@@ -75,56 +60,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <item name="android:textSize">@dimen/text_size_channel</item>
     </style>
 
-    <style name="Channel.BD">
-        <item name="android:text">@string/channel_bd</item>
-    </style>
-
-    <style name="Channel.SD">
-        <item name="android:text">@string/channel_sd</item>
-    </style>
-
-    <style name="Channel.CP">
-        <item name="android:text">@string/channel_cp</item>
-    </style>
-
-    <style name="Channel.TT">
-        <item name="android:text">@string/channel_tt</item>
-    </style>
-
-    <style name="Channel.CB">
-        <item name="android:text">@string/channel_cb</item>
-    </style>
-
-    <style name="Channel.HH">
-        <item name="android:text">@string/channel_hh</item>
-    </style>
-
     <style name="Setting" parent="Channel">
         <item name="android:background">@drawable/sel_setting</item>
     </style>
 
-    <style name="Setting.1">
-        <item name="android:text">@string/setting_1</item>
-    </style>
-
-    <style name="Setting.2">
-        <item name="android:text">@string/setting_2</item>
-    </style>
-
-    <style name="Setting.3">
-        <item name="android:text">@string/setting_3</item>
-    </style>
-
-    <style name="Setting.4">
-        <item name="android:text">@string/setting_4</item>
-    </style>
-
-    <style name="Setting.5">
-        <item name="android:text">@string/setting_5</item>
-    </style>
-
-    <style name="Setting.6">
-        <item name="android:text">@string/setting_6</item>
+    <style name="Dialog">
+        <item name="android:textColor">@color/colonial</item>
     </style>
 
 </resources>
