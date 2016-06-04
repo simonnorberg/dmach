@@ -19,20 +19,20 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
     <item
         android:state_enabled="false"
-        android:drawable="@drawable/rect_colonial" />
+        android:drawable="@drawable/rect_colonial"/>
 
     <item
         android:state_selected="true"
-        android:drawable="@drawable/rect_gamboge" />
+        android:drawable="@drawable/rect_gamboge"/>
 
     <item
         android:state_selected="false"
         android:state_pressed="false"
-        android:drawable="@drawable/rect_dune" />
+        android:drawable="@drawable/rect_dune"/>
 
     <item
         android:state_selected="false"
         android:state_pressed="true"
-        android:drawable="@drawable/rect_gamboge_alpha" />
+        android:drawable="@drawable/rect_gamboge_alpha"/>
 
 </selector>

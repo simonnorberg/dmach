@@ -36,23 +36,25 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     </style>
 
     <style name="Control">
+        <item name="android:padding">@dimen/margin_large</item>
+        <item name="android:scaleType">centerInside</item>
         <item name="android:background">@drawable/sel_control</item>
     </style>
 
     <style name="Control.Play">
-        <item name="android:src">@drawable/ic_control_play_small</item>
+        <item name="srcCompat">@drawable/ic_control_play</item>
     </style>
 
     <style name="Control.Config">
-        <item name="android:src">@drawable/ic_control_config_small</item>
+        <item name="srcCompat">@drawable/ic_control_config</item>
     </style>
 
     <style name="Control.Reset">
-        <item name="android:src">@drawable/ic_control_reset_small</item>
+        <item name="srcCompat">@drawable/ic_control_reset</item>
     </style>
 
     <style name="Control.Patch">
-        <item name="android:src">@drawable/ic_control_patch_small</item>
+        <item name="srcCompat">@drawable/ic_control_patch</item>
     </style>
 
     <style name="Logo">

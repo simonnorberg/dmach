@@ -15,7 +15,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="net.simno.dmach">
 
@@ -25,8 +26,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:name=".DMachApp"
         android:allowBackup="true"
         android:label="@string/app_name"
-        android:icon="@drawable/ic_launcher_dmach"
-        android:logo="@drawable/ic_launcher_dmach"
+        android:icon="@mipmap/ic_launcher"
+        android:logo="@mipmap/ic_launcher"
         android:supportsRtl="false"
         tools:ignore="AllowBackup">
 

@@ -15,13 +15,14 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="net.simno.dmach.ui.activity.PatchActivity">
 
-    <net.simno.dmach.ui.view.CustomFontEditText
+    <net.simno.dmach.ui.view.TypefaceEditText
         android:id="@+id/save_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,13 +34,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:textColor="@color/dune"
         android:textColorHint="@color/gurkha"
         android:imeOptions="actionDone|flagNoExtractUi"
-        android:singleLine="true"
         android:maxLines="1"
         android:maxLength="50"
         android:hint="@string/patch_name"
-        android:inputType="text" />
+        android:inputType="text"/>
 
-    <net.simno.dmach.ui.view.CustomFontButton
+    <net.simno.dmach.ui.view.TypefaceButton
         android:id="@+id/save_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -49,9 +49,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:paddingEnd="@dimen/margin_large"
         android:layout_margin="@dimen/margin_small"
         android:text="@string/patch_save"
-        style="@style/Button" />
+        style="@style/Button"/>
 
-    <net.simno.dmach.ui.view.CustomFontTextView
+    <net.simno.dmach.ui.view.TypefaceTextView
         android:id="@+id/name_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -65,9 +65,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:layout_toStartOf="@+id/swing_text"
         android:textAllCaps="true"
         android:text="@string/patch_name"
-        android:lines="1" />
+        android:lines="1"/>
 
-    <net.simno.dmach.ui.view.CustomFontTextView
+    <net.simno.dmach.ui.view.TypefaceTextView
         android:id="@+id/swing_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -81,9 +81,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:layout_toStartOf="@+id/tempo_text"
         android:textAllCaps="true"
         android:text="@string/patch_swing"
-        android:lines="1" />
+        android:lines="1"/>
 
-    <net.simno.dmach.ui.view.CustomFontTextView
+    <net.simno.dmach.ui.view.TypefaceTextView
         android:id="@+id/tempo_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -97,12 +97,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:layout_alignParentEnd="true"
         android:textAllCaps="true"
         android:text="@string/patch_bpm"
-        android:lines="1" />
+        android:lines="1"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/name_text" />
+        android:layout_below="@+id/name_text"/>
 
 </RelativeLayout>

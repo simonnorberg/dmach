@@ -18,17 +18,17 @@
 package net.simno.dmach;
 
 import net.simno.dmach.ui.activity.PatchActivity;
-import net.simno.dmach.ui.view.CustomFontButton;
-import net.simno.dmach.ui.view.CustomFontEditText;
-import net.simno.dmach.ui.view.CustomFontTextView;
 import net.simno.dmach.ui.view.PanView;
 import net.simno.dmach.ui.view.SettingView;
+import net.simno.dmach.ui.view.TypefaceButton;
+import net.simno.dmach.ui.view.TypefaceEditText;
+import net.simno.dmach.ui.view.TypefaceTextView;
 
 public interface AppComponent {
     void inject(PatchActivity activity);
-    void inject(CustomFontButton button);
-    void inject(CustomFontTextView textView);
-    void inject(CustomFontEditText editText);
+    void inject(TypefaceButton button);
+    void inject(TypefaceTextView textView);
+    void inject(TypefaceEditText editText);
     void inject(SettingView view);
     void inject(PanView view);
 }

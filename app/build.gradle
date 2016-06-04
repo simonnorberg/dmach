@@ -63,6 +63,8 @@ android {
 
         buildConfigField 'String', 'GIT_SHA', "\"${gitSha()}\""
         buildConfigField 'long', 'GIT_TIMESTAMP', "${gitTimestamp()}L"
+
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {

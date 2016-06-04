@@ -22,7 +22,7 @@ import android.view.View;
 
 import net.simno.dmach.R;
 import net.simno.dmach.model.Patch;
-import net.simno.dmach.ui.view.CustomFontTextView;
+import net.simno.dmach.ui.view.TypefaceTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,9 +36,9 @@ public class PatchViewHolder extends RecyclerView.ViewHolder {
         void onLongClick(int position);
     }
 
-    @BindView(R.id.title_text) CustomFontTextView title;
-    @BindView(R.id.swing_text) CustomFontTextView swing;
-    @BindView(R.id.tempo_text) CustomFontTextView tempo;
+    @BindView(R.id.title_text) TypefaceTextView title;
+    @BindView(R.id.swing_text) TypefaceTextView swing;
+    @BindView(R.id.tempo_text) TypefaceTextView tempo;
 
     private final OnClickListener listener;
 

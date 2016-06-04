@@ -50,7 +50,6 @@ public class PatchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public PatchAdapter(Activity activity) {
         this.listener = (OnPatchClickListener) activity;
         ButterKnife.bind(this, activity);
-        ButterKnife.bind(this, activity);
     }
 
     @Override

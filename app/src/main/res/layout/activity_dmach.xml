@@ -15,7 +15,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:keepScreenOn="true"
     android:layout_height="match_parent"
@@ -29,42 +30,42 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:layout_width="match_parent"
         android:layout_weight="1">
 
-        <ImageButton
+        <android.support.v7.widget.AppCompatImageButton
             android:id="@+id/play_button"
             android:layout_width="@dimen/button_large_width"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:contentDescription="@string/description_play"
-            style="@style/Control.Play" />
+            style="@style/Control.Play"/>
 
-        <ImageButton
+        <android.support.v7.widget.AppCompatImageButton
             android:id="@+id/config_button"
             android:layout_width="@dimen/button_large_width"
             android:layout_height="match_parent"
             android:layout_toEndOf="@+id/play_button"
             android:layout_marginStart="@dimen/margin_normal"
             android:contentDescription="@string/description_config"
-            style="@style/Control.Config" />
+            style="@style/Control.Config"/>
 
-        <ImageButton
+        <android.support.v7.widget.AppCompatImageButton
             android:id="@+id/reset_button"
             android:layout_width="@dimen/button_large_width"
             android:layout_height="match_parent"
             android:layout_toEndOf="@+id/config_button"
             android:layout_marginStart="@dimen/margin_normal"
             android:contentDescription="@string/description_reset"
-            style="@style/Control.Reset" />
+            style="@style/Control.Reset"/>
 
-        <ImageButton
+        <android.support.v7.widget.AppCompatImageButton
             android:id="@+id/patch_button"
             android:layout_width="@dimen/button_large_width"
             android:layout_height="match_parent"
             android:layout_toEndOf="@+id/reset_button"
             android:layout_marginStart="@dimen/margin_normal"
             android:contentDescription="@string/description_patch"
-            style="@style/Control.Patch" />
+            style="@style/Control.Patch"/>
 
-        <net.simno.dmach.ui.view.CustomFontTextView
+        <net.simno.dmach.ui.view.TypefaceTextView
             android:id="@+id/logo_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -72,7 +73,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             android:layout_toEndOf="@+id/patch_button"
             android:layout_marginEnd="@dimen/margin_large"
             android:gravity="bottom|end"
-            style="@style/Logo" />
+            style="@style/Logo"/>
 
     </RelativeLayout>
 
@@ -90,58 +91,58 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             android:layout_marginEnd="@dimen/margin_small"
             android:orientation="vertical">
 
-            <net.simno.dmach.ui.view.CustomFontButton
+            <net.simno.dmach.ui.view.TypefaceButton
                 android:id="@+id/channel_bd"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_marginBottom="@dimen/margin_small"
                 android:contentDescription="@string/description_channel"
-                style="@style/Channel.BD" />
+                style="@style/Channel.BD"/>
 
-            <net.simno.dmach.ui.view.CustomFontButton
+            <net.simno.dmach.ui.view.TypefaceButton
                 android:id="@+id/channel_sd"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_marginBottom="@dimen/margin_small"
                 android:contentDescription="@string/description_channel"
-                style="@style/Channel.SD" />
+                style="@style/Channel.SD"/>
 
-            <net.simno.dmach.ui.view.CustomFontButton
+            <net.simno.dmach.ui.view.TypefaceButton
                 android:id="@+id/channel_cp"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_marginBottom="@dimen/margin_small"
                 android:contentDescription="@string/description_channel"
-                style="@style/Channel.CP" />
+                style="@style/Channel.CP"/>
 
-            <net.simno.dmach.ui.view.CustomFontButton
+            <net.simno.dmach.ui.view.TypefaceButton
                 android:id="@+id/channel_tt"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_marginBottom="@dimen/margin_small"
                 android:contentDescription="@string/description_channel"
-                style="@style/Channel.TT" />
+                style="@style/Channel.TT"/>
 
-            <net.simno.dmach.ui.view.CustomFontButton
+            <net.simno.dmach.ui.view.TypefaceButton
                 android:id="@+id/channel_cb"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_marginBottom="@dimen/margin_small"
                 android:contentDescription="@string/description_channel"
-                style="@style/Channel.CB" />
+                style="@style/Channel.CB"/>
 
-            <net.simno.dmach.ui.view.CustomFontButton
+            <net.simno.dmach.ui.view.TypefaceButton
                 android:id="@+id/channel_hh"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:contentDescription="@string/description_channel"
-                style="@style/Channel.HH" />
+                style="@style/Channel.HH"/>
 
         </LinearLayout>
 
@@ -149,7 +150,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             android:id="@+id/sequencer_view"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:layout_toEndOf="@+id/channel_container" />
+            android:layout_toEndOf="@+id/channel_container"/>
 
         <RelativeLayout
             android:id="@+id/patch_container"
@@ -166,58 +167,58 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                 android:layout_marginEnd="@dimen/margin_small"
                 android:orientation="vertical">
 
-                <net.simno.dmach.ui.view.CustomFontButton
+                <net.simno.dmach.ui.view.TypefaceButton
                     android:id="@+id/setting_1"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:layout_marginBottom="@dimen/margin_small"
                     android:contentDescription="@string/description_setting"
-                    style="@style/Setting.1" />
+                    style="@style/Setting.1"/>
 
-                <net.simno.dmach.ui.view.CustomFontButton
+                <net.simno.dmach.ui.view.TypefaceButton
                     android:id="@+id/setting_2"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:layout_marginBottom="@dimen/margin_small"
                     android:contentDescription="@string/description_setting"
-                    style="@style/Setting.2" />
+                    style="@style/Setting.2"/>
 
-                <net.simno.dmach.ui.view.CustomFontButton
+                <net.simno.dmach.ui.view.TypefaceButton
                     android:id="@+id/setting_3"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:layout_marginBottom="@dimen/margin_small"
                     android:contentDescription="@string/description_setting"
-                    style="@style/Setting.3" />
+                    style="@style/Setting.3"/>
 
-                <net.simno.dmach.ui.view.CustomFontButton
+                <net.simno.dmach.ui.view.TypefaceButton
                     android:id="@+id/setting_4"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:layout_marginBottom="@dimen/margin_small"
                     android:contentDescription="@string/description_setting"
-                    style="@style/Setting.4" />
+                    style="@style/Setting.4"/>
 
-                <net.simno.dmach.ui.view.CustomFontButton
+                <net.simno.dmach.ui.view.TypefaceButton
                     android:id="@+id/setting_5"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:layout_marginBottom="@dimen/margin_small"
                     android:contentDescription="@string/description_setting"
-                    style="@style/Setting.5" />
+                    style="@style/Setting.5"/>
 
-                <net.simno.dmach.ui.view.CustomFontButton
+                <net.simno.dmach.ui.view.TypefaceButton
                     android:id="@+id/setting_6"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:contentDescription="@string/description_setting"
-                    style="@style/Setting.6" />
+                    style="@style/Setting.6"/>
 
             </LinearLayout>
 
@@ -232,13 +233,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="7"
-                    android:layout_marginEnd="@dimen/margin_small" />
+                    android:layout_marginEnd="@dimen/margin_small"/>
 
                 <net.simno.dmach.ui.view.PanView
                     android:id="@+id/pan_view"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"/>
 
             </LinearLayout>
 

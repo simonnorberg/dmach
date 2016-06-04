@@ -15,7 +15,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
     android:layout_width="wrap_content"
     android:padding="@dimen/margin_large">
@@ -24,51 +25,51 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:id="@+id/tempo_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/dialog_bpm" />
+        android:text="@string/dialog_bpm"/>
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/tempo_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/tempo_label" />
+        android:layout_toEndOf="@+id/tempo_label"/>
 
-    <SeekBar
+    <android.support.v7.widget.AppCompatSeekBar
         android:id="@+id/tempo_seekbar_10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_large"
         android:layout_below="@+id/tempo_label"
-        android:max="23" />
+        android:max="23"/>
 
-    <SeekBar
+    <android.support.v7.widget.AppCompatSeekBar
         android:id="@+id/tempo_seekbar_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_large"
         android:layout_marginBottom="@dimen/margin_large"
         android:layout_below="@+id/tempo_seekbar_10"
-        android:max="9" />
+        android:max="9"/>
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/swing_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tempo_seekbar_1"
-        android:text="@string/dialog_swing" />
+        android:text="@string/dialog_swing"/>
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/swing_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tempo_seekbar_1"
-        android:layout_toEndOf="@+id/swing_label" />
+        android:layout_toEndOf="@+id/swing_label"/>
 
-    <SeekBar
+    <android.support.v7.widget.AppCompatSeekBar
         android:id="@+id/swing_seekbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_large"
         android:layout_below="@+id/swing_label"
-        android:max="50" />
+        android:max="50"/>
 
 </RelativeLayout>

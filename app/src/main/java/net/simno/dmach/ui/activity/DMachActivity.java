@@ -29,6 +29,7 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
@@ -36,7 +37,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -46,10 +46,10 @@ import net.simno.dmach.R;
 import net.simno.dmach.model.Channel;
 import net.simno.dmach.model.Patch;
 import net.simno.dmach.model.Setting;
-import net.simno.dmach.ui.view.CustomFontButton;
 import net.simno.dmach.ui.view.PanView;
 import net.simno.dmach.ui.view.SequencerView;
 import net.simno.dmach.ui.view.SettingView;
+import net.simno.dmach.ui.view.TypefaceButton;
 
 import org.parceler.Parcels;
 import org.puredata.android.io.AudioParameters;
@@ -83,9 +83,9 @@ public class DMachActivity extends AppCompatActivity {
     public static final int CHANNELS = 6;
     public static final int STEPS = 16;
 
-    @BindView(R.id.play_button) ImageButton playButton;
-    @BindView(R.id.config_button) ImageButton configButton;
-    @BindView(R.id.patch_button) ImageButton patchButton;
+    @BindView(R.id.play_button) AppCompatImageButton playButton;
+    @BindView(R.id.config_button) AppCompatImageButton configButton;
+    @BindView(R.id.patch_button) AppCompatImageButton patchButton;
     @BindView(R.id.channel_container) LinearLayout channelContainer;
     @BindView(R.id.setting_container) LinearLayout settingContainer;
     @BindView(R.id.patch_container) RelativeLayout patchContainer;
@@ -333,7 +333,7 @@ public class DMachActivity extends AppCompatActivity {
                 }
             }
             pdService.startAudio(new Intent(this, DMachActivity.class),
-                    R.drawable.ic_stat_notify_dmach, "DMach is running", "Touch to return.");
+                    R.drawable.ic_stat_dmach, "DMach is running", "Touch to return.");
         }
     }
 
@@ -470,7 +470,7 @@ public class DMachActivity extends AppCompatActivity {
     }
 
     @OnClick({R.id.channel_bd, R.id.channel_sd, R.id.channel_cp, R.id.channel_tt, R.id.channel_cb, R.id.channel_hh})
-    public void onChannelClicked(CustomFontButton channel) {
+    public void onChannelClicked(TypefaceButton channel) {
         int index = channelContainer.indexOfChild(channel);
         selectedChannel = selectedChannel == index ? -1 : index;
         setView();
@@ -511,7 +511,7 @@ public class DMachActivity extends AppCompatActivity {
         int selected = channel.getSelection();
         int count = channel.getCount();
         for (int i = 0; i < settingContainer.getChildCount(); ++i) {
-            CustomFontButton button = (CustomFontButton) settingContainer.getChildAt(i);
+            TypefaceButton button = (TypefaceButton) settingContainer.getChildAt(i);
             if (i < count) {
                 button.setEnabled(true);
                 button.setVisibility(View.VISIBLE);
@@ -524,14 +524,14 @@ public class DMachActivity extends AppCompatActivity {
     }
 
     @OnClick({R.id.setting_1, R.id.setting_2, R.id.setting_3, R.id.setting_4, R.id.setting_5, R.id.setting_6})
-    public void onSettingClick(CustomFontButton button) {
+    public void onSettingClick(TypefaceButton button) {
         if (selectedChannel == -1) {
             return;
         }
         Channel channel = channels.get(selectedChannel);
         int index = settingContainer.indexOfChild(button);
         if (index != channel.getSelection()) {
-            CustomFontButton oldButton = (CustomFontButton) settingContainer.getChildAt(channel.getSelection());
+            TypefaceButton oldButton = (TypefaceButton) settingContainer.getChildAt(channel.getSelection());
             if (oldButton != null) {
                 oldButton.setSelected(false);
             }
