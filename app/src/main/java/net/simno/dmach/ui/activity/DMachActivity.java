@@ -18,21 +18,24 @@
 package net.simno.dmach.ui.activity;
 
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
+import android.media.AudioManager.OnAudioFocusChangeListener;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatImageButton;
+import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.AppCompatTextView;
-import android.telephony.PhoneStateListener;
-import android.telephony.TelephonyManager;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -40,6 +43,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import net.simno.dmach.DMachApp;
 import net.simno.dmach.R;
 import net.simno.dmach.model.Channel;
 import net.simno.dmach.model.Patch;
@@ -59,11 +63,19 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 
+import static android.media.AudioManager.AUDIOFOCUS_GAIN;
+import static android.media.AudioManager.AUDIOFOCUS_LOSS;
+import static android.media.AudioManager.AUDIOFOCUS_LOSS_TRANSIENT;
+import static android.media.AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK;
+import static android.media.AudioManager.AUDIOFOCUS_REQUEST_GRANTED;
+import static android.media.AudioManager.STREAM_MUSIC;
 import static butterknife.ButterKnife.findById;
 
 public class DMachActivity extends AppCompatActivity {
@@ -74,6 +86,7 @@ public class DMachActivity extends AppCompatActivity {
     private static final String PREF_TEMPO = "net.simno.dmach.PREF_TEMPO";
     private static final String PREF_SWING = "net.simno.dmach.PREF_SWING";
     private static final String PREF_CHANNEL = "net.simno.dmach.PREF_CHANNEL";
+    private static final String PREF_AUDIOFOCUS = "net.simno.dmach.PREF_AUDIOFOCUS";
 
     private static final int PATCH_REQUEST = 1;
     public static final int[] MASKS = {1, 2, 4};
@@ -91,6 +104,8 @@ public class DMachActivity extends AppCompatActivity {
     @BindView(R.id.setting_view) SettingView settingView;
     @BindView(R.id.pan_view) PanView panView;
 
+    @Inject AudioManager audioManager;
+    private boolean ignoreAudioFocus;
     private boolean isRunning;
     private int[] sequence;
     private int selectedChannel;
@@ -103,6 +118,7 @@ public class DMachActivity extends AppCompatActivity {
     private int pdPatch;
     private PdService pdService;
     private final Object lock = new Object();
+
     private final ServiceConnection pdConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -110,10 +126,12 @@ public class DMachActivity extends AppCompatActivity {
             startAudio();
             initPd();
         }
+
         @Override
         public void onServiceDisconnected(ComponentName name) {
         }
     };
+
     private final OnSeekBarChangeListener tempoListener = new OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -131,16 +149,19 @@ public class DMachActivity extends AppCompatActivity {
                 tempoText.append(String.valueOf(tempo));
             }
         }
+
         @Override
         public void onStartTrackingTouch(SeekBar seekBar) {
         }
+
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
         }
     };
+
     private final OnSeekBarChangeListener swingListener = new OnSeekBarChangeListener() {
         @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             PdBase.sendFloat("swing", progress / 100.0f);
             if (swingText != null) {
                 swingText.setText(" ");
@@ -148,20 +169,62 @@ public class DMachActivity extends AppCompatActivity {
             }
             swing = progress;
         }
+
         @Override
         public void onStartTrackingTouch(SeekBar seekBar) {
         }
+
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
+        }
+    };
+
+    private final OnAudioFocusChangeListener audioFocusListener = new OnAudioFocusChangeListener() {
+        @Override
+        public void onAudioFocusChange(int focusChange) {
+            if (ignoreAudioFocus) {
+                return;
+            }
+            synchronized (lock) {
+                if (pdService == null) {
+                    return;
+                }
+                switch (focusChange) {
+                    case AUDIOFOCUS_GAIN:
+                        if (!pdService.isRunning()) {
+                            startAudio();
+                        }
+                        break;
+                    case AUDIOFOCUS_LOSS_TRANSIENT:
+                    case AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
+                        if (pdService.isRunning()) {
+                            stopAudio();
+                        }
+                        break;
+                    case AUDIOFOCUS_LOSS:
+                        stopPlayback();
+                        break;
+                }
+            }
+        }
+    };
+
+    private final OnCheckedChangeListener audioFocusCheckedListener = new OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            ignoreAudioFocus = isChecked;
+            if (ignoreAudioFocus) {
+                abandonAudioFocus();
+            }
         }
     };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DMachApp.get(this).component().inject(this);
         restoreSettings();
         initUi();
-        initSystemServices();
         initPdService();
     }
 
@@ -187,6 +250,7 @@ public class DMachActivity extends AppCompatActivity {
                 .putInt(PREF_TEMPO, tempo)
                 .putInt(PREF_SWING, swing)
                 .putInt(PREF_CHANNEL, selectedChannel)
+                .putBoolean(PREF_AUDIOFOCUS, ignoreAudioFocus)
                 .apply();
     }
 
@@ -208,6 +272,7 @@ public class DMachActivity extends AppCompatActivity {
         tempo = prefs.getInt(PREF_TEMPO, 120);
         swing = prefs.getInt(PREF_SWING, 0);
         selectedChannel = prefs.getInt(PREF_CHANNEL, -1);
+        ignoreAudioFocus = prefs.getBoolean(PREF_AUDIOFOCUS, false);
     }
 
     private void initUi() {
@@ -244,29 +309,6 @@ public class DMachActivity extends AppCompatActivity {
 
         setView();
         setChannelSelection();
-    }
-
-    private void initSystemServices() {
-        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        telephonyManager.listen(new PhoneStateListener() {
-            @Override
-            public void onCallStateChanged(int state, String incomingNumber) {
-                synchronized (lock) {
-                    if (pdService == null) {
-                        return;
-                    }
-                    if (state == TelephonyManager.CALL_STATE_IDLE) {
-                        if (!pdService.isRunning()) {
-                            startAudio();
-                        }
-                    } else {
-                        if (pdService.isRunning()) {
-                            stopAudio();
-                        }
-                    }
-                }
-            }
-        }, PhoneStateListener.LISTEN_CALL_STATE);
     }
 
     private void initPdService() {
@@ -335,6 +377,18 @@ public class DMachActivity extends AppCompatActivity {
         }
     }
 
+    private boolean requestAudioFocus() {
+        if (ignoreAudioFocus) {
+            return true;
+        }
+        int result = audioManager.requestAudioFocus(audioFocusListener, STREAM_MUSIC, AUDIOFOCUS_GAIN);
+        return result == AUDIOFOCUS_REQUEST_GRANTED;
+    }
+
+    private void abandonAudioFocus() {
+        audioManager.abandonAudioFocus(audioFocusListener);
+    }
+
     private void stopAudio() {
         synchronized (lock) {
             if (pdService == null) {
@@ -369,18 +423,30 @@ public class DMachActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.play_button)
-    public void onPlayClicked() {
+    void onPlayClicked() {
         if (isRunning) {
-            PdBase.sendBang("stop");
+            stopPlayback();
         } else {
-            PdBase.sendBang("play");
+            startPlayback();
         }
-        isRunning = !isRunning;
         playButton.setSelected(isRunning);
     }
 
+    private void startPlayback() {
+        if (requestAudioFocus()) {
+            PdBase.sendBang("play");
+            isRunning = true;
+        }
+    }
+
+    private void stopPlayback() {
+        PdBase.sendBang("stop");
+        abandonAudioFocus();
+        isRunning = false;
+    }
+
     @OnClick(R.id.config_button)
-    public void onConfigClicked() {
+    void onConfigClicked() {
         configButton.setSelected(true);
 
         MaterialDialog dialog = new MaterialDialog.Builder(this)
@@ -403,11 +469,11 @@ public class DMachActivity extends AppCompatActivity {
         tempoText.setText(" ");
         tempoText.append(String.valueOf(tempo));
 
-        SeekBar tempoTenSeek = findById(dialogView, R.id.tempo_seekbar_10);
+        AppCompatSeekBar tempoTenSeek = findById(dialogView, R.id.tempo_seekbar_10);
         tempoTenSeek.setProgress((tempo / 10) - 1);
         tempoTenSeek.setOnSeekBarChangeListener(tempoListener);
 
-        SeekBar tempoOneSeek = findById(dialogView, R.id.tempo_seekbar_1);
+        AppCompatSeekBar tempoOneSeek = findById(dialogView, R.id.tempo_seekbar_1);
         tempoOneSeek.setProgress(tempo % 10);
         tempoOneSeek.setOnSeekBarChangeListener(tempoListener);
 
@@ -415,20 +481,24 @@ public class DMachActivity extends AppCompatActivity {
         swingText.setText(" ");
         swingText.append(String.valueOf(swing));
 
-        SeekBar swingSeek = findById(dialogView, R.id.swing_seekbar);
+        AppCompatSeekBar swingSeek = findById(dialogView, R.id.swing_seekbar);
         swingSeek.setProgress(swing);
         swingSeek.setOnSeekBarChangeListener(swingListener);
+
+        AppCompatCheckBox audioFocusCheck = findById(dialogView, R.id.audiofocus_check);
+        audioFocusCheck.setChecked(ignoreAudioFocus);
+        audioFocusCheck.setOnCheckedChangeListener(audioFocusCheckedListener);
     }
 
     @OnClick(R.id.reset_button)
-    public void onResetClicked() {
+    void onResetClicked() {
         sequence = new int[GROUPS * STEPS];
         sendSequence();
         setView();
     }
 
     @OnClick(R.id.patch_button)
-    public void onPatchClicked() {
+    void onPatchClicked() {
         patchButton.setSelected(true);
         Patch patch = new Patch(title, sequence, channels, selectedChannel, tempo, swing);
         Intent intent = new Intent(this, PatchActivity.class);
@@ -437,7 +507,7 @@ public class DMachActivity extends AppCompatActivity {
     }
 
     @OnLongClick(R.id.logo_text)
-    public boolean onLogoClicked() {
+    boolean onLogoClicked() {
         MaterialDialog dialog = new MaterialDialog.Builder(this)
                 .customView(R.layout.dialog_licenses, false)
                 .show();
@@ -475,7 +545,7 @@ public class DMachActivity extends AppCompatActivity {
     }
 
     @OnClick({R.id.channel_bd, R.id.channel_sd, R.id.channel_cp, R.id.channel_tt, R.id.channel_cb, R.id.channel_hh})
-    public void onChannelClicked(TypefaceButton channel) {
+    void onChannelClicked(TypefaceButton channel) {
         int index = channelContainer.indexOfChild(channel);
         selectedChannel = selectedChannel == index ? -1 : index;
         setView();
@@ -529,7 +599,7 @@ public class DMachActivity extends AppCompatActivity {
     }
 
     @OnClick({R.id.setting_1, R.id.setting_2, R.id.setting_3, R.id.setting_4, R.id.setting_5, R.id.setting_6})
-    public void onSettingClick(TypefaceButton button) {
+    void onSettingClick(TypefaceButton button) {
         if (selectedChannel == -1) {
             return;
         }

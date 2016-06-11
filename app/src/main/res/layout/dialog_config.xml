@@ -76,4 +76,23 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:layout_below="@+id/swing_label"
         android:max="50"/>
 
+    <net.simno.dmach.ui.view.TypefaceTextView
+        android:id="@+id/audiofocus_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_below="@+id/swing_seekbar"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/audiofocus_check"
+        android:text="@string/dialog_audiofocus"
+        style="@style/Dialog"/>
+
+    <android.support.v7.widget.AppCompatCheckBox
+        android:id="@+id/audiofocus_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_below="@+id/swing_seekbar"
+        android:layout_alignParentEnd="true"/>
+
 </RelativeLayout>

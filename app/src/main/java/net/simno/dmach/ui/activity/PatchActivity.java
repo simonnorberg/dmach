@@ -114,7 +114,7 @@ public class PatchActivity extends RxAppCompatActivity implements PatchAdapter.O
     }
 
     @OnClick(R.id.save_button)
-    public void onSaveClicked() {
+    void onSaveClicked() {
         title = saveText.getText().toString();
         if (!TextUtils.isEmpty(title) && patch != null) {
             saveButton.setEnabled(false);

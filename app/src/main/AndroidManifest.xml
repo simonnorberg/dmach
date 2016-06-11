@@ -20,8 +20,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     xmlns:tools="http://schemas.android.com/tools"
     package="net.simno.dmach">
 
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-
     <application
         android:name=".DMachApp"
         android:allowBackup="true"
