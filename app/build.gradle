@@ -113,6 +113,22 @@ android {
     tasks.withType(JavaCompile) {
         compileTask -> compileTask.dependsOn 'buildNative'
     }
+
+    task pdZip(type: Zip, overwrite: true, description: 'Zip Pure Data source files') {
+        from project.projectDir.absolutePath + '/src/main/pd'
+        include '*.pd'
+        exclude 'test.pd'
+        archiveName project.rootDir.name + '.zip'
+        destinationDir file(project.projectDir.absolutePath + '/src/main/res/raw')
+    }
+
+    tasks.withType(JavaCompile) {
+        compileTask -> compileTask.dependsOn 'pdZip'
+    }
+
+    tasks.pdZip.outputs.upToDateWhen {
+        return false
+    }
 }
 
 def getNdkBuildExecutablePath() {
