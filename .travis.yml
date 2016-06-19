@@ -7,19 +7,17 @@ jdk: oraclejdk8
 android:
   components:
     - tools
-    - platform-tools
-    - build-tools-23.0.3
-    - android-23
+    - build-tools-24.0.0
+    - android-24
     - extra-android-m2repository
-    - extra-android-support
 
 before_install:
   - cd $TRAVIS_BUILD_DIR/..
-  - wget http://dl.google.com/android/repository/android-ndk-r11c-linux-x86_64.zip -O ndk.zip
+  - wget http://dl.google.com/android/repository/android-ndk-r12-linux-x86_64.zip -O ndk.zip
   - chmod a+x ndk.zip
   - unzip ndk.zip > /dev/null
   - rm ndk.zip
-  - export ANDROID_NDK_HOME=`pwd`/android-ndk-r11c
+  - export ANDROID_NDK_HOME=`pwd`/android-ndk-r12
   - export PATH=$PATH:$ANDROID_NDK_HOME
   - echo $PATH
 
@@ -32,7 +30,7 @@ before_script:
 
 script:
   - cd $TRAVIS_BUILD_DIR
-  - ./gradlew build
+  - ./gradlew assemble
 
 notifications:
   email: false

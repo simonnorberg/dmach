@@ -44,19 +44,14 @@ def gitTimestamp() {
     return p.text.trim()
 }
 
-if (project.hasProperty("dmach.signing")
-        && new File(project.property("dmach.signing") + ".gradle").exists()) {
-    apply from: project.property("dmach.signing") + ".gradle";
-}
-
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.0"
 
     defaultConfig {
         applicationId "net.simno.dmach"
         minSdkVersion 17
-        targetSdkVersion 23
+        targetSdkVersion 24
 
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
@@ -135,25 +130,25 @@ def getNdkBuildExecutablePath() {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:recyclerview-v7:23.4.0'
+    compile 'com.android.support:appcompat-v7:24.0.0'
+    compile 'com.android.support:recyclerview-v7:24.0.0'
 
     compile 'com.afollestad.material-dialogs:core:0.8.5.9'
 
-    compile 'com.google.code.gson:gson:2.6.2'
-    compile 'com.google.dagger:dagger:2.4'
-    apt 'com.google.dagger:dagger-compiler:2.4'
+    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.google.dagger:dagger:2.5'
+    apt 'com.google.dagger:dagger-compiler:2.5'
 
-    compile 'com.jakewharton:butterknife:8.0.1'
-    apt 'com.jakewharton:butterknife-compiler:8.0.1'
+    compile 'com.jakewharton:butterknife:8.1.0'
+    apt 'com.jakewharton:butterknife-compiler:8.1.0'
     compile 'com.jakewharton.timber:timber:4.1.2'
 
     compile 'com.squareup.sqlbrite:sqlbrite:0.6.3'
 
     compile 'com.trello:rxlifecycle-components:0.6.1'
 
-    compile 'io.reactivex:rxandroid:1.2.0'
-    compile 'io.reactivex:rxjava:1.1.5'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.1.6'
 
     provided 'javax.annotation:jsr250-api:1.0'
 
