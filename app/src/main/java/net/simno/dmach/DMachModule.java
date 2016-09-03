@@ -29,11 +29,11 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module(includes = DbModule.class)
-public class DMachModule {
+class DMachModule {
 
     private final DMachApp app;
 
-    public DMachModule(DMachApp app) {
+    DMachModule(DMachApp app) {
         this.app = app;
     }
 

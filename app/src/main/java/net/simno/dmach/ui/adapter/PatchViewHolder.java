@@ -29,9 +29,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 
-public class PatchViewHolder extends RecyclerView.ViewHolder {
+class PatchViewHolder extends RecyclerView.ViewHolder {
 
-    public interface OnClickListener {
+    interface OnClickListener {
         void onClick(int position);
         void onLongClick(int position);
     }
@@ -42,7 +42,7 @@ public class PatchViewHolder extends RecyclerView.ViewHolder {
 
     private final OnClickListener listener;
 
-    public PatchViewHolder(View view, OnClickListener listener) {
+    PatchViewHolder(View view, OnClickListener listener) {
         super(view);
         ButterKnife.bind(this, view);
         this.listener = listener;

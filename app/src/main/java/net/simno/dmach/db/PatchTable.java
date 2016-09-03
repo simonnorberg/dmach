@@ -29,7 +29,7 @@ import timber.log.Timber;
 public class PatchTable {
 
     public static final String TABLE = "patch";
-    public static final String ID = "_id";
+    private static final String ID = "_id";
     public static final String TITLE = "title";
     public static final String SEQUENCE = "sequence";
     public static final String CHANNELS = "channels";
@@ -49,11 +49,11 @@ public class PatchTable {
             + SWING + " integer not null "
             + ");";
 
-    public static void onCreate(SQLiteDatabase db) {
+    static void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE);
     }
 
-    public static void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    static void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Timber.tag(PatchTable.class.getName())
                 .w("Upgrading database from version " + oldVersion + " to " + newVersion);
         if (oldVersion == 1 && newVersion == 2) {
@@ -69,7 +69,7 @@ public class PatchTable {
         }
     }
 
-    private static void upgrade(SQLiteDatabase db) throws Exception {
+    private static void upgrade(SQLiteDatabase db) {
         db.execSQL("alter table patch rename to old_patch;");
         onCreate(db);
         db.execSQL("insert into patch(title, sequence, channels, selected, tempo, swing) "

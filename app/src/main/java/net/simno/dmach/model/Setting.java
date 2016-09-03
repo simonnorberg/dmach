@@ -24,6 +24,7 @@ import org.parceler.Parcel;
  */
 @Parcel
 public final class Setting {
+
     String hText;
     String vText;
     float x;
@@ -31,7 +32,7 @@ public final class Setting {
     int hIndex;
     int vIndex;
 
-    public Setting() {
+    Setting() {
     }
 
     /**
@@ -42,7 +43,7 @@ public final class Setting {
      * @param hIndex  Index of the parameter to change in the Pure Data patch
      * @param vIndex  Index of the parameter to change in the Pure Data patch
      */
-    public Setting(String hText, String vText, float x, float y, int hIndex, int vIndex) {
+    Setting(String hText, String vText, float x, float y, int hIndex, int vIndex) {
         this.hText = hText;
         this.vText = vText;
         this.x = x;

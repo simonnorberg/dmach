@@ -25,21 +25,23 @@ import java.util.List;
 /**
  * The Channel class represents a channel in dmach.pd
  */
+@SuppressWarnings("WeakerAccess")
 @Parcel
 public final class Channel {
+
     String name;
     List<Setting> settings;
     int selectedSetting; // Default 0
     float pan;
 
-    public Channel() {
+    Channel() {
     }
 
     /**
      *  @param name  Channel name that must exist in dmach.pd
      *
      */
-    public Channel(String name) {
+    Channel(String name) {
         this.name = name;
         pan = 0.5f;
         settings = new ArrayList<>();

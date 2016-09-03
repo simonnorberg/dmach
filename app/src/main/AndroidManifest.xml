@@ -27,7 +27,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:icon="@mipmap/ic_launcher"
         android:logo="@mipmap/ic_launcher"
         android:supportsRtl="false"
-        tools:ignore="AllowBackup">
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 
         <activity
             android:name=".ui.activity.DMachActivity"

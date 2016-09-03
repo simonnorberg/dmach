@@ -20,9 +20,9 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.2'
+        classpath 'com.android.tools.build:gradle:2.2.0-rc1'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.5.4'
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.6.0'
     }
 }
 

@@ -24,7 +24,7 @@ import timber.log.Timber;
 
 public class DMachApp extends Application {
 
-    private final AppComponent appComponent = createComponent();
+    private final DMachComponent component = createComponent();
 
     @Override
     public void onCreate() {
@@ -34,14 +34,14 @@ public class DMachApp extends Application {
         }
     }
 
-    protected AppComponent createComponent() {
+    private DMachComponent createComponent() {
         return DaggerDMachComponent.builder()
                 .dMachModule(new DMachModule(this))
                 .build();
     }
 
-    public AppComponent component() {
-        return appComponent;
+    public DMachComponent component() {
+        return component;
     }
 
     public static DMachApp get(Context context) {

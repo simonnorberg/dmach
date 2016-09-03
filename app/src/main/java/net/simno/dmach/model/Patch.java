@@ -61,7 +61,7 @@ public class Patch {
     int tempo;
     int swing;
 
-    public Patch() {
+    Patch() {
     }
 
     /**
@@ -123,8 +123,8 @@ public class Patch {
         return new Gson().fromJson(json, CHANNEL_TYPE);
     }
 
-    public static Patch create(String title, String sequence, String channels, int selectedChannel,
-                               int tempo, int swing) {
+    private static Patch create(String title, String sequence, String channels, int selectedChannel,
+                                int tempo, int swing) {
         return new Patch(
                 title,
                 jsonToSequence(sequence),

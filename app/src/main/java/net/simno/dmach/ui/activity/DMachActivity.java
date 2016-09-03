@@ -506,6 +506,7 @@ public class DMachActivity extends AppCompatActivity {
         startActivityForResult(intent, PATCH_REQUEST);
     }
 
+    @SuppressWarnings("SameReturnValue")
     @OnLongClick(R.id.logo_text)
     boolean onLogoClicked() {
         MaterialDialog dialog = new MaterialDialog.Builder(this)

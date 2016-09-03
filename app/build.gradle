@@ -46,7 +46,7 @@ def gitTimestamp() {
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    buildToolsVersion "24.0.2"
 
     defaultConfig {
         applicationId "net.simno.dmach"
@@ -146,25 +146,25 @@ def getNdkBuildExecutablePath() {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:24.0.0'
-    compile 'com.android.support:recyclerview-v7:24.0.0'
+    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.android.support:recyclerview-v7:24.2.0'
 
-    compile 'com.afollestad.material-dialogs:core:0.8.5.9'
+    compile 'com.afollestad.material-dialogs:core:0.9.0.1'
 
     compile 'com.google.code.gson:gson:2.7'
-    compile 'com.google.dagger:dagger:2.5'
-    apt 'com.google.dagger:dagger-compiler:2.5'
+    compile 'com.google.dagger:dagger:2.6.1'
+    apt 'com.google.dagger:dagger-compiler:2.6.1'
 
-    compile 'com.jakewharton:butterknife:8.1.0'
-    apt 'com.jakewharton:butterknife-compiler:8.1.0'
-    compile 'com.jakewharton.timber:timber:4.1.2'
+    compile 'com.jakewharton:butterknife:8.4.0'
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'com.jakewharton.timber:timber:4.3.0'
 
-    compile 'com.squareup.sqlbrite:sqlbrite:0.6.3'
+    compile 'com.squareup.sqlbrite:sqlbrite:0.7.0'
 
-    compile 'com.trello:rxlifecycle-components:0.6.1'
+    compile 'com.trello:rxlifecycle-components:0.7.0'
 
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'io.reactivex:rxjava:1.1.6'
+    compile 'io.reactivex:rxjava:1.1.9'
 
     provided 'javax.annotation:jsr250-api:1.0'
 

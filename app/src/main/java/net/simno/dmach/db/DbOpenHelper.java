@@ -26,7 +26,7 @@ final class DbOpenHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "dmach.db";
     private static final int DB_VERSION = 2;
 
-    public DbOpenHelper(Context context) {
+    DbOpenHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
