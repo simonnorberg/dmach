@@ -249,4 +249,9 @@ public final class SequencerView extends View {
             invalidate();
         }
     }
+
+    @Override
+    public boolean hasOverlappingRendering() {
+        return false;
+    }
 }

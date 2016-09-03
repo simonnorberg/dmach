@@ -192,4 +192,9 @@ public final class SettingView extends PdView {
             updateSetting();
         }
     }
+
+    @Override
+    public boolean hasOverlappingRendering() {
+        return false;
+    }
 }

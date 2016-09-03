@@ -195,4 +195,9 @@ public final class PanView extends PdView {
             updatePan();
         }
     }
+
+    @Override
+    public boolean hasOverlappingRendering() {
+        return false;
+    }
 }
