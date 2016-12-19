@@ -54,7 +54,8 @@ import butterknife.OnClick;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class PatchActivity extends RxAppCompatActivity implements PatchAdapter.OnPatchClickListener {
+public class PatchActivity extends RxAppCompatActivity implements
+        PatchAdapter.OnPatchClickListener {
 
     static final String TITLE_EXTRA = "title";
     static final String PATCH_EXTRA = "patch";
@@ -138,7 +139,8 @@ public class PatchActivity extends RxAppCompatActivity implements PatchAdapter.O
                 .negativeText(R.string.cancel)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    public void onClick(@NonNull MaterialDialog dialog,
+                                        @NonNull DialogAction which) {
                         db.update(PatchTable.TABLE, getUpdateValues(),
                                 SQLiteDatabase.CONFLICT_REPLACE, "title = ?", title);
                         returnResultSaved();
@@ -201,7 +203,8 @@ public class PatchActivity extends RxAppCompatActivity implements PatchAdapter.O
                 .negativeText(R.string.cancel)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    public void onClick(@NonNull MaterialDialog dialog,
+                                        @NonNull DialogAction which) {
                         db.delete(PatchTable.TABLE, "title = ?", patch.getTitle());
                     }
                 })

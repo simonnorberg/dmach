@@ -66,7 +66,7 @@ class PatchViewHolder extends RecyclerView.ViewHolder {
         return false;
     }
 
-    public void bindModel(Patch patch) {
+    void bindModel(Patch patch) {
         title.setText(patch.getTitle());
         swing.setText(String.valueOf(patch.getSwing()));
         tempo.setText(String.valueOf(patch.getTempo()));

@@ -52,7 +52,7 @@ public class Patch {
         }
     };
 
-    private static final Type CHANNEL_TYPE = new TypeToken<ArrayList<Channel>>() {}.getType();
+    private static final Type CHANNEL_TYPE = new TypeToken<ArrayList<Channel>>() { }.getType();
 
     String title;
     int[] sequence;

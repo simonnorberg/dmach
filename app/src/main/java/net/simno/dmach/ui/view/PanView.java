@@ -118,7 +118,7 @@ public final class PanView extends PdView {
 
     private void notifyOnPanChanged() {
         if (listener != null && channel != null) {
-            if (pan == center){
+            if (pan == center) {
                 listener.onPanChanged(channel, .5f);
             } else {
                 listener.onPanChanged(channel, yToPd(pan));
@@ -183,6 +183,8 @@ public final class PanView extends PdView {
                 makeCenterPanStick();
                 notifyOnPanChanged();
                 invalidate();
+                break;
+            default:
                 break;
         }
         return true;

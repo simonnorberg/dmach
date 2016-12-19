@@ -49,6 +49,9 @@ public class PatchTable {
             + SWING + " integer not null "
             + ");";
 
+    private PatchTable() {
+    }
+
     static void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE);
     }

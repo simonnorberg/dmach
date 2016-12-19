@@ -127,7 +127,8 @@ public final class SequencerView extends View {
 
     private void notifyOnStepChanged(int channel, int step) {
         if (listener != null) {
-            listener.onStepChanged(getGroup(channel), step, getMask(channel), getIndex(channel, step));
+            listener.onStepChanged(getGroup(channel), step, getMask(channel),
+                    getIndex(channel, step));
         }
     }
 
@@ -214,6 +215,8 @@ public final class SequencerView extends View {
                 break;
             case MotionEvent.ACTION_MOVE:
                 onActionMove(event.getX(), event.getY());
+                break;
+            default:
                 break;
         }
         return true;

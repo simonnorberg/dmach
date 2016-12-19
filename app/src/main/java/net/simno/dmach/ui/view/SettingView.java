@@ -181,6 +181,8 @@ public final class SettingView extends PdView {
                 notifyOnSettingChanged();
                 invalidate();
                 break;
+            default:
+                break;
         }
         return true;
     }

@@ -42,12 +42,12 @@ public class DbModule {
 
     @Provides @Singleton
     SqlBrite provideSqlBrite() {
-        return SqlBrite.create(new SqlBrite.Logger() {
+        return new SqlBrite.Builder().logger(new SqlBrite.Logger() {
             @Override
             public void log(String message) {
                 Timber.tag("Database").v(message);
             }
-        });
+        }).build();
     }
 
     @Provides @Singleton

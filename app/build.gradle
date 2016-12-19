@@ -16,11 +16,29 @@
 */
 
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'com.getkeepsafe.dexcount'
+apply plugin: 'checkstyle'
+
+task checkstyle(type: Checkstyle) {
+    group 'verification'
+    configFile rootProject.file('checkstyle.xml')
+    source 'src/main/java'
+    ignoreFailures false
+    showViolations true
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    classpath = files()
+}
+
+afterEvaluate {
+    if (project.tasks.findByName('check')) {
+        check.dependsOn('checkstyle')
+    }
+}
 
 def versionMajor = 1
-def versionMinor = 5
+def versionMinor = 6
 def versionPatch = 0
 def versionBuild = 0
 
@@ -45,13 +63,13 @@ def gitTimestamp() {
 }
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         applicationId "net.simno.dmach"
         minSdkVersion 17
-        targetSdkVersion 24
+        targetSdkVersion 25
 
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
@@ -146,30 +164,30 @@ def getNdkBuildExecutablePath() {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:24.2.0'
-    compile 'com.android.support:recyclerview-v7:24.2.0'
+    compile 'com.android.support:appcompat-v7:25.1.0'
+    compile 'com.android.support:recyclerview-v7:25.1.0'
 
-    compile 'com.afollestad.material-dialogs:core:0.9.0.1'
+    compile 'com.afollestad.material-dialogs:core:0.9.1.0'
 
-    compile 'com.google.code.gson:gson:2.7'
-    compile 'com.google.dagger:dagger:2.6.1'
-    apt 'com.google.dagger:dagger-compiler:2.6.1'
+    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.google.dagger:dagger:2.8'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.8'
 
     compile 'com.jakewharton:butterknife:8.4.0'
-    apt 'com.jakewharton:butterknife-compiler:8.4.0'
-    compile 'com.jakewharton.timber:timber:4.3.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'com.jakewharton.timber:timber:4.4.0'
 
-    compile 'com.squareup.sqlbrite:sqlbrite:0.7.0'
+    compile 'com.squareup.sqlbrite:sqlbrite:1.1.0'
 
-    compile 'com.trello:rxlifecycle-components:0.7.0'
+    compile 'com.trello:rxlifecycle-components:1.0'
 
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'io.reactivex:rxjava:1.1.9'
+    compile 'io.reactivex:rxjava:1.2.4'
 
     provided 'javax.annotation:jsr250-api:1.0'
 
-    compile 'org.parceler:parceler-api:1.1.5'
-    apt 'org.parceler:parceler:1.1.5'
+    compile 'org.parceler:parceler-api:1.1.6'
+    annotationProcessor 'org.parceler:parceler:1.1.6'
 
-    compile 'org.puredata.android:pd-core:1.0.1'
+    compile 'org.puredata.android:pd-core:1.0.2'
 }

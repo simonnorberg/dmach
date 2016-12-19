@@ -122,7 +122,7 @@ public class DMachActivity extends AppCompatActivity {
     private final ServiceConnection pdConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            pdService = ((PdService.PdBinder)service).getService();
+            pdService = ((PdService.PdBinder) service).getService();
             startAudio();
             initPd();
         }
@@ -141,6 +141,8 @@ public class DMachActivity extends AppCompatActivity {
                     break;
                 case R.id.tempo_seekbar_1:
                     tempo = Math.max((tempo / 10) * 10 + progress, 1);
+                    break;
+                default:
                     break;
             }
             PdBase.sendFloat("tempo", tempo);
@@ -204,20 +206,23 @@ public class DMachActivity extends AppCompatActivity {
                     case AUDIOFOCUS_LOSS:
                         stopPlayback();
                         break;
+                    default:
+                        break;
                 }
             }
         }
     };
 
-    private final OnCheckedChangeListener audioFocusCheckedListener = new OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            ignoreAudioFocus = isChecked;
-            if (ignoreAudioFocus) {
-                abandonAudioFocus();
-            }
-        }
-    };
+    private final OnCheckedChangeListener audioFocusCheckedListener =
+            new OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    ignoreAudioFocus = isChecked;
+                    if (ignoreAudioFocus) {
+                        abandonAudioFocus();
+                    }
+                }
+            };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -315,7 +320,8 @@ public class DMachActivity extends AppCompatActivity {
         new Thread() {
             @Override
             public void run() {
-                bindService(new Intent(DMachActivity.this, PdService.class), pdConnection, BIND_AUTO_CREATE);
+                bindService(new Intent(DMachActivity.this, PdService.class), pdConnection,
+                        BIND_AUTO_CREATE);
             }
         }.start();
     }
@@ -360,7 +366,8 @@ public class DMachActivity extends AppCompatActivity {
             if (pdPatch == 0) {
                 try {
                     File dir = getFilesDir();
-                    IoUtils.extractZipResource(getResources().openRawResource(R.raw.dmach), dir, true);
+                    IoUtils.extractZipResource(getResources().openRawResource(R.raw.dmach), dir,
+                            true);
                     File patchFile = new File(dir, "dmach.pd");
                     pdPatch = PdBase.openPatch(patchFile.getAbsolutePath());
                 } catch (IOException e) {
@@ -381,7 +388,8 @@ public class DMachActivity extends AppCompatActivity {
         if (ignoreAudioFocus) {
             return true;
         }
-        int result = audioManager.requestAudioFocus(audioFocusListener, STREAM_MUSIC, AUDIOFOCUS_GAIN);
+        int result = audioManager.requestAudioFocus(audioFocusListener, STREAM_MUSIC,
+                AUDIOFOCUS_GAIN);
         return result == AUDIOFOCUS_REQUEST_GRANTED;
     }
 
@@ -545,7 +553,8 @@ public class DMachActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick({R.id.channel_bd, R.id.channel_sd, R.id.channel_cp, R.id.channel_tt, R.id.channel_cb, R.id.channel_hh})
+    @OnClick({R.id.channel_bd, R.id.channel_sd, R.id.channel_cp, R.id.channel_tt, R.id.channel_cb,
+            R.id.channel_hh})
     void onChannelClicked(TypefaceButton channel) {
         int index = channelContainer.indexOfChild(channel);
         selectedChannel = selectedChannel == index ? -1 : index;
@@ -599,7 +608,8 @@ public class DMachActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick({R.id.setting_1, R.id.setting_2, R.id.setting_3, R.id.setting_4, R.id.setting_5, R.id.setting_6})
+    @OnClick({R.id.setting_1, R.id.setting_2, R.id.setting_3, R.id.setting_4, R.id.setting_5,
+            R.id.setting_6})
     void onSettingClick(TypefaceButton button) {
         if (selectedChannel == -1) {
             return;
@@ -607,7 +617,8 @@ public class DMachActivity extends AppCompatActivity {
         Channel channel = channels.get(selectedChannel);
         int index = settingContainer.indexOfChild(button);
         if (index != channel.getSelection()) {
-            TypefaceButton oldButton = (TypefaceButton) settingContainer.getChildAt(channel.getSelection());
+            TypefaceButton oldButton = (TypefaceButton)
+                    settingContainer.getChildAt(channel.getSelection());
             if (oldButton != null) {
                 oldButton.setSelected(false);
             }
