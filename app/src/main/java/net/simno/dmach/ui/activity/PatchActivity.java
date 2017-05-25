@@ -24,11 +24,11 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -63,8 +63,8 @@ public class PatchActivity extends RxAppCompatActivity implements
     static final int RESULT_LOADED = RESULT_FIRST_USER + 1;
 
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
-    @BindView(R.id.save_button) AppCompatButton saveButton;
-    @BindView(R.id.save_text) AppCompatEditText saveText;
+    @BindView(R.id.save_button) Button saveButton;
+    @BindView(R.id.save_text) EditText saveText;
 
     @Inject BriteDatabase db;
     private PatchAdapter adapter;

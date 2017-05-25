@@ -33,7 +33,7 @@ import butterknife.BindColor;
 import butterknife.ButterKnife;
 import rx.functions.Action1;
 
-public class PatchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+public class PatchAdapter extends RecyclerView.Adapter<PatchViewHolder>
         implements Action1<List<Patch>> {
 
     public interface OnPatchClickListener {
@@ -59,7 +59,7 @@ public class PatchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public PatchViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         View view = inflater.inflate(R.layout.item_patch, parent, false);
@@ -79,8 +79,8 @@ public class PatchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((PatchViewHolder) holder).bindModel(patches.get(position));
+    public void onBindViewHolder(PatchViewHolder holder, int position) {
+        holder.bindModel(patches.get(position));
     }
 
     @Override

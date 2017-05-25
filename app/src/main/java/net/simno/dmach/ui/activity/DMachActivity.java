@@ -27,19 +27,18 @@ import android.media.AudioManager.OnAudioFocusChangeListener;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatCheckBox;
-import android.support.v7.widget.AppCompatImageButton;
-import android.support.v7.widget.AppCompatSeekBar;
-import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -94,9 +93,9 @@ public class DMachActivity extends AppCompatActivity {
     public static final int CHANNELS = 6;
     public static final int STEPS = 16;
 
-    @BindView(R.id.play_button) AppCompatImageButton playButton;
-    @BindView(R.id.config_button) AppCompatImageButton configButton;
-    @BindView(R.id.patch_button) AppCompatImageButton patchButton;
+    @BindView(R.id.play_button) ImageButton playButton;
+    @BindView(R.id.config_button) ImageButton configButton;
+    @BindView(R.id.patch_button) ImageButton patchButton;
     @BindView(R.id.channel_container) LinearLayout channelContainer;
     @BindView(R.id.setting_container) LinearLayout settingContainer;
     @BindView(R.id.patch_container) RelativeLayout patchContainer;
@@ -113,8 +112,8 @@ public class DMachActivity extends AppCompatActivity {
     private int swing;
     private List<Channel> channels;
     private String title;
-    private AppCompatTextView tempoText;
-    private AppCompatTextView swingText;
+    private TextView tempoText;
+    private TextView swingText;
     private int pdPatch;
     private PdService pdService;
     private final Object lock = new Object();
@@ -477,11 +476,11 @@ public class DMachActivity extends AppCompatActivity {
         tempoText.setText(" ");
         tempoText.append(String.valueOf(tempo));
 
-        AppCompatSeekBar tempoTenSeek = findById(dialogView, R.id.tempo_seekbar_10);
+        SeekBar tempoTenSeek = findById(dialogView, R.id.tempo_seekbar_10);
         tempoTenSeek.setProgress((tempo / 10) - 1);
         tempoTenSeek.setOnSeekBarChangeListener(tempoListener);
 
-        AppCompatSeekBar tempoOneSeek = findById(dialogView, R.id.tempo_seekbar_1);
+        SeekBar tempoOneSeek = findById(dialogView, R.id.tempo_seekbar_1);
         tempoOneSeek.setProgress(tempo % 10);
         tempoOneSeek.setOnSeekBarChangeListener(tempoListener);
 
@@ -489,11 +488,11 @@ public class DMachActivity extends AppCompatActivity {
         swingText.setText(" ");
         swingText.append(String.valueOf(swing));
 
-        AppCompatSeekBar swingSeek = findById(dialogView, R.id.swing_seekbar);
+        SeekBar swingSeek = findById(dialogView, R.id.swing_seekbar);
         swingSeek.setProgress(swing);
         swingSeek.setOnSeekBarChangeListener(swingListener);
 
-        AppCompatCheckBox audioFocusCheck = findById(dialogView, R.id.audiofocus_check);
+        CheckBox audioFocusCheck = findById(dialogView, R.id.audiofocus_check);
         audioFocusCheck.setChecked(ignoreAudioFocus);
         audioFocusCheck.setOnCheckedChangeListener(audioFocusCheckedListener);
     }

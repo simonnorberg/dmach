@@ -35,7 +35,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:layout_toEndOf="@+id/tempo_label"
         style="@style/Dialog"/>
 
-    <android.support.v7.widget.AppCompatSeekBar
+    <SeekBar
         android:id="@+id/tempo_seekbar_10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,7 +43,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:layout_below="@+id/tempo_label"
         android:max="23"/>
 
-    <android.support.v7.widget.AppCompatSeekBar
+    <SeekBar
         android:id="@+id/tempo_seekbar_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -68,7 +68,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:layout_toEndOf="@+id/swing_label"
         style="@style/Dialog"/>
 
-    <android.support.v7.widget.AppCompatSeekBar
+    <SeekBar
         android:id="@+id/swing_seekbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -87,7 +87,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:text="@string/dialog_audiofocus"
         style="@style/Dialog"/>
 
-    <android.support.v7.widget.AppCompatCheckBox
+    <CheckBox
         android:id="@+id/audiofocus_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

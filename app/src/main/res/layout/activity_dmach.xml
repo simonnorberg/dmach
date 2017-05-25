@@ -31,7 +31,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:layout_width="match_parent"
         android:layout_weight="1">
 
-        <android.support.v7.widget.AppCompatImageButton
+        <ImageButton
             android:id="@+id/play_button"
             android:layout_width="@dimen/button_large_width"
             android:layout_height="match_parent"
@@ -40,7 +40,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             app:srcCompat="@drawable/ic_control_play"
             style="@style/Control"/>
 
-        <android.support.v7.widget.AppCompatImageButton
+        <ImageButton
             android:id="@+id/config_button"
             android:layout_width="@dimen/button_large_width"
             android:layout_height="match_parent"
@@ -50,7 +50,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             app:srcCompat="@drawable/ic_control_config"
             style="@style/Control"/>
 
-        <android.support.v7.widget.AppCompatImageButton
+        <ImageButton
             android:id="@+id/reset_button"
             android:layout_width="@dimen/button_large_width"
             android:layout_height="match_parent"
@@ -60,7 +60,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             app:srcCompat="@drawable/ic_control_reset"
             style="@style/Control"/>
 
-        <android.support.v7.widget.AppCompatImageButton
+        <ImageButton
             android:id="@+id/patch_button"
             android:layout_width="@dimen/button_large_width"
             android:layout_height="match_parent"
