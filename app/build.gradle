@@ -19,7 +19,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'checkstyle'
 
 checkstyle {
-    toolVersion = '7.7'
+    toolVersion = '7.8'
 }
 
 task checkstyle(type: Checkstyle) {
@@ -67,7 +67,7 @@ def gitTimestamp() {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
 
     defaultConfig {
         applicationId "net.simno.dmach"
@@ -172,12 +172,12 @@ dependencies {
 
     compile 'com.afollestad.material-dialogs:core:0.9.4.5'
 
-    compile 'com.google.code.gson:gson:2.8.0'
-    compile 'com.google.dagger:dagger:2.10'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.10'
+    compile 'com.google.code.gson:gson:2.8.1'
+    compile 'com.google.dagger:dagger:2.11'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
 
-    compile 'com.jakewharton:butterknife:8.5.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    compile 'com.jakewharton:butterknife:8.6.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
     compile 'com.jakewharton.timber:timber:4.5.1'
 
     compile 'com.squareup.sqlbrite:sqlbrite:1.1.1'
