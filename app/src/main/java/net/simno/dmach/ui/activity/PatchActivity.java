@@ -23,15 +23,13 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
@@ -41,6 +39,7 @@ import net.simno.dmach.db.Db;
 import net.simno.dmach.db.PatchTable;
 import net.simno.dmach.model.Patch;
 import net.simno.dmach.ui.adapter.PatchAdapter;
+import net.simno.dmach.ui.adapter.PatchAdapter.OnPatchClickListener;
 
 import org.parceler.Parcels;
 
@@ -54,8 +53,7 @@ import butterknife.OnClick;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class PatchActivity extends RxAppCompatActivity implements
-        PatchAdapter.OnPatchClickListener {
+public class PatchActivity extends RxAppCompatActivity implements OnPatchClickListener {
 
     static final String TITLE_EXTRA = "title";
     static final String PATCH_EXTRA = "patch";
@@ -129,29 +127,24 @@ public class PatchActivity extends RxAppCompatActivity implements
     }
 
     private void showOverwriteDialog() {
-        new MaterialDialog.Builder(this)
-                .backgroundColorRes(R.color.dune)
-                .contentColorRes(R.color.colonial)
-                .positiveColorRes(R.color.gamboge)
-                .negativeColorRes(R.color.colonial)
-                .content(getString(R.string.overwrite_patch, title))
-                .positiveText(R.string.overwrite)
-                .negativeText(R.string.cancel)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
+        new AlertDialog.Builder(this, R.style.DialogTheme)
+                .setMessage(getString(R.string.overwrite_patch, title))
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.overwrite, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog,
-                                        @NonNull DialogAction which) {
+                    public void onClick(DialogInterface dialog, int which) {
                         db.update(PatchTable.TABLE, getUpdateValues(),
                                 SQLiteDatabase.CONFLICT_REPLACE, "title = ?", title);
                         returnResultSaved();
                     }
                 })
-                .dismissListener(new DialogInterface.OnDismissListener() {
+                .setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
                         saveButton.setEnabled(true);
                     }
                 })
+                .create()
                 .show();
     }
 
@@ -193,21 +186,16 @@ public class PatchActivity extends RxAppCompatActivity implements
 
     @Override
     public void onPatchLongClick(final Patch patch) {
-        new MaterialDialog.Builder(this)
-                .backgroundColorRes(R.color.dune)
-                .contentColorRes(R.color.colonial)
-                .positiveColorRes(R.color.gamboge)
-                .negativeColorRes(R.color.colonial)
-                .content(getString(R.string.delete_patch, patch.getTitle()))
-                .positiveText(R.string.delete)
-                .negativeText(R.string.cancel)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
+        new AlertDialog.Builder(this, R.style.DialogTheme)
+                .setMessage(getString(R.string.delete_patch, patch.getTitle()))
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog,
-                                        @NonNull DialogAction which) {
+                    public void onClick(DialogInterface dialog, int which) {
                         db.delete(PatchTable.TABLE, "title = ?", patch.getTitle());
                     }
                 })
+                .create()
                 .show();
     }
 }

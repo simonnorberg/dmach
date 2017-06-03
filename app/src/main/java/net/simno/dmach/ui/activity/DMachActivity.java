@@ -17,6 +17,7 @@
 
 package net.simno.dmach.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,6 +27,7 @@ import android.media.AudioManager;
 import android.media.AudioManager.OnAudioFocusChangeListener;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.webkit.WebView;
@@ -39,8 +41,6 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-
-import com.afollestad.materialdialogs.MaterialDialog;
 
 import net.simno.dmach.DMachApp;
 import net.simno.dmach.R;
@@ -456,21 +456,19 @@ public class DMachActivity extends AppCompatActivity {
     void onConfigClicked() {
         configButton.setSelected(true);
 
-        MaterialDialog dialog = new MaterialDialog.Builder(this)
-                .customView(R.layout.dialog_config, false)
-                .backgroundColorRes(R.color.dune)
-                .dismissListener(new DialogInterface.OnDismissListener() {
+        @SuppressLint("InflateParams")
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_config, null);
+
+        new AlertDialog.Builder(this, R.style.DialogTheme)
+                .setView(dialogView)
+                .setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
                         configButton.setSelected(false);
                     }
                 })
+                .create()
                 .show();
-
-        View dialogView = dialog.getCustomView();
-        if (dialogView == null) {
-            return;
-        }
 
         tempoText = findById(dialogView, R.id.tempo_value);
         tempoText.setText(" ");
@@ -516,14 +514,13 @@ public class DMachActivity extends AppCompatActivity {
     @SuppressWarnings("SameReturnValue")
     @OnLongClick(R.id.logo_text)
     boolean onLogoClicked() {
-        MaterialDialog dialog = new MaterialDialog.Builder(this)
-                .customView(R.layout.dialog_licenses, false)
-                .show();
+        @SuppressLint("InflateParams")
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_licenses, null);
 
-        View dialogView = dialog.getCustomView();
-        if (dialogView == null) {
-            return true;
-        }
+        new AlertDialog.Builder(this, R.style.DialogTheme)
+                .setView(dialogView)
+                .create()
+                .show();
 
         WebView webView = findById(dialogView, R.id.web_view);
         webView.loadUrl("file:///android_asset/licenses.html");

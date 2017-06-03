@@ -29,6 +29,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <item name="android:windowBackground">@color/colonial</item>
         <item name="android:textSize">@dimen/text_size</item>
         <item name="colorControlActivated">@color/gamboge</item>
+        <item name="colorControlNormal">@color/colonial</item>
     </style>
 
     <style name="PatchTheme" parent="DMachTheme">
@@ -64,8 +65,15 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <item name="android:background">@drawable/sel_setting</item>
     </style>
 
-    <style name="Dialog">
+    <style name="Config">
         <item name="android:textColor">@color/colonial</item>
+    </style>
+
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/dune</item>
+        <item name="android:textColorPrimary">@color/colonial</item>
+        <item name="android:textColor">@color/gamboge</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
 </resources>
