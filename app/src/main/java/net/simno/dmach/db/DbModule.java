@@ -20,8 +20,8 @@ package net.simno.dmach.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.squareup.sqlbrite.BriteDatabase;
-import com.squareup.sqlbrite.SqlBrite;
+import com.squareup.sqlbrite2.BriteDatabase;
+import com.squareup.sqlbrite2.SqlBrite;
 
 import net.simno.dmach.BuildConfig;
 
@@ -29,7 +29,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import rx.schedulers.Schedulers;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 @Module

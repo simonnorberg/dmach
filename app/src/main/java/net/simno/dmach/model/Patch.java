@@ -31,7 +31,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.functions.Func1;
+import io.reactivex.functions.Function;
 
 /**
  * The Patch class contains all variables used in dmach.pd
@@ -39,9 +39,9 @@ import rx.functions.Func1;
 @Parcel
 public class Patch {
 
-    public static final Func1<Cursor, Patch> MAPPER = new Func1<Cursor, Patch>() {
+    public static final Function<Cursor, Patch> MAPPER = new Function<Cursor, Patch>() {
         @Override
-        public Patch call(Cursor cursor) {
+        public Patch apply(Cursor cursor) throws Exception {
             String title = Db.getString(cursor, PatchTable.TITLE);
             String sequence = Db.getString(cursor, PatchTable.SEQUENCE);
             String channels = Db.getString(cursor, PatchTable.CHANNELS);

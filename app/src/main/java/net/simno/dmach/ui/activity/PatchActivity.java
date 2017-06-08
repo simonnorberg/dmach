@@ -30,8 +30,8 @@ import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.squareup.sqlbrite.BriteDatabase;
-import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
+import com.squareup.sqlbrite2.BriteDatabase;
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import net.simno.dmach.DMachApp;
 import net.simno.dmach.R;
@@ -50,8 +50,10 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import timber.log.Timber;
 
 public class PatchActivity extends RxAppCompatActivity implements OnPatchClickListener {
 
@@ -68,7 +70,7 @@ public class PatchActivity extends RxAppCompatActivity implements OnPatchClickLi
     private PatchAdapter adapter;
     private Patch patch;
     private String title;
-    private Subscription subscription;
+    private Disposable disposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,18 +99,23 @@ public class PatchActivity extends RxAppCompatActivity implements OnPatchClickLi
     @Override
     protected void onResume() {
         super.onResume();
-        subscription = db.createQuery(PatchTable.TABLE, Db.QUERY_PATCH)
+        disposable = db.createQuery(PatchTable.TABLE, Db.QUERY_PATCH)
                 .mapToList(Patch.MAPPER)
                 .compose(this.<List<Patch>>bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(adapter);
+                .subscribe(adapter, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Timber.e(throwable, "db error");
+                    }
+                });
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (subscription != null && !subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
         }
     }
 

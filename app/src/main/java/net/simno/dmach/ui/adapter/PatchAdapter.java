@@ -31,10 +31,10 @@ import java.util.List;
 
 import butterknife.BindColor;
 import butterknife.ButterKnife;
-import rx.functions.Action1;
+import io.reactivex.functions.Consumer;
 
 public class PatchAdapter extends RecyclerView.Adapter<PatchViewHolder>
-        implements Action1<List<Patch>> {
+        implements Consumer<List<Patch>>, PatchViewHolder.OnClickListener {
 
     public interface OnPatchClickListener {
         void onPatchClick(Patch patch);
@@ -53,29 +53,11 @@ public class PatchAdapter extends RecyclerView.Adapter<PatchViewHolder>
     }
 
     @Override
-    public void call(List<Patch> patches) {
-        this.patches = patches;
-        notifyDataSetChanged();
-    }
-
-    @Override
     public PatchViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-
         View view = inflater.inflate(R.layout.item_patch, parent, false);
         view.setBackgroundColor(viewType == 1 ? khaki : gurkha);
-
-        return new PatchViewHolder(view, new PatchViewHolder.OnClickListener() {
-            @Override
-            public void onClick(int position) {
-                listener.onPatchClick(patches.get(position));
-            }
-
-            @Override
-            public void onLongClick(int position) {
-                listener.onPatchLongClick(patches.get(position));
-            }
-        });
+        return new PatchViewHolder(view, this);
     }
 
     @Override
@@ -91,5 +73,21 @@ public class PatchAdapter extends RecyclerView.Adapter<PatchViewHolder>
     @Override
     public int getItemViewType(int position) {
         return (position % 2 == 0) ? 1 : 0;
+    }
+
+    @Override
+    public void accept(List<Patch> patches) throws Exception {
+        this.patches = patches;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void onClick(int position) {
+        listener.onPatchClick(patches.get(position));
+    }
+
+    @Override
+    public void onLongClick(int position) {
+        listener.onPatchLongClick(patches.get(position));
     }
 }
