@@ -23,14 +23,12 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-import net.simno.dmach.DMachApp;
 import net.simno.dmach.R;
 import net.simno.dmach.model.Channel;
-
-import javax.inject.Inject;
 
 import static android.support.v4.content.ContextCompat.getColor;
 
@@ -43,7 +41,6 @@ public final class PanView extends PdView {
     private static final String LEFT = "L";
     private static final String RIGHT = "R";
 
-    @Inject Typeface typeface;
     private OnPanChangedListener listener;
     private Channel channel;
     private Paint shapePaint;
@@ -77,7 +74,7 @@ public final class PanView extends PdView {
     }
 
     private void init(Context context) {
-        DMachApp.get(context).component().inject(this);
+        Typeface typeface = ResourcesCompat.getFont(getContext(), R.font.sax);
 
         textSize = getResources().getDimension(R.dimen.text_size_channel);
         rectHeight = getResources().getDimension(R.dimen.rect_height);

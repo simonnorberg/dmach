@@ -21,14 +21,14 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     android:layout_width="wrap_content"
     android:padding="@dimen/margin_large">
 
-    <net.simno.dmach.ui.view.TypefaceTextView
+    <TextView
         android:id="@+id/tempo_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/dialog_bpm"
         style="@style/Config"/>
 
-    <net.simno.dmach.ui.view.TypefaceTextView
+    <TextView
         android:id="@+id/tempo_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,7 +52,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:layout_below="@+id/tempo_seekbar_10"
         android:max="9"/>
 
-    <net.simno.dmach.ui.view.TypefaceTextView
+    <TextView
         android:id="@+id/swing_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -60,7 +60,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:text="@string/dialog_swing"
         style="@style/Config"/>
 
-    <net.simno.dmach.ui.view.TypefaceTextView
+    <TextView
         android:id="@+id/swing_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -76,7 +76,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:layout_below="@+id/swing_label"
         android:max="50"/>
 
-    <net.simno.dmach.ui.view.TypefaceTextView
+    <TextView
         android:id="@+id/audiofocus_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

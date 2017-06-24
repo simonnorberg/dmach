@@ -26,7 +26,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     android:longClickable="true"
     android:clickable="true">
 
-    <net.simno.dmach.ui.view.TypefaceTextView
+    <TextView
         android:id="@+id/title_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,9 +34,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:paddingEnd="0dp"
         android:layout_alignParentStart="true"
         android:layout_toStartOf="@+id/swing_text"
-        android:lines="1"/>
+        android:lines="1"
+        android:fontFamily="@font/sax"/>
 
-    <net.simno.dmach.ui.view.TypefaceTextView
+    <TextView
         android:id="@+id/swing_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,9 +45,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:paddingStart="0dp"
         android:paddingEnd="@dimen/margin_normal"
         android:layout_toStartOf="@+id/tempo_text"
-        android:lines="1"/>
+        android:lines="1"
+        android:fontFamily="@font/sax"/>
 
-    <net.simno.dmach.ui.view.TypefaceTextView
+    <TextView
         android:id="@+id/tempo_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -54,6 +56,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:paddingStart="0dp"
         android:paddingEnd="@dimen/margin_normal"
         android:layout_alignParentEnd="true"
-        android:lines="1"/>
+        android:lines="1"
+        android:fontFamily="@font/sax"/>
 
 </RelativeLayout>

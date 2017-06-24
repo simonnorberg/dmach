@@ -24,16 +24,14 @@ import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
+import android.support.v4.content.res.ResourcesCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-import net.simno.dmach.DMachApp;
 import net.simno.dmach.R;
 import net.simno.dmach.model.Channel;
 import net.simno.dmach.model.Setting;
-
-import javax.inject.Inject;
 
 import static android.support.v4.content.ContextCompat.getColor;
 
@@ -43,7 +41,6 @@ public final class SettingView extends PdView {
         void onSettingChanged(Channel channel, float x, float y);
     }
 
-    @Inject Typeface typeface;
     private Channel channel;
     private Paint shapePaint;
     private Paint textPaint;
@@ -80,7 +77,7 @@ public final class SettingView extends PdView {
     }
 
     private void init(Context context) {
-        DMachApp.get(context).component().inject(this);
+        Typeface typeface = ResourcesCompat.getFont(getContext(), R.font.sax);
 
         backgroundColor = getColor(context, R.color.gamboge);
         textSize = getResources().getDimension(R.dimen.text_size_setting);

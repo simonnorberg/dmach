@@ -50,7 +50,6 @@ import net.simno.dmach.model.Setting;
 import net.simno.dmach.ui.view.PanView;
 import net.simno.dmach.ui.view.SequencerView;
 import net.simno.dmach.ui.view.SettingView;
-import net.simno.dmach.ui.view.TypefaceButton;
 
 import org.parceler.Parcels;
 import org.puredata.android.io.AudioParameters;
@@ -551,7 +550,7 @@ public class DMachActivity extends AppCompatActivity {
 
     @OnClick({R.id.channel_bd, R.id.channel_sd, R.id.channel_cp, R.id.channel_tt, R.id.channel_cb,
             R.id.channel_hh})
-    void onChannelClicked(TypefaceButton channel) {
+    void onChannelClicked(Button channel) {
         int index = channelContainer.indexOfChild(channel);
         selectedChannel = selectedChannel == index ? -1 : index;
         setView();
@@ -592,7 +591,7 @@ public class DMachActivity extends AppCompatActivity {
         int selected = channel.getSelection();
         int count = channel.getCount();
         for (int i = 0; i < settingContainer.getChildCount(); ++i) {
-            TypefaceButton button = (TypefaceButton) settingContainer.getChildAt(i);
+            Button button = (Button) settingContainer.getChildAt(i);
             if (i < count) {
                 button.setEnabled(true);
                 button.setVisibility(View.VISIBLE);
@@ -606,15 +605,14 @@ public class DMachActivity extends AppCompatActivity {
 
     @OnClick({R.id.setting_1, R.id.setting_2, R.id.setting_3, R.id.setting_4, R.id.setting_5,
             R.id.setting_6})
-    void onSettingClick(TypefaceButton button) {
+    void onSettingClick(Button button) {
         if (selectedChannel == -1) {
             return;
         }
         Channel channel = channels.get(selectedChannel);
         int index = settingContainer.indexOfChild(button);
         if (index != channel.getSelection()) {
-            TypefaceButton oldButton = (TypefaceButton)
-                    settingContainer.getChildAt(channel.getSelection());
+            Button oldButton = (Button) settingContainer.getChildAt(channel.getSelection());
             if (oldButton != null) {
                 oldButton.setSelected(false);
             }

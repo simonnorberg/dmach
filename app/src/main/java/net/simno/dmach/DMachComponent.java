@@ -19,11 +19,6 @@ package net.simno.dmach;
 
 import net.simno.dmach.ui.activity.DMachActivity;
 import net.simno.dmach.ui.activity.PatchActivity;
-import net.simno.dmach.ui.view.PanView;
-import net.simno.dmach.ui.view.SettingView;
-import net.simno.dmach.ui.view.TypefaceButton;
-import net.simno.dmach.ui.view.TypefaceEditText;
-import net.simno.dmach.ui.view.TypefaceTextView;
 
 import javax.inject.Singleton;
 
@@ -35,9 +30,4 @@ import dagger.Component;
 public interface DMachComponent {
     void inject(DMachActivity activity);
     void inject(PatchActivity activity);
-    void inject(TypefaceButton button);
-    void inject(TypefaceTextView textView);
-    void inject(TypefaceEditText editText);
-    void inject(SettingView view);
-    void inject(PanView view);
 }

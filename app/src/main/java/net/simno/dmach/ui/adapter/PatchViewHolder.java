@@ -19,10 +19,10 @@ package net.simno.dmach.ui.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import net.simno.dmach.R;
 import net.simno.dmach.model.Patch;
-import net.simno.dmach.ui.view.TypefaceTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,9 +36,9 @@ class PatchViewHolder extends RecyclerView.ViewHolder {
         void onLongClick(int position);
     }
 
-    @BindView(R.id.title_text) TypefaceTextView title;
-    @BindView(R.id.swing_text) TypefaceTextView swing;
-    @BindView(R.id.tempo_text) TypefaceTextView tempo;
+    @BindView(R.id.title_text) TextView title;
+    @BindView(R.id.swing_text) TextView swing;
+    @BindView(R.id.tempo_text) TextView tempo;
 
     private final OnClickListener listener;
 

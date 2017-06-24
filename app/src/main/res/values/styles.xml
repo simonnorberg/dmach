@@ -48,25 +48,28 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <item name="android:textSize">@dimen/text_size_logo</item>
         <item name="android:textColor">@color/dune</item>
         <item name="android:text">@string/app_name</item>
+        <item name="android:fontFamily">@font/sax</item>
     </style>
 
     <style name="Button">
         <item name="android:background">@drawable/sel_channel</item>
         <item name="android:textColor">@color/colonial</item>
+        <item name="android:fontFamily">@font/sax</item>
     </style>
 
-    <style name="Channel">
-        <item name="android:background">@drawable/sel_channel</item>
-        <item name="android:textColor">@color/colonial</item>
+    <style name="Channel" parent="Button">
         <item name="android:textSize">@dimen/text_size_channel</item>
     </style>
 
-    <style name="Setting" parent="Channel">
+    <style name="Setting" parent="Button">
         <item name="android:background">@drawable/sel_setting</item>
+        <item name="android:textSize">@dimen/text_size_channel</item>
     </style>
 
     <style name="Config">
         <item name="android:textColor">@color/colonial</item>
+        <item name="android:fontFamily">@font/sax</item>
+
     </style>
 
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">

@@ -18,7 +18,6 @@
 package net.simno.dmach;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.media.AudioManager;
 
 import net.simno.dmach.db.DbModule;
@@ -40,11 +39,6 @@ class DMachModule {
     @Provides @Singleton
     Context provideContext() {
         return app;
-    }
-
-    @Provides @Singleton
-    Typeface provideTypeface(Context context) {
-        return Typeface.createFromAsset(context.getAssets(), "fonts/saxmono.ttf");
     }
 
     @Provides

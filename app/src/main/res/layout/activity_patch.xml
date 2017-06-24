@@ -22,7 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     android:layout_height="match_parent"
     tools:context="net.simno.dmach.ui.activity.PatchActivity">
 
-    <net.simno.dmach.ui.view.TypefaceEditText
+    <EditText
         android:id="@+id/save_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,9 +37,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:maxLines="1"
         android:maxLength="50"
         android:hint="@string/patch_name"
-        android:inputType="text"/>
+        android:inputType="text"
+        android:fontFamily="@font/sax"/>
 
-    <net.simno.dmach.ui.view.TypefaceButton
+    <Button
         android:id="@+id/save_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -51,7 +52,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:text="@string/patch_save"
         style="@style/Button"/>
 
-    <net.simno.dmach.ui.view.TypefaceTextView
+    <TextView
         android:id="@+id/name_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -65,9 +66,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:layout_toStartOf="@+id/swing_text"
         android:textAllCaps="true"
         android:text="@string/patch_name"
-        android:lines="1"/>
+        android:lines="1"
+        android:fontFamily="@font/sax"/>
 
-    <net.simno.dmach.ui.view.TypefaceTextView
+    <TextView
         android:id="@+id/swing_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -81,9 +83,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:layout_toStartOf="@+id/tempo_text"
         android:textAllCaps="true"
         android:text="@string/patch_swing"
-        android:lines="1"/>
+        android:lines="1"
+        android:fontFamily="@font/sax"/>
 
-    <net.simno.dmach.ui.view.TypefaceTextView
+    <TextView
         android:id="@+id/tempo_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -97,7 +100,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         android:layout_alignParentEnd="true"
         android:textAllCaps="true"
         android:text="@string/patch_bpm"
-        android:lines="1"/>
+        android:lines="1"
+        android:fontFamily="@font/sax"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
