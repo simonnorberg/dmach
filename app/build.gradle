@@ -19,7 +19,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'checkstyle'
 
 checkstyle {
-    toolVersion = '7.8.2'
+    toolVersion = '8.2'
 }
 
 task checkstyle(type: Checkstyle) {
@@ -43,7 +43,7 @@ afterEvaluate {
 def versionMajor = 1
 def versionMinor = 6
 def versionPatch = 0
-def versionBuild = 0
+def versionBuild = 1
 
 def gitSha() {
     def p = 'git rev-parse --short HEAD'.execute([], project.rootDir)
@@ -67,7 +67,7 @@ def gitTimestamp() {
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.0"
+    buildToolsVersion "26.0.1"
 
     defaultConfig {
         applicationId "net.simno.dmach"
@@ -167,28 +167,26 @@ def getNdkBuildExecutablePath() {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:26.0.0-beta2'
-    compile 'com.android.support:recyclerview-v7:26.0.0-beta2'
+    compile 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.android.support:recyclerview-v7:26.1.0'
 
-    compile 'com.google.code.gson:gson:2.8.1'
+    compile 'com.google.code.gson:gson:2.8.2'
     compile 'com.google.dagger:dagger:2.11'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
 
-    compile 'com.jakewharton:butterknife:8.6.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile 'com.jakewharton.timber:timber:4.5.1'
 
-    compile 'com.squareup.sqlbrite2:sqlbrite:2.0.0-SNAPSHOT'
-
-    compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.1.0'
+    compile 'com.squareup.sqlbrite2:sqlbrite:2.0.0'
 
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    compile 'io.reactivex.rxjava2:rxjava:2.1.1'
+    compile 'io.reactivex.rxjava2:rxjava:2.1.4'
 
     provided 'javax.annotation:jsr250-api:1.0'
 
-    compile 'org.parceler:parceler-api:1.1.8'
-    annotationProcessor 'org.parceler:parceler:1.1.8'
+    compile 'org.parceler:parceler-api:1.1.9'
+    annotationProcessor 'org.parceler:parceler:1.1.9'
 
     compile 'org.puredata.android:pd-core:1.0.2'
 }

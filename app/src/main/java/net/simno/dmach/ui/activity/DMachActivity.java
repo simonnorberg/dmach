@@ -74,7 +74,6 @@ import static android.media.AudioManager.AUDIOFOCUS_LOSS_TRANSIENT;
 import static android.media.AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK;
 import static android.media.AudioManager.AUDIOFOCUS_REQUEST_GRANTED;
 import static android.media.AudioManager.STREAM_MUSIC;
-import static butterknife.ButterKnife.findById;
 
 public class DMachActivity extends AppCompatActivity {
 
@@ -469,27 +468,27 @@ public class DMachActivity extends AppCompatActivity {
                 .create()
                 .show();
 
-        tempoText = findById(dialogView, R.id.tempo_value);
+        tempoText = dialogView.findViewById(R.id.tempo_value);
         tempoText.setText(" ");
         tempoText.append(String.valueOf(tempo));
 
-        SeekBar tempoTenSeek = findById(dialogView, R.id.tempo_seekbar_10);
+        SeekBar tempoTenSeek = dialogView.findViewById(R.id.tempo_seekbar_10);
         tempoTenSeek.setProgress((tempo / 10) - 1);
         tempoTenSeek.setOnSeekBarChangeListener(tempoListener);
 
-        SeekBar tempoOneSeek = findById(dialogView, R.id.tempo_seekbar_1);
+        SeekBar tempoOneSeek = dialogView.findViewById(R.id.tempo_seekbar_1);
         tempoOneSeek.setProgress(tempo % 10);
         tempoOneSeek.setOnSeekBarChangeListener(tempoListener);
 
-        swingText = findById(dialogView, R.id.swing_value);
+        swingText = dialogView.findViewById(R.id.swing_value);
         swingText.setText(" ");
         swingText.append(String.valueOf(swing));
 
-        SeekBar swingSeek = findById(dialogView, R.id.swing_seekbar);
+        SeekBar swingSeek = dialogView.findViewById(R.id.swing_seekbar);
         swingSeek.setProgress(swing);
         swingSeek.setOnSeekBarChangeListener(swingListener);
 
-        CheckBox audioFocusCheck = findById(dialogView, R.id.audiofocus_check);
+        CheckBox audioFocusCheck = dialogView.findViewById(R.id.audiofocus_check);
         audioFocusCheck.setChecked(ignoreAudioFocus);
         audioFocusCheck.setOnCheckedChangeListener(audioFocusCheckedListener);
     }
@@ -521,7 +520,7 @@ public class DMachActivity extends AppCompatActivity {
                 .create()
                 .show();
 
-        WebView webView = findById(dialogView, R.id.web_view);
+        WebView webView = dialogView.findViewById(R.id.web_view);
         webView.loadUrl("file:///android_asset/licenses.html");
 
         return true;

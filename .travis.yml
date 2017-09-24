@@ -7,13 +7,13 @@ jdk: oraclejdk8
 android:
   components:
     - tools
-    - build-tools-26.0.0
+    - build-tools-26.0.1
     - android-26
     - extra-android-m2repository
 
 before_install:
   - cd $TRAVIS_BUILD_DIR/..
-  - wget https://dl.google.com/android/repository/android-ndk-r15-linux-x86_64.zip -O ndk.zip
+  - wget https://dl.google.com/android/repository/android-ndk-r15c-linux-x86_64.zip -O ndk.zip
   - chmod a+x ndk.zip
   - unzip ndk.zip > /dev/null
   - rm ndk.zip
@@ -23,7 +23,7 @@ before_install:
 
 before_script:
   - cd $TRAVIS_BUILD_DIR/..
-  - git clone -b dmach-build-3 https://github.com/simonnorberg/pd-for-android.git pd-for-android
+  - git clone -b dmach-build-4 https://github.com/simonnorberg/pd-for-android.git pd-for-android
   - cd pd-for-android
   - git submodule update --init --recursive
   - ./gradlew PdCore:assembleRelease
