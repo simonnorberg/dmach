@@ -17,7 +17,7 @@ before_install:
   - chmod a+x ndk.zip
   - unzip ndk.zip > /dev/null
   - rm ndk.zip
-  - export ANDROID_NDK_HOME=`pwd`/android-ndk-r15
+  - export ANDROID_NDK_HOME=`pwd`/android-ndk-r15c
   - export PATH=$PATH:$ANDROID_NDK_HOME
   - echo $PATH
 
