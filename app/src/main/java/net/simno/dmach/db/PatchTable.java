@@ -21,6 +21,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import androidx.sqlite.db.SupportSQLiteDatabase;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,11 +54,11 @@ public class PatchTable {
     private PatchTable() {
     }
 
-    static void onCreate(SQLiteDatabase db) {
+    static void onCreate(SupportSQLiteDatabase db) {
         db.execSQL(CREATE_TABLE);
     }
 
-    static void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    static void onUpgrade(SupportSQLiteDatabase db, int oldVersion, int newVersion) {
         Timber.tag(PatchTable.class.getName())
                 .w("Upgrading database from version " + oldVersion + " to " + newVersion);
         if (oldVersion == 1 && newVersion == 2) {
@@ -72,16 +74,15 @@ public class PatchTable {
         }
     }
 
-    private static void upgrade(SQLiteDatabase db) {
+    private static void upgrade(SupportSQLiteDatabase db) {
         db.execSQL("alter table patch rename to old_patch;");
         onCreate(db);
         db.execSQL("insert into patch(title, sequence, channels, selected, tempo, swing) "
                 + "select title, sequence, channels, channel, tempo, swing from old_patch;");
         db.execSQL("drop table if exists old_patch");
 
-        Cursor cursor = db.rawQuery("select title, channels from patch", null);
+        Cursor cursor = db.query("select title, channels from patch");
         Map<String, String> data = new HashMap<>();
-        //noinspection TryFinallyCanBeTryWithResources
         try {
             while (cursor.moveToNext()) {
                 data.put(Db.getString(cursor, "title"), Db.getString(cursor, "channels"));
@@ -98,8 +99,13 @@ public class PatchTable {
                     .replace("mPan", "pan")
                     .replace("mSelectedSetting", "selectedSetting")
                     .replace("mSettings", "settings");
-            db.update(TABLE, new Builder().channels(newJson).build(), "title = ?",
-                    new String[]{entry.getKey()});
+            db.update(
+                    TABLE,
+                    SQLiteDatabase.CONFLICT_REPLACE,
+                    new Builder().channels(newJson).build(),
+                    "title = ?",
+                    new String[]{entry.getKey()}
+            );
         }
     }
 

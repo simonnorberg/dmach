@@ -1,0 +1,74 @@
+version: 2.0
+
+workspace: &workspace
+             ~/dmach
+
+config_android: &config_android
+  docker:
+    - image: circleci/android:api-29-ndk
+  working_directory: *workspace
+  environment:
+    JAVA_TOOL_OPTIONS: "-Xmx1024m -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
+    GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Djava.util.concurrent.ForkJoinPool.common.parallelism=2 -Dkotlin.incremental=false"
+    TERM: dumb
+
+update_sdk: &update_sdk
+  run:
+    name: Update SDK
+    command: |
+      yes | sdkmanager --licenses || true
+      sdkmanager "build-tools;29.0.2" "platform-tools" "platforms;android-29"
+
+gen_cache_key: &gen_cache_key
+  run:
+    name: Generate cache key
+    command: ./checksum.sh /tmp/checksum.txt
+
+restore_cache: &restore_cache
+  restore_cache:
+    key: gradle-{{ checksum "/tmp/checksum.txt" }}
+
+save_cache: &save_cache
+  save_cache:
+    paths:
+      - ~/.gradle/caches
+      - ~/.gradle/wrapper
+    key: gradle-{{ checksum "/tmp/checksum.txt" }}
+
+decrypt_secrets: &decrypt_secrets
+  run:
+    name: Decrypt secrets
+    command: ./signing/setup.sh $ENCRYPT_KEY
+
+clean_secrets: &clean_secrets
+  run:
+    name: Cleanup secrets
+    command: ./signing/cleanup.sh
+
+jobs:
+  build:
+    <<: *config_android
+    steps:
+      - <<: *update_sdk
+      - checkout
+      - <<: *gen_cache_key
+      - <<: *restore_cache
+      - <<: *decrypt_secrets
+
+      - run:
+          name: Download dependencies
+          command: ./gradlew app:dependencies
+      - run:
+          name: Build and check
+          command: ./gradlew assemble checkstyle
+
+      - <<: *save_cache
+
+      - deploy:
+          name: Publish release
+          command: |
+            if [ ${CIRCLE_BRANCH} == "master" ]; then
+              ./gradlew publishReleaseApk
+            fi
+
+      - <<: *clean_secrets

@@ -24,7 +24,6 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 
-@SuppressWarnings("WeakerAccess")
 @Singleton
 @Component(modules = DMachModule.class)
 public interface DMachComponent {

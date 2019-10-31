@@ -21,17 +21,18 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
+import androidx.annotation.NonNull;
 
 import net.simno.dmach.R;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import static android.support.v4.content.ContextCompat.getColor;
+import static androidx.core.content.ContextCompat.getColor;
 import static net.simno.dmach.ui.activity.DMachActivity.CHANNELS;
 import static net.simno.dmach.ui.activity.DMachActivity.GROUPS;
 import static net.simno.dmach.ui.activity.DMachActivity.MASKS;

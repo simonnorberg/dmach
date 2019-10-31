@@ -1,27 +1,16 @@
-/*
-* Copyright (C) 2015 Simon Norberg
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
-
 buildscript {
     repositories {
+        google()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'com.android.tools.build:gradle:3.6.0-beta01'
+        classpath 'com.github.triplet.gradle:play-publisher:2.4.2'
     }
+}
+
+plugins {
+    id 'com.github.ben-manes.versions' version '0.27.0'
 }
 
 allprojects {
@@ -29,8 +18,4 @@ allprojects {
         google()
         jcenter()
     }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
 }

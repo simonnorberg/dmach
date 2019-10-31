@@ -18,10 +18,15 @@
 package net.simno.dmach.db;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteOpenHelper;
 
-import com.squareup.sqlbrite2.BriteDatabase;
-import com.squareup.sqlbrite2.SqlBrite;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.sqlite.db.SupportSQLiteOpenHelper;
+import androidx.sqlite.db.SupportSQLiteOpenHelper.Callback;
+import androidx.sqlite.db.SupportSQLiteOpenHelper.Configuration;
+import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory;
+
+import com.squareup.sqlbrite3.BriteDatabase;
+import com.squareup.sqlbrite3.SqlBrite;
 
 import net.simno.dmach.BuildConfig;
 
@@ -35,9 +40,27 @@ import timber.log.Timber;
 @Module
 public class DbModule {
 
+    private static final String DB_NAME = "dmach.db";
+    private static final int DB_VERSION = 2;
+
     @Provides @Singleton
-    SQLiteOpenHelper provideSQLiteOpenHelper(Context context) {
-        return new DbOpenHelper(context);
+    SupportSQLiteOpenHelper provideSQLiteOpenHelper(Context context) {
+        Callback callback = new Callback(DB_VERSION) {
+            @Override
+            public void onCreate(SupportSQLiteDatabase db) {
+                PatchTable.onCreate(db);
+            }
+
+            @Override
+            public void onUpgrade(SupportSQLiteDatabase db, int oldVersion, int newVersion) {
+                PatchTable.onUpgrade(db, oldVersion, newVersion);
+            }
+        };
+        Configuration configuration = Configuration.builder(context)
+                .name(DB_NAME)
+                .callback(callback)
+                .build();
+        return new FrameworkSQLiteOpenHelperFactory().create(configuration);
     }
 
     @Provides @Singleton
@@ -51,7 +74,7 @@ public class DbModule {
     }
 
     @Provides @Singleton
-    BriteDatabase provideDatabase(SqlBrite sqlBrite, SQLiteOpenHelper helper) {
+    BriteDatabase provideDatabase(SqlBrite sqlBrite, SupportSQLiteOpenHelper helper) {
         BriteDatabase db = sqlBrite.wrapDatabaseHelper(helper, Schedulers.io());
         db.setLoggingEnabled(BuildConfig.DEBUG);
         return db;

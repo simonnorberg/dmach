@@ -41,7 +41,7 @@ public class Patch {
 
     public static final Function<Cursor, Patch> MAPPER = new Function<Cursor, Patch>() {
         @Override
-        public Patch apply(Cursor cursor) throws Exception {
+        public Patch apply(Cursor cursor) {
             String title = Db.getString(cursor, PatchTable.TITLE);
             String sequence = Db.getString(cursor, PatchTable.SEQUENCE);
             String channels = Db.getString(cursor, PatchTable.CHANNELS);

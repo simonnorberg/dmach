@@ -23,17 +23,18 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.support.annotation.NonNull;
-import android.support.v4.content.res.ResourcesCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 
 import net.simno.dmach.R;
 import net.simno.dmach.model.Channel;
 import net.simno.dmach.model.Setting;
 
-import static android.support.v4.content.ContextCompat.getColor;
+import static androidx.core.content.ContextCompat.getColor;
 
 public final class SettingView extends PdView {
 

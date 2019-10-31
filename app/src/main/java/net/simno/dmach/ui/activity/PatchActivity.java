@@ -23,15 +23,16 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.squareup.sqlbrite2.BriteDatabase;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.sqlbrite3.BriteDatabase;
 
 import net.simno.dmach.DMachApp;
 import net.simno.dmach.R;
@@ -102,7 +103,7 @@ public class PatchActivity extends AppCompatActivity implements OnPatchClickList
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(adapter, new Consumer<Throwable>() {
                     @Override
-                    public void accept(Throwable throwable) throws Exception {
+                    public void accept(Throwable throwable) {
                         Timber.e(throwable, "db error");
                     }
                 });
@@ -122,7 +123,7 @@ public class PatchActivity extends AppCompatActivity implements OnPatchClickList
         if (!TextUtils.isEmpty(title) && patch != null) {
             saveButton.setEnabled(false);
             try {
-                db.insert(PatchTable.TABLE, getInsertValues(), SQLiteDatabase.CONFLICT_FAIL);
+                db.insert(PatchTable.TABLE, SQLiteDatabase.CONFLICT_FAIL, getInsertValues());
                 returnResultSaved();
             } catch (SQLiteConstraintException e) {
                 showOverwriteDialog();
@@ -137,8 +138,13 @@ public class PatchActivity extends AppCompatActivity implements OnPatchClickList
                 .setPositiveButton(R.string.overwrite, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        db.update(PatchTable.TABLE, getUpdateValues(),
-                                SQLiteDatabase.CONFLICT_REPLACE, "title = ?", title);
+                        db.update(
+                                PatchTable.TABLE,
+                                SQLiteDatabase.CONFLICT_REPLACE,
+                                getUpdateValues(),
+                                "title = ?",
+                                title
+                        );
                         returnResultSaved();
                     }
                 })

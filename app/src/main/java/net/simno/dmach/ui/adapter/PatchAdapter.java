@@ -18,10 +18,12 @@
 package net.simno.dmach.ui.adapter;
 
 import android.app.Activity;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import net.simno.dmach.R;
 import net.simno.dmach.model.Patch;
@@ -52,6 +54,7 @@ public class PatchAdapter extends RecyclerView.Adapter<PatchViewHolder>
         ButterKnife.bind(this, activity);
     }
 
+    @NonNull
     @Override
     public PatchViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -76,7 +79,7 @@ public class PatchAdapter extends RecyclerView.Adapter<PatchViewHolder>
     }
 
     @Override
-    public void accept(List<Patch> patches) throws Exception {
+    public void accept(List<Patch> patches) {
         this.patches = patches;
         notifyDataSetChanged();
     }
