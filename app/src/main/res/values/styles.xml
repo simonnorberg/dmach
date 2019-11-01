@@ -1,27 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 
-Copyright (C) 2014 Simon Norberg
+<resources>
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+    <style name="OssLicenses" parent="Theme.AppCompat.DayNight" />
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program. If not, see <http://www.gnu.org/licenses/>.
--->
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <style name="Theme.AppCompat.NoActionBar.FullScreen" parent="Theme.AppCompat.NoActionBar">
+    <style name="Theme.AppCompat.NoActionBar.FullScreen" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@null</item>
     </style>
 
     <style name="DMachTheme" parent="Theme.AppCompat.NoActionBar.FullScreen">
@@ -38,23 +25,27 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     </style>
 
     <style name="Control">
-        <item name="android:padding">@dimen/margin_large</item>
-        <item name="android:scaleType">centerInside</item>
+        <item name="android:padding">@dimen/margin_normal</item>
+        <item name="android:scaleType">fitCenter</item>
         <item name="android:background">@drawable/sel_control</item>
+    </style>
+
+    <style name="Control.Play">
+        <item name="android:padding">@dimen/margin_small</item>
     </style>
 
     <style name="Logo">
         <item name="android:textAllCaps">true</item>
-        <item name="android:textSize">@dimen/text_size_logo</item>
+        <item name="android:textSize">@dimen/text_size_channel</item>
         <item name="android:textColor">@color/dune</item>
         <item name="android:text">@string/app_name</item>
-        <item name="android:fontFamily">@font/sax</item>
+        <item name="android:fontFamily">sans-serif-thin</item>
     </style>
 
     <style name="Button">
         <item name="android:background">@drawable/sel_channel</item>
         <item name="android:textColor">@color/colonial</item>
-        <item name="android:fontFamily">@font/sax</item>
+        <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="Channel" parent="Button">
@@ -67,9 +58,22 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     </style>
 
     <style name="Config">
+        <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textColor">@color/colonial</item>
-        <item name="android:fontFamily">@font/sax</item>
+    </style>
 
+    <style name="SettingText">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textColor">@color/dune</item>
+        <item name="android:textSize">@dimen/text_size_setting</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="PanText">
+        <item name="android:padding">0dp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textColor">@color/dune</item>
+        <item name="android:textSize">@dimen/text_size_channel</item>
     </style>
 
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">

@@ -1,27 +1,13 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.android.gms.oss-licenses-plugin'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlinx-serialization'
 apply plugin: 'com.github.triplet.play'
-apply plugin: 'checkstyle'
 
-checkstyle {
-    toolVersion = '8.26'
-}
-
-task checkstyle(type: Checkstyle) {
-    group 'verification'
-    configFile rootProject.file('checkstyle.xml')
-    source 'src/main/java'
-    ignoreFailures false
-    showViolations true
-    include '**/*.java'
-    exclude '**/gen/**'
-
-    classpath = files()
-}
-
-afterEvaluate {
-    if (project.tasks.findByName('check')) {
-        check.dependsOn('checkstyle')
-    }
+kapt {
+    correctErrorTypes = true
+    useBuildCache = true
 }
 
 play {
@@ -32,15 +18,26 @@ play {
 }
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    compileSdkVersion versions.compile_sdk
+    buildToolsVersion versions.build_tools
     defaultConfig {
-        applicationId "net.simno.dmach"
-        minSdkVersion 17
-        targetSdkVersion 29
-        versionCode 16023
-        versionName '1.6'
-        vectorDrawables.useSupportLibrary = true
+        applicationId 'net.simno.dmach'
+        minSdkVersion versions.min_sdk
+        targetSdkVersion versions.target_sdk
+        versionCode 20000
+        versionName '2.0'
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [
+                        "room.schemaLocation"  : "$projectDir/schemas".toString(),
+                        "room.incremental"     : "true",
+                        "room.expandProjection": "true"
+                ]
+            }
+        }
+    }
+    viewBinding {
+        enabled = true
     }
     signingConfigs {
         release {
@@ -51,56 +48,68 @@ android {
         }
     }
     buildTypes {
-        debug {
-            debuggable true
-            minifyEnabled false
-        }
         release {
-            debuggable false
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             signingConfig signingConfigs.release
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    sourceSets {
-        main {
-            assets.srcDirs = ['src/main/assets']
-        }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/proguard/*'
+        exclude 'META-INF/*.version'
+        exclude 'META-INF/*.properties'
+        exclude '/*.properties'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    lintOptions {
-        abortOnError false
-    }
-    packagingOptions {
-        exclude 'LICENSE.txt'
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
     }
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation 'androidx.sqlite:sqlite:2.0.1'
-    implementation 'androidx.sqlite:sqlite-framework:2.0.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$versions.kotlinx_serial"
+    implementation "androidx.activity:activity:$versions.androidx.activity"
+    implementation "androidx.activity:activity-ktx:$versions.androidx.activity"
+    implementation "androidx.appcompat:appcompat:$versions.androidx.appcompat"
+    implementation "androidx.dynamicanimation:dynamicanimation:$versions.androidx.dynamicanimation"
+    implementation "androidx.constraintlayout:constraintlayout:$versions.androidx.constraintlayout"
+    implementation "androidx.core:core-ktx:$versions.androidx.core"
+    implementation "androidx.lifecycle:lifecycle-extensions:$versions.androidx.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.androidx.lifecycle"
+    implementation "androidx.paging:paging-runtime-ktx:$versions.androidx.paging"
+    implementation "androidx.paging:paging-rxjava2:$versions.androidx.paging"
+    implementation "androidx.paging:paging-rxjava2-ktx:$versions.androidx.paging"
+    implementation "androidx.recyclerview:recyclerview:$versions.androidx.recyclerview"
+    implementation "androidx.room:room-runtime:$versions.androidx.room"
+    implementation "androidx.room:room-rxjava2:$versions.androidx.room"
+    kapt "androidx.room:room-compiler:$versions.androidx.room"
 
-    implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.google.dagger:dagger:2.25.2'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.25.2'
+    implementation "com.google.android.gms:play-services-oss-licenses:$versions.oss_licenses"
 
-    implementation 'com.jakewharton:butterknife:10.2.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
-    implementation 'com.jakewharton.timber:timber:4.7.1'
+    implementation "com.jakewharton.rxbinding3:rxbinding:$versions.rxbinding"
+    implementation "com.jakewharton.rxrelay2:rxrelay:$versions.rxrelay"
+    implementation "io.reactivex.rxjava2:rxandroid:$versions.rxandroid"
+    implementation "io.reactivex.rxjava2:rxjava:$versions.rxjava"
 
-    implementation 'com.squareup.sqlbrite3:sqlbrite:3.2.0'
+    implementation "net.simno.dmach:dmach-externals:$versions.dmach_ext"
+    implementation "net.simno.kortholt:kortholt:$versions.kortholt"
 
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.13'
-
-    implementation 'org.parceler:parceler-api:1.1.12'
-    annotationProcessor 'org.parceler:parceler:1.1.12'
-
-    implementation 'org.puredata.android:pd-core:1.1.0'
-    implementation 'net.simno.dmach:dmach-externals:1.2.3'
+    testImplementation "androidx.test:core:$versions.androidx.test_core"
+    testImplementation "androidx.test.ext:junit:$versions.androidx.test_junit"
+    testImplementation "androidx.test:runner:$versions.androidx.test_runner"
+    testImplementation "androidx.paging:paging-common-ktx:$versions.androidx.paging"
+    testImplementation "junit:junit:$versions.junit"
+    testImplementation "org.mockito:mockito-core:$versions.mockito"
+    testImplementation "org.robolectric:robolectric:$versions.robolectric"
+    testImplementation "com.google.truth:truth:$versions.truth"
 }

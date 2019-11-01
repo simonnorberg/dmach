@@ -1,20 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-Copyright (C) 2014 Simon Norberg
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program. If not, see <http://www.gnu.org/licenses/>.
--->
 <resources>
 
     <dimen name="margin_small">8dp</dimen>
@@ -29,8 +13,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     <dimen name="rect_height">92dp</dimen>
 
     <dimen name="text_size_channel">64dp</dimen>
-    <dimen name="text_size_setting">52dp</dimen>
-    <dimen name="text_size_logo">92dp</dimen>
+    <dimen name="text_size_setting">44dp</dimen>
     <dimen name="text_size">24sp</dimen>
 
     <dimen name="patch_swing_width">100dp</dimen>

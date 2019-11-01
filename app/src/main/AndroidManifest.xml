@@ -1,22 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-Copyright (C) 2014 Simon Norberg
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program. If not, see <http://www.gnu.org/licenses/>.
--->
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="net.simno.dmach">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -24,38 +8,48 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     <application
         android:name=".DMachApp"
         android:allowBackup="true"
-        android:label="@string/app_name"
+        android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/ic_launcher"
-        android:logo="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="false"
-        android:fullBackupContent="@xml/backup_descriptor">
+        tools:ignore="GoogleAppIndexingWarning,LockedOrientationActivity">
 
         <activity
-            android:name=".ui.activity.DMachActivity"
+            android:name=".machine.MachineActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="sensorLandscape"
             android:theme="@style/DMachTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".ui.activity.PatchActivity"
+            android:name=".patch.PatchActivity"
             android:exported="false"
             android:label="@string/app_name"
             android:screenOrientation="sensorLandscape"
             android:theme="@style/PatchTheme"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
+
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+            android:label="@string/oss_license_title"
+            android:screenOrientation="sensorLandscape"
+            android:theme="@style/OssLicenses" />
+
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+            android:screenOrientation="sensorLandscape"
+            android:theme="@style/OssLicenses" />
 
         <service
-            android:name="org.puredata.android.service.PdService"
-            android:exported="false"/>
+            android:name=".playback.PlaybackService"
+            android:exported="false" />
 
     </application>
 

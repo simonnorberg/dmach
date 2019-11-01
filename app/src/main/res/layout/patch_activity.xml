@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".patch.PatchActivity">
+
+    <EditText
+        android:id="@+id/saveText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_small"
+        android:hint="@string/patch_name"
+        android:imeOptions="actionDone|flagNoExtractUi"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:maxLength="50"
+        android:maxLines="1"
+        android:textColor="@color/dune"
+        android:textColorHint="@color/gurkha"
+        app:layout_constraintBottom_toBottomOf="@id/saveButton"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/saveButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/saveButton"
+        style="@style/Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/margin_small"
+        android:paddingStart="@dimen/margin_large"
+        android:paddingEnd="@dimen/margin_large"
+        android:text="@string/patch_save"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        android:lines="1"
+        android:paddingStart="@dimen/margin_normal"
+        android:paddingTop="@dimen/margin_small"
+        android:paddingEnd="0dp"
+        android:paddingBottom="@dimen/margin_small"
+        android:text="@string/patch_name"
+        android:textAllCaps="true"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/swingText"
+        app:layout_constraintTop_toBottomOf="@id/saveButton" />
+
+    <TextView
+        android:id="@+id/swingText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        android:lines="1"
+        android:minWidth="@dimen/patch_swing_width"
+        android:paddingStart="0dp"
+        android:paddingTop="@dimen/margin_small"
+        android:paddingEnd="@dimen/margin_normal"
+        android:paddingBottom="@dimen/margin_small"
+        android:text="@string/patch_swing"
+        android:textAllCaps="true"
+        app:layout_constraintRight_toLeftOf="@id/tempoText"
+        app:layout_constraintTop_toBottomOf="@id/saveButton" />
+
+    <TextView
+        android:id="@+id/tempoText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        android:lines="1"
+        android:minWidth="@dimen/patch_tempo_width"
+        android:paddingStart="0dp"
+        android:paddingTop="@dimen/margin_small"
+        android:paddingEnd="@dimen/margin_normal"
+        android:paddingBottom="@dimen/margin_small"
+        android:text="@string/patch_bpm"
+        android:textAllCaps="true"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/saveButton" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@+id/titleText"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

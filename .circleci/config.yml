@@ -60,7 +60,7 @@ jobs:
           command: ./gradlew app:dependencies
       - run:
           name: Build and check
-          command: ./gradlew assemble checkstyle
+          command: ./gradlew assemble spotlessKotlinCheck
 
       - <<: *save_cache
 

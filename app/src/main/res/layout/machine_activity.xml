@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    tools:context=".machine.MachineActivity">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/parentTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/margin_small" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/parentBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="@dimen/margin_small" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/parentLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/margin_small" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/parentRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/margin_small" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineControls"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".17" />
+
+    <ImageButton
+        android:id="@+id/playButton"
+        style="@style/Control.Play"
+        android:layout_width="@dimen/button_large_width"
+        android:layout_height="0dp"
+        android:contentDescription="@string/description_play"
+        android:src="@drawable/ic_control_play"
+        app:layout_constraintBottom_toTopOf="@id/guidelineControls"
+        app:layout_constraintLeft_toLeftOf="@id/parentLeft"
+        app:layout_constraintTop_toTopOf="@id/parentTop" />
+
+    <ImageButton
+        android:id="@+id/configButton"
+        style="@style/Control"
+        android:layout_width="@dimen/button_large_width"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_normal"
+        android:contentDescription="@string/description_config"
+        android:src="@drawable/ic_control_config"
+        app:layout_constraintBottom_toTopOf="@id/guidelineControls"
+        app:layout_constraintLeft_toRightOf="@id/playButton"
+        app:layout_constraintTop_toTopOf="@id/parentTop" />
+
+    <ImageButton
+        android:id="@+id/resetButton"
+        style="@style/Control"
+        android:layout_width="@dimen/button_large_width"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_normal"
+        android:contentDescription="@string/description_reset"
+        android:src="@drawable/ic_control_reset"
+        app:layout_constraintBottom_toTopOf="@id/guidelineControls"
+        app:layout_constraintLeft_toRightOf="@id/configButton"
+        app:layout_constraintTop_toTopOf="@id/parentTop" />
+
+    <ImageButton
+        android:id="@+id/randomButton"
+        style="@style/Control"
+        android:layout_width="@dimen/button_large_width"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_normal"
+        android:contentDescription="@string/description_random"
+        android:src="@drawable/ic_control_random"
+        app:layout_constraintBottom_toTopOf="@id/guidelineControls"
+        app:layout_constraintLeft_toRightOf="@id/resetButton"
+        app:layout_constraintTop_toTopOf="@id/parentTop" />
+
+    <ImageButton
+        android:id="@+id/patchButton"
+        style="@style/Control"
+        android:layout_width="@dimen/button_large_width"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_normal"
+        android:contentDescription="@string/description_patch"
+        android:src="@drawable/ic_control_patch"
+        app:layout_constraintBottom_toTopOf="@id/guidelineControls"
+        app:layout_constraintLeft_toRightOf="@id/randomButton"
+        app:layout_constraintTop_toTopOf="@id/parentTop" />
+
+    <TextView
+        android:id="@+id/logoText"
+        style="@style/Logo"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/margin_large"
+        android:gravity="end|center_vertical"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@id/guidelineControls"
+        app:layout_constraintRight_toRightOf="@id/parentRight"
+        app:layout_constraintTop_toTopOf="@id/parentTop" />
+
+    <Button
+        android:id="@+id/channelBD"
+        style="@style/Channel"
+        android:layout_width="@dimen/button_small_width"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_small"
+        android:contentDescription="@string/description_channel"
+        android:tag="0"
+        android:text="@string/channel_bd"
+        app:layout_constraintBottom_toTopOf="@id/channelSD"
+        app:layout_constraintLeft_toLeftOf="@id/parentLeft"
+        app:layout_constraintTop_toBottomOf="@id/guidelineControls" />
+
+    <Button
+        android:id="@+id/channelSD"
+        style="@style/Channel"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_small"
+        android:contentDescription="@string/description_channel"
+        android:tag="1"
+        android:text="@string/channel_sd"
+        app:layout_constraintBottom_toTopOf="@id/channelCP"
+        app:layout_constraintLeft_toLeftOf="@id/channelBD"
+        app:layout_constraintRight_toRightOf="@id/channelBD"
+        app:layout_constraintTop_toBottomOf="@id/channelBD" />
+
+    <Button
+        android:id="@+id/channelCP"
+        style="@style/Channel"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_small"
+        android:contentDescription="@string/description_channel"
+        android:tag="2"
+        android:text="@string/channel_cp"
+        app:layout_constraintBottom_toTopOf="@id/channelTT"
+        app:layout_constraintLeft_toLeftOf="@id/channelBD"
+        app:layout_constraintRight_toRightOf="@id/channelBD"
+        app:layout_constraintTop_toBottomOf="@id/channelSD" />
+
+    <Button
+        android:id="@+id/channelTT"
+        style="@style/Channel"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_small"
+        android:contentDescription="@string/description_channel"
+        android:tag="3"
+        android:text="@string/channel_tt"
+        app:layout_constraintBottom_toTopOf="@id/channelCB"
+        app:layout_constraintLeft_toLeftOf="@id/channelBD"
+        app:layout_constraintRight_toRightOf="@id/channelBD"
+        app:layout_constraintTop_toBottomOf="@id/channelCP" />
+
+    <Button
+        android:id="@+id/channelCB"
+        style="@style/Channel"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_small"
+        android:contentDescription="@string/description_channel"
+        android:tag="4"
+        android:text="@string/channel_cb"
+        app:layout_constraintBottom_toTopOf="@id/channelHH"
+        app:layout_constraintLeft_toLeftOf="@id/channelBD"
+        app:layout_constraintRight_toRightOf="@id/channelBD"
+        app:layout_constraintTop_toBottomOf="@id/channelTT" />
+
+    <Button
+        android:id="@+id/channelHH"
+        style="@style/Channel"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_small"
+        android:contentDescription="@string/description_channel"
+        android:tag="5"
+        android:text="@string/channel_hh"
+        app:layout_constraintBottom_toBottomOf="@id/parentBottom"
+        app:layout_constraintLeft_toLeftOf="@id/channelBD"
+        app:layout_constraintRight_toRightOf="@id/channelBD"
+        app:layout_constraintTop_toBottomOf="@id/channelCB" />
+
+    <Button
+        android:id="@+id/setting1"
+        style="@style/Setting"
+        android:layout_width="@dimen/button_small_width"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_small"
+        android:contentDescription="@string/description_setting"
+        android:tag="0"
+        android:text="@string/setting_1"
+        app:layout_constraintBottom_toBottomOf="@id/channelBD"
+        app:layout_constraintLeft_toRightOf="@id/channelBD"
+        app:layout_constraintTop_toTopOf="@id/channelBD" />
+
+    <Button
+        android:id="@+id/setting2"
+        style="@style/Setting"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/description_setting"
+        android:tag="1"
+        android:text="@string/setting_2"
+        app:layout_constraintBottom_toBottomOf="@id/channelSD"
+        app:layout_constraintLeft_toLeftOf="@id/setting1"
+        app:layout_constraintRight_toRightOf="@id/setting1"
+        app:layout_constraintTop_toTopOf="@id/channelSD" />
+
+    <Button
+        android:id="@+id/setting3"
+        style="@style/Setting"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/description_setting"
+        android:tag="2"
+        android:text="@string/setting_3"
+        app:layout_constraintBottom_toBottomOf="@id/channelCP"
+        app:layout_constraintLeft_toLeftOf="@id/setting1"
+        app:layout_constraintRight_toRightOf="@id/setting1"
+        app:layout_constraintTop_toTopOf="@id/channelCP" />
+
+    <Button
+        android:id="@+id/setting4"
+        style="@style/Setting"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/description_setting"
+        android:tag="3"
+        android:text="@string/setting_4"
+        app:layout_constraintBottom_toBottomOf="@id/channelTT"
+        app:layout_constraintLeft_toLeftOf="@id/setting1"
+        app:layout_constraintRight_toRightOf="@id/setting1"
+        app:layout_constraintTop_toTopOf="@id/channelTT" />
+
+    <Button
+        android:id="@+id/setting5"
+        style="@style/Setting"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/description_setting"
+        android:tag="4"
+        android:text="@string/setting_5"
+        app:layout_constraintBottom_toBottomOf="@id/channelCB"
+        app:layout_constraintLeft_toLeftOf="@id/setting1"
+        app:layout_constraintRight_toRightOf="@id/setting1"
+        app:layout_constraintTop_toTopOf="@id/channelCB" />
+
+    <Button
+        android:id="@+id/setting6"
+        style="@style/Setting"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/description_setting"
+        android:tag="5"
+        android:text="@string/setting_6"
+        app:layout_constraintBottom_toBottomOf="@id/channelHH"
+        app:layout_constraintLeft_toLeftOf="@id/setting1"
+        app:layout_constraintRight_toRightOf="@id/setting1"
+        app:layout_constraintTop_toTopOf="@id/channelHH" />
+
+    <net.simno.dmach.machine.view.StepSequencer
+        android:id="@+id/stepSequencer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        app:layout_constraintBottom_toBottomOf="@id/parentBottom"
+        app:layout_constraintLeft_toRightOf="@id/channelBD"
+        app:layout_constraintRight_toRightOf="@id/parentRight"
+        app:layout_constraintTop_toBottomOf="@id/guidelineControls" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelinePan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".89" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineGravity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".78" />
+
+    <View
+        android:id="@+id/chaosPadBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:background="@color/gamboge"
+        app:layout_constraintBottom_toBottomOf="@id/parentBottom"
+        app:layout_constraintLeft_toRightOf="@id/setting1"
+        app:layout_constraintRight_toLeftOf="@id/guidelineGravity"
+        app:layout_constraintTop_toBottomOf="@id/guidelineControls" />
+
+    <TextView
+        android:id="@+id/horizontalText"
+        style="@style/SettingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/chaosPadBackground"
+        app:layout_constraintLeft_toLeftOf="@id/chaosPadBackground"
+        app:layout_constraintRight_toRightOf="@id/chaosPadBackground" />
+
+    <net.simno.dmach.machine.view.VerticalTextView
+        android:id="@+id/verticalText"
+        style="@style/SettingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/chaosPadBackground"
+        app:layout_constraintLeft_toLeftOf="@id/chaosPadBackground"
+        app:layout_constraintTop_toTopOf="@id/chaosPadBackground" />
+
+    <net.simno.dmach.machine.view.ChaosPad
+        android:id="@+id/chaosPad"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/chaosPadBackground"
+        app:layout_constraintLeft_toLeftOf="@id/chaosPadBackground"
+        app:layout_constraintRight_toRightOf="@id/chaosPadBackground"
+        app:layout_constraintTop_toTopOf="@id/chaosPadBackground" />
+
+    <net.simno.dmach.machine.view.GravityFader
+        android:id="@+id/gravityFader"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        app:layout_constraintBottom_toBottomOf="@id/parentBottom"
+        app:layout_constraintLeft_toRightOf="@id/guidelineGravity"
+        app:layout_constraintRight_toRightOf="@id/guidelinePan"
+        app:layout_constraintTop_toBottomOf="@id/guidelineControls" />
+
+    <TextView
+        android:id="@+id/panRight"
+        style="@style/PanText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/shape_stroke_width"
+        android:text="@string/pan_right"
+        app:layout_constraintLeft_toLeftOf="@id/panFader"
+        app:layout_constraintRight_toRightOf="@id/panFader"
+        app:layout_constraintTop_toTopOf="@id/panFader" />
+
+    <TextView
+        android:id="@+id/panLeft"
+        style="@style/PanText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/shape_stroke_width"
+        android:text="@string/pan_left"
+        app:layout_constraintBottom_toBottomOf="@id/panFader"
+        app:layout_constraintLeft_toLeftOf="@id/panFader"
+        app:layout_constraintRight_toRightOf="@id/panFader" />
+
+    <net.simno.dmach.machine.view.PanFader
+        android:id="@+id/panFader"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        app:layout_constraintBottom_toBottomOf="@id/parentBottom"
+        app:layout_constraintLeft_toRightOf="@id/guidelinePan"
+        app:layout_constraintRight_toRightOf="@id/parentRight"
+        app:layout_constraintTop_toBottomOf="@id/guidelineControls" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/patchGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="chaosPadBackground,chaosPad,horizontalText,verticalText,gravityFader,panFader,panLeft,panRight"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

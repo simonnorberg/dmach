@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="ic_launcher_background">#f2f2c6</color>
+    <color name="dune">#302e2c</color>
+    <color name="dune_light">#3e3b39</color>
+    <color name="gamboge">#e9950a</color>
+    <color name="gamboge_alpha">#7fe9950a</color>
+    <color name="colonial">#f2f2c6</color>
+    <color name="colonial_alpha">#eff2f2c6</color>
+    <color name="poppy">#b02b2f</color>
+    <color name="khaki">#c1bf87</color>
+    <color name="gurkha">#94926f</color>
+
+</resources>

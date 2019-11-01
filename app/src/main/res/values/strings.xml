@@ -1,27 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-Copyright (C) 2014 Simon Norberg
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program. If not, see <http://www.gnu.org/licenses/>.
--->
 <resources>
 
     <string name="app_name">DMach</string>
 
-    <string name="dialog_bpm">BPM:</string>
-    <string name="dialog_swing">Swing:</string>
-    <string name="dialog_audiofocus">Play over other apps</string>
+    <string name="config_tempo">BPM</string>
+    <string name="config_swing">Swing</string>
+    <string name="config_audiofocus">Play over other apps</string>
 
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
@@ -43,6 +27,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     <string name="setting_5">5</string>
     <string name="setting_6">6</string>
 
+    <string name="pan_left">L</string>
+    <string name="pan_right">R</string>
+
     <string name="patch_save">Save patch</string>
     <string name="patch_name">Name</string>
     <string name="patch_swing">Swing</string>
@@ -51,6 +38,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     <string name="description_play">play</string>
     <string name="description_config">configure</string>
     <string name="description_reset">reset</string>
+    <string name="description_random">randomize</string>
     <string name="description_patch">open patch</string>
     <string name="description_setting">setting</string>
     <string name="description_channel">channel</string>
