@@ -86,7 +86,7 @@ private class RoomDb(
         .subscribeOn(dbScheduler)
 
     override fun insertPatch(title: String): Flowable<Boolean> = unsavedPatch()
-        .zipWith(Flowable.just(title), PatchToEntity)
+        .map(PatchToEntity(title))
         .map { patch ->
             try {
                 patchDao.insertPatch(patch) != 0L
@@ -101,7 +101,7 @@ private class RoomDb(
         }
 
     override fun replacePatch(): Flowable<Long> = unsavedPatch()
-        .zipWith(Flowable.just(saveTitle.value.orEmpty()), PatchToEntity)
+        .map(PatchToEntity(saveTitle.value.orEmpty()))
         .map { patch ->
             patchDao.replacePatch(patch)
         }
