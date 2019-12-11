@@ -1,3 +1,6 @@
+import net.simno.dmach.Libs
+import net.simno.dmach.Versions
+
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 apply plugin: 'kotlin-android'
@@ -13,18 +16,19 @@ kapt {
 play {
     track = 'internal'
     resolutionStrategy = 'ignore'
-    defaultToAppBundles = false
+    defaultToAppBundles = true
     serviceAccountCredentials = rootProject.file('signing/play-account.json')
 }
 
 android {
-    compileSdkVersion versions.compile_sdk
-    buildToolsVersion versions.build_tools
+    compileSdkVersion Versions.compileSdk
+    buildToolsVersion Versions.buildTools
+    ndkVersion Versions.ndk
     defaultConfig {
         applicationId 'net.simno.dmach'
-        minSdkVersion versions.min_sdk
-        targetSdkVersion versions.target_sdk
-        versionCode 20003
+        minSdkVersion Versions.minSdk
+        targetSdkVersion Versions.targetSdk
+        versionCode 20006
         versionName '2.0'
         javaCompileOptions {
             annotationProcessorOptions {
@@ -34,6 +38,9 @@ android {
                         "room.expandProjection": "true"
                 ]
             }
+        }
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
         }
     }
     viewBinding {
@@ -65,8 +72,8 @@ android {
         exclude '/*.properties'
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility Versions.java
+        targetCompatibility Versions.java
     }
     testOptions {
         unitTests {
@@ -76,40 +83,39 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin"
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$versions.kotlinx_serial"
-    implementation "androidx.activity:activity:$versions.androidx.activity"
-    implementation "androidx.activity:activity-ktx:$versions.androidx.activity"
-    implementation "androidx.appcompat:appcompat:$versions.androidx.appcompat"
-    implementation "androidx.dynamicanimation:dynamicanimation:$versions.androidx.dynamicanimation"
-    implementation "androidx.constraintlayout:constraintlayout:$versions.androidx.constraintlayout"
-    implementation "androidx.core:core-ktx:$versions.androidx.core"
-    implementation "androidx.lifecycle:lifecycle-extensions:$versions.androidx.lifecycle"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.androidx.lifecycle"
-    implementation "androidx.paging:paging-runtime-ktx:$versions.androidx.paging"
-    implementation "androidx.paging:paging-rxjava2:$versions.androidx.paging"
-    implementation "androidx.paging:paging-rxjava2-ktx:$versions.androidx.paging"
-    implementation "androidx.recyclerview:recyclerview:$versions.androidx.recyclerview"
-    implementation "androidx.room:room-runtime:$versions.androidx.room"
-    implementation "androidx.room:room-rxjava2:$versions.androidx.room"
-    kapt "androidx.room:room-compiler:$versions.androidx.room"
+    implementation Libs.Kotlin.stdlib
+    implementation Libs.Kotlin.serializationRuntime
 
-    implementation "com.google.android.gms:play-services-oss-licenses:$versions.oss_licenses"
+    implementation Libs.AndroidX.activity
+    implementation Libs.AndroidX.appcompat
+    implementation Libs.AndroidX.constraintlayout
+    implementation Libs.AndroidX.core
+    implementation Libs.AndroidX.dynamicanimation
+    implementation Libs.AndroidX.Lifecycle.extensions
+    implementation Libs.AndroidX.Lifecycle.viewmodel
+    implementation Libs.AndroidX.Paging.runtime
+    implementation Libs.AndroidX.Paging.rxjava2
+    implementation Libs.AndroidX.recyclerview
+    implementation Libs.AndroidX.Room.runtime
+    implementation Libs.AndroidX.Room.rxjava2
+    kapt Libs.AndroidX.Room.compiler
 
-    implementation "com.jakewharton.rxbinding3:rxbinding:$versions.rxbinding"
-    implementation "com.jakewharton.rxrelay2:rxrelay:$versions.rxrelay"
-    implementation "io.reactivex.rxjava2:rxandroid:$versions.rxandroid"
-    implementation "io.reactivex.rxjava2:rxjava:$versions.rxjava"
+    implementation Libs.Google.ossLicensesLibrary
 
-    implementation "net.simno.dmach:dmach-externals:$versions.dmach_ext"
-    implementation "net.simno.kortholt:kortholt:$versions.kortholt"
+    implementation Libs.rxbinding
+    implementation Libs.rxrelay
+    implementation Libs.rxandroid
+    implementation Libs.rxjava
 
-    testImplementation "androidx.test:core:$versions.androidx.test_core"
-    testImplementation "androidx.test.ext:junit:$versions.androidx.test_junit"
-    testImplementation "androidx.test:runner:$versions.androidx.test_runner"
-    testImplementation "androidx.paging:paging-common-ktx:$versions.androidx.paging"
-    testImplementation "junit:junit:$versions.junit"
-    testImplementation "org.mockito:mockito-core:$versions.mockito"
-    testImplementation "org.robolectric:robolectric:$versions.robolectric"
-    testImplementation "com.google.truth:truth:$versions.truth"
+    implementation Libs.dmachExternals
+    implementation Libs.kortholt
+
+    testImplementation Libs.AndroidX.Test.core
+    testImplementation Libs.AndroidX.Test.junit
+    testImplementation Libs.AndroidX.Test.runner
+    testImplementation Libs.AndroidX.Paging.common
+    testImplementation Libs.junit
+    testImplementation Libs.mockito
+    testImplementation Libs.robolectric
+    testImplementation Libs.Google.truth
 }
