@@ -1,48 +1,49 @@
 package net.simno.dmach.machine
 
 import android.media.AudioManager
-import io.reactivex.Flowable
-import io.reactivex.FlowableTransformer
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.flatMapMerge
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.onEach
 import net.simno.dmach.data.Channel
 import net.simno.dmach.data.Patch
 import net.simno.dmach.data.withPan
 import net.simno.dmach.data.withPosition
 import net.simno.dmach.data.withSelectedSetting
-import net.simno.dmach.db.Db
+import net.simno.dmach.db.PatchRepository
 import net.simno.dmach.playback.AudioFocus
 import net.simno.dmach.playback.PlaybackObserver
 import net.simno.dmach.playback.PureData
-import org.reactivestreams.Publisher
 
 class MachineProcessor(
     private val pureData: PureData,
     private val audioFocus: AudioFocus,
     private val playbackObservers: Set<PlaybackObserver>,
-    private val db: Db
-) : FlowableTransformer<Action, Result> {
+    private val patchRepository: PatchRepository
+) : (Flow<Action>) -> Flow<Result> {
 
-    override fun apply(actions: Flowable<Action>): Publisher<Result> = actions.publish { shared ->
-        Flowable.mergeArray<Result>(
-            shared.ofType(LoadAction::class.java).compose(load),
-            shared.ofType(PlaybackAction::class.java).compose(playback),
-            shared.ofType(PlayPauseAction::class.java).compose(playPause),
-            shared.ofType(AudioFocusAction::class.java).compose(audioFocusProcessor),
-            shared.ofType(ConfigAction::class.java).compose(config),
-            shared.ofType(ChangeSeqenceAction::class.java).compose(changeSequence),
-            shared.ofType(SelectChannelAction::class.java).compose(selectChannel),
-            shared.ofType(SelectSettingAction::class.java).compose(selectSetting),
-            shared.ofType(ChangePositionAction::class.java).compose(changePosition),
-            shared.ofType(ChangePanAction::class.java).compose(changePan),
-            shared.ofType(ChangeTempoAction::class.java).compose(changeTempo),
-            shared.ofType(ChangeSwingAction::class.java).compose(changeSwing)
-        )
-    }
+    override fun invoke(actions: Flow<Action>): Flow<Result> = merge(
+        actions.filterIsInstance<LoadAction>().let(load),
+        actions.filterIsInstance<PlaybackAction>().let(playback),
+        actions.filterIsInstance<PlayPauseAction>().let(playPause),
+        actions.filterIsInstance<AudioFocusAction>().let(audioFocusProcessor),
+        actions.filterIsInstance<ConfigAction>().let(config),
+        actions.filterIsInstance<DismissAction>().let(dismiss),
+        actions.filterIsInstance<ChangeSeqenceAction>().let(changeSequence),
+        actions.filterIsInstance<SelectChannelAction>().let(selectChannel),
+        actions.filterIsInstance<SelectSettingAction>().let(selectSetting),
+        actions.filterIsInstance<ChangePositionAction>().let(changePosition),
+        actions.filterIsInstance<ChangePanAction>().let(changePan),
+        actions.filterIsInstance<ChangeTempoAction>().let(changeTempo),
+        actions.filterIsInstance<ChangeSwingAction>().let(changeSwing)
+    )
 
-    private val load = FlowableTransformer<LoadAction, LoadResult> { actions ->
+    private val load: (Flow<LoadAction>) -> Flow<LoadResult> = { actions ->
         actions
-            .flatMap {
-                db.activePatch()
+            .flatMapMerge {
+                patchRepository.activePatch()
             }
             .sendToPureData { patch ->
                 pureData.changeSequence(patch.sequence)
@@ -74,9 +75,9 @@ class MachineProcessor(
             }
     }
 
-    private val playback = FlowableTransformer<PlaybackAction, PlaybackResult> { actions ->
+    private val playback: (Flow<PlaybackAction>) -> Flow<PlaybackResult> = { actions ->
         actions
-            .flatMap {
+            .flatMapMerge {
                 audioFocus.audioFocus()
             }
             .map { audioFocus ->
@@ -94,9 +95,9 @@ class MachineProcessor(
             }
     }
 
-    private val playPause = FlowableTransformer<PlayPauseAction, PlayPauseResult> { actions ->
+    private val playPause: (Flow<PlayPauseAction>) -> Flow<PlayPauseResult> = { actions ->
         actions
-            .doOnNext {
+            .onEach {
                 audioFocus.toggleFocus()
             }
             .computeResult {
@@ -104,9 +105,9 @@ class MachineProcessor(
             }
     }
 
-    private val audioFocusProcessor = FlowableTransformer<AudioFocusAction, AudioFocusResult> { actions ->
+    private val audioFocusProcessor: (Flow<AudioFocusAction>) -> Flow<AudioFocusResult> = { actions ->
         actions
-            .doOnNext { action ->
+            .onEach { action ->
                 audioFocus.setIgnoreAudioFocus(action.ignoreAudioFocus)
             }
             .computeResult {
@@ -114,20 +115,23 @@ class MachineProcessor(
             }
     }
 
-    private val config = FlowableTransformer<ConfigAction, ConfigResult> { actions ->
+    private val config: (Flow<ConfigAction>) -> Flow<ConfigResult> = { actions ->
         actions
-            .flatMap { action ->
-                db.unsavedPatch()
-                    .computeResult { patch ->
-                        if (!action.showConfig) {
-                            playbackObservers.forEach { it.updateInfo(patch.title, patch.tempo) }
-                        }
-                        ConfigResult(action.showConfig)
-                    }
+            .computeResult {
+                ConfigResult
             }
     }
 
-    private val changeSequence = FlowableTransformer<ChangeSeqenceAction, ChangeSequenceResult> { actions ->
+    private val dismiss: (Flow<DismissAction>) -> Flow<DismissResult> = { actions ->
+        actions
+            .computeResult {
+                val patch = patchRepository.unsavedPatch()
+                playbackObservers.forEach { it.updateInfo(patch.title, patch.tempo) }
+                DismissResult
+            }
+    }
+
+    private val changeSequence: (Flow<ChangeSeqenceAction>) -> Flow<ChangeSequenceResult> = { actions ->
         actions
             .modifyPatch { action, patch ->
                 patch.copy(sequence = action.sequence)
@@ -140,7 +144,7 @@ class MachineProcessor(
             }
     }
 
-    private val selectChannel = FlowableTransformer<SelectChannelAction, SelectChannelResult> { actions ->
+    private val selectChannel: (Flow<SelectChannelAction>) -> Flow<SelectChannelResult> = { actions ->
         actions
             .modifyPatch { action, patch ->
                 val selectedChannel = if (action.isSelected) Channel.NONE_ID else action.channel
@@ -160,7 +164,7 @@ class MachineProcessor(
             }
     }
 
-    private val selectSetting = FlowableTransformer<SelectSettingAction, SelectSettingResult> { actions ->
+    private val selectSetting: (Flow<SelectSettingAction>) -> Flow<SelectSettingResult> = { actions ->
         actions
             .modifyPatch { action, patch ->
                 patch.withSelectedSetting(action.setting)
@@ -177,7 +181,7 @@ class MachineProcessor(
             }
     }
 
-    private val changePosition = FlowableTransformer<ChangePositionAction, ChangePositionResult> { actions ->
+    private val changePosition: (Flow<ChangePositionAction>) -> Flow<ChangePositionResult> = { actions ->
         actions
             .modifyPatch { action, patch ->
                 patch.withPosition(action.position)
@@ -191,7 +195,7 @@ class MachineProcessor(
             }
     }
 
-    private val changePan = FlowableTransformer<ChangePanAction, ChangePanResult> { actions ->
+    private val changePan: (Flow<ChangePanAction>) -> Flow<ChangePanResult> = { actions ->
         actions
             .modifyPatch { action, patch ->
                 patch.withPan(action.pan)
@@ -205,7 +209,7 @@ class MachineProcessor(
             }
     }
 
-    private val changeTempo = FlowableTransformer<ChangeTempoAction, ChangeTempoResult> { actions ->
+    private val changeTempo: (Flow<ChangeTempoAction>) -> Flow<ChangeTempoResult> = { actions ->
         actions
             .modifyPatch { action, patch ->
                 patch.copy(tempo = action.tempo)
@@ -218,7 +222,7 @@ class MachineProcessor(
             }
     }
 
-    private val changeSwing = FlowableTransformer<ChangeSwingAction, ChangeSwingResult> { actions ->
+    private val changeSwing: (Flow<ChangeSwingAction>) -> Flow<ChangeSwingResult> = { actions ->
         actions
             .modifyPatch { action, patch ->
                 patch.copy(swing = action.swing)
@@ -231,21 +235,11 @@ class MachineProcessor(
             }
     }
 
-    private fun <T : Action> Flowable<T>.modifyPatch(modifier: (T, Patch) -> Patch): Flowable<Patch> = this
-        .flatMap { action ->
-            // Runs on db scheduler
-            db.unsavedPatch()
-                .map { patch ->
-                    modifier(action, patch)
-                }
-                .doOnNext(db.acceptPatch())
-        }
+    private fun <T : Action> Flow<T>.modifyPatch(modifier: (T, Patch) -> Patch): Flow<Patch> = this
+        .map { action -> modifier(action, patchRepository.unsavedPatch()) }
+        .onEach { patchRepository.acceptPatch(it) }
 
-    private fun <T> Flowable<T>.sendToPureData(sender: (T) -> Unit): Flowable<T> = this
-        .observeOn(Schedulers.computation())
-        .doOnNext(sender)
+    private fun <T> Flow<T>.sendToPureData(sender: suspend (T) -> Unit): Flow<T> = onEach(sender)
 
-    private fun <T, R : Result> Flowable<T>.computeResult(mapper: (T) -> R): Flowable<R> = this
-        .observeOn(Schedulers.computation())
-        .map(mapper)
+    private fun <T, R : Result> Flow<T>.computeResult(mapper: suspend (T) -> R): Flow<R> = map(mapper)
 }

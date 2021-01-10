@@ -1,194 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/margin_large">
-
-    <View
-        android:id="@+id/tempoBackground"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_margin="8dp"
-        android:background="@color/dune_light"
-        app:layout_constraintBottom_toTopOf="@id/swingBackground"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/tempoMinusBig"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="8dp"
-        android:contentDescription="@string/description_config"
-        android:src="@drawable/ic_config_minus"
-        app:layout_constraintBottom_toBottomOf="@id/tempoBackground"
-        app:layout_constraintLeft_toLeftOf="@id/tempoBackground"
-        app:layout_constraintTop_toTopOf="@id/tempoBackground" />
-
-    <ImageView
-        android:id="@+id/tempoMinusSmall"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:layout_marginEnd="24dp"
-        android:contentDescription="@string/description_config"
-        android:src="@drawable/ic_config_minus"
-        app:layout_constraintBottom_toBottomOf="@id/tempoBackground"
-        app:layout_constraintRight_toLeftOf="@id/swingLabel"
-        app:layout_constraintTop_toTopOf="@id/tempoBackground" />
-
-    <TextView
-        android:id="@+id/tempoLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/config_tempo"
-        android:textAllCaps="true"
-        android:textColor="@color/colonial"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@id/tempoValue"
-        app:layout_constraintLeft_toLeftOf="@id/tempoBackground"
-        app:layout_constraintRight_toRightOf="@id/tempoBackground"
-        app:layout_constraintTop_toTopOf="@id/tempoBackground"
-        app:layout_constraintVertical_chainStyle="packed" />
-
-    <TextView
-        android:id="@+id/tempoValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="monospace"
-        android:textAllCaps="true"
-        android:textColor="@color/colonial"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@id/tempoBackground"
-        app:layout_constraintLeft_toLeftOf="@id/tempoBackground"
-        app:layout_constraintRight_toRightOf="@id/tempoBackground"
-        app:layout_constraintTop_toBottomOf="@id/tempoLabel" />
-
-    <ImageView
-        android:id="@+id/tempoPlusSmall"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:layout_marginStart="24dp"
-        android:contentDescription="@string/description_config"
-        android:src="@drawable/ic_config_plus"
-        app:layout_constraintBottom_toBottomOf="@id/tempoBackground"
-        app:layout_constraintLeft_toRightOf="@id/swingLabel"
-        app:layout_constraintTop_toTopOf="@id/tempoBackground" />
-
-    <ImageView
-        android:id="@+id/tempoPlusBig"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginEnd="8dp"
-        android:contentDescription="@string/description_config"
-        android:src="@drawable/ic_config_plus"
-        app:layout_constraintBottom_toBottomOf="@id/tempoBackground"
-        app:layout_constraintRight_toRightOf="@id/tempoBackground"
-        app:layout_constraintTop_toTopOf="@id/tempoBackground" />
+    android:layout_gravity="center"
+    android:background="@color/dune"
+    android:clickable="true"
+    android:focusable="true"
+    tools:ignore="Overdraw">
 
     <net.simno.dmach.machine.view.TempoChanger
         android:id="@+id/tempoChanger"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@id/tempoBackground"
-        app:layout_constraintLeft_toLeftOf="@id/tempoBackground"
-        app:layout_constraintRight_toRightOf="@id/tempoBackground"
-        app:layout_constraintTop_toTopOf="@id/tempoBackground" />
+        android:layout_height="80dp"
+        android:layout_margin="8dp"
+        android:background="@color/dune_light"
+        app:layout_constraintBottom_toTopOf="@id/swingChanger"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
-        android:id="@+id/swingBackground"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="0dp"
-        android:background="@color/dune_light"
-        app:layout_constraintBottom_toTopOf="@id/audioFocusBackground"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tempoBackground" />
-
-    <ImageView
-        android:id="@+id/swingMinusBig"
+        android:id="@+id/tempoMinusBig"
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_marginStart="8dp"
-        android:contentDescription="@string/description_config"
-        android:src="@drawable/ic_config_minus"
-        app:layout_constraintBottom_toBottomOf="@id/swingBackground"
-        app:layout_constraintLeft_toLeftOf="@id/swingBackground"
-        app:layout_constraintTop_toTopOf="@id/swingBackground" />
+        android:background="@drawable/ic_config_minus"
+        app:layout_constraintBottom_toBottomOf="@id/tempoChanger"
+        app:layout_constraintStart_toStartOf="@id/tempoChanger"
+        app:layout_constraintTop_toTopOf="@id/tempoChanger" />
 
-    <ImageView
-        android:id="@+id/swingMinusSmall"
+    <View
+        android:id="@+id/tempoMinusSmall"
         android:layout_width="18dp"
         android:layout_height="18dp"
         android:layout_marginEnd="24dp"
-        android:contentDescription="@string/description_config"
-        android:src="@drawable/ic_config_minus"
-        app:layout_constraintBottom_toBottomOf="@id/swingBackground"
-        app:layout_constraintRight_toLeftOf="@id/swingLabel"
-        app:layout_constraintTop_toTopOf="@id/swingBackground" />
+        android:background="@drawable/ic_config_minus"
+        app:layout_constraintBottom_toBottomOf="@id/tempoChanger"
+        app:layout_constraintEnd_toStartOf="@id/swingLabel"
+        app:layout_constraintTop_toTopOf="@id/tempoChanger" />
 
     <TextView
-        android:id="@+id/swingLabel"
-        android:layout_width="wrap_content"
+        android:id="@+id/tempoLabel"
+        android:layout_width="64dp"
         android:layout_height="wrap_content"
-        android:text="@string/config_swing"
+        android:gravity="center_horizontal"
+        android:maxLines="1"
+        android:text="@string/config_tempo"
         android:textAllCaps="true"
         android:textColor="@color/colonial"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@id/swingValue"
-        app:layout_constraintLeft_toLeftOf="@id/swingBackground"
-        app:layout_constraintRight_toRightOf="@id/swingBackground"
-        app:layout_constraintTop_toTopOf="@id/swingBackground"
+        android:textSize="@dimen/text_size_small"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@id/tempoValue"
+        app:layout_constraintEnd_toEndOf="@id/tempoChanger"
+        app:layout_constraintStart_toStartOf="@id/tempoChanger"
+        app:layout_constraintTop_toTopOf="@id/tempoChanger"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
-        android:id="@+id/swingValue"
-        android:layout_width="wrap_content"
+        android:id="@+id/tempoValue"
+        android:layout_width="64dp"
         android:layout_height="wrap_content"
         android:fontFamily="monospace"
+        android:gravity="center_horizontal"
         android:textAllCaps="true"
         android:textColor="@color/colonial"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@id/swingBackground"
-        app:layout_constraintLeft_toLeftOf="@id/swingBackground"
-        app:layout_constraintRight_toRightOf="@id/swingBackground"
-        app:layout_constraintTop_toBottomOf="@id/swingLabel" />
+        android:textSize="@dimen/text_size_large"
+        app:layout_constraintBottom_toBottomOf="@id/tempoChanger"
+        app:layout_constraintEnd_toEndOf="@id/tempoChanger"
+        app:layout_constraintStart_toStartOf="@id/tempoChanger"
+        app:layout_constraintTop_toBottomOf="@id/tempoLabel"
+        tools:text="120" />
 
-    <ImageView
-        android:id="@+id/swingPlusSmall"
+    <View
+        android:id="@+id/tempoPlusSmall"
         android:layout_width="18dp"
         android:layout_height="18dp"
         android:layout_marginStart="24dp"
-        android:contentDescription="@string/description_config"
-        android:src="@drawable/ic_config_plus"
-        app:layout_constraintBottom_toBottomOf="@id/swingBackground"
-        app:layout_constraintLeft_toRightOf="@id/swingLabel"
-        app:layout_constraintTop_toTopOf="@id/swingBackground" />
+        android:background="@drawable/ic_config_plus"
+        app:layout_constraintBottom_toBottomOf="@id/tempoChanger"
+        app:layout_constraintStart_toEndOf="@id/swingLabel"
+        app:layout_constraintTop_toTopOf="@id/tempoChanger" />
 
-    <ImageView
-        android:id="@+id/swingPlusBig"
+    <View
+        android:id="@+id/tempoPlusBig"
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_marginEnd="8dp"
-        android:contentDescription="@string/description_config"
-        android:src="@drawable/ic_config_plus"
-        app:layout_constraintBottom_toBottomOf="@id/swingBackground"
-        app:layout_constraintRight_toRightOf="@id/swingBackground"
-        app:layout_constraintTop_toTopOf="@id/swingBackground" />
+        android:background="@drawable/ic_config_plus"
+        app:layout_constraintBottom_toBottomOf="@id/tempoChanger"
+        app:layout_constraintEnd_toEndOf="@id/tempoChanger"
+        app:layout_constraintTop_toTopOf="@id/tempoChanger" />
 
     <net.simno.dmach.machine.view.SwingChanger
         android:id="@+id/swingChanger"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@id/swingBackground"
-        app:layout_constraintLeft_toLeftOf="@id/swingBackground"
-        app:layout_constraintRight_toRightOf="@id/swingBackground"
-        app:layout_constraintTop_toTopOf="@id/swingBackground" />
+        android:layout_height="80dp"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginVertical="0dp"
+        android:background="@color/dune_light"
+        app:layout_constraintBottom_toTopOf="@id/audioFocusBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tempoChanger" />
+
+    <View
+        android:id="@+id/swingMinusBig"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/ic_config_minus"
+        app:layout_constraintBottom_toBottomOf="@id/swingChanger"
+        app:layout_constraintStart_toStartOf="@id/swingChanger"
+        app:layout_constraintTop_toTopOf="@id/swingChanger" />
+
+    <View
+        android:id="@+id/swingMinusSmall"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/ic_config_minus"
+        app:layout_constraintBottom_toBottomOf="@id/swingChanger"
+        app:layout_constraintEnd_toStartOf="@id/swingLabel"
+        app:layout_constraintTop_toTopOf="@id/swingChanger" />
+
+    <TextView
+        android:id="@+id/swingLabel"
+        android:layout_width="64dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:maxLines="1"
+        android:text="@string/config_swing"
+        android:textAllCaps="true"
+        android:textColor="@color/colonial"
+        android:textSize="@dimen/text_size_small"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@id/swingValue"
+        app:layout_constraintEnd_toEndOf="@id/swingChanger"
+        app:layout_constraintStart_toStartOf="@id/swingChanger"
+        app:layout_constraintTop_toTopOf="@id/swingChanger"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/swingValue"
+        android:layout_width="64dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="monospace"
+        android:gravity="center_horizontal"
+        android:textAllCaps="true"
+        android:textColor="@color/colonial"
+        android:textSize="@dimen/text_size_large"
+        app:layout_constraintBottom_toBottomOf="@id/swingChanger"
+        app:layout_constraintEnd_toEndOf="@id/swingChanger"
+        app:layout_constraintStart_toStartOf="@id/swingChanger"
+        app:layout_constraintTop_toBottomOf="@id/swingLabel"
+        tools:text="0" />
+
+    <View
+        android:id="@+id/swingPlusSmall"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="24dp"
+        android:background="@drawable/ic_config_plus"
+        app:layout_constraintBottom_toBottomOf="@id/swingChanger"
+        app:layout_constraintStart_toEndOf="@id/swingLabel"
+        app:layout_constraintTop_toTopOf="@id/swingChanger" />
+
+    <View
+        android:id="@+id/swingPlusBig"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/ic_config_plus"
+        app:layout_constraintBottom_toBottomOf="@id/swingChanger"
+        app:layout_constraintEnd_toEndOf="@id/swingChanger"
+        app:layout_constraintTop_toTopOf="@id/swingChanger" />
 
     <View
         android:id="@+id/audioFocusBackground"
@@ -197,9 +184,9 @@
         android:layout_margin="8dp"
         android:background="@color/dune_light"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/swingBackground" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/swingChanger" />
 
     <TextView
         android:id="@+id/audioFocusLabel"
@@ -208,9 +195,9 @@
         android:layout_margin="8dp"
         android:text="@string/config_audiofocus"
         android:textColor="@color/colonial"
-        android:textSize="18sp"
+        android:textSize="@dimen/text_size_small"
         app:layout_constraintBottom_toBottomOf="@id/audioFocusBackground"
-        app:layout_constraintLeft_toLeftOf="@id/audioFocusBackground"
+        app:layout_constraintStart_toStartOf="@id/audioFocusBackground"
         app:layout_constraintTop_toTopOf="@id/audioFocusBackground" />
 
     <CheckBox
@@ -219,7 +206,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         app:layout_constraintBottom_toBottomOf="@id/audioFocusBackground"
-        app:layout_constraintRight_toRightOf="@id/audioFocusBackground"
-        app:layout_constraintTop_toTopOf="@id/audioFocusBackground" />
-
+        app:layout_constraintEnd_toEndOf="@id/audioFocusBackground"
+        app:layout_constraintTop_toTopOf="@id/audioFocusBackground"
+        tools:checked="true" />
 </androidx.constraintlayout.widget.ConstraintLayout>

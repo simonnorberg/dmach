@@ -15,6 +15,7 @@ data class Channel(
 
     companion object {
         const val NONE_ID = -1
+
         val NONE: Channel = Channel("none", emptyList(), 0, 0.5f)
     }
 }

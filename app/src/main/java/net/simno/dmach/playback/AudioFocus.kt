@@ -1,35 +1,24 @@
 package net.simno.dmach.playback
 
-import android.annotation.TargetApi
 import android.content.SharedPreferences
 import android.media.AudioAttributes
 import android.media.AudioFocusRequest
 import android.media.AudioManager
-import android.os.Build
+import android.media.AudioManager.AUDIOFOCUS_GAIN
+import android.media.AudioManager.AUDIOFOCUS_LOSS
+import android.media.AudioManager.AUDIOFOCUS_LOSS_TRANSIENT
+import android.media.AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK
 import androidx.core.content.edit
-import com.jakewharton.rxrelay2.BehaviorRelay
-import io.reactivex.BackpressureStrategy
-import io.reactivex.Flowable
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
-interface AudioFocus {
-    fun audioFocus(): Flowable<Int>
-    fun toggleFocus()
-    fun setIgnoreAudioFocus(ignoreAudioFocus: Boolean)
-    fun isIgnoreAudioFocus(): Boolean
-
-    companion object {
-        fun create(
-            audioManager: AudioManager,
-            preferences: SharedPreferences
-        ): AudioFocus = AudioFocusImpl(audioManager, preferences)
-    }
-}
-
-private class AudioFocusImpl(
+class AudioFocus(
     private val audioManager: AudioManager,
     private val preferences: SharedPreferences
-) : AudioFocus, AudioManager.OnAudioFocusChangeListener {
-    private val audioFocus = BehaviorRelay.create<Int>()
+) : AudioManager.OnAudioFocusChangeListener {
+
+    private val audioFocus = MutableStateFlow(0) // AudioManager.AUDIOFOCUS_NONE = 0
     private val focusLock = Any()
     private var focusDelegate = getAudioFocusDelegate()
     private var playbackDelayed = false
@@ -37,7 +26,7 @@ private class AudioFocusImpl(
 
     override fun onAudioFocusChange(focusChange: Int) {
         when (focusChange) {
-            AudioManager.AUDIOFOCUS_GAIN -> {
+            AUDIOFOCUS_GAIN -> {
                 if (playbackDelayed || resumeOnFocusGain) {
                     synchronized(focusLock) {
                         playbackDelayed = false
@@ -46,15 +35,16 @@ private class AudioFocusImpl(
                     onFocusGain()
                 }
             }
-            AudioManager.AUDIOFOCUS_LOSS -> {
+            AUDIOFOCUS_LOSS -> {
                 synchronized(focusLock) {
                     playbackDelayed = false
                     resumeOnFocusGain = false
                 }
                 onFocusLoss()
             }
-            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT,
-            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
+            AUDIOFOCUS_LOSS_TRANSIENT,
+            AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK,
+            -> {
                 synchronized(focusLock) {
                     playbackDelayed = false
                     resumeOnFocusGain = true
@@ -64,24 +54,22 @@ private class AudioFocusImpl(
         }
     }
 
-    override fun audioFocus(): Flowable<Int> = audioFocus
-        .toFlowable(BackpressureStrategy.LATEST)
-        .distinctUntilChanged()
+    fun audioFocus(): Flow<Int> = audioFocus.asStateFlow()
 
-    override fun toggleFocus() {
-        if (audioFocus.value == AudioManager.AUDIOFOCUS_GAIN) {
+    fun toggleFocus() {
+        if (audioFocus.value == AUDIOFOCUS_GAIN) {
             abandonAudioFocus()
         } else {
             requestAudioFocus()
         }
     }
 
-    override fun setIgnoreAudioFocus(ignoreAudioFocus: Boolean) {
+    fun setIgnoreAudioFocus(ignoreAudioFocus: Boolean) {
         preferences.edit { putBoolean(IGNORE_AUDIO_FOCUS, ignoreAudioFocus) }
         focusDelegate = getAudioFocusDelegate()
     }
 
-    override fun isIgnoreAudioFocus(): Boolean = focusDelegate == IgnoreFocusDelegate
+    fun isIgnoreAudioFocus(): Boolean = focusDelegate == IgnoreFocusDelegate
 
     private fun requestAudioFocus() {
         val result = focusDelegate.requestFocus()
@@ -102,16 +90,15 @@ private class AudioFocusImpl(
 
     private fun getAudioFocusDelegate(): AudioFocusDelegate = when {
         preferences.getBoolean(IGNORE_AUDIO_FOCUS, false) -> IgnoreFocusDelegate
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> FocusDelegate()
-        else -> LegacyFocusDelegate()
+        else -> FocusDelegate()
     }
 
     private fun onFocusGain() {
-        audioFocus.accept(AudioManager.AUDIOFOCUS_GAIN)
+        audioFocus.tryEmit(AUDIOFOCUS_GAIN)
     }
 
     private fun onFocusLoss() {
-        audioFocus.accept(AudioManager.AUDIOFOCUS_LOSS)
+        audioFocus.tryEmit(AUDIOFOCUS_LOSS)
     }
 
     companion object {
@@ -124,9 +111,8 @@ private class AudioFocusImpl(
         fun isGranted(result: Int): Boolean
     }
 
-    @TargetApi(Build.VERSION_CODES.O)
     private inner class FocusDelegate : AudioFocusDelegate {
-        private val audioFocusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+        private val audioFocusRequest = AudioFocusRequest.Builder(AUDIOFOCUS_GAIN)
             .setAudioAttributes(
                 AudioAttributes.Builder()
                     .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
@@ -135,7 +121,7 @@ private class AudioFocusImpl(
             )
             .setWillPauseWhenDucked(true)
             .setAcceptsDelayedFocusGain(true)
-            .setOnAudioFocusChangeListener(this@AudioFocusImpl)
+            .setOnAudioFocusChangeListener(this@AudioFocus)
             .build()
 
         override fun requestFocus() = audioManager.requestAudioFocus(audioFocusRequest)
@@ -152,16 +138,6 @@ private class AudioFocusImpl(
                 else -> false
             }
         }
-    }
-
-    @Suppress("DEPRECATION")
-    private inner class LegacyFocusDelegate : AudioFocusDelegate {
-        override fun requestFocus() =
-            audioManager.requestAudioFocus(this@AudioFocusImpl, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN)
-
-        override fun abandonFocus() = audioManager.abandonAudioFocus(this@AudioFocusImpl)
-
-        override fun isGranted(result: Int) = result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED
     }
 
     private object IgnoreFocusDelegate : AudioFocusDelegate {

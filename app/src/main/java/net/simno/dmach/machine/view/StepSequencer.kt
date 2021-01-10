@@ -9,6 +9,10 @@ import android.view.View
 import androidx.annotation.Size
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.withClip
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import net.simno.dmach.R
 
 class StepSequencer @JvmOverloads constructor(
@@ -17,9 +21,13 @@ class StepSequencer @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
-    private val margin = resources.getDimension(R.dimen.margin_small)
+    private val _sequences = MutableSharedFlow<List<Int>>(
+        replay = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+    val sequences: SharedFlow<List<Int>> = _sequences.asSharedFlow()
 
-    var onSequenceChangedListener: OnSequenceChangedListener? = null
+    private val margin = resources.getDimension(R.dimen.margin_small)
     private var steps = (0..31).map { 0 }.toMutableList()
     private var uncheckedLight = 0
     private var uncheckedDark = 0
@@ -102,16 +110,12 @@ class StepSequencer @JvmOverloads constructor(
 
         if (isActionDown || (isChecked == actionDownIsChecked)) {
             steps[index] = steps[index] xor mask
-            onSequenceChangedListener?.onSequenceChanged(steps)
+            _sequences.tryEmit(steps)
             invalidate()
         }
     }
 
     private fun MotionEvent.isOutsideView() = x < 0 || y < 0 || x > width || y > height
-
-    interface OnSequenceChangedListener {
-        fun onSequenceChanged(sequence: List<Int>)
-    }
 
     companion object {
         private const val CHANNELS = 6

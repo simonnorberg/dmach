@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="ic_launcher_background">#f2f2c6</color>
+    <color name="ic_launcher_background">@color/colonial</color>
+    <color name="shadow">#8f000000</color>
     <color name="dune">#302e2c</color>
     <color name="dune_light">#3e3b39</color>
     <color name="gamboge">#e9950a</color>

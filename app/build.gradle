@@ -1,38 +1,46 @@
 import net.simno.dmach.Libs
 import net.simno.dmach.Versions
+import com.github.triplet.gradle.androidpublisher.ResolutionStrategy
 
-apply plugin: 'com.android.application'
-apply plugin: 'com.google.android.gms.oss-licenses-plugin'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlinx-serialization'
-apply plugin: 'com.github.triplet.play'
+plugins {
+    id 'com.android.application'
+    id 'com.google.android.gms.oss-licenses-plugin'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlinx-serialization'
+    id 'dagger.hilt.android.plugin'
+    id 'com.github.triplet.play'
+}
 
 kapt {
-    correctErrorTypes = true
-    useBuildCache = true
+    correctErrorTypes true
+    useBuildCache true
 }
 
 play {
-    track = 'internal'
-    resolutionStrategy = 'ignore'
-    defaultToAppBundles = true
-    serviceAccountCredentials = rootProject.file('signing/play-account.json')
+    track.set('internal')
+    resolutionStrategy.set(ResolutionStrategy.IGNORE)
+    defaultToAppBundles.set(true)
+    serviceAccountCredentials.set(rootProject.file('signing/play-account.json'))
+}
+
+Object propOrDef(String propertyName, Object defaultValue) {
+    def propertyValue = project.properties[propertyName]
+    return propertyValue != null ? propertyValue : defaultValue
 }
 
 android {
     compileSdkVersion Versions.compileSdk
-    buildToolsVersion Versions.buildTools
     ndkVersion Versions.ndk
     defaultConfig {
         applicationId 'net.simno.dmach'
         minSdkVersion Versions.minSdk
         targetSdkVersion Versions.targetSdk
-        versionCode 20006
+        versionCode 20009
         versionName '2.0'
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = [
+                arguments += [
                         "room.schemaLocation"  : "$projectDir/schemas".toString(),
                         "room.incremental"     : "true",
                         "room.expandProjection": "true"
@@ -42,16 +50,17 @@ android {
         ndk {
             abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
         }
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding true
     }
     signingConfigs {
         release {
             storeFile rootProject.file('signing/app-upload.jks')
-            storePassword System.getenv('STORE_PASSWORD')
-            keyAlias System.getenv('KEY_ALIAS')
-            keyPassword System.getenv('KEY_PASSWORD')
+            storePassword propOrDef('STORE_PASSWORD', "")
+            keyAlias propOrDef('KEY_ALIAS', "")
+            keyPassword propOrDef('KEY_PASSWORD', "")
         }
     }
     buildTypes {
@@ -77,38 +86,55 @@ android {
     }
     testOptions {
         unitTests {
-            includeAndroidResources = true
+            includeAndroidResources true
         }
+    }
+    sourceSets {
+        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
+        androidTest.assets.srcDirs += files("$projectDir/databases".toString())
     }
 }
 
 dependencies {
     implementation Libs.Kotlin.stdlib
     implementation Libs.Kotlin.serializationRuntime
+    implementation Libs.Coroutines.android
+    implementation Libs.Coroutines.core
 
     implementation Libs.AndroidX.activity
     implementation Libs.AndroidX.appcompat
     implementation Libs.AndroidX.constraintlayout
     implementation Libs.AndroidX.core
     implementation Libs.AndroidX.dynamicanimation
-    implementation Libs.AndroidX.Lifecycle.extensions
-    implementation Libs.AndroidX.Lifecycle.viewmodel
+    implementation Libs.AndroidX.fragment
+    implementation Libs.AndroidX.Hilt.viewmodel
+    kapt Libs.AndroidX.Hilt.compiler
+    implementation Libs.AndroidX.Lifecycle.livedata
+    implementation Libs.AndroidX.Lifecycle.runtime
+    implementation Libs.AndroidX.Lifecycle.viewmodelKtx
+    implementation Libs.AndroidX.Lifecycle.viewmodelState
     implementation Libs.AndroidX.Paging.runtime
-    implementation Libs.AndroidX.Paging.rxjava2
     implementation Libs.AndroidX.recyclerview
     implementation Libs.AndroidX.Room.runtime
-    implementation Libs.AndroidX.Room.rxjava2
+    implementation Libs.AndroidX.Room.common
+    implementation Libs.AndroidX.Room.ktx
     kapt Libs.AndroidX.Room.compiler
 
+    implementation Libs.Google.Hilt.android
+    kapt Libs.Google.Hilt.compiler
     implementation Libs.Google.ossLicensesLibrary
 
-    implementation Libs.rxbinding
-    implementation Libs.rxrelay
-    implementation Libs.rxandroid
-    implementation Libs.rxjava
-
+    implementation Libs.insetter
     implementation Libs.dmachExternals
     implementation Libs.kortholt
+
+    implementation Libs.LeakCanary.plumber
+    debugImplementation Libs.LeakCanary.leakcanary
+
+    androidTestImplementation Libs.AndroidX.Room.testing
+    androidTestImplementation Libs.AndroidX.Test.junit
+    androidTestImplementation Libs.AndroidX.Test.espresso
+    androidTestImplementation Libs.Google.truth
 
     testImplementation Libs.AndroidX.Test.core
     testImplementation Libs.AndroidX.Test.junit

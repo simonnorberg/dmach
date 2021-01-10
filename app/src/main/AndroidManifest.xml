@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="net.simno.dmach">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -8,12 +7,11 @@
     <application
         android:name=".DMachApp"
         android:allowBackup="true"
+        android:extractNativeLibs="true"
         android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher"
-        android:supportsRtl="false"
-        tools:ignore="LockedOrientationActivity">
+        android:supportsRtl="false">
 
         <activity
             android:name=".machine.MachineActivity"
@@ -21,7 +19,7 @@
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="sensorLandscape"
-            android:theme="@style/DMachTheme">
+            android:theme="@style/Theme.DMach">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -33,24 +31,22 @@
             android:exported="false"
             android:label="@string/app_name"
             android:screenOrientation="sensorLandscape"
-            android:theme="@style/PatchTheme"
+            android:theme="@style/Theme.DMach.Patch"
             android:windowSoftInputMode="stateHidden" />
 
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
             android:label="@string/oss_license_title"
             android:screenOrientation="sensorLandscape"
-            android:theme="@style/OssLicenses" />
+            android:theme="@style/Theme.OssLicenses" />
 
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
             android:screenOrientation="sensorLandscape"
-            android:theme="@style/OssLicenses" />
+            android:theme="@style/Theme.OssLicenses" />
 
         <service
             android:name=".playback.PlaybackService"
             android:exported="false" />
-
     </application>
-
 </manifest>

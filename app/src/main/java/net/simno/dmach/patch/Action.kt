@@ -2,7 +2,7 @@ package net.simno.dmach.patch
 
 sealed class Action
 
-object LoadAllAction : Action()
+object LoadAction : Action()
 
 object DismissAction : Action()
 

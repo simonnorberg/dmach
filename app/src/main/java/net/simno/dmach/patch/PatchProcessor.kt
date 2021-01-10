@@ -1,102 +1,85 @@
 package net.simno.dmach.patch
 
-import io.reactivex.Flowable
-import io.reactivex.FlowableTransformer
-import io.reactivex.schedulers.Schedulers
-import net.simno.dmach.db.Db
-import org.reactivestreams.Publisher
+import androidx.paging.PagingSource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
+import net.simno.dmach.db.PatchEntity
+import net.simno.dmach.db.PatchRepository
 
 class PatchProcessor(
-    private val db: Db
-) : FlowableTransformer<Action, Result> {
+    private val patchRepository: PatchRepository
+) : (Flow<Action>) -> Flow<Result> {
 
-    override fun apply(actions: Flowable<Action>): Publisher<Result> = actions.publish { shared ->
-        Flowable.mergeArray<Result>(
-            shared.ofType(LoadAllAction::class.java).compose(loadAll),
-            shared.ofType(DismissAction::class.java).compose(dismiss),
-            shared.ofType(ConfirmOverwriteAction::class.java).compose(confirmOverwrite),
-            shared.ofType(ConfirmDeleteAction::class.java).compose(confirmDelete),
-            shared.ofType(SavePatchAction::class.java).compose(savePatch),
-            shared.ofType(DeletePatchAction::class.java).compose(deletePatch),
-            shared.ofType(SelectPatchAction::class.java).compose(selectPatch)
-        )
-    }
+    override fun invoke(actions: Flow<Action>): Flow<Result> = merge(
+        actions.filterIsInstance<LoadAction>().let(load),
+        actions.filterIsInstance<DismissAction>().let(dismiss),
+        actions.filterIsInstance<ConfirmOverwriteAction>().let(confirmOverwrite),
+        actions.filterIsInstance<ConfirmDeleteAction>().let(confirmDelete),
+        actions.filterIsInstance<SavePatchAction>().let(savePatch),
+        actions.filterIsInstance<DeletePatchAction>().let(deletePatch),
+        actions.filterIsInstance<SelectPatchAction>().let(selectPatch)
+    )
 
-    private val loadAll = FlowableTransformer<LoadAllAction, LoadAllResult> { actions ->
+    fun patches(): PagingSource<Int, PatchEntity> = patchRepository.getAllPatches()
+
+    private val load: (Flow<LoadAction>) -> Flow<LoadResult> = { actions ->
         actions
-            .flatMap {
-                db.allPatches()
-            }
-            .flatMap { patches ->
-                db.unsavedPatch()
-                    .computeResult { patch ->
-                        LoadAllResult(
-                            title = patch.title,
-                            patches = patches
-                        )
-                    }
+            .computeResult {
+                val patch = patchRepository.unsavedPatch()
+                LoadResult(
+                    title = patch.title
+                )
             }
     }
 
-    private val dismiss = FlowableTransformer<DismissAction, DismissResult> { actions ->
+    private val dismiss: (Flow<DismissAction>) -> Flow<DismissResult> = { actions ->
         actions
             .computeResult {
                 DismissResult
             }
     }
 
-    private val confirmOverwrite = FlowableTransformer<ConfirmOverwriteAction, ConfirmOverwriteResult> { actions ->
+    private val confirmOverwrite: (Flow<ConfirmOverwriteAction>) -> Flow<ConfirmOverwriteResult> = { actions ->
         actions
-            .flatMap {
-                db.replacePatch()
-            }
             .computeResult {
+                patchRepository.replacePatch()
                 ConfirmOverwriteResult
             }
     }
 
-    private val confirmDelete = FlowableTransformer<ConfirmDeleteAction, ConfirmDeleteResult> { actions ->
+    private val confirmDelete: (Flow<ConfirmDeleteAction>) -> Flow<ConfirmDeleteResult> = { actions ->
         actions
-            .flatMap {
-                db.deletePatch()
-            }
             .computeResult {
+                patchRepository.deletePatch()
                 ConfirmDeleteResult
             }
     }
 
-    private val savePatch = FlowableTransformer<SavePatchAction, SavePatchResult> { actions ->
+    private val savePatch: (Flow<SavePatchAction>) -> Flow<SavePatchResult> = { actions ->
         actions
-            .flatMap { action ->
-                db.insertPatch(action.title)
-                    .computeResult { saved ->
-                        SavePatchResult(!saved, action.title)
-                    }
+            .computeResult { action ->
+                val saved = patchRepository.insertPatch(action.title)
+                SavePatchResult(!saved, action.title)
             }
     }
 
-    private val deletePatch = FlowableTransformer<DeletePatchAction, DeletePatchResult> { actions ->
+    private val deletePatch: (Flow<DeletePatchAction>) -> Flow<DeletePatchResult> = { actions ->
         actions
-            .map { action ->
-                action.title
-            }
-            .doOnNext(db.acceptDeleteTitle())
-            .computeResult { title ->
-                DeletePatchResult(title)
+            .computeResult { action ->
+                patchRepository.acceptDeleteTitle(action.title)
+                DeletePatchResult(action.title)
             }
     }
 
-    private val selectPatch = FlowableTransformer<SelectPatchAction, SelectPatchResult> { actions ->
+    private val selectPatch: (Flow<SelectPatchAction>) -> Flow<SelectPatchResult> = { actions ->
         actions
-            .flatMap {
-                db.selectPatch(it.title)
-            }
-            .computeResult {
+            .computeResult { action ->
+                patchRepository.selectPatch(action.title)
                 SelectPatchResult
             }
     }
 
-    private fun <T, R : Result> Flowable<T>.computeResult(mapper: (T) -> R): Flowable<R> = this
-        .observeOn(Schedulers.computation())
-        .map(mapper)
+    private fun <T, R : Result> Flow<T>.computeResult(mapper: suspend (T) -> R): Flow<R> = map(mapper)
 }

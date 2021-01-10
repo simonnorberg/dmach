@@ -1,0 +1,37 @@
+name: Android CI
+
+on: [ push ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      TERM: dumb
+      ORG_GRADLE_PROJECT_STORE_PASSWORD: ${{ secrets.ORG_GRADLE_PROJECT_STORE_PASSWORD }}
+      ORG_GRADLE_PROJECT_KEY_PASSWORD: ${{ secrets.ORG_GRADLE_PROJECT_KEY_PASSWORD }}
+      ORG_GRADLE_PROJECT_KEY_ALIAS: ${{ secrets.ORG_GRADLE_PROJECT_KEY_ALIAS }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Decrypt secrets
+        run: signing/setup.sh $ENCRYPT_KEY
+        env:
+          ENCRYPT_KEY: ${{ secrets.ENCRYPT_KEY }}
+
+      - name: Build and check
+        run: ./gradlew spotlessCheck assemble bundle app:lintDebug testDebug
+
+      - name: Publish release
+        if: github.ref == 'refs/heads/main'
+        run: ./gradlew publishReleaseBundle
+
+      - name: Clean secrets
+        if: always()
+        run: signing/cleanup.sh

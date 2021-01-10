@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<dev.chrisbanes.insetter.widgets.constraintlayout.InsetterConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,125 +8,104 @@
     tools:context=".machine.MachineActivity">
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/parentTop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="@dimen/margin_small" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/parentBottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_end="@dimen/margin_small" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/parentLeft"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="@dimen/margin_small" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/parentRight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="@dimen/margin_small" />
-
-    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineControls"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".17" />
+        app:layout_constraintGuide_percent=".16" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/playButton"
         style="@style/Control.Play"
-        android:layout_width="@dimen/button_large_width"
+        android:layout_width="@dimen/button_width_large"
         android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
         android:contentDescription="@string/description_play"
         android:src="@drawable/ic_control_play"
         app:layout_constraintBottom_toTopOf="@id/guidelineControls"
-        app:layout_constraintLeft_toLeftOf="@id/parentLeft"
-        app:layout_constraintTop_toTopOf="@id/parentTop" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_marginSystemWindowInsets="left|top" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/configButton"
         style="@style/Control"
-        android:layout_width="@dimen/button_large_width"
+        android:layout_width="@dimen/button_width_large"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/margin_normal"
+        android:layout_marginStart="@dimen/margin_medium"
         android:contentDescription="@string/description_config"
         android:src="@drawable/ic_control_config"
-        app:layout_constraintBottom_toTopOf="@id/guidelineControls"
-        app:layout_constraintLeft_toRightOf="@id/playButton"
-        app:layout_constraintTop_toTopOf="@id/parentTop" />
+        app:layout_constraintBottom_toBottomOf="@id/playButton"
+        app:layout_constraintStart_toEndOf="@id/playButton"
+        app:layout_constraintTop_toTopOf="@id/playButton" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/resetButton"
         style="@style/Control"
-        android:layout_width="@dimen/button_large_width"
+        android:layout_width="@dimen/button_width_large"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/margin_normal"
+        android:layout_marginStart="@dimen/margin_medium"
         android:contentDescription="@string/description_reset"
         android:src="@drawable/ic_control_reset"
-        app:layout_constraintBottom_toTopOf="@id/guidelineControls"
-        app:layout_constraintLeft_toRightOf="@id/configButton"
-        app:layout_constraintTop_toTopOf="@id/parentTop" />
+        app:layout_constraintBottom_toBottomOf="@id/playButton"
+        app:layout_constraintStart_toEndOf="@id/configButton"
+        app:layout_constraintTop_toTopOf="@id/playButton" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/randomButton"
         style="@style/Control"
-        android:layout_width="@dimen/button_large_width"
+        android:layout_width="@dimen/button_width_large"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/margin_normal"
+        android:layout_marginStart="@dimen/margin_medium"
         android:contentDescription="@string/description_random"
         android:src="@drawable/ic_control_random"
-        app:layout_constraintBottom_toTopOf="@id/guidelineControls"
-        app:layout_constraintLeft_toRightOf="@id/resetButton"
-        app:layout_constraintTop_toTopOf="@id/parentTop" />
+        app:layout_constraintBottom_toBottomOf="@id/playButton"
+        app:layout_constraintStart_toEndOf="@id/resetButton"
+        app:layout_constraintTop_toTopOf="@id/playButton" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/patchButton"
         style="@style/Control"
-        android:layout_width="@dimen/button_large_width"
+        android:layout_width="@dimen/button_width_large"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/margin_normal"
+        android:layout_marginStart="@dimen/margin_medium"
         android:contentDescription="@string/description_patch"
         android:src="@drawable/ic_control_patch"
-        app:layout_constraintBottom_toTopOf="@id/guidelineControls"
-        app:layout_constraintLeft_toRightOf="@id/randomButton"
-        app:layout_constraintTop_toTopOf="@id/parentTop" />
+        app:layout_constraintBottom_toBottomOf="@id/playButton"
+        app:layout_constraintStart_toEndOf="@id/randomButton"
+        app:layout_constraintTop_toTopOf="@id/playButton" />
 
     <TextView
         android:id="@+id/logoText"
         style="@style/Logo"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_margin="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_large"
         android:gravity="end|center_vertical"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toTopOf="@id/guidelineControls"
-        app:layout_constraintRight_toRightOf="@id/parentRight"
-        app:layout_constraintTop_toTopOf="@id/parentTop" />
+        android:maxLines="1"
+        android:text="@string/app_name"
+        app:layout_constraintBottom_toBottomOf="@id/playButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/playButton"
+        app:layout_marginSystemWindowInsets="right" />
 
-    <Button
+    <TextView
         android:id="@+id/channelBD"
         style="@style/Channel"
-        android:layout_width="@dimen/button_small_width"
+        android:layout_width="@dimen/button_width_small"
         android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_small"
         android:layout_marginTop="@dimen/margin_small"
         android:contentDescription="@string/description_channel"
         android:tag="0"
         android:text="@string/channel_bd"
         app:layout_constraintBottom_toTopOf="@id/channelSD"
-        app:layout_constraintLeft_toLeftOf="@id/parentLeft"
-        app:layout_constraintTop_toBottomOf="@id/guidelineControls" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guidelineControls"
+        app:layout_marginSystemWindowInsets="left" />
 
-    <Button
+    <TextView
         android:id="@+id/channelSD"
         style="@style/Channel"
         android:layout_width="0dp"
@@ -136,11 +115,11 @@
         android:tag="1"
         android:text="@string/channel_sd"
         app:layout_constraintBottom_toTopOf="@id/channelCP"
-        app:layout_constraintLeft_toLeftOf="@id/channelBD"
-        app:layout_constraintRight_toRightOf="@id/channelBD"
+        app:layout_constraintEnd_toEndOf="@id/channelBD"
+        app:layout_constraintStart_toStartOf="@id/channelBD"
         app:layout_constraintTop_toBottomOf="@id/channelBD" />
 
-    <Button
+    <TextView
         android:id="@+id/channelCP"
         style="@style/Channel"
         android:layout_width="0dp"
@@ -150,11 +129,11 @@
         android:tag="2"
         android:text="@string/channel_cp"
         app:layout_constraintBottom_toTopOf="@id/channelTT"
-        app:layout_constraintLeft_toLeftOf="@id/channelBD"
-        app:layout_constraintRight_toRightOf="@id/channelBD"
+        app:layout_constraintEnd_toEndOf="@id/channelBD"
+        app:layout_constraintStart_toStartOf="@id/channelBD"
         app:layout_constraintTop_toBottomOf="@id/channelSD" />
 
-    <Button
+    <TextView
         android:id="@+id/channelTT"
         style="@style/Channel"
         android:layout_width="0dp"
@@ -164,11 +143,11 @@
         android:tag="3"
         android:text="@string/channel_tt"
         app:layout_constraintBottom_toTopOf="@id/channelCB"
-        app:layout_constraintLeft_toLeftOf="@id/channelBD"
-        app:layout_constraintRight_toRightOf="@id/channelBD"
+        app:layout_constraintEnd_toEndOf="@id/channelBD"
+        app:layout_constraintStart_toStartOf="@id/channelBD"
         app:layout_constraintTop_toBottomOf="@id/channelCP" />
 
-    <Button
+    <TextView
         android:id="@+id/channelCB"
         style="@style/Channel"
         android:layout_width="0dp"
@@ -178,38 +157,40 @@
         android:tag="4"
         android:text="@string/channel_cb"
         app:layout_constraintBottom_toTopOf="@id/channelHH"
-        app:layout_constraintLeft_toLeftOf="@id/channelBD"
-        app:layout_constraintRight_toRightOf="@id/channelBD"
+        app:layout_constraintEnd_toEndOf="@id/channelBD"
+        app:layout_constraintStart_toStartOf="@id/channelBD"
         app:layout_constraintTop_toBottomOf="@id/channelTT" />
 
-    <Button
+    <TextView
         android:id="@+id/channelHH"
         style="@style/Channel"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginVertical="@dimen/margin_small"
         android:contentDescription="@string/description_channel"
         android:tag="5"
         android:text="@string/channel_hh"
-        app:layout_constraintBottom_toBottomOf="@id/parentBottom"
-        app:layout_constraintLeft_toLeftOf="@id/channelBD"
-        app:layout_constraintRight_toRightOf="@id/channelBD"
-        app:layout_constraintTop_toBottomOf="@id/channelCB" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/channelBD"
+        app:layout_constraintStart_toStartOf="@id/channelBD"
+        app:layout_constraintTop_toBottomOf="@id/channelCB"
+        app:layout_marginSystemWindowInsets="bottom" />
 
-    <Button
+    <TextView
         android:id="@+id/setting1"
         style="@style/Setting"
-        android:layout_width="@dimen/button_small_width"
+        android:layout_width="@dimen/button_width_small"
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/margin_small"
         android:contentDescription="@string/description_setting"
         android:tag="0"
         android:text="@string/setting_1"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/channelBD"
-        app:layout_constraintLeft_toRightOf="@id/channelBD"
+        app:layout_constraintStart_toEndOf="@id/channelBD"
         app:layout_constraintTop_toTopOf="@id/channelBD" />
 
-    <Button
+    <TextView
         android:id="@+id/setting2"
         style="@style/Setting"
         android:layout_width="0dp"
@@ -217,12 +198,13 @@
         android:contentDescription="@string/description_setting"
         android:tag="1"
         android:text="@string/setting_2"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/channelSD"
-        app:layout_constraintLeft_toLeftOf="@id/setting1"
-        app:layout_constraintRight_toRightOf="@id/setting1"
+        app:layout_constraintEnd_toEndOf="@id/setting1"
+        app:layout_constraintStart_toStartOf="@id/setting1"
         app:layout_constraintTop_toTopOf="@id/channelSD" />
 
-    <Button
+    <TextView
         android:id="@+id/setting3"
         style="@style/Setting"
         android:layout_width="0dp"
@@ -230,12 +212,13 @@
         android:contentDescription="@string/description_setting"
         android:tag="2"
         android:text="@string/setting_3"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/channelCP"
-        app:layout_constraintLeft_toLeftOf="@id/setting1"
-        app:layout_constraintRight_toRightOf="@id/setting1"
+        app:layout_constraintEnd_toEndOf="@id/setting1"
+        app:layout_constraintStart_toStartOf="@id/setting1"
         app:layout_constraintTop_toTopOf="@id/channelCP" />
 
-    <Button
+    <TextView
         android:id="@+id/setting4"
         style="@style/Setting"
         android:layout_width="0dp"
@@ -243,12 +226,13 @@
         android:contentDescription="@string/description_setting"
         android:tag="3"
         android:text="@string/setting_4"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/channelTT"
-        app:layout_constraintLeft_toLeftOf="@id/setting1"
-        app:layout_constraintRight_toRightOf="@id/setting1"
+        app:layout_constraintEnd_toEndOf="@id/setting1"
+        app:layout_constraintStart_toStartOf="@id/setting1"
         app:layout_constraintTop_toTopOf="@id/channelTT" />
 
-    <Button
+    <TextView
         android:id="@+id/setting5"
         style="@style/Setting"
         android:layout_width="0dp"
@@ -256,12 +240,13 @@
         android:contentDescription="@string/description_setting"
         android:tag="4"
         android:text="@string/setting_5"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/channelCB"
-        app:layout_constraintLeft_toLeftOf="@id/setting1"
-        app:layout_constraintRight_toRightOf="@id/setting1"
+        app:layout_constraintEnd_toEndOf="@id/setting1"
+        app:layout_constraintStart_toStartOf="@id/setting1"
         app:layout_constraintTop_toTopOf="@id/channelCB" />
 
-    <Button
+    <TextView
         android:id="@+id/setting6"
         style="@style/Setting"
         android:layout_width="0dp"
@@ -269,47 +254,35 @@
         android:contentDescription="@string/description_setting"
         android:tag="5"
         android:text="@string/setting_6"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/channelHH"
-        app:layout_constraintLeft_toLeftOf="@id/setting1"
-        app:layout_constraintRight_toRightOf="@id/setting1"
+        app:layout_constraintEnd_toEndOf="@id/setting1"
+        app:layout_constraintStart_toStartOf="@id/setting1"
         app:layout_constraintTop_toTopOf="@id/channelHH" />
 
     <net.simno.dmach.machine.view.StepSequencer
         android:id="@+id/stepSequencer"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_small"
-        app:layout_constraintBottom_toBottomOf="@id/parentBottom"
-        app:layout_constraintLeft_toRightOf="@id/channelBD"
-        app:layout_constraintRight_toRightOf="@id/parentRight"
-        app:layout_constraintTop_toBottomOf="@id/guidelineControls" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelinePan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent=".89" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineGravity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent=".78" />
+        android:layout_margin="@dimen/margin_small"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/channelBD"
+        app:layout_constraintTop_toBottomOf="@id/guidelineControls"
+        app:layout_marginSystemWindowInsets="right|bottom" />
 
     <View
         android:id="@+id/chaosPadBackground"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginVertical="@dimen/margin_small"
         android:layout_marginStart="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_small"
         android:background="@color/gamboge"
-        app:layout_constraintBottom_toBottomOf="@id/parentBottom"
-        app:layout_constraintLeft_toRightOf="@id/setting1"
-        app:layout_constraintRight_toLeftOf="@id/guidelineGravity"
-        app:layout_constraintTop_toBottomOf="@id/guidelineControls" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/gravityFader"
+        app:layout_constraintStart_toEndOf="@id/setting1"
+        app:layout_constraintTop_toBottomOf="@id/guidelineControls"
+        app:layout_marginSystemWindowInsets="bottom" />
 
     <TextView
         android:id="@+id/horizontalText"
@@ -317,8 +290,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@id/chaosPadBackground"
-        app:layout_constraintLeft_toLeftOf="@id/chaosPadBackground"
-        app:layout_constraintRight_toRightOf="@id/chaosPadBackground" />
+        app:layout_constraintEnd_toEndOf="@id/chaosPadBackground"
+        app:layout_constraintStart_toStartOf="@id/chaosPadBackground" />
 
     <net.simno.dmach.machine.view.VerticalTextView
         android:id="@+id/verticalText"
@@ -326,7 +299,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@id/chaosPadBackground"
-        app:layout_constraintLeft_toLeftOf="@id/chaosPadBackground"
+        app:layout_constraintStart_toStartOf="@id/chaosPadBackground"
         app:layout_constraintTop_toTopOf="@id/chaosPadBackground" />
 
     <net.simno.dmach.machine.view.ChaosPad
@@ -334,53 +307,56 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="@id/chaosPadBackground"
-        app:layout_constraintLeft_toLeftOf="@id/chaosPadBackground"
-        app:layout_constraintRight_toRightOf="@id/chaosPadBackground"
+        app:layout_constraintEnd_toEndOf="@id/chaosPadBackground"
+        app:layout_constraintStart_toStartOf="@id/chaosPadBackground"
         app:layout_constraintTop_toTopOf="@id/chaosPadBackground" />
 
     <net.simno.dmach.machine.view.GravityFader
         android:id="@+id/gravityFader"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/button_width_medium"
         android:layout_height="0dp"
+        android:layout_marginVertical="@dimen/margin_small"
         android:layout_marginStart="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_small"
-        app:layout_constraintBottom_toBottomOf="@id/parentBottom"
-        app:layout_constraintLeft_toRightOf="@id/guidelineGravity"
-        app:layout_constraintRight_toRightOf="@id/guidelinePan"
-        app:layout_constraintTop_toBottomOf="@id/guidelineControls" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/panFader"
+        app:layout_constraintStart_toEndOf="@id/chaosPadBackground"
+        app:layout_constraintTop_toBottomOf="@id/guidelineControls"
+        app:layout_marginSystemWindowInsets="bottom" />
 
     <TextView
         android:id="@+id/panRight"
-        style="@style/PanText"
+        style="@style/SettingText"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/shape_stroke_width"
+        android:layout_height="@dimen/rect_height"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:gravity="center"
         android:text="@string/pan_right"
-        app:layout_constraintLeft_toLeftOf="@id/panFader"
-        app:layout_constraintRight_toRightOf="@id/panFader"
+        app:layout_constraintEnd_toEndOf="@id/panFader"
+        app:layout_constraintStart_toStartOf="@id/panFader"
         app:layout_constraintTop_toTopOf="@id/panFader" />
 
     <TextView
         android:id="@+id/panLeft"
-        style="@style/PanText"
+        style="@style/SettingText"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/shape_stroke_width"
+        android:layout_height="@dimen/rect_height"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:gravity="center"
         android:text="@string/pan_left"
         app:layout_constraintBottom_toBottomOf="@id/panFader"
-        app:layout_constraintLeft_toLeftOf="@id/panFader"
-        app:layout_constraintRight_toRightOf="@id/panFader" />
+        app:layout_constraintEnd_toEndOf="@id/panFader"
+        app:layout_constraintStart_toStartOf="@id/panFader" />
 
     <net.simno.dmach.machine.view.PanFader
         android:id="@+id/panFader"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/button_width_medium"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_small"
-        app:layout_constraintBottom_toBottomOf="@id/parentBottom"
-        app:layout_constraintLeft_toRightOf="@id/guidelinePan"
-        app:layout_constraintRight_toRightOf="@id/parentRight"
-        app:layout_constraintTop_toBottomOf="@id/guidelineControls" />
+        android:layout_margin="@dimen/margin_small"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/gravityFader"
+        app:layout_constraintTop_toBottomOf="@id/guidelineControls"
+        app:layout_marginSystemWindowInsets="right|bottom" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/patchGroup"
@@ -389,8 +365,32 @@
         android:visibility="gone"
         app:constraint_referenced_ids="chaosPadBackground,chaosPad,horizontalText,verticalText,gravityFader,panFader,panLeft,panRight"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <View
+        android:id="@+id/dialogShadow"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/shadow"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/configDialog"
+        layout="@layout/config_dialog"
+        android:layout_width="480dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_marginSystemWindowInsets="left|top|right|bottom" />
+</dev.chrisbanes.insetter.widgets.constraintlayout.InsetterConstraintLayout>

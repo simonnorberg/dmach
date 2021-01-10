@@ -1,17 +1,13 @@
 package net.simno.dmach.patch
 
-import androidx.paging.PagedList
-import net.simno.dmach.data.Patch
-
 sealed class Result
 
 data class ErrorResult(
     val error: Throwable
 ) : Result()
 
-data class LoadAllResult(
-    val title: String,
-    val patches: PagedList<Patch>
+data class LoadResult(
+    val title: String
 ) : Result()
 
 object DismissResult : Result()

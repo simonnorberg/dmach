@@ -7,5 +7,3 @@ build
 captures
 .externalNativeBuild
 .cxx
-play-account.json
-*.jks

@@ -1,10 +1,9 @@
 package net.simno.dmach.machine
 
-import io.reactivex.functions.BiFunction
-import net.simno.dmach.logError
+import net.simno.dmach.util.logError
 
-object MachineStateReducer : BiFunction<ViewState, Result, ViewState> {
-    override fun apply(previousState: ViewState, result: Result) = when (result) {
+object MachineStateReducer : (ViewState, Result) -> ViewState {
+    override fun invoke(previousState: ViewState, result: Result) = when (result) {
         is ErrorResult -> {
             logError("MachineStateReducer", "ErrorResult", result.error)
             previousState
@@ -36,8 +35,13 @@ object MachineStateReducer : BiFunction<ViewState, Result, ViewState> {
             position = null,
             pan = null
         )
-        is ConfigResult -> previousState.copy(
-            showConfig = result.showConfig,
+        ConfigResult -> previousState.copy(
+            showConfig = true,
+            position = null,
+            pan = null
+        )
+        DismissResult -> previousState.copy(
+            showConfig = false,
             position = null,
             pan = null
         )

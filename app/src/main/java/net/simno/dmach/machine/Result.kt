@@ -32,9 +32,9 @@ data class AudioFocusResult(
     val ignoreAudioFocus: Boolean
 ) : Result()
 
-data class ConfigResult(
-    val showConfig: Boolean
-) : Result()
+object ConfigResult : Result()
+
+object DismissResult : Result()
 
 data class ChangeSequenceResult(
     val sequence: List<Int>

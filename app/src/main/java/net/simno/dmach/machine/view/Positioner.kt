@@ -3,11 +3,15 @@ package net.simno.dmach.machine.view
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Paint
-import android.graphics.PointF
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import net.simno.dmach.R
+import net.simno.dmach.data.Position
 
 abstract class Positioner @JvmOverloads constructor(
     context: Context,
@@ -15,25 +19,28 @@ abstract class Positioner @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
-    var onPositionChangedListener: OnPositionChangedListener? = null
-
     protected abstract val minX: Float
     protected abstract val minY: Float
-    protected val shapeStrokeWidth = resources.getDimension(R.dimen.shape_stroke_width)
+    protected val shapeStrokeWidth = resources.getDimension(R.dimen.margin_small)
     protected val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
         strokeWidth = shapeStrokeWidth
     }
 
+    private val _positions = MutableSharedFlow<Position>(
+        replay = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+    val positions: SharedFlow<Position> = _positions.asSharedFlow()
+
     protected var shapeX = 0f
     protected var shapeY = 0f
-    private var lastSetPosition: PointF? = null
 
     override fun hasOverlappingRendering(): Boolean = true
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         if (w != oldw || h != oldh) {
-            lastSetPosition?.let { setPosition(it) }
+            _positions.replayCache.firstOrNull()?.let { setPosition(it) }
         }
     }
 
@@ -54,12 +61,12 @@ abstract class Positioner @JvmOverloads constructor(
     }
 
     fun setPosition(x: Float = 0f, y: Float = 0f) {
-        setPosition(PointF(x, y))
+        setPosition(Position(x, y))
     }
 
-    private fun setPosition(position: PointF) {
+    private fun setPosition(position: Position) {
         // Save the position if we call setPosition before onSizeChanged has been called.
-        lastSetPosition = position
+        _positions.tryEmit(position)
 
         // Don't set shape position if layout is not finished.
         if (width == 0 && height == 0) {
@@ -93,6 +100,7 @@ abstract class Positioner @JvmOverloads constructor(
     }
 
     protected abstract fun getMaxX(): Float
+
     protected abstract fun getMaxY(): Float
 
     protected fun updatePosition(
@@ -131,10 +139,6 @@ abstract class Positioner @JvmOverloads constructor(
         } else {
             1 - ((shapeY - minY) / (getMaxY() - minY)).coerceIn(0f, 1f)
         }
-        onPositionChangedListener?.onPositionChanged(PointF(posX, posY))
-    }
-
-    interface OnPositionChangedListener {
-        fun onPositionChanged(point: PointF)
+        _positions.tryEmit(Position(posX, posY))
     }
 }

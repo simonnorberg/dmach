@@ -1,17 +1,15 @@
 package net.simno.dmach.patch
 
-import io.reactivex.functions.BiFunction
-import net.simno.dmach.logError
+import net.simno.dmach.util.logError
 
-object PatchStateReducer : BiFunction<ViewState, Result, ViewState> {
-    override fun apply(previousState: ViewState, result: Result) = when (result) {
+object PatchStateReducer : (ViewState, Result) -> ViewState {
+    override fun invoke(previousState: ViewState, result: Result) = when (result) {
         is ErrorResult -> {
             logError("PatchStateReducer", "ErrorResult", result.error)
             previousState
         }
-        is LoadAllResult -> previousState.copy(
-            title = result.title,
-            patches = result.patches
+        is LoadResult -> previousState.copy(
+            title = result.title
         )
         DismissResult -> previousState.copy(
             showDelete = false,

@@ -2,7 +2,6 @@ package net.simno.dmach.machine.view
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.PointF
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.VelocityTracker
@@ -115,6 +114,14 @@ class ChaosPad @JvmOverloads constructor(
 
     override fun getMaxY() = height - minY
 
+    fun setGravity(gravity: Float) {
+        friction = if (gravity > 0.99f) {
+            MAX_FRICTION
+        } else {
+            (gravity * 3).coerceIn(0.01f, 3f)
+        }
+    }
+
     private fun stopAnimations() {
         xFling?.cancel()
         xFling = null
@@ -152,19 +159,7 @@ class ChaosPad @JvmOverloads constructor(
             .setFriction(friction)
     }
 
-    class GravityListener(
-        private val chaosPad: ChaosPad
-    ) : OnPositionChangedListener {
-        override fun onPositionChanged(point: PointF) {
-            chaosPad.friction = if (point.y < 0.01) {
-                MAX_FRICTION
-            } else {
-                ((1 - point.y) * 3).coerceIn(0.01f, 3f)
-            }
-        }
-    }
-
     companion object {
-        val MAX_FRICTION = Float.MAX_VALUE
+        const val MAX_FRICTION = Float.MAX_VALUE
     }
 }

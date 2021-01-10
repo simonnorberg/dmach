@@ -7,6 +7,10 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.os.HandlerCompat
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 
 abstract class ValueChanger @JvmOverloads constructor(
     context: Context,
@@ -19,7 +23,12 @@ abstract class ValueChanger @JvmOverloads constructor(
 
     private val mainHandler = HandlerCompat.createAsync(Looper.getMainLooper())
 
-    var onValueChangedListener: ValueChangedListener? = null
+    private val _values = MutableSharedFlow<Int>(
+        replay = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+    val values: SharedFlow<Int> = _values.asSharedFlow()
+
     private var value = 0
     private var delay = 500L
     private var change = 1
@@ -28,9 +37,10 @@ abstract class ValueChanger @JvmOverloads constructor(
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
+        val x = event.x
         when (event.actionMasked) {
-            MotionEvent.ACTION_DOWN -> onActionDown(event)
-            MotionEvent.ACTION_MOVE -> onActionMove(event)
+            MotionEvent.ACTION_DOWN -> onActionDown(x)
+            MotionEvent.ACTION_MOVE -> onActionMove(x)
             MotionEvent.ACTION_UP -> onActionUpOrCancel()
             MotionEvent.ACTION_CANCEL -> onActionUpOrCancel()
         }
@@ -43,28 +53,37 @@ abstract class ValueChanger @JvmOverloads constructor(
         }
     }
 
-    private fun onActionDown(event: MotionEvent) {
-        HandlerCompat.postDelayed(mainHandler, {
-            calculateChangeAndDelay(event.x, width.toFloat())
-        }, null, 0)
-        HandlerCompat.postDelayed(mainHandler, delayedAction {
-            val newValue = value + change
-            if (newValue in minValue..maxValue) {
-                value = newValue
-                onValueChangedListener?.onValueChanged(newValue)
-            }
-        }, null, 0)
+    private fun onActionDown(x: Float) {
+        HandlerCompat.postDelayed(
+            mainHandler,
+            { calculateChangeAndDelay(x) },
+            null,
+            0
+        )
+        HandlerCompat.postDelayed(
+            mainHandler,
+            delayedAction {
+                val newValue = value + change
+                if (newValue in minValue..maxValue) {
+                    value = newValue
+                    _values.tryEmit(newValue)
+                }
+            },
+            null,
+            0
+        )
     }
 
-    private fun onActionMove(event: MotionEvent) {
-        calculateChangeAndDelay(event.x, width.toFloat())
+    private fun onActionMove(x: Float) {
+        calculateChangeAndDelay(x)
     }
 
     private fun onActionUpOrCancel() {
         mainHandler.removeCallbacksAndMessages(null)
     }
 
-    private fun calculateChangeAndDelay(x: Float, width: Float) {
+    private fun calculateChangeAndDelay(x: Float) {
+        val width = width.toFloat()
         if (width <= 0) {
             return
         }
@@ -85,10 +104,6 @@ abstract class ValueChanger @JvmOverloads constructor(
     private fun delayedAction(action: () -> Unit): () -> Unit = {
         action.invoke()
         HandlerCompat.postDelayed(mainHandler, delayedAction(action), null, delay)
-    }
-
-    interface ValueChangedListener {
-        fun onValueChanged(value: Int)
     }
 
     companion object {

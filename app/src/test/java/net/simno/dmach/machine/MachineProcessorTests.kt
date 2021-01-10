@@ -2,12 +2,23 @@ package net.simno.dmach.machine
 
 import android.media.AudioManager
 import com.google.common.truth.Truth.assertThat
-import io.reactivex.Flowable
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.runBlocking
 import net.simno.dmach.data.Position
 import net.simno.dmach.data.withPan
 import net.simno.dmach.data.withPosition
 import net.simno.dmach.data.withSelectedSetting
-import net.simno.dmach.db.TestDb
+import net.simno.dmach.db.PatchRepository
+import net.simno.dmach.db.TestPatchDao
 import net.simno.dmach.playback.AudioFocus
 import net.simno.dmach.playback.PlaybackObserver
 import net.simno.dmach.playback.PureData
@@ -18,47 +29,51 @@ import org.mockito.Mockito.`when`
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
-import java.util.concurrent.TimeUnit
 
 class MachineProcessorTests {
 
     @Mock
     private lateinit var pureData: PureData
+
     @Mock
     private lateinit var playbackObserver: PlaybackObserver
+
     @Mock
     private lateinit var audioFocus: AudioFocus
-    private lateinit var db: TestDb
+    private lateinit var repository: PatchRepository
+    private lateinit var testDao: TestPatchDao
     private lateinit var machineProcessor: MachineProcessor
 
-    private fun processAction(action: Action): Result = processActions(action).first()
+    private suspend fun processAction(action: Action): Result = processActions(action).first()
 
-    private fun processActions(vararg actions: Action): List<Result> {
-        val test = Flowable.intervalRange(0, actions.size.toLong(), 0, 50, TimeUnit.MILLISECONDS)
-            .map { actions[it.toInt()] }
-            .compose(machineProcessor)
-            .test()
-        test.awaitTerminalEvent()
-        test.assertNoErrors()
-        return test.values()
-    }
+    private suspend fun processActions(
+        vararg actions: Action,
+        resultSize: Int? = null
+    ): List<Result> = actions.asFlow()
+        .onEach { delay(10L) }
+        .buffer(0)
+        .shareIn(GlobalScope, SharingStarted.Lazily)
+        .let(machineProcessor)
+        .take(resultSize ?: actions.size)
+        .toList()
 
     @Before
     fun setup() {
-        MockitoAnnotations.initMocks(this)
-        db = TestDb()
-        machineProcessor = MachineProcessor(pureData, audioFocus, setOf(playbackObserver), db)
+        MockitoAnnotations.openMocks(this)
+        testDao = TestPatchDao()
+        repository = PatchRepository(testDao)
+        machineProcessor = MachineProcessor(pureData, audioFocus, setOf(playbackObserver), repository)
     }
 
     @Test
-    fun load() {
+    fun load() = runBlocking {
         val actual = processAction(LoadAction)
         val expected = LoadResult(
             ignoreAudioFocus = false,
-            sequence = db.patch.sequence,
-            tempo = db.patch.tempo,
-            swing = db.patch.swing,
-            selectedChannel = db.patch.selectedChannel,
+            sequence = testDao.patch.sequence,
+            tempo = testDao.patch.tempo,
+            swing = testDao.patch.swing,
+            selectedChannel = testDao.patch.selectedChannel,
             selectedSetting = 0,
             settingsSize = 4,
             hText = "1",
@@ -68,25 +83,25 @@ class MachineProcessorTests {
         )
         assertThat(actual).isEqualTo(expected)
 
-        verify(pureData, times(1)).changeSequence(db.patch.sequence)
-        verify(pureData, times(1)).changeTempo(db.patch.tempo)
-        verify(pureData, times(1)).changeSwing(db.patch.swing)
-        db.patch.channels.forEach { channel ->
+        verify(pureData, times(1)).changeSequence(testDao.patch.sequence)
+        verify(pureData, times(1)).changeTempo(testDao.patch.tempo)
+        verify(pureData, times(1)).changeSwing(testDao.patch.swing)
+        testDao.patch.channels.forEach { channel ->
             verify(pureData, times(1)).changePan(channel.name, channel.pan)
             channel.settings.forEach { setting ->
                 verify(pureData, times(1)).changeSetting(channel.name, setting)
             }
         }
-        verify(playbackObserver, times(1)).updateInfo(db.patch.title, db.patch.tempo)
+        verify(playbackObserver, times(1)).updateInfo(testDao.patch.title, testDao.patch.tempo)
     }
 
     @Test
-    fun playback() {
+    fun playback() = runBlocking {
         `when`(audioFocus.audioFocus())
-            .thenReturn(Flowable.just(AudioManager.AUDIOFOCUS_LOSS, AudioManager.AUDIOFOCUS_GAIN))
+            .thenReturn(flowOf(AudioManager.AUDIOFOCUS_LOSS, AudioManager.AUDIOFOCUS_GAIN))
 
-        val actual = processActions(PlaybackAction)
         val expected = listOf(PlaybackResult(false), PlaybackResult(true))
+        val actual = processActions(PlaybackAction, resultSize = expected.size)
         assertThat(actual).isEqualTo(expected)
 
         verify(playbackObserver, times(1)).onPlaybackStop()
@@ -94,7 +109,7 @@ class MachineProcessorTests {
     }
 
     @Test
-    fun playPause() {
+    fun playPause() = runBlocking {
         val actual = processActions(PlayPauseAction, PlayPauseAction, PlayPauseAction)
         val expected = listOf(PlayPauseResult, PlayPauseResult, PlayPauseResult)
         assertThat(actual).isEqualTo(expected)
@@ -103,7 +118,7 @@ class MachineProcessorTests {
     }
 
     @Test
-    fun audioFocus() {
+    fun audioFocus() = runBlocking {
         `when`(audioFocus.isIgnoreAudioFocus())
             .thenReturn(true)
             .thenReturn(false)
@@ -116,15 +131,19 @@ class MachineProcessorTests {
     }
 
     @Test
-    fun config() {
-        val actual = processActions(ConfigAction(true), ConfigAction(false), ConfigAction(true))
-        val expected = listOf(ConfigResult(true), ConfigResult(false), ConfigResult(true))
+    fun configDismiss() = runBlocking {
+        processAction(LoadAction)
+        verify(playbackObserver, times(1)).updateInfo(testDao.patch.title, testDao.patch.tempo)
+
+        val actual = processActions(ConfigAction, DismissAction, ConfigAction)
+        val expected = listOf(ConfigResult, DismissResult, ConfigResult)
         assertThat(actual).isEqualTo(expected)
-        verify(playbackObserver, times(1)).updateInfo(db.patch.title, db.patch.tempo)
+        verify(playbackObserver, times(2)).updateInfo(testDao.patch.title, testDao.patch.tempo)
     }
 
     @Test
-    fun changeSequence() {
+    fun changeSequence() = runBlocking {
+        processAction(LoadAction)
         val sequence = listOf(1337)
 
         val actual = processAction(ChangeSeqenceAction(sequence))
@@ -132,11 +151,12 @@ class MachineProcessorTests {
         assertThat(actual).isEqualTo(expected)
 
         verify(pureData, times(1)).changeSequence(sequence)
-        assertThat(db.acceptedPatch).isEqualTo(db.patch.copy(sequence = sequence))
+        assertThat(repository.unsavedPatch()).isEqualTo(testDao.patch.copy(sequence = sequence))
     }
 
     @Test
-    fun selectChannel() {
+    fun selectChannel() = runBlocking {
+        processAction(LoadAction)
         val selectedChannel = 2
 
         val actual = processAction(SelectChannelAction(selectedChannel, false))
@@ -151,12 +171,13 @@ class MachineProcessorTests {
         )
         assertThat(actual).isEqualTo(expected)
 
-        val expectedPatch = db.patch.copy(selectedChannel = selectedChannel)
-        assertThat(db.acceptedPatch).isEqualTo(expectedPatch)
+        val expectedPatch = testDao.patch.copy(selectedChannel = selectedChannel)
+        assertThat(repository.unsavedPatch()).isEqualTo(expectedPatch)
     }
 
     @Test
-    fun selectSetting() {
+    fun selectSetting() = runBlocking {
+        processAction(LoadAction)
         val selectedSetting = 1
 
         val actual = processAction(SelectSettingAction(selectedSetting))
@@ -169,59 +190,63 @@ class MachineProcessorTests {
         )
         assertThat(actual).isEqualTo(expected)
 
-        val expectedPatch = db.patch.withSelectedSetting(selectedSetting)
-        assertThat(db.acceptedPatch).isEqualTo(expectedPatch)
+        val expectedPatch = testDao.patch.withSelectedSetting(selectedSetting)
+        assertThat(repository.unsavedPatch()).isEqualTo(expectedPatch)
     }
 
     @Test
-    fun changePosition() {
+    fun changePosition() = runBlocking {
+        processAction(LoadAction)
         val position = Position(.13f, .37f)
 
         val actual = processAction(ChangePositionAction(position))
         val expected = ChangePositionResult
         assertThat(actual).isEqualTo(expected)
 
-        val expectedPatch = db.patch.withPosition(position)
+        val expectedPatch = testDao.patch.withPosition(position)
         verify(pureData, times(1)).changeSetting(expectedPatch.channel.name, expectedPatch.channel.setting)
-        assertThat(db.acceptedPatch).isEqualTo(expectedPatch)
+        assertThat(repository.unsavedPatch()).isEqualTo(expectedPatch)
     }
 
     @Test
-    fun changePan() {
+    fun changePan() = runBlocking {
+        processAction(LoadAction)
         val pan = .1337f
 
         val actual = processAction(ChangePanAction(pan))
         val expected = ChangePanResult
         assertThat(actual).isEqualTo(expected)
 
-        val expectedPatch = db.patch.withPan(pan)
+        val expectedPatch = testDao.patch.withPan(pan)
         verify(pureData, times(1)).changePan(expectedPatch.channel.name, expectedPatch.channel.pan)
-        assertThat(db.acceptedPatch).isEqualTo(expectedPatch)
+        assertThat(repository.unsavedPatch()).isEqualTo(expectedPatch)
     }
 
     @Test
-    fun changeTempo() {
+    fun changeTempo() = runBlocking {
+        processAction(LoadAction)
         val tempo = 1337
 
         val actual = processAction(ChangeTempoAction(tempo))
         val expected = ChangeTempoResult(tempo)
         assertThat(actual).isEqualTo(expected)
 
-        val expectedPatch = db.patch.copy(tempo = tempo)
+        val expectedPatch = testDao.patch.copy(tempo = tempo)
         verify(pureData, times(1)).changeTempo(tempo)
-        assertThat(db.acceptedPatch).isEqualTo(expectedPatch)
+        assertThat(repository.unsavedPatch()).isEqualTo(expectedPatch)
     }
 
     @Test
-    fun changeSwing() {
+    fun changeSwing() = runBlocking {
+        processAction(LoadAction)
         val swing = 1337
 
         val actual = processAction(ChangeSwingAction(swing))
         val expected = ChangeSwingResult(swing)
         assertThat(actual).isEqualTo(expected)
 
-        val expectedPatch = db.patch.copy(swing = swing)
+        val expectedPatch = testDao.patch.copy(swing = swing)
         verify(pureData, times(1)).changeSwing(swing)
-        assertThat(db.acceptedPatch).isEqualTo(expectedPatch)
+        assertThat(repository.unsavedPatch()).isEqualTo(expectedPatch)
     }
 }

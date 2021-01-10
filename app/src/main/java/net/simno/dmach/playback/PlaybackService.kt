@@ -7,7 +7,6 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import androidx.core.content.getSystemService
@@ -24,7 +23,8 @@ class PlaybackService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         startForeground(
-            NOTIFICATION_ID, createNotification(
+            NOTIFICATION_ID,
+            createNotification(
                 intent?.getStringExtra(TITLE) ?: getString(R.string.app_name),
                 intent?.getStringExtra(TEMPO).orEmpty()
             )
@@ -42,18 +42,16 @@ class PlaybackService : Service() {
 
     private fun createNotification(title: String, tempo: String): Notification {
         val manager = getSystemService<NotificationManager>()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = manager?.getNotificationChannel(CHANNEL_NAME)
-                ?: NotificationChannel(CHANNEL_NAME, CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW)
-            manager?.createNotificationChannel(channel)
-        }
+        val channel = manager?.getNotificationChannel(CHANNEL_NAME)
+            ?: NotificationChannel(CHANNEL_NAME, CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW)
+        manager?.createNotificationChannel(channel)
         val intent = Intent(this, MachineActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(applicationContext, 0, intent, 0)
+        val pendingIntent = PendingIntent.getActivity(applicationContext, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         return NotificationCompat.Builder(this, CHANNEL_NAME)
             .setContentTitle(title)
             .setContentText(tempo)
             .setContentIntent(pendingIntent)
-            .setSmallIcon(R.drawable.ic_stat_dmach)
+            .setSmallIcon(R.drawable.ic_stat_playback)
             .setOngoing(true)
             .setOnlyAlertOnce(true)
             .build()
@@ -65,7 +63,11 @@ class PlaybackService : Service() {
         private const val CHANNEL_NAME = "Playback"
         private const val NOTIFICATION_ID = 1337
 
-        fun intent(context: Context, title: String? = null, tempo: String? = null): Intent {
+        fun intent(
+            context: Context,
+            title: String? = null,
+            tempo: String? = null
+        ): Intent {
             return Intent(context, PlaybackService::class.java).apply {
                 putExtra(TITLE, title)
                 putExtra(TEMPO, tempo)

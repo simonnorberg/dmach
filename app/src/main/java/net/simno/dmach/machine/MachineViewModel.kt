@@ -1,17 +1,20 @@
 package net.simno.dmach.machine
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
-import io.reactivex.Flowable
-import io.reactivex.FlowableTransformer
-import org.reactivestreams.Publisher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.scan
 
-class MachineViewModel(
+class MachineViewModel @ViewModelInject constructor(
     private val processor: MachineProcessor
-) : ViewModel(), FlowableTransformer<Action, ViewState> {
-    override fun apply(actions: Flowable<Action>): Publisher<ViewState> = actions
-        .compose(processor)
-        .onErrorReturn(::ErrorResult)
-        .scan(ViewState(), MachineStateReducer)
-        .skip(1) // skip idle state
+) : ViewModel(), (Flow<Action>) -> Flow<ViewState> {
+    override fun invoke(actions: Flow<Action>): Flow<ViewState> = actions
+        .let(processor)
+        .catch { emit(ErrorResult(it)) }
+        .scan(ViewState(), { previousState, result -> MachineStateReducer(previousState, result) })
+        .drop(1) // skip idle state
         .distinctUntilChanged()
 }

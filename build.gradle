@@ -8,23 +8,23 @@ buildscript {
     }
     dependencies {
         classpath Libs.androidGradlePlugin
-        classpath Libs.playPublisherPlugin
-        classpath Libs.Google.ossLicensesPlugin
         classpath Libs.Kotlin.gradlePlugin
         classpath Libs.Kotlin.serializationPlugin
+        classpath Libs.Google.ossLicensesPlugin
+        classpath Libs.Google.Hilt.plugin
+        classpath Libs.playPublisherPlugin
     }
 }
 
 plugins {
-    id 'com.diffplug.gradle.spotless' version '3.26.1'
-    id 'com.github.ben-manes.versions' version '0.27.0'
+    id 'com.diffplug.spotless' version '5.9.0'
+    id 'com.github.ben-manes.versions' version '0.36.0'
 }
 
 allprojects {
     repositories {
         google()
         jcenter()
-        maven { url 'https://kotlin.bintray.com/kotlinx' }
     }
 }
 
@@ -33,10 +33,12 @@ subprojects {
         kotlinOptions {
             jvmTarget = Versions.java
             allWarningsAsErrors = true
-            freeCompilerArgs += ['-Xuse-experimental=kotlin.Experimental']
+            freeCompilerArgs += '-Xopt-in=kotlin.Experimental'
+            freeCompilerArgs += '-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi'
+            freeCompilerArgs += '-Xopt-in=kotlinx.coroutines.FlowPreview'
         }
     }
-    apply plugin: 'com.diffplug.gradle.spotless'
+    apply plugin: 'com.diffplug.spotless'
     spotless {
         kotlin {
             target '**/*.kt'

@@ -14,9 +14,9 @@ data class AudioFocusAction(
     val ignoreAudioFocus: Boolean
 ) : Action()
 
-data class ConfigAction(
-    val showConfig: Boolean
-) : Action()
+object ConfigAction : Action()
+
+object DismissAction : Action()
 
 data class ChangeSeqenceAction(
     val sequence: List<Int>

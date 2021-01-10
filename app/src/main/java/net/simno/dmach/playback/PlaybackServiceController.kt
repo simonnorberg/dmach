@@ -1,6 +1,6 @@
 package net.simno.dmach.playback
 
-import android.app.Application
+import android.content.Context
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -8,7 +8,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import java.util.concurrent.atomic.AtomicBoolean
 
 class PlaybackServiceController(
-    private val application: Application
+    private val context: Context
 ) : PlaybackObserver, LifecycleObserver {
 
     private val isPlaying = AtomicBoolean(false)
@@ -50,10 +50,10 @@ class PlaybackServiceController(
     }
 
     private fun startService() {
-        ContextCompat.startForegroundService(application, PlaybackService.intent(application, title, tempo))
+        ContextCompat.startForegroundService(context, PlaybackService.intent(context, title, tempo))
     }
 
     private fun stopService() {
-        application.stopService(PlaybackService.intent(application))
+        context.stopService(PlaybackService.intent(context))
     }
 }

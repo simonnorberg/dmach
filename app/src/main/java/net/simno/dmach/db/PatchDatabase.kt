@@ -5,7 +5,11 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-@Database(entities = [PatchEntity::class], version = 3)
+@Database(
+    entities = [PatchEntity::class],
+    version = 3,
+    exportSchema = false
+)
 abstract class PatchDatabase : RoomDatabase() {
 
     abstract fun patchDao(): PatchDao
