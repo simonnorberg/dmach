@@ -34,6 +34,8 @@ class TestPatchDao : PatchDao {
         }
     }
 
+    override suspend fun count(): Int = patches.size
+
     override fun getActivePatch(): Flow<PatchEntity> = flow { emit(patch.toEntity(patch.title)) }
 
     override fun getAllPatches(): PagingSource<Int, PatchEntity> = dataSource

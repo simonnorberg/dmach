@@ -11,6 +11,9 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface PatchDao {
 
+    @Query("SELECT COUNT(*) FROM patch")
+    suspend fun count(): Int
+
     @Query("SELECT * FROM patch WHERE active = 1 LIMIT 1")
     fun getActivePatch(): Flow<PatchEntity>
 

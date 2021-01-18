@@ -1,8 +1,8 @@
 package net.simno.dmach.db
 
-import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import androidx.core.content.contentValuesOf
 import androidx.room.testing.MigrationTestHelper
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.sqlite.db.SupportSQLiteOpenHelper
@@ -89,13 +89,14 @@ class DbTests {
             swing = 10
         )
         val entity = runBlocking { patch.toEntity(patch.title) }
-        val values = ContentValues()
-        values.put(PatchTable.TITLE, entity.title)
-        values.put(PatchTable.SEQUENCE, entity.sequence)
-        values.put(PatchTable.CHANNELS, entity.channels)
-        values.put(PatchTable.SELECTED, entity.selected)
-        values.put(PatchTable.TEMPO, entity.tempo)
-        values.put(PatchTable.SWING, entity.swing)
+        val values = contentValuesOf(
+            PatchTable.TITLE to entity.title,
+            PatchTable.SEQUENCE to entity.sequence,
+            PatchTable.CHANNELS to entity.channels,
+            PatchTable.SELECTED to entity.selected,
+            PatchTable.TEMPO to entity.tempo,
+            PatchTable.SWING to entity.swing
+        )
 
         val db = sqliteOpenHelper.writableDatabase
         db.insert(PatchTable.TABLE_NAME, SQLiteDatabase.CONFLICT_REPLACE, values)
@@ -116,7 +117,7 @@ class DbTests {
     }
 
     @Test
-    fun createFromAssets() {
+    fun defaultPatch() {
         val patchDatabase = DbModule.providePatchDatabase(ApplicationProvider.getApplicationContext())
         migrationTestHelper.closeWhenFinished(patchDatabase)
 
