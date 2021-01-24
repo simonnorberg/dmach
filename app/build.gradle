@@ -36,7 +36,7 @@ android {
         applicationId 'net.simno.dmach'
         minSdkVersion Versions.minSdk
         targetSdkVersion Versions.targetSdk
-        versionCode 20011
+        versionCode 20012
         versionName '2.0'
         javaCompileOptions {
             annotationProcessorOptions {
