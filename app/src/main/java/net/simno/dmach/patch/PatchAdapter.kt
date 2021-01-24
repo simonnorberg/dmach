@@ -29,17 +29,14 @@ class PatchAdapter : PagingDataAdapter<Patch, PatchViewHolder>(DIFF_CALLBACK) {
         val patch = getItem(position) ?: return
         holder.bind(
             patch = patch,
-            onClick = { adapterPosition ->
-                getItem(adapterPosition)?.let { clicked ->
-                    runCatching { _clicks.offer(clicked) }
-                }
+            onClick = {
+                runCatching { _clicks.offer(patch) }
             },
-            onLongClick = { adapterPosition ->
-                getItem(adapterPosition)?.let { longClicked ->
-                    if (itemCount > 1) {
-                        runCatching { _longClicks.offer(longClicked) }
-                    }
+            onLongClick = {
+                if (itemCount > 1) {
+                    runCatching { _longClicks.offer(patch) }
                 }
+                true
             }
         )
     }

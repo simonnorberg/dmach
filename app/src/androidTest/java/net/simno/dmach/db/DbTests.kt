@@ -17,7 +17,6 @@ import net.simno.dmach.data.Channel
 import net.simno.dmach.data.Patch
 import net.simno.dmach.data.Setting
 import net.simno.dmach.db.PatchRepository.Companion.toEntity
-import net.simno.dmach.db.PatchRepository.Companion.toPatch
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -112,7 +111,7 @@ class DbTests {
         val patchDatabase = DbModule.providePatchDatabase(ApplicationProvider.getApplicationContext())
         migrationTestHelper.closeWhenFinished(patchDatabase)
 
-        val migratedPatch = runBlocking { patchDatabase.patchDao().getActivePatch().first().toPatch() }
+        val migratedPatch = runBlocking { PatchRepository(patchDatabase.patchDao()).activePatch().first() }
         assertThat(migratedPatch).isEqualTo(patch)
     }
 
@@ -121,7 +120,7 @@ class DbTests {
         val patchDatabase = DbModule.providePatchDatabase(ApplicationProvider.getApplicationContext())
         migrationTestHelper.closeWhenFinished(patchDatabase)
 
-        val defaultPatch = runBlocking { patchDatabase.patchDao().getActivePatch().first().toPatch() }
+        val defaultPatch = runBlocking { PatchRepository(patchDatabase.patchDao()).activePatch().first() }
 
         assertThat(defaultPatch.title).isEqualTo("untitled")
         assertThat(defaultPatch.sequence).isEqualTo(Patch.EMPTY_SEQUENCE)

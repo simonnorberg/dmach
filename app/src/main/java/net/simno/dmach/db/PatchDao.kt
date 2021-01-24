@@ -15,7 +15,7 @@ interface PatchDao {
     suspend fun count(): Int
 
     @Query("SELECT * FROM patch WHERE active = 1 LIMIT 1")
-    fun getActivePatch(): Flow<PatchEntity>
+    fun getActivePatch(): Flow<PatchEntity?>
 
     @Query("SELECT * FROM patch ORDER BY title")
     fun getAllPatches(): PagingSource<Int, PatchEntity>

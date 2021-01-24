@@ -12,10 +12,10 @@ object Versions {
 }
 
 object Libs {
-    const val androidGradlePlugin = "com.android.tools.build:gradle:4.1.1"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:4.1.2"
     const val playPublisherPlugin = "com.github.triplet.gradle:play-publisher:3.2.0"
     const val junit = "junit:junit:4.13.1"
-    const val robolectric = "org.robolectric:robolectric:4.4"
+    const val robolectric = "org.robolectric:robolectric:4.5"
     const val mockito = "org.mockito:mockito-core:3.7.7"
     const val insetter = "dev.chrisbanes.insetter:insetter-widgets:0.4.0"
     const val kortholt = "net.simno.kortholt:kortholt:1.7.0"
@@ -24,10 +24,10 @@ object Libs {
     object Google {
         const val ossLicensesPlugin = "com.google.android.gms:oss-licenses-plugin:0.10.2"
         const val ossLicensesLibrary = "com.google.android.gms:play-services-oss-licenses:17.0.0"
-        const val truth = "com.google.truth:truth:1.1"
+        const val truth = "com.google.truth:truth:1.1.2"
 
         object Hilt {
-            private const val version = "2.31-alpha"
+            private const val version = "2.31.2-alpha"
             const val android = "com.google.dagger:hilt-android:$version"
             const val compiler = "com.google.dagger:hilt-android-compiler:$version"
             const val plugin = "com.google.dagger:hilt-android-gradle-plugin:$version"
