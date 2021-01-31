@@ -54,11 +54,11 @@ object Libs {
         const val constraintlayout = "androidx.constraintlayout:constraintlayout:2.0.4"
         const val core = "androidx.core:core-ktx:1.5.0-beta01"
         const val dynamicanimation = "androidx.dynamicanimation:dynamicanimation:1.1.0-alpha03"
-        const val fragment = "androidx.fragment:fragment-ktx:1.3.0-rc01"
+        const val fragment = "androidx.fragment:fragment-ktx:1.3.0-rc02"
         const val recyclerview = "androidx.recyclerview:recyclerview:1.2.0-beta01"
 
         object Hilt {
-            private const val version = "1.0.0-alpha02"
+            private const val version = "1.0.0-alpha03"
             const val viewmodel = "androidx.hilt:hilt-lifecycle-viewmodel:$version"
             const val compiler = "androidx.hilt:hilt-compiler:$version"
         }
@@ -72,13 +72,13 @@ object Libs {
         }
 
         object Paging {
-            private const val version = "3.0.0-alpha12"
+            private const val version = "3.0.0-alpha13"
             const val common = "androidx.paging:paging-common:$version"
             const val runtime = "androidx.paging:paging-runtime:$version"
         }
 
         object Room {
-            private const val version = "2.3.0-alpha04"
+            private const val version = "2.3.0-beta01"
             const val common = "androidx.room:room-common:$version"
             const val runtime = "androidx.room:room-runtime:$version"
             const val ktx = "androidx.room:room-ktx:$version"

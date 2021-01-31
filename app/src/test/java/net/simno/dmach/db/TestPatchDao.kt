@@ -1,6 +1,7 @@
 package net.simno.dmach.db
 
 import androidx.paging.PagingSource
+import androidx.paging.PagingState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import net.simno.dmach.data.Channel
@@ -32,6 +33,8 @@ class TestPatchDao : PatchDao {
         override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PatchEntity> {
             return LoadResult.Page(data = patches.map { it.toEntity(it.title) }, null, null)
         }
+
+        override fun getRefreshKey(state: PagingState<Int, PatchEntity>): Int? = null
     }
 
     override suspend fun count(): Int = patches.size

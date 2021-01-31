@@ -52,7 +52,7 @@ class PatchProcessorTests {
             .onEach { delay(10L) }
             .buffer(0)
             .shareIn(GlobalScope, SharingStarted.Lazily)
-            .let(MachineProcessor(mock(PureData::class.java), mock(AudioFocus::class.java), emptySet(), repository))
+            .let(MachineProcessor(emptySet(), mock(PureData::class.java), mock(AudioFocus::class.java), repository))
             .take(1)
             .toList()
     }

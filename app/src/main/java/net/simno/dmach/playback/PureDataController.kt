@@ -3,7 +3,6 @@ package net.simno.dmach.playback
 import android.content.Context
 import androidx.annotation.Size
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import net.simno.dmach.R
 import net.simno.dmach.data.Patch
@@ -13,7 +12,7 @@ import org.puredata.core.PdBase
 
 class PureDataController(
     context: Context
-) : PureData, PlaybackObserver, LifecycleObserver {
+) : PureData, PlaybackObserver {
 
     init {
         PdBaseHelper.openPatch(context, R.raw.dmach, "dmach.pd", extractZip = true)

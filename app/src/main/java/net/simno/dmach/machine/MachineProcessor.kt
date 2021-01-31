@@ -18,9 +18,9 @@ import net.simno.dmach.playback.PlaybackObserver
 import net.simno.dmach.playback.PureData
 
 class MachineProcessor(
+    val playbackObservers: Set<PlaybackObserver>,
     private val pureData: PureData,
     private val audioFocus: AudioFocus,
-    private val playbackObservers: Set<PlaybackObserver>,
     private val patchRepository: PatchRepository
 ) : (Flow<Action>) -> Flow<Result> {
 

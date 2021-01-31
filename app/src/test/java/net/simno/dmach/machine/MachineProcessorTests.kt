@@ -62,7 +62,7 @@ class MachineProcessorTests {
         MockitoAnnotations.openMocks(this)
         testDao = TestPatchDao()
         repository = PatchRepository(testDao)
-        machineProcessor = MachineProcessor(pureData, audioFocus, setOf(playbackObserver), repository)
+        machineProcessor = MachineProcessor(setOf(playbackObserver), pureData, audioFocus, repository)
     }
 
     @Test

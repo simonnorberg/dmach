@@ -70,6 +70,7 @@ class MachineActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        viewModel.lifecycleObservers.forEach { lifecycle.addObserver(it) }
 
         binding.gravityFader.positions.onEach { position ->
             binding.chaosPad.setGravity(1f - position.y)

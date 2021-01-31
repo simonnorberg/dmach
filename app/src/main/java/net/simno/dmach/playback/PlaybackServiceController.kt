@@ -3,13 +3,12 @@ package net.simno.dmach.playback
 import android.content.Context
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import java.util.concurrent.atomic.AtomicBoolean
 
 class PlaybackServiceController(
     private val context: Context
-) : PlaybackObserver, LifecycleObserver {
+) : PlaybackObserver {
 
     private val isPlaying = AtomicBoolean(false)
     private var title: String? = null
