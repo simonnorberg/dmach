@@ -15,11 +15,11 @@ object Libs {
     const val androidGradlePlugin = "com.android.tools.build:gradle:4.1.2"
     const val playPublisherPlugin = "com.github.triplet.gradle:play-publisher:3.2.0"
     const val junit = "junit:junit:4.13.1"
-    const val robolectric = "org.robolectric:robolectric:4.5"
+    const val robolectric = "org.robolectric:robolectric:4.5.1"
     const val mockito = "org.mockito:mockito-core:3.7.7"
     const val insetter = "dev.chrisbanes.insetter:insetter-widgets:0.4.0"
-    const val kortholt = "net.simno.kortholt:kortholt:1.7.0"
-    const val dmachExternals = "net.simno.dmach:dmach-externals:1.7.0"
+    const val kortholt = "net.simno.kortholt:kortholt:1.8.0"
+    const val dmachExternals = "net.simno.dmach:dmach-externals:1.8.0"
 
     object Google {
         const val ossLicensesPlugin = "com.google.android.gms:oss-licenses-plugin:0.10.2"
@@ -35,7 +35,7 @@ object Libs {
     }
 
     object Kotlin {
-        private const val version = "1.4.21"
+        private const val version = "1.4.30"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val serializationPlugin = "org.jetbrains.kotlin:kotlin-serialization:$version"
