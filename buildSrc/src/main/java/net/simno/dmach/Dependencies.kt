@@ -14,10 +14,10 @@ object Versions {
 object Libs {
     const val androidGradlePlugin = "com.android.tools.build:gradle:4.1.2"
     const val playPublisherPlugin = "com.github.triplet.gradle:play-publisher:3.2.0"
-    const val junit = "junit:junit:4.13.1"
+    const val junit = "junit:junit:4.13.2"
     const val robolectric = "org.robolectric:robolectric:4.5.1"
     const val mockito = "org.mockito:mockito-core:3.7.7"
-    const val insetter = "dev.chrisbanes.insetter:insetter-widgets:0.4.0"
+    const val insetter = "dev.chrisbanes.insetter:insetter-widgets:0.5.0"
     const val kortholt = "net.simno.kortholt:kortholt:1.8.0"
     const val dmachExternals = "net.simno.dmach:dmach-externals:1.8.0"
 
@@ -27,7 +27,7 @@ object Libs {
         const val truth = "com.google.truth:truth:1.1.2"
 
         object Hilt {
-            private const val version = "2.31.2-alpha"
+            private const val version = "2.32-alpha"
             const val android = "com.google.dagger:hilt-android:$version"
             const val compiler = "com.google.dagger:hilt-android-compiler:$version"
             const val plugin = "com.google.dagger:hilt-android-gradle-plugin:$version"
@@ -49,12 +49,12 @@ object Libs {
     }
 
     object AndroidX {
-        const val activity = "androidx.activity:activity-ktx:1.2.0-rc01"
+        const val activity = "androidx.activity:activity-ktx:1.2.0"
         const val appcompat = "androidx.appcompat:appcompat:1.3.0-beta01"
         const val constraintlayout = "androidx.constraintlayout:constraintlayout:2.0.4"
         const val core = "androidx.core:core-ktx:1.5.0-beta01"
         const val dynamicanimation = "androidx.dynamicanimation:dynamicanimation:1.1.0-alpha03"
-        const val fragment = "androidx.fragment:fragment-ktx:1.3.0-rc02"
+        const val fragment = "androidx.fragment:fragment-ktx:1.3.0"
         const val recyclerview = "androidx.recyclerview:recyclerview:1.2.0-beta01"
 
         object Hilt {
@@ -64,7 +64,7 @@ object Libs {
         }
 
         object Lifecycle {
-            private const val version = "2.3.0-rc01"
+            private const val version = "2.3.0"
             const val livedata = "androidx.lifecycle:lifecycle-livedata-ktx:$version"
             const val runtime = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
             const val viewmodelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
@@ -72,7 +72,7 @@ object Libs {
         }
 
         object Paging {
-            private const val version = "3.0.0-alpha13"
+            private const val version = "3.0.0-beta01"
             const val common = "androidx.paging:paging-common:$version"
             const val runtime = "androidx.paging:paging-runtime:$version"
         }

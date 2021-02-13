@@ -111,8 +111,8 @@ abstract class Positioner @JvmOverloads constructor(
         beforeInvalidate: () -> Unit = {}
     ) {
         // Adjust the new coordinates so that the Shape is always drawn inside the view.
-        val validX = newX.coerceIn(minX, getMaxX())
-        val validY = newY.coerceIn(minY, getMaxY())
+        val validX = newX.coerceAtLeast(minX).coerceAtMost(getMaxX())
+        val validY = newY.coerceAtLeast(minY).coerceAtMost(getMaxY())
 
         if (validX == shapeX && validY == shapeY) {
             return
