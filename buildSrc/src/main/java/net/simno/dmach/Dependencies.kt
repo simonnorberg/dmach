@@ -13,10 +13,10 @@ object Versions {
 
 object Libs {
     const val androidGradlePlugin = "com.android.tools.build:gradle:4.1.2"
-    const val playPublisherPlugin = "com.github.triplet.gradle:play-publisher:3.2.0"
+    const val playPublisherPlugin = "com.github.triplet.gradle:play-publisher:3.3.0"
     const val junit = "junit:junit:4.13.2"
     const val robolectric = "org.robolectric:robolectric:4.5.1"
-    const val mockito = "org.mockito:mockito-core:3.7.7"
+    const val mockito = "org.mockito:mockito-core:3.8.0"
     const val insetter = "dev.chrisbanes.insetter:insetter-widgets:0.5.0"
     const val kortholt = "net.simno.kortholt:kortholt:1.8.0"
     const val dmachExternals = "net.simno.dmach:dmach-externals:1.8.0"
@@ -27,7 +27,7 @@ object Libs {
         const val truth = "com.google.truth:truth:1.1.2"
 
         object Hilt {
-            private const val version = "2.32-alpha"
+            private const val version = "2.33-beta"
             const val android = "com.google.dagger:hilt-android:$version"
             const val compiler = "com.google.dagger:hilt-android-compiler:$version"
             const val plugin = "com.google.dagger:hilt-android-gradle-plugin:$version"
@@ -35,7 +35,7 @@ object Libs {
     }
 
     object Kotlin {
-        private const val version = "1.4.30"
+        private const val version = "1.4.31"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val serializationPlugin = "org.jetbrains.kotlin:kotlin-serialization:$version"
@@ -43,7 +43,7 @@ object Libs {
     }
 
     object Coroutines {
-        private const val version = "1.4.2"
+        private const val version = "1.4.3"
         const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
         const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
     }
@@ -52,10 +52,10 @@ object Libs {
         const val activity = "androidx.activity:activity-ktx:1.2.0"
         const val appcompat = "androidx.appcompat:appcompat:1.3.0-beta01"
         const val constraintlayout = "androidx.constraintlayout:constraintlayout:2.0.4"
-        const val core = "androidx.core:core-ktx:1.5.0-beta01"
+        const val core = "androidx.core:core-ktx:1.5.0-beta02"
         const val dynamicanimation = "androidx.dynamicanimation:dynamicanimation:1.1.0-alpha03"
         const val fragment = "androidx.fragment:fragment-ktx:1.3.0"
-        const val recyclerview = "androidx.recyclerview:recyclerview:1.2.0-beta01"
+        const val recyclerview = "androidx.recyclerview:recyclerview:1.2.0-beta02"
 
         object Hilt {
             private const val version = "1.0.0-alpha03"
@@ -78,7 +78,7 @@ object Libs {
         }
 
         object Room {
-            private const val version = "2.3.0-beta01"
+            private const val version = "2.3.0-beta02"
             const val common = "androidx.room:room-common:$version"
             const val runtime = "androidx.room:room-runtime:$version"
             const val ktx = "androidx.room:room-ktx:$version"
