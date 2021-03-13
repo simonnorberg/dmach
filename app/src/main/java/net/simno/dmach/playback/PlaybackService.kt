@@ -22,13 +22,10 @@ class PlaybackService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        startForeground(
-            NOTIFICATION_ID,
-            createNotification(
-                intent?.getStringExtra(TITLE) ?: getString(R.string.app_name),
-                intent?.getStringExtra(TEMPO).orEmpty()
-            )
-        )
+        createNotificationChannel()
+        val contentTitle = intent?.getStringExtra(TITLE) ?: getString(R.string.app_name)
+        val contentText = intent?.getStringExtra(TEMPO).orEmpty()
+        startForeground(NOTIFICATION_ID, createNotification(contentTitle, contentText))
         return START_STICKY
     }
 
@@ -40,17 +37,18 @@ class PlaybackService : Service() {
         super.onDestroy()
     }
 
-    private fun createNotification(title: String, tempo: String): Notification {
-        val manager = getSystemService<NotificationManager>()
-        val channel = manager?.getNotificationChannel(CHANNEL_NAME)
-            ?: NotificationChannel(CHANNEL_NAME, CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW)
-        manager?.createNotificationChannel(channel)
+    private fun createNotificationChannel() {
+        val channel = NotificationChannel(CHANNEL_NAME, CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW)
+        getSystemService<NotificationManager>()?.createNotificationChannel(channel)
+    }
+
+    private fun createNotification(contentTitle: String, contentText: String): Notification {
         val intent = Intent(this, MachineActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(applicationContext, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+        val contentIntent = PendingIntent.getActivity(applicationContext, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         return NotificationCompat.Builder(this, CHANNEL_NAME)
-            .setContentTitle(title)
-            .setContentText(tempo)
-            .setContentIntent(pendingIntent)
+            .setContentTitle(contentTitle)
+            .setContentText(contentText)
+            .setContentIntent(contentIntent)
             .setSmallIcon(R.drawable.ic_stat_playback)
             .setOngoing(true)
             .setOnlyAlertOnce(true)

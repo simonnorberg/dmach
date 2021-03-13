@@ -4,7 +4,7 @@ on: [ push ]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     timeout-minutes: 45
     env:
       TERM: dumb
@@ -26,7 +26,7 @@ jobs:
           ENCRYPT_KEY: ${{ secrets.ENCRYPT_KEY }}
 
       - name: Build and check
-        run: ./gradlew spotlessCheck assemble bundle app:lintDebug testDebug
+        run: ./gradlew spotlessCheck assemble bundle check
 
       - name: Publish release
         if: github.ref == 'refs/heads/main'
