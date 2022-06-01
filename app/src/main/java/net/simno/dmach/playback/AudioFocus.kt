@@ -8,6 +8,7 @@ import android.media.AudioManager.AUDIOFOCUS_GAIN
 import android.media.AudioManager.AUDIOFOCUS_LOSS
 import android.media.AudioManager.AUDIOFOCUS_LOSS_TRANSIENT
 import android.media.AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK
+import android.media.AudioManager.AUDIOFOCUS_NONE
 import androidx.core.content.edit
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +19,7 @@ class AudioFocus(
     private val preferences: SharedPreferences
 ) : AudioManager.OnAudioFocusChangeListener {
 
-    private val audioFocus = MutableStateFlow(0) // AudioManager.AUDIOFOCUS_NONE = 0
+    private val audioFocus = MutableStateFlow(AUDIOFOCUS_NONE)
     private val focusLock = Any()
     private var focusDelegate = getAudioFocusDelegate()
     private var playbackDelayed = false
@@ -43,8 +44,7 @@ class AudioFocus(
                 onFocusLoss()
             }
             AUDIOFOCUS_LOSS_TRANSIENT,
-            AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK,
-            -> {
+            AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
                 synchronized(focusLock) {
                     playbackDelayed = false
                     resumeOnFocusGain = true

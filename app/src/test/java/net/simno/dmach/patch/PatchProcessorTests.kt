@@ -1,6 +1,7 @@
 package net.simno.dmach.patch
 
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
@@ -21,6 +22,7 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.mock
 
+@DelicateCoroutinesApi
 class PatchProcessorTests {
 
     private lateinit var repository: PatchRepository

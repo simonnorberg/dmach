@@ -20,7 +20,7 @@ import org.robolectric.Shadows
 import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [Build.VERSION_CODES.O])
+@Config(sdk = [Build.VERSION_CODES.P])
 class AudioFocusTests {
     private val audioManager = ApplicationProvider.getApplicationContext<Application>()
         .getSystemService<AudioManager>()!!

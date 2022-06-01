@@ -1,6 +1,8 @@
 package net.simno.dmach.machine
 
+import net.simno.dmach.data.Patch
 import net.simno.dmach.data.Position
+import kotlin.random.Random
 
 sealed class Action
 
@@ -18,9 +20,18 @@ object ConfigAction : Action()
 
 object DismissAction : Action()
 
-data class ChangeSeqenceAction(
-    val sequence: List<Int>
-) : Action()
+sealed class ChangeSequenceAction(
+    open val sequenceId: Int,
+    open val sequence: List<Int>
+) : Action() {
+    data class Edit(
+        override val sequenceId: Int,
+        override val sequence: List<Int>
+    ) : ChangeSequenceAction(sequenceId, sequence)
+
+    class Randomize : ChangeSequenceAction(Random.Default.nextInt(), Patch.RANDOM_SEQUENCE)
+    object Empty : ChangeSequenceAction(Random.Default.nextInt(), Patch.EMPTY_SEQUENCE)
+}
 
 data class SelectChannelAction(
     val channel: Int,

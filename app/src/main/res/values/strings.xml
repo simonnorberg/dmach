@@ -13,20 +13,6 @@
     <string name="delete_patch">Delete %1$s?</string>
     <string name="overwrite_patch">%1$s already exists</string>
 
-    <string name="channel_bd">BD</string>
-    <string name="channel_sd">SD</string>
-    <string name="channel_cp">CP</string>
-    <string name="channel_tt">TT</string>
-    <string name="channel_cb">CB</string>
-    <string name="channel_hh">HH</string>
-
-    <string name="setting_1">1</string>
-    <string name="setting_2">2</string>
-    <string name="setting_3">3</string>
-    <string name="setting_4">4</string>
-    <string name="setting_5">5</string>
-    <string name="setting_6">6</string>
-
     <string name="pan_left">L</string>
     <string name="pan_right">R</string>
 
@@ -39,8 +25,5 @@
     <string name="description_config">configure</string>
     <string name="description_reset">reset</string>
     <string name="description_random">randomize</string>
-    <string name="description_patch">open patch</string>
-    <string name="description_setting">setting</string>
-    <string name="description_channel">channel</string>
 
 </resources>

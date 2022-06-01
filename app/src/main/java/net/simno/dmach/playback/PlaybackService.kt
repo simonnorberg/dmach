@@ -1,20 +1,28 @@
 package net.simno.dmach.playback
 
 import android.app.Notification
-import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.media.MediaMetadata
 import android.os.IBinder
+import android.support.v4.media.MediaMetadataCompat
+import android.support.v4.media.session.MediaSessionCompat
+import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
-import androidx.core.content.getSystemService
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
+import net.simno.dmach.MainActivity
 import net.simno.dmach.R
-import net.simno.dmach.machine.MachineActivity
 import net.simno.kortholt.Kortholt
 
 class PlaybackService : Service() {
+
+    private val notificationImage
+        get() = ContextCompat.getDrawable(this, R.drawable.ic_launcher_foreground)?.toBitmap()
 
     override fun onCreate() {
         super.onCreate()
@@ -38,18 +46,31 @@ class PlaybackService : Service() {
     }
 
     private fun createNotificationChannel() {
-        val channel = NotificationChannel(CHANNEL_NAME, CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW)
-        getSystemService<NotificationManager>()?.createNotificationChannel(channel)
+        val channel = NotificationChannelCompat.Builder(CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW)
+            .setName(CHANNEL_NAME)
+            .build()
+        NotificationManagerCompat.from(applicationContext).createNotificationChannel(channel)
     }
 
     private fun createNotification(contentTitle: String, contentText: String): Notification {
-        val intent = Intent(this, MachineActivity::class.java)
+        val metadata = MediaMetadataCompat.Builder()
+            .putString(MediaMetadata.METADATA_KEY_TITLE, contentTitle)
+            .putString(MediaMetadata.METADATA_KEY_ARTIST, contentText)
+            .putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART, notificationImage)
+            .build()
+
+        val mediaSession = MediaSessionCompat(this, CHANNEL_NAME)
+        mediaSession.setMetadata(metadata)
+
+        val mediaStyle = androidx.media.app.NotificationCompat.MediaStyle()
+            .setMediaSession(mediaSession.sessionToken)
+
+        val intent = Intent(this, MainActivity::class.java)
         val contentIntent = PendingIntent.getActivity(applicationContext, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         return NotificationCompat.Builder(this, CHANNEL_NAME)
-            .setContentTitle(contentTitle)
-            .setContentText(contentText)
             .setContentIntent(contentIntent)
             .setSmallIcon(R.drawable.ic_stat_playback)
+            .setStyle(mediaStyle)
             .setOngoing(true)
             .setOnlyAlertOnce(true)
             .build()

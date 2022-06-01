@@ -2,13 +2,13 @@ package net.simno.dmach.playback
 
 import android.content.Context
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import java.util.concurrent.atomic.AtomicBoolean
 
 class PlaybackServiceController(
     private val context: Context
-) : PlaybackObserver {
+) : PlaybackObserver, DefaultLifecycleObserver {
 
     private val isPlaying = AtomicBoolean(false)
     private var title: String? = null
@@ -33,17 +33,13 @@ class PlaybackServiceController(
         }
     }
 
-    @Suppress("unused")
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    private fun onPause() {
+    override fun onPause(owner: LifecycleOwner) {
         if (isPlaying.compareAndSet(false, false)) {
             stopService()
         }
     }
 
-    @Suppress("unused")
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    private fun onDestroy() {
+    override fun onDestroy(owner: LifecycleOwner) {
         isPlaying.set(false)
         stopService()
     }

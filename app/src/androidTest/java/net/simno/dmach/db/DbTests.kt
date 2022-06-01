@@ -30,7 +30,8 @@ class DbTests {
     @JvmField
     val migrationTestHelper = MigrationTestHelper(
         InstrumentationRegistry.getInstrumentation(),
-        PatchEntity::class.java.canonicalName,
+        PatchDatabase::class.java,
+        emptyList(),
         FrameworkSQLiteOpenHelperFactory()
     )
 

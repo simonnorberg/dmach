@@ -1,65 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.OssLicenses" parent="Theme.AppCompat.DayNight" />
-
-    <style name="Theme.DMach" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowTranslucentStatus">true</item>
+    <style name="Theme.App" parent="android:Theme.Material.Light.NoActionBar.Fullscreen">
         <item name="android:windowTranslucentNavigation">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowAnimationStyle">@null</item>
-        <item name="android:windowBackground">@color/colonial</item>
+        <item name="android:windowBackground">#f2f2c6</item>
         <item name="android:soundEffectsEnabled">false</item>
-        <item name="android:textSize">@dimen/text_size_large</item>
-        <item name="android:fontFamily">sans-serif-light</item>
-        <item name="colorControlActivated">@color/gamboge</item>
-        <item name="colorControlNormal">@color/colonial</item>
-    </style>
-
-    <style name="Theme.DMach.Patch">
-        <item name="android:textColor">@color/dune</item>
-        <item name="android:textSize">@dimen/text_size_small</item>
-        <item name="colorControlActivated">@color/dune</item>
-    </style>
-
-    <style name="Control">
-        <item name="android:background">@drawable/sel_control</item>
-        <item name="android:padding">@dimen/margin_large</item>
-        <item name="android:scaleType">fitCenter</item>
-    </style>
-
-    <style name="Control.Play">
-        <item name="android:padding">@dimen/margin_small</item>
-    </style>
-
-    <style name="Logo">
-        <item name="android:fontFamily">sans-serif-thin</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:textColor">@color/dune</item>
-    </style>
-
-    <style name="Button">
-        <item name="android:background">@drawable/sel_channel</item>
-        <item name="android:gravity">center</item>
-        <item name="android:padding">@dimen/margin_large</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:textColor">@color/colonial</item>
-    </style>
-
-    <style name="Channel" parent="Button">
-        <item name="android:padding">0dp</item>
-    </style>
-
-    <style name="Setting" parent="Channel">
-        <item name="android:background">@drawable/sel_setting</item>
-    </style>
-
-    <style name="SettingText">
-        <item name="android:textAllCaps">true</item>
-        <item name="android:textColor">@color/dune</item>
     </style>
 
 </resources>

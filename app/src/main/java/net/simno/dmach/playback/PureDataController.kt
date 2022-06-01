@@ -2,8 +2,8 @@ package net.simno.dmach.playback
 
 import android.content.Context
 import androidx.annotation.Size
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import net.simno.dmach.R
 import net.simno.dmach.data.Patch
 import net.simno.dmach.data.Setting
@@ -12,7 +12,7 @@ import org.puredata.core.PdBase
 
 class PureDataController(
     context: Context
-) : PureData, PlaybackObserver {
+) : PureData, PlaybackObserver, DefaultLifecycleObserver {
 
     init {
         PdBaseHelper.openPatch(context, R.raw.dmach, "dmach.pd", extractZip = true)
@@ -53,9 +53,7 @@ class PureDataController(
         PdBase.sendFloat("swing", swing / 100f)
     }
 
-    @Suppress("unused")
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun closePatch() {
+    override fun onDestroy(owner: LifecycleOwner) {
         PdBaseHelper.closePatch()
     }
 }

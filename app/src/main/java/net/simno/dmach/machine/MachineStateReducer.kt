@@ -9,14 +9,18 @@ object MachineStateReducer : (ViewState, Result) -> ViewState {
             previousState
         }
         is LoadResult -> previousState.copy(
+            title = result.title,
             ignoreAudioFocus = result.ignoreAudioFocus,
+            sequenceId = result.sequenceId,
             sequence = result.sequence,
             selectedChannel = result.selectedChannel,
             selectedSetting = result.selectedSetting,
             settingsSize = result.settingsSize,
+            settingId = result.settingId,
             hText = result.hText,
             vText = result.vText,
             position = result.position,
+            panId = result.panId,
             pan = result.pan,
             tempo = result.tempo,
             swing = result.swing
@@ -35,8 +39,9 @@ object MachineStateReducer : (ViewState, Result) -> ViewState {
             position = null,
             pan = null
         )
-        ConfigResult -> previousState.copy(
+        is ConfigResult -> previousState.copy(
             showConfig = true,
+            configId = result.configId,
             position = null,
             pan = null
         )
@@ -46,6 +51,7 @@ object MachineStateReducer : (ViewState, Result) -> ViewState {
             pan = null
         )
         is ChangeSequenceResult -> previousState.copy(
+            sequenceId = result.sequenceId,
             sequence = result.sequence,
             position = null,
             pan = null
@@ -53,18 +59,20 @@ object MachineStateReducer : (ViewState, Result) -> ViewState {
         is SelectChannelResult -> previousState.copy(
             selectedChannel = result.selectedChannel,
             selectedSetting = result.selectedSetting,
+            settingId = result.settingId,
             settingsSize = result.settingsSize,
             hText = result.hText,
             vText = result.vText,
             position = result.position,
+            panId = result.panId,
             pan = result.pan
         )
         is SelectSettingResult -> previousState.copy(
             selectedSetting = result.selectedSetting,
+            settingId = result.settingId,
             hText = result.hText,
             vText = result.vText,
-            position = result.position,
-            pan = result.pan
+            position = result.position
         )
         ChangePositionResult -> previousState.copy(
             position = null,

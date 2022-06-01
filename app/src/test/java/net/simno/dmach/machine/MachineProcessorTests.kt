@@ -2,6 +2,7 @@ package net.simno.dmach.machine
 
 import android.media.AudioManager
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
@@ -25,11 +26,12 @@ import net.simno.dmach.playback.PureData
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 
+@DelicateCoroutinesApi
 class MachineProcessorTests {
 
     @Mock
@@ -62,23 +64,27 @@ class MachineProcessorTests {
         MockitoAnnotations.openMocks(this)
         testDao = TestPatchDao()
         repository = PatchRepository(testDao)
-        machineProcessor = MachineProcessor(setOf(playbackObserver), pureData, audioFocus, repository)
+        machineProcessor = MachineProcessor(setOf(playbackObserver), pureData, audioFocus, repository, 0)
     }
 
     @Test
     fun load() = runBlocking {
         val actual = processAction(LoadAction)
         val expected = LoadResult(
+            title = testDao.patch.title,
             ignoreAudioFocus = false,
+            sequenceId = 0,
             sequence = testDao.patch.sequence,
             tempo = testDao.patch.tempo,
             swing = testDao.patch.swing,
             selectedChannel = testDao.patch.selectedChannel,
             selectedSetting = 0,
+            settingId = 0,
             settingsSize = 4,
             hText = "1",
             vText = "2",
             position = Position(0.1f, .2f),
+            panId = 0,
             pan = 0.5f
         )
         assertThat(actual).isEqualTo(expected)
@@ -136,7 +142,7 @@ class MachineProcessorTests {
         verify(playbackObserver, times(1)).updateInfo(testDao.patch.title, testDao.patch.tempo)
 
         val actual = processActions(ConfigAction, DismissAction, ConfigAction)
-        val expected = listOf(ConfigResult, DismissResult, ConfigResult)
+        val expected = listOf(ConfigResult(0), DismissResult, ConfigResult(0))
         assertThat(actual).isEqualTo(expected)
         verify(playbackObserver, times(2)).updateInfo(testDao.patch.title, testDao.patch.tempo)
     }
@@ -146,8 +152,8 @@ class MachineProcessorTests {
         processAction(LoadAction)
         val sequence = listOf(1337)
 
-        val actual = processAction(ChangeSeqenceAction(sequence))
-        val expected = ChangeSequenceResult(sequence)
+        val actual = processAction(ChangeSequenceAction.Edit(0, sequence))
+        val expected = ChangeSequenceResult(0, sequence)
         assertThat(actual).isEqualTo(expected)
 
         verify(pureData, times(1)).changeSequence(sequence)
@@ -163,9 +169,11 @@ class MachineProcessorTests {
         val expected = SelectChannelResult(
             selectedChannel = selectedChannel,
             selectedSetting = 0,
+            settingId = 0,
             settingsSize = 4,
             hText = "1",
             vText = "2",
+            panId = 0,
             pan = 0.5f,
             position = Position(.1f, .2f)
         )
@@ -183,9 +191,9 @@ class MachineProcessorTests {
         val actual = processAction(SelectSettingAction(selectedSetting))
         val expected = SelectSettingResult(
             selectedSetting = selectedSetting,
+            settingId = 0,
             hText = "3",
             vText = "4",
-            pan = 0.5f,
             position = Position(.3f, .4f)
         )
         assertThat(actual).isEqualTo(expected)

@@ -16,12 +16,14 @@ import net.simno.dmach.db.PatchRepository
 import net.simno.dmach.playback.AudioFocus
 import net.simno.dmach.playback.PlaybackObserver
 import net.simno.dmach.playback.PureData
+import kotlin.random.Random
 
 class MachineProcessor(
     val playbackObservers: Set<PlaybackObserver>,
     private val pureData: PureData,
     private val audioFocus: AudioFocus,
-    private val patchRepository: PatchRepository
+    private val patchRepository: PatchRepository,
+    private val uid: Int? = null
 ) : (Flow<Action>) -> Flow<Result> {
 
     override fun invoke(actions: Flow<Action>): Flow<Result> = merge(
@@ -31,7 +33,7 @@ class MachineProcessor(
         actions.filterIsInstance<AudioFocusAction>().let(audioFocusProcessor),
         actions.filterIsInstance<ConfigAction>().let(config),
         actions.filterIsInstance<DismissAction>().let(dismiss),
-        actions.filterIsInstance<ChangeSeqenceAction>().let(changeSequence),
+        actions.filterIsInstance<ChangeSequenceAction>().let(changeSequence),
         actions.filterIsInstance<SelectChannelAction>().let(selectChannel),
         actions.filterIsInstance<SelectSettingAction>().let(selectSetting),
         actions.filterIsInstance<ChangePositionAction>().let(changePosition),
@@ -60,14 +62,18 @@ class MachineProcessor(
             .computeResult { patch ->
                 val channel = patch.channel
                 LoadResult(
+                    title = patch.title,
                     ignoreAudioFocus = audioFocus.isIgnoreAudioFocus(),
+                    sequenceId = getUid(),
                     sequence = patch.sequence,
                     selectedChannel = patch.selectedChannel,
                     selectedSetting = channel.selectedSetting,
+                    settingId = getUid(),
                     settingsSize = channel.settings.size,
                     hText = channel.setting.hText,
                     vText = channel.setting.vText,
                     position = channel.setting.position,
+                    panId = getUid(),
                     pan = channel.pan,
                     tempo = patch.tempo,
                     swing = patch.swing
@@ -118,7 +124,7 @@ class MachineProcessor(
     private val config: (Flow<ConfigAction>) -> Flow<ConfigResult> = { actions ->
         actions
             .computeResult {
-                ConfigResult
+                ConfigResult(getUid())
             }
     }
 
@@ -131,16 +137,16 @@ class MachineProcessor(
             }
     }
 
-    private val changeSequence: (Flow<ChangeSeqenceAction>) -> Flow<ChangeSequenceResult> = { actions ->
+    private val changeSequence: (Flow<ChangeSequenceAction>) -> Flow<ChangeSequenceResult> = { actions ->
         actions
             .modifyPatch { action, patch ->
                 patch.copy(sequence = action.sequence)
             }
-            .sendToPureData { patch ->
-                pureData.changeSequence(patch.sequence)
+            .sendToPureData { pwa ->
+                pureData.changeSequence(pwa.patch.sequence)
             }
-            .computeResult { patch ->
-                ChangeSequenceResult(patch.sequence)
+            .computeResult { pwa ->
+                ChangeSequenceResult(pwa.action.sequenceId, pwa.patch.sequence)
             }
     }
 
@@ -150,16 +156,18 @@ class MachineProcessor(
                 val selectedChannel = if (action.isSelected) Channel.NONE_ID else action.channel
                 patch.copy(selectedChannel = selectedChannel)
             }
-            .computeResult { patch ->
-                val channel = patch.channel
+            .computeResult { pwa ->
+                val channel = pwa.patch.channel
                 SelectChannelResult(
-                    patch.selectedChannel,
-                    channel.selectedSetting,
-                    channel.settings.size,
-                    channel.setting.hText,
-                    channel.setting.vText,
-                    channel.setting.position,
-                    channel.pan
+                    selectedChannel = pwa.patch.selectedChannel,
+                    selectedSetting = channel.selectedSetting,
+                    settingId = getUid(),
+                    settingsSize = channel.settings.size,
+                    hText = channel.setting.hText,
+                    vText = channel.setting.vText,
+                    position = channel.setting.position,
+                    panId = getUid(),
+                    pan = channel.pan
                 )
             }
     }
@@ -169,14 +177,14 @@ class MachineProcessor(
             .modifyPatch { action, patch ->
                 patch.withSelectedSetting(action.setting)
             }
-            .computeResult { patch ->
-                val channel = patch.channel
+            .computeResult { pwa ->
+                val channel = pwa.patch.channel
                 SelectSettingResult(
-                    channel.selectedSetting,
-                    channel.setting.hText,
-                    channel.setting.vText,
-                    channel.setting.position,
-                    channel.pan
+                    selectedSetting = channel.selectedSetting,
+                    settingId = getUid(),
+                    hText = channel.setting.hText,
+                    vText = channel.setting.vText,
+                    position = channel.setting.position
                 )
             }
     }
@@ -186,8 +194,8 @@ class MachineProcessor(
             .modifyPatch { action, patch ->
                 patch.withPosition(action.position)
             }
-            .sendToPureData { patch ->
-                val channel = patch.channel
+            .sendToPureData { pwa ->
+                val channel = pwa.patch.channel
                 pureData.changeSetting(channel.name, channel.setting)
             }
             .computeResult {
@@ -200,8 +208,8 @@ class MachineProcessor(
             .modifyPatch { action, patch ->
                 patch.withPan(action.pan)
             }
-            .sendToPureData { patch ->
-                val channel = patch.channel
+            .sendToPureData { pwa ->
+                val channel = pwa.patch.channel
                 pureData.changePan(channel.name, channel.pan)
             }
             .computeResult {
@@ -214,11 +222,11 @@ class MachineProcessor(
             .modifyPatch { action, patch ->
                 patch.copy(tempo = action.tempo)
             }
-            .sendToPureData { patch ->
-                pureData.changeTempo(patch.tempo)
+            .sendToPureData { pwa ->
+                pureData.changeTempo(pwa.patch.tempo)
             }
-            .computeResult { patch ->
-                ChangeTempoResult(patch.tempo)
+            .computeResult { pwa ->
+                ChangeTempoResult(pwa.patch.tempo)
             }
     }
 
@@ -227,19 +235,26 @@ class MachineProcessor(
             .modifyPatch { action, patch ->
                 patch.copy(swing = action.swing)
             }
-            .sendToPureData { patch ->
-                pureData.changeSwing(patch.swing)
+            .sendToPureData { pwa ->
+                pureData.changeSwing(pwa.patch.swing)
             }
-            .computeResult { patch ->
-                ChangeSwingResult(patch.swing)
+            .computeResult { pwa ->
+                ChangeSwingResult(pwa.action.swing)
             }
     }
 
-    private fun <T : Action> Flow<T>.modifyPatch(modifier: (T, Patch) -> Patch): Flow<Patch> = this
-        .map { action -> modifier(action, patchRepository.unsavedPatch()) }
-        .onEach { patchRepository.acceptPatch(it) }
+    private fun <T : Action> Flow<T>.modifyPatch(modifier: (T, Patch) -> (Patch)): Flow<PatchWithAction<T>> = this
+        .map { action -> PatchWithAction(modifier(action, patchRepository.unsavedPatch()), action) }
+        .onEach { patchRepository.acceptPatch(it.patch) }
 
     private fun <T> Flow<T>.sendToPureData(sender: suspend (T) -> Unit): Flow<T> = onEach(sender)
 
     private fun <T, R : Result> Flow<T>.computeResult(mapper: suspend (T) -> R): Flow<R> = map(mapper)
+
+    private fun getUid() = uid ?: Random.nextInt(Int.MAX_VALUE)
+
+    data class PatchWithAction<T : Action>(
+        val patch: Patch,
+        val action: T
+    )
 }
