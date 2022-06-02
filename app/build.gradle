@@ -37,7 +37,7 @@ android {
         applicationId 'net.simno.dmach'
         minSdk versions.minSdk
         targetSdk versions.targetSdk
-        versionCode 30000
+        versionCode 30001
         versionName '3.0'
 
         javaCompileOptions {

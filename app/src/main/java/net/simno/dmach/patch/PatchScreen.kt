@@ -112,10 +112,9 @@ private fun Patch(
                     ),
                     keyboardActions = KeyboardActions(
                         onDone = {
+                            keyboardController?.hide()
                             if (title.isNotBlank()) {
                                 onAction(SavePatchAction(title))
-                            } else {
-                                keyboardController?.hide()
                             }
                         }
                     )
@@ -128,6 +127,7 @@ private fun Patch(
                         .padding(paddingLarge),
                     textPadding = PaddingValues(paddingLarge),
                     onClick = {
+                        keyboardController?.hide()
                         if (title.isNotBlank()) {
                             onAction(SavePatchAction(title))
                         }
