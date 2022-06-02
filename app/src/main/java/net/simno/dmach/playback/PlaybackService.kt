@@ -68,6 +68,8 @@ class PlaybackService : Service() {
         val intent = Intent(this, MainActivity::class.java)
         val contentIntent = PendingIntent.getActivity(applicationContext, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         return NotificationCompat.Builder(this, CHANNEL_NAME)
+            .setContentTitle(contentTitle)
+            .setContentText(contentText)
             .setContentIntent(contentIntent)
             .setSmallIcon(R.drawable.ic_stat_playback)
             .setStyle(mediaStyle)
