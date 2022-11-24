@@ -123,7 +123,13 @@ private const val CHANNELS = 6
 private const val STEPS = 16
 private val MASKS = intArrayOf(1, 2, 4)
 
-private fun Offset.isValid(size: IntSize): Boolean = x >= 0 && y >= 0 && x <= size.width && y <= size.height
+private fun Offset.isValid(size: IntSize): Boolean =
+    x.isFinite() &&
+        y.isFinite() &&
+        x >= 0 &&
+        y >= 0 &&
+        x <= size.width &&
+        y <= size.height
 
 private data class StepChange(
     val steps: List<Int>,

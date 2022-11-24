@@ -1,35 +1,34 @@
 buildscript {
     ext.versions = [
-            'kotlin'    : '1.6.21',
-            'coroutines': '1.6.2',
-            'compileSdk': 32,
-            'minSdk'    : 28,
-            'targetSdk' : 32,
-            'ndk'       : '24.0.8215888',
-            'compose'   : '1.2.0-beta03',
-            'lifecycle' : '2.5.0-rc01',
-            'paging'    : '3.2.0-alpha01',
-            'room'      : '2.5.0-alpha02',
-            'hilt'      : '2.42',
-            'junit'     : '1.1.3',
-            'truth'     : '1.4.0'
+            "kotlin"    : "1.7.21",
+            "coroutines": "1.6.4",
+            "compileSdk": 33,
+            "minSdk"    : 28,
+            "targetSdk" : 33,
+            "ndk"       : "25.1.8937393",
+            "lifecycle" : "2.6.0-alpha02",
+            "paging"    : "3.2.0-alpha03",
+            "room"      : "2.5.0-beta02",
+            "hilt"      : "2.44.2",
+            "junit"     : "1.1.4",
+            "truth"     : "1.5.0"
     ]
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.2.1'
+        classpath "com.android.tools.build:gradle:7.3.1"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
         classpath "org.jetbrains.kotlin:kotlin-serialization:$versions.kotlin"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$versions.hilt"
-        classpath 'com.github.triplet.gradle:play-publisher:3.7.0'
+        classpath "com.github.triplet.gradle:play-publisher:3.7.0"
     }
 }
 
 plugins {
-    id 'com.diffplug.spotless' version '6.6.1'
-    id 'com.github.ben-manes.versions' version '0.42.0'
+    id "com.diffplug.spotless" version "6.11.0"
+    id "com.github.ben-manes.versions" version "0.44.0"
 }
 
 allprojects {
@@ -37,9 +36,22 @@ allprojects {
         google()
         mavenCentral()
         maven {
-            url 'https://jitpack.io'
+            url "https://jitpack.io"
             content {
-                includeModule('com.github.simonnorberg', 'dmach-externals')
+                includeModule("com.github.simonnorberg", "dmach-externals")
+            }
+        }
+    }
+}
+
+dependencyUpdates.resolutionStrategy {
+    componentSelection { rules ->
+        rules.all { ComponentSelection selection ->
+            boolean rejected = ["alpha", "beta", "dev", "cr", "m"].any { qualifier ->
+                selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+            }
+            if (rejected) {
+                selection.reject("Release candidate")
             }
         }
     }
@@ -50,32 +62,32 @@ subprojects {
         resolutionStrategy {
             eachDependency { details ->
                 def group = details.requested.group
-                if (group.startsWith('androidx.compose') && !group.contains('material3')) {
-                    details.useVersion versions.compose
-                }
-                if (group.startsWith('androidx.lifecycle')) {
+                if (group.startsWith("androidx.lifecycle")) {
                     details.useVersion versions.lifecycle
+                }
+                if (group == "androidx.fragment") {
+                    details.useVersion "1.5.4"
                 }
             }
         }
     }
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
         kotlinOptions {
-            jvmTarget = '11'
+            jvmTarget = "11"
             allWarningsAsErrors = true
-            freeCompilerArgs += '-opt-in=kotlin.Experimental'
-            freeCompilerArgs += '-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi'
-            freeCompilerArgs += '-opt-in=kotlinx.coroutines.FlowPreview'
-            freeCompilerArgs += '-opt-in=androidx.compose.foundation.ExperimentalFoundationApi'
-            freeCompilerArgs += '-opt-in=androidx.compose.material3.ExperimentalMaterial3Api'
-            freeCompilerArgs += '-opt-in=androidx.compose.ui.ExperimentalComposeUiApi'
+            freeCompilerArgs += "-opt-in=kotlin.Experimental"
+            freeCompilerArgs += "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+            freeCompilerArgs += "-opt-in=kotlinx.coroutines.FlowPreview"
+            freeCompilerArgs += "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi"
+            freeCompilerArgs += "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api"
+            freeCompilerArgs += "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi"
         }
     }
-    apply plugin: 'com.diffplug.spotless'
+    apply plugin: "com.diffplug.spotless"
     spotless {
         kotlin {
-            target '**/*.kt'
-            ktlint('0.45.2')
+            target "**/*.kt"
+            ktlint("0.47.1")
         }
     }
 }

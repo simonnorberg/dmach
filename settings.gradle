@@ -1,2 +1,2 @@
-rootProject.name = 'dmach'
-include ':app'
+rootProject.name = "dmach"
+include ":app"

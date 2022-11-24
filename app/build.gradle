@@ -1,10 +1,10 @@
 plugins {
-    id 'com.android.application'
-    id 'dagger.hilt.android.plugin'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
-    id 'kotlinx-serialization'
-    id 'com.github.triplet.play'
+    id "com.android.application"
+    id "dagger.hilt.android.plugin"
+    id "kotlin-android"
+    id "kotlin-kapt"
+    id "kotlinx-serialization"
+    id "com.github.triplet.play"
 }
 
 kapt {
@@ -17,10 +17,10 @@ hilt {
 }
 
 play {
-    track.set('internal')
+    track.set("internal")
     resolutionStrategy.set(com.github.triplet.gradle.androidpublisher.ResolutionStrategy.IGNORE)
     defaultToAppBundles.set(true)
-    serviceAccountCredentials.set(rootProject.file('signing/play-account.json'))
+    serviceAccountCredentials.set(rootProject.file("signing/play-account.json"))
 }
 
 Object propOrDef(String propertyName, Object defaultValue) {
@@ -29,16 +29,16 @@ Object propOrDef(String propertyName, Object defaultValue) {
 }
 
 android {
-    namespace 'net.simno.dmach'
+    namespace "net.simno.dmach"
     compileSdk versions.compileSdk
     ndkVersion versions.ndk
 
     defaultConfig {
-        applicationId 'net.simno.dmach'
+        applicationId "net.simno.dmach"
         minSdk versions.minSdk
         targetSdk versions.targetSdk
-        versionCode 30001
-        versionName '3.0'
+        versionCode 30003
+        versionName "3.1"
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -51,7 +51,7 @@ android {
         }
 
         ndk {
-            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+            abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
         }
 
         vectorDrawables {
@@ -62,10 +62,10 @@ android {
     }
     signingConfigs {
         release {
-            storeFile rootProject.file('signing/app-upload.jks')
-            storePassword propOrDef('STORE_PASSWORD', "")
-            keyAlias propOrDef('KEY_ALIAS', "")
-            keyPassword propOrDef('KEY_PASSWORD', "")
+            storeFile rootProject.file("signing/app-upload.jks")
+            storePassword propOrDef("STORE_PASSWORD", "")
+            keyAlias propOrDef("KEY_ALIAS", "")
+            keyPassword propOrDef("KEY_PASSWORD", "")
         }
     }
     buildTypes {
@@ -73,7 +73,7 @@ android {
             minifyEnabled true
             shrinkResources true
             signingConfig signingConfigs.release
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
     compileOptions {
@@ -84,11 +84,11 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion versions.compose
+        kotlinCompilerExtensionVersion "1.4.0-alpha02"
     }
     packagingOptions {
         resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
         jniLibs {
             useLegacyPackaging true
@@ -108,28 +108,29 @@ android {
         ignoreTestSources true
         abortOnError true
         checkDependencies true
-        disable 'GradleDependency'
+        disable "GradleDependency"
     }
 }
 
 dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutines"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines"
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
 
-    implementation "androidx.compose.ui:ui:$versions.compose"
-    implementation "androidx.compose.ui:ui-tooling-preview:$versions.compose"
-    implementation "androidx.compose.animation:animation:$versions.compose"
-    implementation "androidx.compose.material:material-icons-extended:$versions.compose"
-    implementation "androidx.compose.material3:material3:1.0.0-alpha13"
-    debugImplementation "androidx.compose.ui:ui-tooling:$versions.compose"
-    debugImplementation "androidx.compose.ui:ui-test-manifest:$versions.compose"
+    implementation platform("androidx.compose:compose-bom:2022.11.00")
+    implementation "androidx.compose.ui:ui"
+    implementation "androidx.compose.ui:ui-tooling-preview"
+    implementation "androidx.compose.animation:animation"
+    implementation "androidx.compose.material:material-icons-extended"
+    implementation "androidx.compose.material3:material3"
+    debugImplementation "androidx.compose.ui:ui-tooling"
+    debugImplementation "androidx.compose.ui:ui-test-manifest"
 
-    implementation "androidx.activity:activity-compose:1.5.0-rc01"
-    implementation "androidx.core:core-ktx:1.8.0"
+    implementation "androidx.activity:activity-compose:1.6.1"
+    implementation "androidx.core:core-ktx:1.9.0"
     implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
     implementation "androidx.media:media:1.6.0"
-    implementation "androidx.navigation:navigation-compose:2.5.0-rc01"
+    implementation "androidx.navigation:navigation-compose:2.6.0-alpha04"
 
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$versions.lifecycle"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$versions.lifecycle"
@@ -137,7 +138,7 @@ dependencies {
 
     implementation "androidx.paging:paging-common-ktx:$versions.paging"
     implementation "androidx.paging:paging-runtime-ktx:$versions.paging"
-    implementation "androidx.paging:paging-compose:1.0.0-alpha15"
+    implementation "androidx.paging:paging-compose:1.0.0-alpha17"
 
     implementation "androidx.room:room-common:$versions.room"
     implementation "androidx.room:room-runtime:$versions.room"
@@ -148,21 +149,21 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$versions.hilt"
     kapt "com.google.dagger:hilt-compiler:$versions.hilt"
 
-    implementation "com.github.simonnorberg:dmach-externals:1.10.0"
-    implementation "net.simno.kortholt:kortholt:1.10.1"
+    implementation "com.github.simonnorberg:dmach-externals:1.11.0"
+    implementation "net.simno.kortholt:kortholt:1.11.0"
 
-    implementation "com.squareup.leakcanary:plumber-android:2.9.1"
+    implementation "com.squareup.leakcanary:plumber-android:2.10"
 
     androidTestImplementation "androidx.room:room-testing:$versions.room"
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.4.0"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.0"
     androidTestImplementation "androidx.test.ext:junit:$versions.junit"
     androidTestImplementation "androidx.test.ext:truth:$versions.truth"
 
     testImplementation "androidx.paging:paging-common-ktx:$versions.paging"
-    testImplementation "androidx.test:core:1.4.0"
-    testImplementation "androidx.test:runner:1.4.0"
+    testImplementation "androidx.test:core:1.5.0"
+    testImplementation "androidx.test:runner:1.5.1"
     testImplementation "androidx.test.ext:junit:$versions.junit"
     testImplementation "androidx.test.ext:truth:$versions.truth"
-    testImplementation "org.mockito:mockito-core:4.6.0"
-    testImplementation "org.robolectric:robolectric:4.8.1"
+    testImplementation "org.mockito:mockito-core:4.9.0"
+    testImplementation "org.robolectric:robolectric:4.9"
 }

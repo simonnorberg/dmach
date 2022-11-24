@@ -24,6 +24,8 @@ class PlaybackService : Service() {
     private val notificationImage
         get() = ContextCompat.getDrawable(this, R.drawable.ic_launcher_foreground)?.toBitmap()
 
+    private var mediaSession: MediaSessionCompat? = null
+
     override fun onCreate() {
         super.onCreate()
         Kortholt.create(this)
@@ -40,8 +42,9 @@ class PlaybackService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onDestroy() {
-        stopForeground(true)
+        stopForeground(STOP_FOREGROUND_REMOVE)
         Kortholt.destroy()
+        mediaSession?.release()
         super.onDestroy()
     }
 
@@ -59,11 +62,15 @@ class PlaybackService : Service() {
             .putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART, notificationImage)
             .build()
 
-        val mediaSession = MediaSessionCompat(this, CHANNEL_NAME)
-        mediaSession.setMetadata(metadata)
+        mediaSession?.release()
+
+        val session = MediaSessionCompat(this, CHANNEL_NAME)
+        session.setMetadata(metadata)
 
         val mediaStyle = androidx.media.app.NotificationCompat.MediaStyle()
-            .setMediaSession(mediaSession.sessionToken)
+            .setMediaSession(session.sessionToken)
+
+        mediaSession = session
 
         val intent = Intent(this, MainActivity::class.java)
         val contentIntent = PendingIntent.getActivity(applicationContext, 0, intent, PendingIntent.FLAG_IMMUTABLE)

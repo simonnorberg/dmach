@@ -55,7 +55,7 @@ fun ConfigDialog(
     onTempo: (Int) -> Unit,
     onSwing: (Int) -> Unit,
     onAudioFocus: (Boolean) -> Unit,
-    onDismissRequest: () -> Unit,
+    onDismissRequest: () -> Unit
 ) {
     val surface = MaterialTheme.colorScheme.surface
     val primary = MaterialTheme.colorScheme.primary

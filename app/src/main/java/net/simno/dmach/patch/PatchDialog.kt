@@ -57,9 +57,7 @@ fun PatchDialog(
                     .padding(paddingLarge),
                 verticalArrangement = Arrangement.spacedBy(paddingLarge)
             ) {
-                LightMediumText(
-                    text = text,
-                )
+                LightMediumText(text = text)
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End

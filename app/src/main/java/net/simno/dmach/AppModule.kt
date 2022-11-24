@@ -19,7 +19,7 @@ object AppModule {
     }
 
     @Provides
-    fun provideSharedPrerences(@ApplicationContext context: Context): SharedPreferences {
+    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
         return context.getSharedPreferences("dmach", Context.MODE_PRIVATE)
     }
 }

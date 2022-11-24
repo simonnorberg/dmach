@@ -138,7 +138,7 @@ private fun Patch(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = paddingLarge, vertical = paddingSmall),
+                .padding(horizontal = paddingLarge, vertical = paddingSmall)
         ) {
             DarkMediumText(
                 text = stringResource(R.string.patch_name).uppercase(),
