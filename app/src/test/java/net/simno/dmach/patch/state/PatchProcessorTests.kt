@@ -1,4 +1,4 @@
-package net.simno.dmach.patch
+package net.simno.dmach.patch.state
 
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import net.simno.dmach.db.PatchRepository
 import net.simno.dmach.db.TestPatchDao
-import net.simno.dmach.machine.MachineProcessor
+import net.simno.dmach.machine.state.MachineProcessor
 import net.simno.dmach.playback.AudioFocus
 import net.simno.dmach.playback.PureData
 import org.junit.Before
@@ -50,7 +50,7 @@ class PatchProcessorTests {
     }
 
     private fun setupRepository() = runBlocking {
-        flowOf(net.simno.dmach.machine.LoadAction)
+        flowOf(net.simno.dmach.machine.state.LoadAction)
             .onEach { delay(10L) }
             .buffer(0)
             .shareIn(GlobalScope, SharingStarted.Lazily)

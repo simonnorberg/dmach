@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import net.simno.dmach.db.PatchRepository
+import net.simno.dmach.machine.state.MachineProcessor
 import net.simno.dmach.playback.AudioFocus
 import net.simno.dmach.playback.PlaybackServiceController
 import net.simno.dmach.playback.PureDataController

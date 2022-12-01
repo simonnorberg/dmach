@@ -1,4 +1,4 @@
-package net.simno.dmach.machine
+package net.simno.dmach.machine.ui
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
@@ -55,22 +55,24 @@ fun ConfigDialog(
     onTempo: (Int) -> Unit,
     onSwing: (Int) -> Unit,
     onAudioFocus: (Boolean) -> Unit,
-    onDismissRequest: () -> Unit
+    onDismiss: () -> Unit
 ) {
     val surface = MaterialTheme.colorScheme.surface
     val primary = MaterialTheme.colorScheme.primary
     val onPrimary = MaterialTheme.colorScheme.onPrimary
+    val shapeMedium = MaterialTheme.shapes.medium
     val paddingLarge = AppTheme.dimens.PaddingLarge
     val paddingSmall = AppTheme.dimens.PaddingSmall
+
     Dialog(
         properties = DialogProperties(usePlatformDefaultWidth = false),
-        onDismissRequest = onDismissRequest
+        onDismissRequest = onDismiss
     ) {
         Column(
             modifier = Modifier
                 .background(
                     color = primary,
-                    shape = MaterialTheme.shapes.medium
+                    shape = shapeMedium
                 )
                 .width(IntrinsicSize.Max)
                 .padding(paddingSmall),
@@ -98,7 +100,7 @@ fun ConfigDialog(
                 modifier = Modifier
                     .background(
                         color = onPrimary,
-                        shape = MaterialTheme.shapes.medium
+                        shape = shapeMedium
                     )
                     .padding(
                         start = paddingLarge,
@@ -141,14 +143,16 @@ private fun ValueConfig(
     maxValue: Int,
     onValue: (Int) -> Unit
 ) {
-    val color = MaterialTheme.colorScheme.surface
+    val surface = MaterialTheme.colorScheme.surface
+    val shapeMedium = MaterialTheme.shapes.medium
     val paddingLarge = AppTheme.dimens.PaddingLarge
     var value by remember { mutableStateOf(configValue) }
+
     Row(
         modifier = Modifier
             .background(
                 color = background,
-                shape = MaterialTheme.shapes.medium
+                shape = shapeMedium
             )
             .wrapContentWidth()
             .height(80.dp)
@@ -219,7 +223,7 @@ private fun ValueConfig(
         Icon(
             imageVector = Icons.Filled.Remove,
             contentDescription = null,
-            tint = color,
+            tint = surface,
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .size(36.dp)
@@ -228,7 +232,7 @@ private fun ValueConfig(
         Icon(
             imageVector = Icons.Filled.Remove,
             contentDescription = null,
-            tint = color,
+            tint = surface,
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .size(18.dp)
@@ -250,7 +254,7 @@ private fun ValueConfig(
         Icon(
             imageVector = Icons.Filled.Add,
             contentDescription = null,
-            tint = color,
+            tint = surface,
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .size(18.dp)
@@ -259,7 +263,7 @@ private fun ValueConfig(
         Icon(
             imageVector = Icons.Filled.Add,
             contentDescription = null,
-            tint = color,
+            tint = surface,
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .size(36.dp)

@@ -1,4 +1,4 @@
-package net.simno.dmach.machine
+package net.simno.dmach.machine.state
 
 import net.simno.dmach.data.Patch
 import net.simno.dmach.data.Position

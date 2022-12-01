@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import net.simno.dmach.db.PatchRepository
+import net.simno.dmach.patch.state.PatchProcessor
 
 @Module
 @InstallIn(ViewModelComponent::class)

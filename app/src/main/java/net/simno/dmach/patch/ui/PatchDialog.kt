@@ -1,4 +1,4 @@
-package net.simno.dmach.patch
+package net.simno.dmach.patch.ui
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
@@ -31,8 +31,10 @@ fun PatchDialog(
 ) {
     val primary = MaterialTheme.colorScheme.primary
     val onPrimary = MaterialTheme.colorScheme.onPrimary
+    val shapeSmall = MaterialTheme.shapes.small
     val paddingLarge = AppTheme.dimens.PaddingLarge
     val paddingSmall = AppTheme.dimens.PaddingSmall
+
     Dialog(
         onDismissRequest = onDismiss
     ) {
@@ -40,7 +42,7 @@ fun PatchDialog(
             modifier = Modifier
                 .background(
                     color = primary,
-                    shape = MaterialTheme.shapes.small
+                    shape = shapeSmall
                 )
                 .fillMaxWidth()
                 .wrapContentHeight()
@@ -50,7 +52,7 @@ fun PatchDialog(
                 modifier = Modifier
                     .background(
                         color = onPrimary,
-                        shape = MaterialTheme.shapes.small
+                        shape = shapeSmall
                     )
                     .fillMaxWidth()
                     .wrapContentHeight()
@@ -65,7 +67,7 @@ fun PatchDialog(
                     LightMediumText(
                         text = stringResource(R.string.cancel).uppercase(),
                         modifier = Modifier
-                            .clip(MaterialTheme.shapes.small)
+                            .clip(shapeSmall)
                             .clickable(onClick = onDismiss)
                             .padding(paddingSmall)
                     )
@@ -73,7 +75,7 @@ fun PatchDialog(
                     LightMediumText(
                         text = stringResource(confirmText).uppercase(),
                         modifier = Modifier
-                            .clip(MaterialTheme.shapes.small)
+                            .clip(shapeSmall)
                             .clickable(onClick = onConfirm)
                             .padding(paddingSmall)
                     )

@@ -1,4 +1,4 @@
-package net.simno.dmach.machine
+package net.simno.dmach.machine.ui
 
 import android.animation.ValueAnimator
 import android.view.animation.DecelerateInterpolator
@@ -45,9 +45,11 @@ fun PanFader(
     onPan: (Float) -> Unit
 ) {
     val rectHeight = AppTheme.dimens.RectHeight
+    val buttonMedium = AppTheme.dimens.ButtonMedium
+
     Box(
         modifier = modifier
-            .width(AppTheme.dimens.ButtonMedium)
+            .width(buttonMedium)
             .fillMaxHeight()
     ) {
         Box(
@@ -96,9 +98,9 @@ private fun Fader(
     onPan: (Float) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val color = MaterialTheme.colorScheme.secondary
+    val secondary = MaterialTheme.colorScheme.secondary
+    val shapeSmall = MaterialTheme.shapes.small
     val rectHeight = AppTheme.dimens.RectHeight
-    val cornerShape = MaterialTheme.shapes.small
     val paddingSmall = AppTheme.dimens.PaddingSmall
     var rect by remember { mutableStateOf<DrawableRect?>(null) }
 
@@ -110,7 +112,7 @@ private fun Fader(
                 val rectHeightPx = rectHeight.toPx()
                 val rectSize = Size(size.width.toFloat(), rectHeightPx)
                 val offset = rectHeightPx / 2f
-                val radius = cornerShape.topStart.toPx(rectSize, this)
+                val radius = shapeSmall.topStart.toPx(rectSize, this)
                 val cornerRadius = CornerRadius(radius, radius)
                 val stroke = Stroke(width = strokeWidth)
 
@@ -140,7 +142,7 @@ private fun Fader(
                         .coerceAtLeast(minY)
                         .coerceAtMost(maxY)
                     return DrawableRect(
-                        color = color,
+                        color = secondary,
                         topLeft = Offset(minX, newY - offset),
                         size = rectSize,
                         cornerRadius = cornerRadius,

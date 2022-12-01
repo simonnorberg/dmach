@@ -1,4 +1,4 @@
-package net.simno.dmach.machine
+package net.simno.dmach.machine.state
 
 import android.media.AudioManager
 import com.google.common.truth.Truth.assertThat

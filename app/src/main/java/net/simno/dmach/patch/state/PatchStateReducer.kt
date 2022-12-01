@@ -1,4 +1,4 @@
-package net.simno.dmach.patch
+package net.simno.dmach.patch.state
 
 import net.simno.dmach.util.logError
 

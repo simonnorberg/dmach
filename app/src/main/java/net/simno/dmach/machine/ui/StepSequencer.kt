@@ -1,4 +1,4 @@
-package net.simno.dmach.machine
+package net.simno.dmach.machine.ui
 
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.forEachGesture
@@ -34,22 +34,23 @@ fun StepSequencer(
     val tertiary = MaterialTheme.colorScheme.tertiary
     val onSurface = MaterialTheme.colorScheme.onSurface
     val onSurfaceVariant = MaterialTheme.colorScheme.onSurfaceVariant
-    val cornerShape = MaterialTheme.shapes.small
-    val marginSmall = AppTheme.dimens.PaddingSmall
+    val shapeSmall = MaterialTheme.shapes.small
+    val paddingSmall = AppTheme.dimens.PaddingSmall
     var drawables by remember { mutableStateOf<List<DrawableRect>>(emptyList()) }
     var sizeKey by remember { mutableStateOf(IntSize.Zero) }
+
     Box(
         modifier = modifier
             .fillMaxSize()
             .onSizeChanged { sizeKey = it }
             .pointerInput(sequenceId, sizeKey) {
                 val steps = sequence.toMutableList()
-                val margin = marginSmall.toPx()
+                val margin = paddingSmall.toPx()
                 val stepSize = Size(
                     width = (size.width - (STEPS - 1f) * margin) / STEPS,
                     height = (size.height - (CHANNELS - 1f) * margin) / CHANNELS
                 )
-                val radius = cornerShape.topStart.toPx(stepSize, this)
+                val radius = shapeSmall.topStart.toPx(stepSize, this)
                 val cornerRadius = CornerRadius(radius, radius)
 
                 fun getDrawableSteps() = steps

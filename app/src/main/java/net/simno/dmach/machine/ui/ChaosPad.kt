@@ -1,4 +1,4 @@
-package net.simno.dmach.machine
+package net.simno.dmach.machine.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -38,12 +38,16 @@ fun ChaosPad(
     modifier: Modifier = Modifier,
     onPosition: (Position) -> Unit
 ) {
+    val secondary = MaterialTheme.colorScheme.secondary
+    val shapeSmall = MaterialTheme.shapes.small
+    val paddingSmall = AppTheme.dimens.PaddingSmall
+
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(
-                color = MaterialTheme.colorScheme.secondary,
-                shape = MaterialTheme.shapes.small
+                color = secondary,
+                shape = shapeSmall
             )
     ) {
         DarkLargeText(
@@ -65,7 +69,7 @@ fun ChaosPad(
             text = horizontalText.uppercase(),
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(bottom = AppTheme.dimens.PaddingSmall)
+                .padding(bottom = paddingSmall)
         )
         Circle(
             settingId = settingId,
@@ -82,16 +86,16 @@ private fun Circle(
     onPosition: (Position) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val color = MaterialTheme.colorScheme.surface
+    val surface = MaterialTheme.colorScheme.surface
     val circleRadius = AppTheme.dimens.CircleRadius
-    val marginSmall = AppTheme.dimens.PaddingSmall
+    val paddingSmall = AppTheme.dimens.PaddingSmall
     var circle by remember { mutableStateOf<DrawableCircle?>(null) }
 
     Box(
         modifier = modifier
             .fillMaxSize()
             .pointerInput(settingId) {
-                val strokeWidth = marginSmall.toPx()
+                val strokeWidth = paddingSmall.toPx()
                 val radius = circleRadius.toPx()
                 val stroke = Stroke(width = strokeWidth)
                 val minX = strokeWidth / 2f + radius
@@ -114,7 +118,7 @@ private fun Circle(
                         .coerceAtLeast(minY)
                         .coerceAtMost(maxY)
                     return DrawableCircle(
-                        color = color,
+                        color = surface,
                         radius = radius,
                         style = stroke,
                         center = Offset(newX, newY),
