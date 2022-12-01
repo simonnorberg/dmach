@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,6 +61,7 @@ fun Patch(
     val paddingLarge = AppTheme.dimens.PaddingLarge
     val paddingSmall = AppTheme.dimens.PaddingSmall
     val buttonLarge = AppTheme.dimens.ButtonLarge
+    val updatedOnAction by rememberUpdatedState(onAction)
 
     Column(
         modifier = Modifier
@@ -101,7 +103,7 @@ fun Patch(
                         onDone = {
                             keyboardController?.hide()
                             if (title.isNotBlank()) {
-                                onAction(SavePatchAction(title))
+                                updatedOnAction(SavePatchAction(title))
                             }
                         }
                     )
@@ -116,7 +118,7 @@ fun Patch(
                     onClick = {
                         keyboardController?.hide()
                         if (title.isNotBlank()) {
-                            onAction(SavePatchAction(title))
+                            updatedOnAction(SavePatchAction(title))
                         }
                     }
                 )
@@ -155,11 +157,11 @@ fun Patch(
                             .background(background)
                             .combinedClickable(
                                 onClick = {
-                                    onAction(SelectPatchAction(patch.title))
+                                    updatedOnAction(SelectPatchAction(patch.title))
                                 },
                                 onLongClick = {
                                     if (patches.itemCount > 1) {
-                                        onAction(DeletePatchAction(patch.title))
+                                        updatedOnAction(DeletePatchAction(patch.title))
                                     }
                                 }
                             )
@@ -189,16 +191,16 @@ fun Patch(
             PatchDialog(
                 text = stringResource(R.string.delete_patch, state.title),
                 confirmText = R.string.delete,
-                onDismiss = { onAction(DismissAction) },
-                onConfirm = { onAction(ConfirmDeleteAction) }
+                onDismiss = { updatedOnAction(DismissAction) },
+                onConfirm = { updatedOnAction(ConfirmDeleteAction) }
             )
         }
         state.showOverwrite -> {
             PatchDialog(
                 text = stringResource(R.string.overwrite_patch, state.title),
                 confirmText = R.string.overwrite,
-                onDismiss = { onAction(DismissAction) },
-                onConfirm = { onAction(ConfirmOverwriteAction) }
+                onDismiss = { updatedOnAction(DismissAction) },
+                onConfirm = { updatedOnAction(ConfirmOverwriteAction) }
             )
         }
     }

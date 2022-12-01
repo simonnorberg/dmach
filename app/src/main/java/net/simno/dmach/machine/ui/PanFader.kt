@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -102,6 +103,7 @@ private fun Fader(
     val shapeSmall = MaterialTheme.shapes.small
     val rectHeight = AppTheme.dimens.RectHeight
     val paddingSmall = AppTheme.dimens.PaddingSmall
+    val updatedOnPan by rememberUpdatedState(onPan)
     var rect by remember { mutableStateOf<DrawableRect?>(null) }
 
     Box(
@@ -134,7 +136,7 @@ private fun Fader(
                     } else {
                         1 - ((y - minY) / (maxY - minY)).coerceIn(0f, 1f)
                     }
-                    onPan(pos)
+                    updatedOnPan(pos)
                 }
 
                 fun getDrawableRect(y: Float): DrawableRect {

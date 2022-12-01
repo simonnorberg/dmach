@@ -20,6 +20,8 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -57,6 +59,7 @@ fun Machine(
     val paddingLarge = AppTheme.dimens.PaddingLarge
     val paddingMedium = AppTheme.dimens.PaddingMedium
     val paddingSmall = AppTheme.dimens.PaddingSmall
+    val updatedOnAction by rememberUpdatedState(onAction)
 
     Column(
         modifier = Modifier
@@ -81,7 +84,7 @@ fun Machine(
                 modifier = Modifier
                     .width(buttonLarge)
                     .wrapContentWidth(),
-                onClick = { onAction(PlayPauseAction) }
+                onClick = { updatedOnAction(PlayPauseAction) }
             )
             IconButton(
                 icon = Icons.Filled.Tune,
@@ -90,7 +93,7 @@ fun Machine(
                 modifier = Modifier
                     .width(buttonLarge)
                     .wrapContentWidth(),
-                onClick = { onAction(ConfigAction) }
+                onClick = { updatedOnAction(ConfigAction) }
             )
             IconButton(
                 icon = Icons.Filled.DeleteForever,
@@ -99,7 +102,7 @@ fun Machine(
                 modifier = Modifier
                     .width(buttonLarge)
                     .wrapContentWidth(),
-                onClick = { onAction(ChangeSequenceAction.Empty) }
+                onClick = { updatedOnAction(ChangeSequenceAction.Empty) }
             )
             IconButton(
                 icon = Icons.Filled.Refresh,
@@ -108,7 +111,7 @@ fun Machine(
                 modifier = Modifier
                     .width(buttonLarge)
                     .wrapContentWidth(),
-                onClick = { onAction(ChangeSequenceAction.Randomize()) }
+                onClick = { updatedOnAction(ChangeSequenceAction.Randomize()) }
             )
             Row(
                 modifier = Modifier
@@ -160,7 +163,7 @@ fun Machine(
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxSize(),
-                        onClick = { onAction(SelectChannelAction(index, state.selectedChannel == index)) }
+                        onClick = { updatedOnAction(SelectChannelAction(index, state.selectedChannel == index)) }
                     )
                 }
             }
@@ -169,7 +172,7 @@ fun Machine(
                     sequenceId = state.sequenceId,
                     sequence = state.sequence,
                     modifier = Modifier.padding(paddingSmall),
-                    onSequence = { sequence -> onAction(ChangeSequenceAction.Edit(state.sequenceId, sequence)) }
+                    onSequence = { sequence -> updatedOnAction(ChangeSequenceAction.Edit(state.sequenceId, sequence)) }
                 )
             } else {
                 Column(
@@ -188,7 +191,7 @@ fun Machine(
                                 .fillMaxSize(),
                             enabled = state.settingsSize > index,
                             radioButton = true,
-                            onClick = { onAction(SelectSettingAction(index)) }
+                            onClick = { updatedOnAction(SelectSettingAction(index)) }
                         )
                     }
                 }
@@ -200,14 +203,14 @@ fun Machine(
                     modifier = Modifier
                         .weight(1f)
                         .padding(paddingSmall),
-                    onPosition = { onAction(ChangePositionAction(it)) }
+                    onPosition = { updatedOnAction(ChangePositionAction(it)) }
                 )
                 PanFader(
                     panId = state.panId,
                     pan = state.pan,
                     modifier = Modifier
                         .padding(top = paddingSmall, end = paddingSmall, bottom = paddingSmall),
-                    onPan = { onAction(ChangePanAction(it)) }
+                    onPan = { updatedOnAction(ChangePanAction(it)) }
                 )
             }
         }
@@ -219,10 +222,10 @@ fun Machine(
             tempo = state.tempo,
             swing = state.swing,
             ignoreAudioFocus = state.ignoreAudioFocus,
-            onTempo = { onAction(ChangeTempoAction(it)) },
-            onSwing = { onAction(ChangeSwingAction(it)) },
-            onAudioFocus = { onAction(AudioFocusAction(it)) },
-            onDismiss = { onAction(DismissAction) }
+            onTempo = { updatedOnAction(ChangeTempoAction(it)) },
+            onSwing = { updatedOnAction(ChangeSwingAction(it)) },
+            onAudioFocus = { updatedOnAction(AudioFocusAction(it)) },
+            onDismiss = { updatedOnAction(DismissAction) }
         )
     }
 }

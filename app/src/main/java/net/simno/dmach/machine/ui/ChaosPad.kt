@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -89,6 +90,7 @@ private fun Circle(
     val surface = MaterialTheme.colorScheme.surface
     val circleRadius = AppTheme.dimens.CircleRadius
     val paddingSmall = AppTheme.dimens.PaddingSmall
+    val updatedOnPosition by rememberUpdatedState(onPosition)
     var circle by remember { mutableStateOf<DrawableCircle?>(null) }
 
     Box(
@@ -107,7 +109,7 @@ private fun Circle(
                     // Convert pixels to a position value [0.0-1.0]
                     val posX = ((x - minX) / (maxX - minX)).coerceIn(0f, 1f)
                     val posY = 1 - ((y - minY) / (maxY - minY)).coerceIn(0f, 1f)
-                    onPosition(Position(posX, posY))
+                    updatedOnPosition(Position(posX, posY))
                 }
 
                 fun getDrawableCircle(x: Float, y: Float): DrawableCircle {

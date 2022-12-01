@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -36,6 +37,7 @@ fun StepSequencer(
     val onSurfaceVariant = MaterialTheme.colorScheme.onSurfaceVariant
     val shapeSmall = MaterialTheme.shapes.small
     val paddingSmall = AppTheme.dimens.PaddingSmall
+    val updatedOnSequence by rememberUpdatedState(onSequence)
     var drawables by remember { mutableStateOf<List<DrawableRect>>(emptyList()) }
     var sizeKey by remember { mutableStateOf(IntSize.Zero) }
 
@@ -76,7 +78,7 @@ fun StepSequencer(
                 fun onStepChange(stepChange: StepChange) {
                     steps[stepChange.index] = stepChange.changedStep
                     drawables = getDrawableSteps()
-                    onSequence(steps)
+                    updatedOnSequence(steps)
                 }
 
                 drawables = getDrawableSteps()

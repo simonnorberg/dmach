@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -146,6 +147,7 @@ private fun ValueConfig(
     val surface = MaterialTheme.colorScheme.surface
     val shapeMedium = MaterialTheme.shapes.medium
     val paddingLarge = AppTheme.dimens.PaddingLarge
+    val updatedOnValue by rememberUpdatedState(onValue)
     var value by remember { mutableStateOf(configValue) }
 
     Row(
@@ -188,7 +190,7 @@ private fun ValueConfig(
                                     val newValue = value + change
                                     if (newValue in minValue..maxValue) {
                                         value = newValue
-                                        onValue(newValue)
+                                        updatedOnValue(newValue)
                                     }
                                     delay(delay)
                                 }
