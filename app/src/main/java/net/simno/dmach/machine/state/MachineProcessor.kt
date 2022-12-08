@@ -14,6 +14,7 @@ import net.simno.dmach.data.withPosition
 import net.simno.dmach.data.withSelectedSetting
 import net.simno.dmach.db.PatchRepository
 import net.simno.dmach.playback.AudioFocus
+import net.simno.dmach.playback.KortholtController
 import net.simno.dmach.playback.PlaybackObserver
 import net.simno.dmach.playback.PureData
 import kotlin.random.Random
@@ -21,6 +22,7 @@ import kotlin.random.Random
 class MachineProcessor(
     val playbackObservers: Set<PlaybackObserver>,
     private val pureData: PureData,
+    private val kortholtController: KortholtController,
     private val audioFocus: AudioFocus,
     private val patchRepository: PatchRepository,
     private val uid: Int? = null
@@ -32,6 +34,8 @@ class MachineProcessor(
         actions.filterIsInstance<PlayPauseAction>().let(playPause),
         actions.filterIsInstance<AudioFocusAction>().let(audioFocusProcessor),
         actions.filterIsInstance<ConfigAction>().let(config),
+        actions.filterIsInstance<ExportAction>().let(export),
+        actions.filterIsInstance<ExportFileAction>().let(exportFile),
         actions.filterIsInstance<DismissAction>().let(dismiss),
         actions.filterIsInstance<ChangeSequenceAction>().let(changeSequence),
         actions.filterIsInstance<SelectChannelAction>().let(selectChannel),
@@ -125,6 +129,24 @@ class MachineProcessor(
         actions
             .computeResult {
                 ConfigResult(getUid())
+            }
+    }
+
+    private val export: (Flow<ExportAction>) -> Flow<ExportResult> = { actions ->
+        actions
+            .onEach {
+                audioFocus.abandonAudioFocus()
+            }
+            .computeResult {
+                ExportResult
+            }
+    }
+
+    private val exportFile: (Flow<ExportFileAction>) -> Flow<ExportFileResult> = { actions ->
+        actions
+            .computeResult { action ->
+                val waveFile = kortholtController.saveWaveFile(action.title, action.tempo)
+                ExportFileResult(waveFile)
             }
     }
 

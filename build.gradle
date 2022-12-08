@@ -6,9 +6,9 @@ buildscript {
             "minSdk"    : 28,
             "targetSdk" : 33,
             "ndk"       : "25.1.8937393",
-            "lifecycle" : "2.6.0-alpha02",
+            "lifecycle" : "2.6.0-alpha03",
             "paging"    : "3.2.0-alpha03",
-            "room"      : "2.5.0-beta02",
+            "room"      : "2.5.0-rc01",
             "hilt"      : "2.44.2",
             "junit"     : "1.1.4",
             "truth"     : "1.5.0"
@@ -66,7 +66,7 @@ subprojects {
                     details.useVersion versions.lifecycle
                 }
                 if (group == "androidx.fragment") {
-                    details.useVersion "1.5.4"
+                    details.useVersion "1.5.5"
                 }
             }
         }

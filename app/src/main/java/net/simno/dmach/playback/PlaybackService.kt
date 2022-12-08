@@ -17,7 +17,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import net.simno.dmach.MainActivity
 import net.simno.dmach.R
-import net.simno.kortholt.Kortholt
 
 class PlaybackService : Service() {
 
@@ -25,11 +24,6 @@ class PlaybackService : Service() {
         get() = ContextCompat.getDrawable(this, R.drawable.ic_launcher_foreground)?.toBitmap()
 
     private var mediaSession: MediaSessionCompat? = null
-
-    override fun onCreate() {
-        super.onCreate()
-        Kortholt.create(this)
-    }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         createNotificationChannel()
@@ -43,7 +37,6 @@ class PlaybackService : Service() {
 
     override fun onDestroy() {
         stopForeground(STOP_FOREGROUND_REMOVE)
-        Kortholt.destroy()
         mediaSession?.release()
         super.onDestroy()
     }

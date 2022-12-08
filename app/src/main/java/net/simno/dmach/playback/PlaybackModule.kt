@@ -6,13 +6,16 @@ import android.media.AudioManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
-@InstallIn(ViewModelComponent::class)
+@InstallIn(SingletonComponent::class)
 object PlaybackModule {
+
     @Provides
+    @Singleton
     fun provideAudioFocus(
         audioManager: AudioManager,
         sharedPreferences: SharedPreferences
@@ -21,12 +24,27 @@ object PlaybackModule {
     }
 
     @Provides
-    fun providePlaybackServiceController(@ApplicationContext context: Context): PlaybackServiceController {
-        return PlaybackServiceController(context)
+    @Singleton
+    fun provideKortholtController(
+        @ApplicationContext context: Context
+    ): KortholtController {
+        return KortholtController(context)
     }
 
     @Provides
-    fun providePureDataController(@ApplicationContext context: Context): PureDataController {
+    @Singleton
+    fun providePlaybackServiceController(
+        @ApplicationContext context: Context,
+        kortholtController: KortholtController
+    ): PlaybackServiceController {
+        return PlaybackServiceController(context, kortholtController)
+    }
+
+    @Provides
+    @Singleton
+    fun providePureDataController(
+        @ApplicationContext context: Context
+    ): PureDataController {
         return PureDataController(context)
     }
 }

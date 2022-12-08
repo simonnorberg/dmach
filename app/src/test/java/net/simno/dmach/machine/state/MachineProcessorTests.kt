@@ -21,15 +21,20 @@ import net.simno.dmach.data.withSelectedSetting
 import net.simno.dmach.db.PatchRepository
 import net.simno.dmach.db.TestPatchDao
 import net.simno.dmach.playback.AudioFocus
+import net.simno.dmach.playback.KortholtController
 import net.simno.dmach.playback.PlaybackObserver
 import net.simno.dmach.playback.PureData
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
+import org.mockito.Mockito.anyInt
+import org.mockito.Mockito.anyString
+import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
+import java.io.File
 
 @DelicateCoroutinesApi
 class MachineProcessorTests {
@@ -42,6 +47,10 @@ class MachineProcessorTests {
 
     @Mock
     private lateinit var audioFocus: AudioFocus
+
+    @Mock
+    private lateinit var kortholtController: KortholtController
+
     private lateinit var repository: PatchRepository
     private lateinit var testDao: TestPatchDao
     private lateinit var machineProcessor: MachineProcessor
@@ -64,7 +73,14 @@ class MachineProcessorTests {
         MockitoAnnotations.openMocks(this)
         testDao = TestPatchDao()
         repository = PatchRepository(testDao)
-        machineProcessor = MachineProcessor(setOf(playbackObserver), pureData, audioFocus, repository, 0)
+        machineProcessor = MachineProcessor(
+            playbackObservers = setOf(playbackObserver),
+            pureData = pureData,
+            kortholtController = kortholtController,
+            audioFocus = audioFocus,
+            patchRepository = repository,
+            uid = 0
+        )
     }
 
     @Test
@@ -145,6 +161,33 @@ class MachineProcessorTests {
         val expected = listOf(ConfigResult(0), DismissResult, ConfigResult(0))
         assertThat(actual).isEqualTo(expected)
         verify(playbackObserver, times(2)).updateInfo(testDao.patch.title, testDao.patch.tempo)
+    }
+
+    @Test
+    fun startExport() = runBlocking {
+        processAction(LoadAction)
+
+        val actual = processActions(ExportAction)
+        val expected = listOf(ExportResult)
+
+        verify(audioFocus, times(1)).abandonAudioFocus()
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun exportFile() = runBlocking {
+        val mockFile = mock(File::class.java)
+
+        `when`(kortholtController.saveWaveFile(anyString(), anyInt()))
+            .thenReturn(mockFile)
+
+        processAction(LoadAction)
+
+        val actual = processActions(ExportFileAction("untitled", 120))
+        val expected = listOf(ExportFileResult(mockFile))
+
+        verify(kortholtController, times(1)).saveWaveFile("untitled", 120)
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test

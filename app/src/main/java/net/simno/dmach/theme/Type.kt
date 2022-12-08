@@ -23,5 +23,10 @@ val Typography: Typography
             fontFamily = FontFamily.SansSerif,
             fontWeight = FontWeight.Light,
             fontSize = AppTheme.dimens.TextSmall
+        ),
+        labelMedium = TextStyle(
+            fontFamily = FontFamily.SansSerif,
+            fontWeight = FontWeight.Light,
+            fontSize = AppTheme.dimens.LabelMedium
         )
     )

@@ -7,7 +7,8 @@ import androidx.lifecycle.LifecycleOwner
 import java.util.concurrent.atomic.AtomicBoolean
 
 class PlaybackServiceController(
-    private val context: Context
+    private val context: Context,
+    private val kortholtController: KortholtController
 ) : PlaybackObserver, DefaultLifecycleObserver {
 
     private val isPlaying = AtomicBoolean(false)
@@ -17,6 +18,7 @@ class PlaybackServiceController(
     override fun onPlaybackStart() {
         if (isPlaying.compareAndSet(false, true)) {
             startService()
+            kortholtController.create()
         }
     }
 
@@ -36,12 +38,16 @@ class PlaybackServiceController(
     override fun onPause(owner: LifecycleOwner) {
         if (isPlaying.compareAndSet(false, false)) {
             stopService()
+            if (!kortholtController.isExporting()) {
+                kortholtController.destroy()
+            }
         }
     }
 
     override fun onDestroy(owner: LifecycleOwner) {
         isPlaying.set(false)
         stopService()
+        kortholtController.destroy()
     }
 
     private fun startService() {

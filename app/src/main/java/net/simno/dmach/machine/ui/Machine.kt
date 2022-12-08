@@ -15,11 +15,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DeleteForever
+import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
@@ -41,6 +43,8 @@ import net.simno.dmach.machine.state.ChangeSwingAction
 import net.simno.dmach.machine.state.ChangeTempoAction
 import net.simno.dmach.machine.state.ConfigAction
 import net.simno.dmach.machine.state.DismissAction
+import net.simno.dmach.machine.state.ExportAction
+import net.simno.dmach.machine.state.ExportFileAction
 import net.simno.dmach.machine.state.PlayPauseAction
 import net.simno.dmach.machine.state.SelectChannelAction
 import net.simno.dmach.machine.state.SelectSettingAction
@@ -60,6 +64,12 @@ fun Machine(
     val paddingMedium = AppTheme.dimens.PaddingMedium
     val paddingSmall = AppTheme.dimens.PaddingSmall
     val updatedOnAction by rememberUpdatedState(onAction)
+
+    LaunchedEffect(state.startExport, state.waveFile, state.isPlaying) {
+        if (state.startExport && state.waveFile == null && !state.isPlaying) {
+            updatedOnAction(ExportFileAction(state.title, state.tempo))
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -112,6 +122,15 @@ fun Machine(
                     .width(buttonLarge)
                     .wrapContentWidth(),
                 onClick = { updatedOnAction(ChangeSequenceAction.Randomize()) }
+            )
+            IconButton(
+                icon = Icons.Filled.FileDownload,
+                description = R.string.description_export,
+                selected = state.showExport,
+                modifier = Modifier
+                    .width(buttonLarge)
+                    .wrapContentWidth(),
+                onClick = { updatedOnAction(ExportAction) }
             )
             Row(
                 modifier = Modifier
@@ -216,8 +235,8 @@ fun Machine(
         }
     }
 
-    if (state.showConfig) {
-        ConfigDialog(
+    when {
+        state.showConfig -> ConfigDialog(
             configId = state.configId,
             tempo = state.tempo,
             swing = state.swing,
@@ -225,6 +244,11 @@ fun Machine(
             onTempo = { updatedOnAction(ChangeTempoAction(it)) },
             onSwing = { updatedOnAction(ChangeSwingAction(it)) },
             onAudioFocus = { updatedOnAction(AudioFocusAction(it)) },
+            onDismiss = { updatedOnAction(DismissAction) }
+        )
+        state.showExport -> ExportDialog(
+            enabled = !state.startExport,
+            waveFile = state.waveFile,
             onDismiss = { updatedOnAction(DismissAction) }
         )
     }

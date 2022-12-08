@@ -83,7 +83,7 @@ class AudioFocus(
         }
     }
 
-    private fun abandonAudioFocus() {
+    fun abandonAudioFocus() {
         focusDelegate.abandonFocus()
         onFocusLoss()
     }

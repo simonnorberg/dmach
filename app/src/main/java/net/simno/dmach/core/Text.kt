@@ -81,3 +81,17 @@ fun DarkSmallText(
         style = MaterialTheme.typography.bodySmall
     )
 }
+
+@Composable
+fun LightMediumLabel(
+    text: String,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = text,
+        modifier = modifier,
+        color = MaterialTheme.colorScheme.surface,
+        maxLines = 1,
+        style = MaterialTheme.typography.labelMedium
+    )
+}

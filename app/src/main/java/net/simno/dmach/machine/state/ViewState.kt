@@ -3,12 +3,16 @@ package net.simno.dmach.machine.state
 import net.simno.dmach.data.Channel
 import net.simno.dmach.data.Patch
 import net.simno.dmach.data.Position
+import java.io.File
 
 data class ViewState(
     val title: String = "",
     val isPlaying: Boolean = false,
     val showConfig: Boolean = false,
     val configId: Int = 0,
+    val showExport: Boolean = false,
+    val startExport: Boolean = false,
+    val waveFile: File? = null,
     val ignoreAudioFocus: Boolean = false,
     val sequenceId: Int = 0,
     val sequence: List<Int> = Patch.EMPTY_SEQUENCE,

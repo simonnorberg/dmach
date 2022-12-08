@@ -21,9 +21,14 @@
     <string name="patch_swing">Swing</string>
     <string name="patch_bpm">BPM</string>
 
+    <string name="export_wave_file">Export wave file (experimental)</string>
+    <string name="save">Save</string>
+    <string name="share">Share</string>
+
     <string name="description_play">play</string>
     <string name="description_config">configure</string>
     <string name="description_reset">reset</string>
     <string name="description_random">randomize</string>
+    <string name="description_export">export</string>
 
 </resources>

@@ -17,6 +17,7 @@ import net.simno.dmach.db.PatchRepository
 import net.simno.dmach.db.TestPatchDao
 import net.simno.dmach.machine.state.MachineProcessor
 import net.simno.dmach.playback.AudioFocus
+import net.simno.dmach.playback.KortholtController
 import net.simno.dmach.playback.PureData
 import org.junit.Before
 import org.junit.Test
@@ -54,7 +55,15 @@ class PatchProcessorTests {
             .onEach { delay(10L) }
             .buffer(0)
             .shareIn(GlobalScope, SharingStarted.Lazily)
-            .let(MachineProcessor(emptySet(), mock(PureData::class.java), mock(AudioFocus::class.java), repository))
+            .let(
+                MachineProcessor(
+                    playbackObservers = emptySet(),
+                    pureData = mock(PureData::class.java),
+                    kortholtController = mock(KortholtController::class.java),
+                    audioFocus = mock(AudioFocus::class.java),
+                    patchRepository = repository
+                )
+            )
             .take(1)
             .toList()
     }

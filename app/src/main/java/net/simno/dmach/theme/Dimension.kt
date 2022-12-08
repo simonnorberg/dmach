@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.sp
 sealed class Dimensions(
     val CircleRadius: Dp,
     val RectHeight: Dp,
+    val ConfigHeight: Dp,
     val PaddingSmall: Dp,
     val PaddingMedium: Dp,
     val PaddingLarge: Dp,
@@ -21,11 +22,13 @@ sealed class Dimensions(
     val ButtonLarge: Dp,
     val TextSmall: TextUnit,
     val TextMedium: TextUnit,
-    val TextLarge: TextUnit
+    val TextLarge: TextUnit,
+    val LabelMedium: TextUnit
 ) {
     object Default : Dimensions(
         CircleRadius = 18.dp,
         RectHeight = 44.dp,
+        ConfigHeight = 80.dp,
         PaddingSmall = 4.dp,
         PaddingMedium = 8.dp,
         PaddingLarge = 12.dp,
@@ -34,12 +37,14 @@ sealed class Dimensions(
         ButtonLarge = 72.dp,
         TextSmall = 10.sp,
         TextMedium = 18.sp,
-        TextLarge = 24.sp
+        TextLarge = 24.sp,
+        LabelMedium = 14.sp
     )
 
     object ShortestWidth600 : Dimensions(
         CircleRadius = 24.dp,
         RectHeight = 64.dp,
+        ConfigHeight = 96.dp,
         PaddingSmall = 5.dp,
         PaddingMedium = 10.dp,
         PaddingLarge = 15.dp,
@@ -48,7 +53,8 @@ sealed class Dimensions(
         ButtonLarge = 104.dp,
         TextSmall = 12.sp,
         TextMedium = 24.sp,
-        TextLarge = 30.sp
+        TextLarge = 30.sp,
+        LabelMedium = 20.sp
     )
 }
 

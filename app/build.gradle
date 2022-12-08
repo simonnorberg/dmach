@@ -37,8 +37,8 @@ android {
         applicationId "net.simno.dmach"
         minSdk versions.minSdk
         targetSdk versions.targetSdk
-        versionCode 30004
-        versionName "3.1"
+        versionCode 30005
+        versionName "3.2"
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -117,12 +117,10 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
 
-    implementation platform("androidx.compose:compose-bom:2022.11.00")
-    implementation "androidx.compose.ui:ui"
-    implementation "androidx.compose.ui:ui-tooling-preview"
-    implementation "androidx.compose.animation:animation"
-    implementation "androidx.compose.material:material-icons-extended"
+    implementation platform("androidx.compose:compose-bom:2022.12.00")
     implementation "androidx.compose.material3:material3"
+    implementation "androidx.compose.material:material-icons-extended"
+    implementation "androidx.compose.ui:ui-tooling-preview"
     debugImplementation "androidx.compose.ui:ui-tooling"
     debugImplementation "androidx.compose.ui:ui-test-manifest"
 
@@ -149,8 +147,8 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$versions.hilt"
     kapt "com.google.dagger:hilt-compiler:$versions.hilt"
 
-    implementation "com.github.simonnorberg:dmach-externals:1.11.0"
-    implementation "net.simno.kortholt:kortholt:1.11.0"
+    implementation "com.github.simonnorberg:dmach-externals:1.13.0"
+    implementation "net.simno.kortholt:kortholt:1.12.0"
 
     implementation "com.squareup.leakcanary:plumber-android:2.10"
 

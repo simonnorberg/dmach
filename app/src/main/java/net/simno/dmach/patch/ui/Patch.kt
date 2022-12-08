@@ -36,6 +36,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.itemsIndexed
 import net.simno.dmach.R
+import net.simno.dmach.core.CoreDialog
 import net.simno.dmach.core.DarkMediumText
 import net.simno.dmach.core.TextButton
 import net.simno.dmach.data.Patch
@@ -188,19 +189,23 @@ fun Patch(
     }
     when {
         state.showDelete -> {
-            PatchDialog(
+            CoreDialog(
                 text = stringResource(R.string.delete_patch, state.title),
-                confirmText = R.string.delete,
+                option1Text = stringResource(R.string.cancel),
+                option2Text = stringResource(R.string.delete),
                 onDismiss = { updatedOnAction(DismissAction) },
-                onConfirm = { updatedOnAction(ConfirmDeleteAction) }
+                onOption1 = { updatedOnAction(DismissAction) },
+                onOption2 = { updatedOnAction(ConfirmDeleteAction) }
             )
         }
         state.showOverwrite -> {
-            PatchDialog(
+            CoreDialog(
                 text = stringResource(R.string.overwrite_patch, state.title),
-                confirmText = R.string.overwrite,
+                option1Text = stringResource(R.string.cancel),
+                option2Text = stringResource(R.string.overwrite),
                 onDismiss = { updatedOnAction(DismissAction) },
-                onConfirm = { updatedOnAction(ConfirmOverwriteAction) }
+                onOption1 = { updatedOnAction(DismissAction) },
+                onOption2 = { updatedOnAction(ConfirmOverwriteAction) }
             )
         }
     }

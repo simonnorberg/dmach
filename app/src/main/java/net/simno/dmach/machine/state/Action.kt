@@ -18,6 +18,13 @@ data class AudioFocusAction(
 
 object ConfigAction : Action()
 
+object ExportAction : Action()
+
+data class ExportFileAction(
+    val title: String,
+    val tempo: Int
+) : Action()
+
 object DismissAction : Action()
 
 sealed class ChangeSequenceAction(

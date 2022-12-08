@@ -45,8 +45,25 @@ object MachineStateReducer : (ViewState, Result) -> ViewState {
             position = null,
             pan = null
         )
+        ExportResult -> previousState.copy(
+            showExport = true,
+            startExport = true,
+            waveFile = null,
+            position = null,
+            pan = null
+        )
+        is ExportFileResult -> previousState.copy(
+            showExport = result.waveFile != null,
+            startExport = false,
+            waveFile = result.waveFile,
+            position = null,
+            pan = null
+        )
         DismissResult -> previousState.copy(
             showConfig = false,
+            showExport = false,
+            startExport = false,
+            waveFile = null,
             position = null,
             pan = null
         )

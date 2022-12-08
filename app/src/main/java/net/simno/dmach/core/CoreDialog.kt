@@ -1,6 +1,5 @@
-package net.simno.dmach.patch.ui
+package net.simno.dmach.core
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,23 +11,28 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.Dialog
-import net.simno.dmach.R
-import net.simno.dmach.core.LightMediumText
+import androidx.compose.ui.window.DialogProperties
 import net.simno.dmach.theme.AppTheme
 
 @Composable
-fun PatchDialog(
+fun CoreDialog(
     text: String,
-    @StringRes confirmText: Int,
+    option1Text: String,
+    option2Text: String,
     onDismiss: () -> Unit,
-    onConfirm: () -> Unit
+    onOption1: () -> Unit,
+    onOption2: () -> Unit,
+    enabled: Boolean = true,
+    properties: DialogProperties = DialogProperties()
 ) {
+    val surface = MaterialTheme.colorScheme.surface
     val primary = MaterialTheme.colorScheme.primary
     val onPrimary = MaterialTheme.colorScheme.onPrimary
     val shapeSmall = MaterialTheme.shapes.small
@@ -36,7 +40,8 @@ fun PatchDialog(
     val paddingSmall = AppTheme.dimens.PaddingSmall
 
     Dialog(
-        onDismissRequest = onDismiss
+        onDismissRequest = onDismiss,
+        properties = properties
     ) {
         Box(
             modifier = Modifier
@@ -60,24 +65,31 @@ fun PatchDialog(
                 verticalArrangement = Arrangement.spacedBy(paddingLarge)
             ) {
                 LightMediumText(text = text)
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    LightMediumText(
-                        text = stringResource(R.string.cancel).uppercase(),
-                        modifier = Modifier
-                            .clip(shapeSmall)
-                            .clickable(onClick = onDismiss)
-                            .padding(paddingSmall)
-                    )
-                    Spacer(modifier = Modifier.size(paddingLarge))
-                    LightMediumText(
-                        text = stringResource(confirmText).uppercase(),
-                        modifier = Modifier
-                            .clip(shapeSmall)
-                            .clickable(onClick = onConfirm)
-                            .padding(paddingSmall)
+                if (enabled) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        LightMediumText(
+                            text = option1Text,
+                            modifier = Modifier
+                                .clip(shapeSmall)
+                                .clickable(onClick = onOption1)
+                                .padding(paddingSmall)
+                        )
+                        Spacer(modifier = Modifier.size(paddingLarge))
+                        LightMediumText(
+                            text = option2Text,
+                            modifier = Modifier
+                                .clip(shapeSmall)
+                                .clickable(onClick = onOption2)
+                                .padding(paddingSmall)
+                        )
+                    }
+                } else {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.CenterHorizontally),
+                        color = surface
                     )
                 }
             }

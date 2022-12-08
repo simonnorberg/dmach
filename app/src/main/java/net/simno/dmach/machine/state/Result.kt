@@ -1,6 +1,7 @@
 package net.simno.dmach.machine.state
 
 import net.simno.dmach.data.Position
+import java.io.File
 
 sealed class Result
 
@@ -38,6 +39,12 @@ data class AudioFocusResult(
 
 data class ConfigResult(
     val configId: Int
+) : Result()
+
+object ExportResult : Result()
+
+data class ExportFileResult(
+    val waveFile: File?
 ) : Result()
 
 object DismissResult : Result()

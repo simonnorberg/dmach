@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -44,6 +46,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import net.simno.dmach.R
 import net.simno.dmach.core.LightLargeText
+import net.simno.dmach.core.LightMediumLabel
 import net.simno.dmach.core.LightMediumText
 import net.simno.dmach.theme.AppTheme
 
@@ -147,6 +150,7 @@ private fun ValueConfig(
     val surface = MaterialTheme.colorScheme.surface
     val shapeMedium = MaterialTheme.shapes.medium
     val paddingLarge = AppTheme.dimens.PaddingLarge
+    val configHeight = AppTheme.dimens.ConfigHeight
     val updatedOnValue by rememberUpdatedState(onValue)
     var value by remember { mutableStateOf(configValue) }
 
@@ -156,8 +160,8 @@ private fun ValueConfig(
                 color = background,
                 shape = shapeMedium
             )
-            .wrapContentWidth()
-            .height(80.dp)
+            .fillMaxWidth()
+            .height(configHeight)
             .padding(horizontal = paddingLarge)
             .pointerInput(configId) {
                 val width = size.width.toFloat()
@@ -220,7 +224,7 @@ private fun ValueConfig(
                     }
                 }
             },
-        horizontalArrangement = Arrangement.spacedBy(paddingLarge)
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Icon(
             imageVector = Icons.Filled.Remove,
@@ -230,7 +234,7 @@ private fun ValueConfig(
                 .align(Alignment.CenterVertically)
                 .size(36.dp)
         )
-        Spacer(modifier = Modifier.size(64.dp))
+        Spacer(modifier = Modifier.size(96.dp))
         Icon(
             imageVector = Icons.Filled.Remove,
             contentDescription = null,
@@ -242,9 +246,9 @@ private fun ValueConfig(
         Column(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
-                .width(64.dp)
+                .defaultMinSize(minWidth = 64.dp)
         ) {
-            LightMediumText(
+            LightMediumLabel(
                 text = stringResource(label).uppercase(),
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
@@ -261,7 +265,7 @@ private fun ValueConfig(
                 .align(Alignment.CenterVertically)
                 .size(18.dp)
         )
-        Spacer(modifier = Modifier.size(64.dp))
+        Spacer(modifier = Modifier.size(96.dp))
         Icon(
             imageVector = Icons.Filled.Add,
             contentDescription = null,
