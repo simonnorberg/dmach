@@ -1,8 +1,11 @@
 package net.simno.dmach.machine.state
 
 import net.simno.dmach.data.Channel
+import net.simno.dmach.data.Pan
 import net.simno.dmach.data.Patch
 import net.simno.dmach.data.Position
+import net.simno.dmach.data.Swing
+import net.simno.dmach.data.Tempo
 import java.io.File
 
 data class ViewState(
@@ -24,7 +27,7 @@ data class ViewState(
     val vText: String = Channel.NONE.setting.vText,
     val position: Position? = Channel.NONE.setting.position,
     val panId: Int = 0,
-    val pan: Float? = Channel.NONE.pan,
-    val tempo: Int = 120,
-    val swing: Int = 0
+    val pan: Pan? = Channel.NONE.pan,
+    val tempo: Tempo = Tempo(120),
+    val swing: Swing = Swing(0)
 )

@@ -36,14 +36,15 @@ import net.simno.dmach.R
 import net.simno.dmach.core.DarkLargeText
 import net.simno.dmach.core.DrawableRect
 import net.simno.dmach.core.draw
+import net.simno.dmach.data.Pan
 import net.simno.dmach.theme.AppTheme
 
 @Composable
 fun PanFader(
     panId: Int,
-    pan: Float?,
+    pan: Pan?,
     modifier: Modifier = Modifier,
-    onPan: (Float) -> Unit
+    onPan: (Pan) -> Unit
 ) {
     val rectHeight = AppTheme.dimens.RectHeight
     val buttonMedium = AppTheme.dimens.ButtonMedium
@@ -95,8 +96,8 @@ fun PanFader(
 @Composable
 private fun Fader(
     panId: Int,
-    pan: Float?,
-    onPan: (Float) -> Unit,
+    pan: Pan?,
+    onPan: (Pan) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val secondary = MaterialTheme.colorScheme.secondary
@@ -136,7 +137,7 @@ private fun Fader(
                     } else {
                         1 - ((y - minY) / (maxY - minY)).coerceIn(0f, 1f)
                     }
-                    updatedOnPan(pos)
+                    updatedOnPan(Pan(pos))
                 }
 
                 fun getDrawableRect(y: Float): DrawableRect {
@@ -185,7 +186,7 @@ private fun Fader(
 
                 if (pan != null) {
                     // Convert position value [0.0-1.0] to pixels.
-                    val newY = if (pan == 0.5f) size.height / 2f else (1 - pan) * (maxY - minY) + minY
+                    val newY = if (pan.value == 0.5f) size.height / 2f else (1 - pan.value) * (maxY - minY) + minY
                     rect = getDrawableRect(newY)
                 }
 

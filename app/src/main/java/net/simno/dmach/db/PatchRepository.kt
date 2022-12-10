@@ -16,6 +16,8 @@ import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import net.simno.dmach.data.Channel
 import net.simno.dmach.data.Patch
+import net.simno.dmach.data.Swing
+import net.simno.dmach.data.Tempo
 
 class PatchRepository(
     private val patchDao: PatchDao
@@ -76,8 +78,8 @@ class PatchRepository(
                 sequence = Json.decodeFromString(ListSerializer(Int.serializer()), sequence),
                 channels = Json.decodeFromString(ListSerializer(Channel.serializer()), channels),
                 selectedChannel = selected,
-                tempo = tempo,
-                swing = swing
+                tempo = Tempo(tempo),
+                swing = Swing(swing)
             )
         }
 
@@ -88,8 +90,8 @@ class PatchRepository(
                 sequence = Json.encodeToString(ListSerializer(Int.serializer()), sequence),
                 channels = Json.encodeToString(ListSerializer(Channel.serializer()), channels),
                 selected = selectedChannel,
-                tempo = tempo,
-                swing = swing,
+                tempo = tempo.value,
+                swing = swing.value,
                 active = true
             )
         }

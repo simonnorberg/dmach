@@ -3,8 +3,8 @@
 
     <string name="app_name">DMach</string>
 
-    <string name="config_tempo">BPM</string>
-    <string name="config_swing">Swing</string>
+    <string name="bpm">BPM</string>
+    <string name="swing">Swing</string>
     <string name="config_audiofocus">Play over other apps</string>
 
     <string name="delete">Delete</string>
@@ -18,8 +18,6 @@
 
     <string name="patch_save">Save patch</string>
     <string name="patch_name">Name</string>
-    <string name="patch_swing">Swing</string>
-    <string name="patch_bpm">BPM</string>
 
     <string name="export_wave_file">Export wave file (experimental)</string>
     <string name="save">Save</string>

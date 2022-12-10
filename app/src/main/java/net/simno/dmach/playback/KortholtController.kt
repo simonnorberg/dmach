@@ -3,6 +3,7 @@ package net.simno.dmach.playback
 import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import net.simno.dmach.data.Tempo
 import net.simno.kortholt.ExperimentalWaveFile
 import net.simno.kortholt.Kortholt
 import java.io.File
@@ -28,17 +29,17 @@ class KortholtController(
 
     suspend fun saveWaveFile(
         title: String,
-        tempo: Int
+        tempo: Tempo
     ): File? = withContext(Dispatchers.IO) {
         isExporting.set(true)
         val result = runCatching {
-            val fileName = "${title}_${tempo}_BPM.wav"
+            val fileName = "${title}_${tempo.value}_BPM.wav"
             val dir = File(context.filesDir, "wav")
             dir.mkdirs()
             val outputFile = File(dir, fileName)
 
             val beats = 16
-            val milliSecondsPerBeat = (60 * 1000) / tempo.toDouble()
+            val milliSecondsPerBeat = (60 * 1000) / tempo.value.toDouble()
             val duration = (beats * milliSecondsPerBeat).toDuration(DurationUnit.MILLISECONDS)
 
             Kortholt.saveWaveFile(

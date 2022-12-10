@@ -155,15 +155,15 @@ fun Machine(
                     modifier = Modifier.align(Alignment.CenterVertically),
                     verticalArrangement = Arrangement.Center
                 ) {
-                    DarkSmallText(stringResource(R.string.patch_swing).uppercase())
-                    DarkMediumText(state.swing.toString())
+                    DarkSmallText(stringResource(R.string.swing).uppercase())
+                    DarkMediumText(state.swing.value.toString())
                 }
                 Column(
                     modifier = Modifier.align(Alignment.CenterVertically),
                     verticalArrangement = Arrangement.Center
                 ) {
-                    DarkSmallText(stringResource(R.string.patch_bpm).uppercase())
-                    DarkMediumText(state.tempo.toString())
+                    DarkSmallText(stringResource(R.string.bpm).uppercase())
+                    DarkMediumText(state.tempo.value.toString())
                 }
             }
         }

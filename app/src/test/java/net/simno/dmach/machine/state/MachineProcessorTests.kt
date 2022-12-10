@@ -14,7 +14,10 @@ import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
+import net.simno.dmach.data.Pan
 import net.simno.dmach.data.Position
+import net.simno.dmach.data.Swing
+import net.simno.dmach.data.Tempo
 import net.simno.dmach.data.withPan
 import net.simno.dmach.data.withPosition
 import net.simno.dmach.data.withSelectedSetting
@@ -27,8 +30,6 @@ import net.simno.dmach.playback.PureData
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
-import org.mockito.Mockito.anyInt
-import org.mockito.Mockito.anyString
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
@@ -101,7 +102,7 @@ class MachineProcessorTests {
             vText = "2",
             position = Position(0.1f, .2f),
             panId = 0,
-            pan = 0.5f
+            pan = Pan(0.5f)
         )
         assertThat(actual).isEqualTo(expected)
 
@@ -177,16 +178,18 @@ class MachineProcessorTests {
     @Test
     fun exportFile() = runBlocking {
         val mockFile = mock(File::class.java)
+        val title = "untitled"
+        val tempo = Tempo(120)
 
-        `when`(kortholtController.saveWaveFile(anyString(), anyInt()))
+        `when`(kortholtController.saveWaveFile(title, tempo))
             .thenReturn(mockFile)
 
         processAction(LoadAction)
 
-        val actual = processActions(ExportFileAction("untitled", 120))
+        val actual = processActions(ExportFileAction(title, tempo))
         val expected = listOf(ExportFileResult(mockFile))
 
-        verify(kortholtController, times(1)).saveWaveFile("untitled", 120)
+        verify(kortholtController, times(1)).saveWaveFile(title, tempo)
         assertThat(actual).isEqualTo(expected)
     }
 
@@ -217,7 +220,7 @@ class MachineProcessorTests {
             hText = "1",
             vText = "2",
             panId = 0,
-            pan = 0.5f,
+            pan = Pan(0.5f),
             position = Position(.1f, .2f)
         )
         assertThat(actual).isEqualTo(expected)
@@ -262,7 +265,7 @@ class MachineProcessorTests {
     @Test
     fun changePan() = runBlocking {
         processAction(LoadAction)
-        val pan = .1337f
+        val pan = Pan(.1337f)
 
         val actual = processAction(ChangePanAction(pan))
         val expected = ChangePanResult
@@ -276,7 +279,7 @@ class MachineProcessorTests {
     @Test
     fun changeTempo() = runBlocking {
         processAction(LoadAction)
-        val tempo = 1337
+        val tempo = Tempo(1337)
 
         val actual = processAction(ChangeTempoAction(tempo))
         val expected = ChangeTempoResult(tempo)
@@ -290,7 +293,7 @@ class MachineProcessorTests {
     @Test
     fun changeSwing() = runBlocking {
         processAction(LoadAction)
-        val swing = 1337
+        val swing = Swing(1337)
 
         val actual = processAction(ChangeSwingAction(swing))
         val expected = ChangeSwingResult(swing)

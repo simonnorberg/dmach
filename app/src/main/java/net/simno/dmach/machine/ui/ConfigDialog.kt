@@ -48,16 +48,18 @@ import net.simno.dmach.R
 import net.simno.dmach.core.LightLargeText
 import net.simno.dmach.core.LightMediumLabel
 import net.simno.dmach.core.LightMediumText
+import net.simno.dmach.data.Swing
+import net.simno.dmach.data.Tempo
 import net.simno.dmach.theme.AppTheme
 
 @Composable
 fun ConfigDialog(
     configId: Int,
-    tempo: Int,
-    swing: Int,
+    tempo: Tempo,
+    swing: Swing,
     ignoreAudioFocus: Boolean,
-    onTempo: (Int) -> Unit,
-    onSwing: (Int) -> Unit,
+    onTempo: (Tempo) -> Unit,
+    onSwing: (Swing) -> Unit,
     onAudioFocus: (Boolean) -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -67,6 +69,9 @@ fun ConfigDialog(
     val shapeMedium = MaterialTheme.shapes.medium
     val paddingLarge = AppTheme.dimens.PaddingLarge
     val paddingSmall = AppTheme.dimens.PaddingSmall
+
+    val updatedOnTempo by rememberUpdatedState(onTempo)
+    val updatedOnSwing by rememberUpdatedState(onSwing)
 
     Dialog(
         properties = DialogProperties(usePlatformDefaultWidth = false),
@@ -85,20 +90,20 @@ fun ConfigDialog(
             ValueConfig(
                 background = onPrimary,
                 configId = configId,
-                label = R.string.config_tempo,
-                configValue = tempo,
+                label = R.string.bpm,
+                configValue = tempo.value,
                 minValue = 1,
                 maxValue = 1000,
-                onValue = onTempo
+                onValue = { value -> updatedOnTempo(Tempo(value)) }
             )
             ValueConfig(
                 background = onPrimary,
                 configId = configId,
-                label = R.string.config_swing,
-                configValue = swing,
+                label = R.string.swing,
+                configValue = swing.value,
                 minValue = 0,
                 maxValue = 50,
-                onValue = onSwing
+                onValue = { value -> updatedOnSwing(Swing(value)) }
             )
             Row(
                 modifier = Modifier

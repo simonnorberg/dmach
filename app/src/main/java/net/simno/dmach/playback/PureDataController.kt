@@ -5,8 +5,11 @@ import androidx.annotation.Size
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import net.simno.dmach.R
+import net.simno.dmach.data.Pan
 import net.simno.dmach.data.Patch
 import net.simno.dmach.data.Setting
+import net.simno.dmach.data.Swing
+import net.simno.dmach.data.Tempo
 import net.simno.kortholt.PdBaseHelper
 import org.puredata.core.PdBase
 
@@ -26,7 +29,7 @@ class PureDataController(
         PdBase.sendBang("stop")
     }
 
-    override fun updateInfo(title: String, tempo: Int) {
+    override fun updateInfo(title: String, tempo: Tempo) {
     }
 
     override fun changeSequence(@Size(32) sequence: List<Int>) {
@@ -41,16 +44,16 @@ class PureDataController(
         PdBase.sendList(channel, setting.vIndex, setting.y)
     }
 
-    override fun changePan(channel: String, pan: Float) {
-        PdBase.sendFloat(channel + "p", pan)
+    override fun changePan(channel: String, pan: Pan) {
+        PdBase.sendFloat(channel + "p", pan.value)
     }
 
-    override fun changeTempo(tempo: Int) {
-        PdBase.sendFloat("tempo", tempo.toFloat())
+    override fun changeTempo(tempo: Tempo) {
+        PdBase.sendFloat("tempo", tempo.value.toFloat())
     }
 
-    override fun changeSwing(swing: Int) {
-        PdBase.sendFloat("swing", swing / 100f)
+    override fun changeSwing(swing: Swing) {
+        PdBase.sendFloat("swing", swing.value / 100f)
     }
 
     override fun onDestroy(owner: LifecycleOwner) {

@@ -1,6 +1,9 @@
 package net.simno.dmach.machine.state
 
+import net.simno.dmach.data.Pan
 import net.simno.dmach.data.Position
+import net.simno.dmach.data.Swing
+import net.simno.dmach.data.Tempo
 import java.io.File
 
 sealed class Result
@@ -22,9 +25,9 @@ data class LoadResult(
     val vText: String,
     val position: Position,
     val panId: Int,
-    val pan: Float,
-    val tempo: Int,
-    val swing: Int
+    val pan: Pan,
+    val tempo: Tempo,
+    val swing: Swing
 ) : Result()
 
 data class PlaybackResult(
@@ -63,7 +66,7 @@ data class SelectChannelResult(
     val vText: String,
     val position: Position,
     val panId: Int,
-    val pan: Float
+    val pan: Pan
 ) : Result()
 
 data class SelectSettingResult(
@@ -79,9 +82,9 @@ object ChangePositionResult : Result()
 object ChangePanResult : Result()
 
 data class ChangeTempoResult(
-    val tempo: Int
+    val tempo: Tempo
 ) : Result()
 
 data class ChangeSwingResult(
-    val swing: Int
+    val swing: Swing
 ) : Result()

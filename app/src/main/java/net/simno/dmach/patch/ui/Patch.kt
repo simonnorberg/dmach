@@ -135,12 +135,12 @@ fun Patch(
                 modifier = Modifier.weight(1f)
             )
             DarkMediumText(
-                text = stringResource(R.string.patch_swing).uppercase(),
+                text = stringResource(R.string.swing).uppercase(),
                 modifier = Modifier.defaultMinSize(minWidth = buttonLarge),
                 textAlign = TextAlign.End
             )
             DarkMediumText(
-                text = stringResource(R.string.patch_bpm).uppercase(),
+                text = stringResource(R.string.bpm).uppercase(),
                 modifier = Modifier.defaultMinSize(minWidth = buttonLarge),
                 textAlign = TextAlign.End
             )
@@ -173,12 +173,12 @@ fun Patch(
                             modifier = Modifier.weight(1f)
                         )
                         DarkMediumText(
-                            text = patch.swing.toString(),
+                            text = patch.swing.value.toString(),
                             modifier = Modifier.defaultMinSize(minWidth = buttonLarge),
                             textAlign = TextAlign.End
                         )
                         DarkMediumText(
-                            text = patch.tempo.toString(),
+                            text = patch.tempo.value.toString(),
                             modifier = Modifier.defaultMinSize(minWidth = buttonLarge),
                             textAlign = TextAlign.End
                         )

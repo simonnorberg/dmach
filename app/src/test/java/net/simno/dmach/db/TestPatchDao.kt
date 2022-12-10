@@ -5,8 +5,11 @@ import androidx.paging.PagingState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import net.simno.dmach.data.Channel
+import net.simno.dmach.data.Pan
 import net.simno.dmach.data.Patch
 import net.simno.dmach.data.Setting
+import net.simno.dmach.data.Swing
+import net.simno.dmach.data.Tempo
 import net.simno.dmach.db.PatchRepository.Companion.toEntity
 
 class TestPatchDao : PatchDao {
@@ -21,10 +24,10 @@ class TestPatchDao : PatchDao {
     val patch = Patch(
         title = "test",
         sequence = Patch.RANDOM_SEQUENCE,
-        channels = listOf("bd", "sd", "cp", "tt", "cb", "hh").map { Channel(it, settings, 0, 0.5f) },
+        channels = listOf("bd", "sd", "cp", "tt", "cb", "hh").map { Channel(it, settings, 0, Pan(0.5f)) },
         selectedChannel = 1,
-        tempo = 123,
-        swing = 10
+        tempo = Tempo(123),
+        swing = Swing(10)
     )
 
     private val patches = listOf(patch, patch)

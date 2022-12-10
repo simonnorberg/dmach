@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import net.simno.dmach.data.Tempo
 import java.util.concurrent.atomic.AtomicBoolean
 
 class PlaybackServiceController(
@@ -26,9 +27,9 @@ class PlaybackServiceController(
         isPlaying.set(false)
     }
 
-    override fun updateInfo(title: String, tempo: Int) {
+    override fun updateInfo(title: String, tempo: Tempo) {
         this.title = title
-        this.tempo = "$tempo BPM"
+        this.tempo = "${tempo.value} BPM"
         if (isPlaying.get()) {
             // Call startService again if we are playing to update the notification.
             startService()

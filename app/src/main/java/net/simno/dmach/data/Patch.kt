@@ -7,8 +7,8 @@ data class Patch(
     val sequence: List<Int>,
     val channels: List<Channel>,
     val selectedChannel: Int,
-    val tempo: Int,
-    val swing: Int
+    val tempo: Tempo,
+    val swing: Swing
 ) {
     val channel: Channel = channels.getOrElse(selectedChannel) { Channel.NONE }
 
@@ -24,7 +24,7 @@ data class Patch(
     }
 }
 
-fun Patch.withPan(pan: Float): Patch {
+fun Patch.withPan(pan: Pan): Patch {
     return copy(
         channels = channels.map { ch ->
             if (ch == channel) ch.copy(pan = pan) else ch

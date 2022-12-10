@@ -10,7 +10,7 @@ fun defaultPatch(): Patch {
             Setting(hText = "Decay", vText = "Noise Level", hIndex = 6, vIndex = 4, x = .49f, y = .7f)
         ),
         selectedSetting = 0,
-        pan = .5f
+        pan = Pan(.5f)
     )
     val sd = Channel(
         name = "sd",
@@ -22,7 +22,7 @@ fun defaultPatch(): Patch {
             Setting(hText = "Band-pass", vText = "Band-pass Q", hIndex = 2, vIndex = 3, x = .7f, y = .6f)
         ),
         selectedSetting = 0,
-        pan = .5f
+        pan = Pan(.5f)
     )
     val cp = Channel(
         name = "cp",
@@ -33,7 +33,7 @@ fun defaultPatch(): Patch {
             Setting(hText = "Filter 1", vText = "Filter 2", hIndex = 2, vIndex = 3, x = .9f, y = .15f)
         ),
         selectedSetting = 0,
-        pan = .5f
+        pan = Pan(.5f)
     )
     val tt = Channel(
         name = "tt",
@@ -41,7 +41,7 @@ fun defaultPatch(): Patch {
             Setting(hText = "Pitch", vText = "Gain", hIndex = 0, vIndex = 1, x = .49f, y = .49f)
         ),
         selectedSetting = 0,
-        pan = .5f
+        pan = Pan(.5f)
     )
     val cb = Channel(
         name = "cb",
@@ -51,7 +51,7 @@ fun defaultPatch(): Patch {
             Setting(hText = "Vcf", vText = "Vcf Q", hIndex = 3, vIndex = 4, x = .3f, y = 0f)
         ),
         selectedSetting = 0,
-        pan = .5f
+        pan = Pan(.5f)
     )
     val hh = Channel(
         name = "hh",
@@ -64,14 +64,14 @@ fun defaultPatch(): Patch {
             Setting(hText = "Filter", vText = "Filter Q", hIndex = 8, vIndex = 9, x = .7f, y = .6f)
         ),
         selectedSetting = 0,
-        pan = .5f
+        pan = Pan(.5f)
     )
     return Patch(
         title = "untitled",
         sequence = Patch.EMPTY_SEQUENCE,
         channels = listOf(bd, sd, cp, tt, cb, hh),
         selectedChannel = Channel.NONE_ID,
-        tempo = 120,
-        swing = 0
+        tempo = Tempo(120),
+        swing = Swing(0)
     )
 }

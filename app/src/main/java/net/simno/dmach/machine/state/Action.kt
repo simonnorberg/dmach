@@ -1,7 +1,10 @@
 package net.simno.dmach.machine.state
 
+import net.simno.dmach.data.Pan
 import net.simno.dmach.data.Patch
 import net.simno.dmach.data.Position
+import net.simno.dmach.data.Swing
+import net.simno.dmach.data.Tempo
 import kotlin.random.Random
 
 sealed class Action
@@ -22,7 +25,7 @@ object ExportAction : Action()
 
 data class ExportFileAction(
     val title: String,
-    val tempo: Int
+    val tempo: Tempo
 ) : Action()
 
 object DismissAction : Action()
@@ -54,13 +57,13 @@ data class ChangePositionAction(
 ) : Action()
 
 data class ChangePanAction(
-    val pan: Float
+    val pan: Pan
 ) : Action()
 
 data class ChangeTempoAction(
-    val tempo: Int
+    val tempo: Tempo
 ) : Action()
 
 data class ChangeSwingAction(
-    val swing: Int
+    val swing: Swing
 ) : Action()
