@@ -4,6 +4,7 @@ import net.simno.dmach.data.Channel
 import net.simno.dmach.data.Pan
 import net.simno.dmach.data.Patch
 import net.simno.dmach.data.Position
+import net.simno.dmach.data.Steps
 import net.simno.dmach.data.Swing
 import net.simno.dmach.data.Tempo
 import java.io.File
@@ -29,5 +30,6 @@ data class ViewState(
     val panId: Int = 0,
     val pan: Pan? = Channel.NONE.pan,
     val tempo: Tempo = Tempo(120),
-    val swing: Swing = Swing(0)
+    val swing: Swing = Swing(0),
+    val steps: Steps = Steps(16)
 )

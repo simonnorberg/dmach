@@ -72,6 +72,7 @@ fun defaultPatch(): Patch {
         channels = listOf(bd, sd, cp, tt, cb, hh),
         selectedChannel = Channel.NONE_ID,
         tempo = Tempo(120),
-        swing = Swing(0)
+        swing = Swing(0),
+        steps = Steps(16)
     )
 }

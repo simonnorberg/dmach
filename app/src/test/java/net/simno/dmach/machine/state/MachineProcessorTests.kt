@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import net.simno.dmach.data.Pan
 import net.simno.dmach.data.Position
+import net.simno.dmach.data.Steps
 import net.simno.dmach.data.Swing
 import net.simno.dmach.data.Tempo
 import net.simno.dmach.data.withPan
@@ -33,8 +34,8 @@ import org.mockito.Mock
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
+import org.mockito.kotlin.whenever
 import java.io.File
 
 @DelicateCoroutinesApi
@@ -94,6 +95,7 @@ class MachineProcessorTests {
             sequence = testDao.patch.sequence,
             tempo = testDao.patch.tempo,
             swing = testDao.patch.swing,
+            steps = testDao.patch.steps,
             selectedChannel = testDao.patch.selectedChannel,
             selectedSetting = 0,
             settingId = 0,
@@ -109,6 +111,7 @@ class MachineProcessorTests {
         verify(pureData, times(1)).changeSequence(testDao.patch.sequence)
         verify(pureData, times(1)).changeTempo(testDao.patch.tempo)
         verify(pureData, times(1)).changeSwing(testDao.patch.swing)
+        verify(pureData, times(1)).changeSteps(testDao.patch.steps)
         testDao.patch.channels.forEach { channel ->
             verify(pureData, times(1)).changePan(channel.name, channel.pan)
             channel.settings.forEach { setting ->
@@ -120,7 +123,7 @@ class MachineProcessorTests {
 
     @Test
     fun playback() = runBlocking {
-        `when`(audioFocus.audioFocus())
+        whenever(audioFocus.audioFocus())
             .thenReturn(flowOf(AudioManager.AUDIOFOCUS_LOSS, AudioManager.AUDIOFOCUS_GAIN))
 
         val expected = listOf(PlaybackResult(false), PlaybackResult(true))
@@ -142,7 +145,7 @@ class MachineProcessorTests {
 
     @Test
     fun audioFocus() = runBlocking {
-        `when`(audioFocus.isIgnoreAudioFocus())
+        whenever(audioFocus.isIgnoreAudioFocus())
             .thenReturn(true)
             .thenReturn(false)
         val actual = processActions(AudioFocusAction(true), AudioFocusAction(false))
@@ -180,16 +183,17 @@ class MachineProcessorTests {
         val mockFile = mock(File::class.java)
         val title = "untitled"
         val tempo = Tempo(120)
+        val steps = Steps(16)
 
-        `when`(kortholtController.saveWaveFile(title, tempo))
+        whenever(kortholtController.saveWaveFile(title, tempo, steps))
             .thenReturn(mockFile)
 
         processAction(LoadAction)
 
-        val actual = processActions(ExportFileAction(title, tempo))
+        val actual = processActions(ExportFileAction(title, tempo, steps))
         val expected = listOf(ExportFileResult(mockFile))
 
-        verify(kortholtController, times(1)).saveWaveFile(title, tempo)
+        verify(kortholtController, times(1)).saveWaveFile(title, tempo, steps)
         assertThat(actual).isEqualTo(expected)
     }
 
@@ -301,6 +305,20 @@ class MachineProcessorTests {
 
         val expectedPatch = testDao.patch.copy(swing = swing)
         verify(pureData, times(1)).changeSwing(swing)
+        assertThat(repository.unsavedPatch()).isEqualTo(expectedPatch)
+    }
+
+    @Test
+    fun changeSteps() = runBlocking {
+        processAction(LoadAction)
+        val steps = Steps(13)
+
+        val actual = processAction(ChangeStepsAction(steps))
+        val expected = ChangeStepsResult(steps, 0)
+        assertThat(actual).isEqualTo(expected)
+
+        val expectedPatch = testDao.patch.copy(steps = steps)
+        verify(pureData, times(1)).changeSteps(steps)
         assertThat(repository.unsavedPatch()).isEqualTo(expectedPatch)
     }
 }

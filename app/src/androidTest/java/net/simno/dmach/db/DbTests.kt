@@ -17,6 +17,7 @@ import net.simno.dmach.data.Channel
 import net.simno.dmach.data.Pan
 import net.simno.dmach.data.Patch
 import net.simno.dmach.data.Setting
+import net.simno.dmach.data.Steps
 import net.simno.dmach.data.Swing
 import net.simno.dmach.data.Tempo
 import net.simno.dmach.db.PatchRepository.Companion.toEntity
@@ -89,7 +90,8 @@ class DbTests {
             channels = listOf("bd", "sd", "cp", "tt", "cb", "hh").map { Channel(it, settings, 0, Pan(0.5f)) },
             selectedChannel = 1,
             tempo = Tempo(123),
-            swing = Swing(10)
+            swing = Swing(10),
+            steps = Steps(16)
         )
         val entity = runBlocking { patch.toEntity(patch.title) }
         val values = contentValuesOf(
@@ -107,9 +109,10 @@ class DbTests {
 
         migrationTestHelper.runMigrationsAndValidate(
             PatchDatabase.NAME,
-            3,
+            4,
             true,
-            PatchDatabase.MIGRATION_2_3
+            PatchDatabase.MIGRATION_2_3,
+            PatchDatabase.MIGRATION_3_4
         )
 
         val patchDatabase = DbModule.providePatchDatabase(ApplicationProvider.getApplicationContext())

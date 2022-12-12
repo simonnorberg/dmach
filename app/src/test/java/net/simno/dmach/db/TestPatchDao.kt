@@ -8,6 +8,7 @@ import net.simno.dmach.data.Channel
 import net.simno.dmach.data.Pan
 import net.simno.dmach.data.Patch
 import net.simno.dmach.data.Setting
+import net.simno.dmach.data.Steps
 import net.simno.dmach.data.Swing
 import net.simno.dmach.data.Tempo
 import net.simno.dmach.db.PatchRepository.Companion.toEntity
@@ -27,7 +28,8 @@ class TestPatchDao : PatchDao {
         channels = listOf("bd", "sd", "cp", "tt", "cb", "hh").map { Channel(it, settings, 0, Pan(0.5f)) },
         selectedChannel = 1,
         tempo = Tempo(123),
-        swing = Swing(10)
+        swing = Swing(10),
+        steps = Steps(16)
     )
 
     private val patches = listOf(patch, patch)

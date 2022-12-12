@@ -16,5 +16,6 @@ data class PatchEntity(
     @ColumnInfo(name = "selected") val selected: Int,
     @ColumnInfo(name = "tempo") val tempo: Int,
     @ColumnInfo(name = "swing") val swing: Int,
+    @ColumnInfo(name = "steps") val steps: Int,
     @ColumnInfo(name = "active") val active: Boolean
 )

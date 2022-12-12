@@ -28,7 +28,7 @@ sealed class Dimensions(
     object Default : Dimensions(
         CircleRadius = 18.dp,
         RectHeight = 44.dp,
-        ConfigHeight = 80.dp,
+        ConfigHeight = 64.dp,
         PaddingSmall = 4.dp,
         PaddingMedium = 8.dp,
         PaddingLarge = 12.dp,

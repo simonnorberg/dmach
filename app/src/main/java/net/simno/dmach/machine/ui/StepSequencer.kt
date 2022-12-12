@@ -7,11 +7,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
@@ -23,12 +25,15 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntSize
 import net.simno.dmach.core.DrawableRect
 import net.simno.dmach.core.draw
+import net.simno.dmach.data.Patch.Companion.STEPS
+import net.simno.dmach.data.Steps
 import net.simno.dmach.theme.AppTheme
 
 @Composable
 fun StepSequencer(
     sequenceId: Int,
     sequence: List<Int>,
+    sequenceLength: Steps,
     modifier: Modifier = Modifier,
     onSequence: (List<Int>) -> Unit
 ) {
@@ -38,18 +43,19 @@ fun StepSequencer(
     val shapeSmall = MaterialTheme.shapes.small
     val paddingSmall = AppTheme.dimens.PaddingSmall
     val updatedOnSequence by rememberUpdatedState(onSequence)
-    var drawables by remember { mutableStateOf<List<DrawableRect>>(emptyList()) }
+    val drawables = remember { mutableStateListOf<DrawableRect>() }
     var sizeKey by remember { mutableStateOf(IntSize.Zero) }
 
     Box(
         modifier = modifier
             .fillMaxSize()
             .onSizeChanged { sizeKey = it }
+            .clipToBounds()
             .pointerInput(sequenceId, sizeKey) {
                 val steps = sequence.toMutableList()
                 val margin = paddingSmall.toPx()
                 val stepSize = Size(
-                    width = (size.width - (STEPS - 1f) * margin) / STEPS,
+                    width = (size.width - (sequenceLength.value - 1f) * margin) / sequenceLength.value,
                     height = (size.height - (CHANNELS - 1f) * margin) / CHANNELS
                 )
                 val radius = shapeSmall.topStart.toPx(stepSize, this)
@@ -77,11 +83,13 @@ fun StepSequencer(
 
                 fun onStepChange(stepChange: StepChange) {
                     steps[stepChange.index] = stepChange.changedStep
-                    drawables = getDrawableSteps()
+                    drawables.clear()
+                    drawables.addAll(getDrawableSteps())
                     updatedOnSequence(steps)
                 }
 
-                drawables = getDrawableSteps()
+                drawables.clear()
+                drawables.addAll(getDrawableSteps())
 
                 forEachGesture {
                     awaitPointerEventScope {
@@ -123,7 +131,6 @@ fun StepSequencer(
 }
 
 private const val CHANNELS = 6
-private const val STEPS = 16
 private val MASKS = intArrayOf(1, 2, 4)
 
 private fun Offset.isValid(size: IntSize): Boolean =

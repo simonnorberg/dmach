@@ -8,7 +8,8 @@ data class Patch(
     val channels: List<Channel>,
     val selectedChannel: Int,
     val tempo: Tempo,
-    val swing: Swing
+    val swing: Swing,
+    val steps: Steps
 ) {
     val channel: Channel = channels.getOrElse(selectedChannel) { Channel.NONE }
 

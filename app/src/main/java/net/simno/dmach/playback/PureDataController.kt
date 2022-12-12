@@ -8,6 +8,7 @@ import net.simno.dmach.R
 import net.simno.dmach.data.Pan
 import net.simno.dmach.data.Patch
 import net.simno.dmach.data.Setting
+import net.simno.dmach.data.Steps
 import net.simno.dmach.data.Swing
 import net.simno.dmach.data.Tempo
 import net.simno.kortholt.PdBaseHelper
@@ -54,6 +55,10 @@ class PureDataController(
 
     override fun changeSwing(swing: Swing) {
         PdBase.sendFloat("swing", swing.value / 100f)
+    }
+
+    override fun changeSteps(steps: Steps) {
+        PdBase.sendFloat("steps", steps.value.coerceIn(8, 16).toFloat())
     }
 
     override fun onDestroy(owner: LifecycleOwner) {

@@ -20,7 +20,10 @@ object DbModule {
     fun providePatchDatabase(@ApplicationContext context: Context): PatchDatabase {
         val db = Room
             .databaseBuilder(context, PatchDatabase::class.java, PatchDatabase.NAME)
-            .addMigrations(PatchDatabase.MIGRATION_2_3)
+            .addMigrations(
+                PatchDatabase.MIGRATION_2_3,
+                PatchDatabase.MIGRATION_3_4
+            )
             .fallbackToDestructiveMigration()
             .build()
 

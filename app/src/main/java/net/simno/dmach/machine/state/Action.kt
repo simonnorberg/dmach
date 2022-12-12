@@ -3,6 +3,7 @@ package net.simno.dmach.machine.state
 import net.simno.dmach.data.Pan
 import net.simno.dmach.data.Patch
 import net.simno.dmach.data.Position
+import net.simno.dmach.data.Steps
 import net.simno.dmach.data.Swing
 import net.simno.dmach.data.Tempo
 import kotlin.random.Random
@@ -25,7 +26,8 @@ object ExportAction : Action()
 
 data class ExportFileAction(
     val title: String,
-    val tempo: Tempo
+    val tempo: Tempo,
+    val steps: Steps
 ) : Action()
 
 object DismissAction : Action()
@@ -39,8 +41,8 @@ sealed class ChangeSequenceAction(
         override val sequence: List<Int>
     ) : ChangeSequenceAction(sequenceId, sequence)
 
-    class Randomize : ChangeSequenceAction(Random.Default.nextInt(), Patch.RANDOM_SEQUENCE)
-    object Empty : ChangeSequenceAction(Random.Default.nextInt(), Patch.EMPTY_SEQUENCE)
+    data class Randomize(val id: Int = Random.nextInt()) : ChangeSequenceAction(id, Patch.RANDOM_SEQUENCE)
+    data class Empty(val id: Int = Random.nextInt()) : ChangeSequenceAction(id, Patch.EMPTY_SEQUENCE)
 }
 
 data class SelectChannelAction(
@@ -66,4 +68,8 @@ data class ChangeTempoAction(
 
 data class ChangeSwingAction(
     val swing: Swing
+) : Action()
+
+data class ChangeStepsAction(
+    val steps: Steps
 ) : Action()

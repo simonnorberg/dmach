@@ -48,6 +48,7 @@ import net.simno.dmach.R
 import net.simno.dmach.core.LightLargeText
 import net.simno.dmach.core.LightMediumLabel
 import net.simno.dmach.core.LightMediumText
+import net.simno.dmach.data.Steps
 import net.simno.dmach.data.Swing
 import net.simno.dmach.data.Tempo
 import net.simno.dmach.theme.AppTheme
@@ -57,9 +58,11 @@ fun ConfigDialog(
     configId: Int,
     tempo: Tempo,
     swing: Swing,
+    steps: Steps,
     ignoreAudioFocus: Boolean,
     onTempo: (Tempo) -> Unit,
     onSwing: (Swing) -> Unit,
+    onSteps: (Steps) -> Unit,
     onAudioFocus: (Boolean) -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -72,6 +75,7 @@ fun ConfigDialog(
 
     val updatedOnTempo by rememberUpdatedState(onTempo)
     val updatedOnSwing by rememberUpdatedState(onSwing)
+    val updatedOnSteps by rememberUpdatedState(onSteps)
 
     Dialog(
         properties = DialogProperties(usePlatformDefaultWidth = false),
@@ -104,6 +108,15 @@ fun ConfigDialog(
                 minValue = 0,
                 maxValue = 50,
                 onValue = { value -> updatedOnSwing(Swing(value)) }
+            )
+            ValueConfig(
+                background = onPrimary,
+                configId = configId,
+                label = R.string.steps,
+                configValue = steps.value,
+                minValue = 8,
+                maxValue = 16,
+                onValue = { value -> updatedOnSteps(Steps(value)) }
             )
             Row(
                 modifier = Modifier

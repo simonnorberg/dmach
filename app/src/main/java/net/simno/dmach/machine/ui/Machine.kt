@@ -39,6 +39,7 @@ import net.simno.dmach.machine.state.AudioFocusAction
 import net.simno.dmach.machine.state.ChangePanAction
 import net.simno.dmach.machine.state.ChangePositionAction
 import net.simno.dmach.machine.state.ChangeSequenceAction
+import net.simno.dmach.machine.state.ChangeStepsAction
 import net.simno.dmach.machine.state.ChangeSwingAction
 import net.simno.dmach.machine.state.ChangeTempoAction
 import net.simno.dmach.machine.state.ConfigAction
@@ -67,7 +68,7 @@ fun Machine(
 
     LaunchedEffect(state.startExport, state.waveFile, state.isPlaying) {
         if (state.startExport && state.waveFile == null && !state.isPlaying) {
-            updatedOnAction(ExportFileAction(state.title, state.tempo))
+            updatedOnAction(ExportFileAction(state.title, state.tempo, state.steps))
         }
     }
 
@@ -112,7 +113,7 @@ fun Machine(
                 modifier = Modifier
                     .width(buttonLarge)
                     .wrapContentWidth(),
-                onClick = { updatedOnAction(ChangeSequenceAction.Empty) }
+                onClick = { updatedOnAction(ChangeSequenceAction.Empty()) }
             )
             IconButton(
                 icon = Icons.Filled.Refresh,
@@ -190,6 +191,7 @@ fun Machine(
                 StepSequencer(
                     sequenceId = state.sequenceId,
                     sequence = state.sequence,
+                    sequenceLength = state.steps,
                     modifier = Modifier.padding(paddingSmall),
                     onSequence = { sequence -> updatedOnAction(ChangeSequenceAction.Edit(state.sequenceId, sequence)) }
                 )
@@ -240,9 +242,11 @@ fun Machine(
             configId = state.configId,
             tempo = state.tempo,
             swing = state.swing,
+            steps = state.steps,
             ignoreAudioFocus = state.ignoreAudioFocus,
             onTempo = { updatedOnAction(ChangeTempoAction(it)) },
             onSwing = { updatedOnAction(ChangeSwingAction(it)) },
+            onSteps = { updatedOnAction(ChangeStepsAction(it)) },
             onAudioFocus = { updatedOnAction(AudioFocusAction(it)) },
             onDismiss = { updatedOnAction(DismissAction) }
         )

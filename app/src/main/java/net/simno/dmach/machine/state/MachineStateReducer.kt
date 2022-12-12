@@ -23,7 +23,8 @@ object MachineStateReducer : (ViewState, Result) -> ViewState {
             panId = result.panId,
             pan = result.pan,
             tempo = result.tempo,
-            swing = result.swing
+            swing = result.swing,
+            steps = result.steps
         )
         is PlaybackResult -> previousState.copy(
             isPlaying = result.isPlaying,
@@ -108,6 +109,12 @@ object MachineStateReducer : (ViewState, Result) -> ViewState {
             position = null,
             pan = null,
             swing = result.swing
+        )
+        is ChangeStepsResult -> previousState.copy(
+            position = null,
+            pan = null,
+            sequenceId = result.sequenceId,
+            steps = result.steps
         )
     }
 }

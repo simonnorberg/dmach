@@ -2,6 +2,7 @@ package net.simno.dmach.machine.state
 
 import net.simno.dmach.data.Pan
 import net.simno.dmach.data.Position
+import net.simno.dmach.data.Steps
 import net.simno.dmach.data.Swing
 import net.simno.dmach.data.Tempo
 import java.io.File
@@ -27,7 +28,8 @@ data class LoadResult(
     val panId: Int,
     val pan: Pan,
     val tempo: Tempo,
-    val swing: Swing
+    val swing: Swing,
+    val steps: Steps
 ) : Result()
 
 data class PlaybackResult(
@@ -87,4 +89,9 @@ data class ChangeTempoResult(
 
 data class ChangeSwingResult(
     val swing: Swing
+) : Result()
+
+data class ChangeStepsResult(
+    val steps: Steps,
+    val sequenceId: Int
 ) : Result()

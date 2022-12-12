@@ -43,7 +43,8 @@ class MachineProcessor(
         actions.filterIsInstance<ChangePositionAction>().let(changePosition),
         actions.filterIsInstance<ChangePanAction>().let(changePan),
         actions.filterIsInstance<ChangeTempoAction>().let(changeTempo),
-        actions.filterIsInstance<ChangeSwingAction>().let(changeSwing)
+        actions.filterIsInstance<ChangeSwingAction>().let(changeSwing),
+        actions.filterIsInstance<ChangeStepsAction>().let(changeSteps)
     )
 
     private val load: (Flow<LoadAction>) -> Flow<LoadResult> = { actions ->
@@ -55,6 +56,7 @@ class MachineProcessor(
                 pureData.changeSequence(patch.sequence)
                 pureData.changeTempo(patch.tempo)
                 pureData.changeSwing(patch.swing)
+                pureData.changeSteps(patch.steps)
                 patch.channels.forEach { channel ->
                     pureData.changePan(channel.name, channel.pan)
                     channel.settings.forEach { setting ->
@@ -80,7 +82,8 @@ class MachineProcessor(
                     panId = getUid(),
                     pan = channel.pan,
                     tempo = patch.tempo,
-                    swing = patch.swing
+                    swing = patch.swing,
+                    steps = patch.steps
                 )
             }
     }
@@ -145,7 +148,11 @@ class MachineProcessor(
     private val exportFile: (Flow<ExportFileAction>) -> Flow<ExportFileResult> = { actions ->
         actions
             .computeResult { action ->
-                val waveFile = kortholtController.saveWaveFile(action.title, action.tempo)
+                val waveFile = kortholtController.saveWaveFile(
+                    title = action.title,
+                    tempo = action.tempo,
+                    steps = action.steps
+                )
                 ExportFileResult(waveFile)
             }
     }
@@ -265,6 +272,22 @@ class MachineProcessor(
             }
     }
 
+    private val changeSteps: (Flow<ChangeStepsAction>) -> Flow<ChangeStepsResult> = { actions ->
+        actions
+            .modifyPatch { action, patch ->
+                patch.copy(steps = action.steps)
+            }
+            .sendToPureData { pwa ->
+                pureData.changeSteps(pwa.patch.steps)
+            }
+            .computeResult { pwa ->
+                ChangeStepsResult(
+                    steps = pwa.action.steps,
+                    sequenceId = getUid()
+                )
+            }
+    }
+
     private fun <T : Action> Flow<T>.modifyPatch(modifier: (T, Patch) -> (Patch)): Flow<PatchWithAction<T>> = this
         .map { action -> PatchWithAction(modifier(action, patchRepository.unsavedPatch()), action) }
         .onEach { patchRepository.acceptPatch(it.patch) }
@@ -273,9 +296,9 @@ class MachineProcessor(
 
     private fun <T, R : Result> Flow<T>.computeResult(mapper: suspend (T) -> R): Flow<R> = map(mapper)
 
-    private fun getUid() = uid ?: Random.nextInt(Int.MAX_VALUE)
+    private fun getUid() = uid ?: Random.nextInt()
 
-    data class PatchWithAction<T : Action>(
+    private data class PatchWithAction<T : Action>(
         val patch: Patch,
         val action: T
     )

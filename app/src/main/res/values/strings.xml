@@ -5,6 +5,7 @@
 
     <string name="bpm">BPM</string>
     <string name="swing">Swing</string>
+    <string name="steps">Steps</string>
     <string name="config_audiofocus">Play over other apps</string>
 
     <string name="delete">Delete</string>

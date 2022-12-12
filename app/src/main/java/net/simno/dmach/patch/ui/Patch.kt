@@ -144,6 +144,11 @@ fun Patch(
                 modifier = Modifier.defaultMinSize(minWidth = buttonLarge),
                 textAlign = TextAlign.End
             )
+            DarkMediumText(
+                text = stringResource(R.string.steps).uppercase(),
+                modifier = Modifier.defaultMinSize(minWidth = buttonLarge),
+                textAlign = TextAlign.End
+            )
         }
         LazyColumn {
             itemsIndexed(patches) { index, patch ->
@@ -179,6 +184,11 @@ fun Patch(
                         )
                         DarkMediumText(
                             text = patch.tempo.value.toString(),
+                            modifier = Modifier.defaultMinSize(minWidth = buttonLarge),
+                            textAlign = TextAlign.End
+                        )
+                        DarkMediumText(
+                            text = patch.steps.value.toString(),
                             modifier = Modifier.defaultMinSize(minWidth = buttonLarge),
                             textAlign = TextAlign.End
                         )
