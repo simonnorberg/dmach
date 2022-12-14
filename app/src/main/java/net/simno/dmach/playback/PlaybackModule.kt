@@ -1,13 +1,14 @@
 package net.simno.dmach.playback
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.media.AudioManager
+import androidx.core.content.getSystemService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import net.simno.dmach.settings.SettingsRepository
 import javax.inject.Singleton
 
 @Module
@@ -15,12 +16,19 @@ import javax.inject.Singleton
 object PlaybackModule {
 
     @Provides
+    fun provideAudioManager(
+        @ApplicationContext context: Context
+    ): AudioManager {
+        return context.getSystemService()!!
+    }
+
+    @Provides
     @Singleton
     fun provideAudioFocus(
         audioManager: AudioManager,
-        sharedPreferences: SharedPreferences
+        settingsRepository: SettingsRepository
     ): AudioFocus {
-        return AudioFocus(audioManager, sharedPreferences)
+        return AudioFocus(audioManager, settingsRepository)
     }
 
     @Provides

@@ -13,13 +13,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-import net.simno.dmach.data.Channel
-import net.simno.dmach.data.Pan
-import net.simno.dmach.data.Patch
-import net.simno.dmach.data.Setting
-import net.simno.dmach.data.Steps
-import net.simno.dmach.data.Swing
-import net.simno.dmach.data.Tempo
+import net.simno.dmach.data.defaultPatch
 import net.simno.dmach.db.PatchRepository.Companion.toEntity
 import org.junit.After
 import org.junit.Before
@@ -75,25 +69,12 @@ class DbTests {
     }
 
     @Test
-    fun migration() {
+    fun dbMigration() {
         val sqliteOpenHelper = createSqliteOpenHelper()
 
-        val settings = listOf(
-            Setting("1", "2", 1, 2, .1f, .2f),
-            Setting("3", "4", 3, 4, .3f, .4f),
-            Setting("5", "6", 5, 6, .5f, .6f),
-            Setting("7", "8", 7, 8, .7f, .8f)
-        )
-        val patch = Patch(
-            title = "test",
-            sequence = Patch.RANDOM_SEQUENCE,
-            channels = listOf("bd", "sd", "cp", "tt", "cb", "hh").map { Channel(it, settings, 0, Pan(0.5f)) },
-            selectedChannel = 1,
-            tempo = Tempo(123),
-            swing = Swing(10),
-            steps = Steps(16)
-        )
+        val patch = defaultPatch()
         val entity = runBlocking { patch.toEntity(patch.title) }
+
         val values = contentValuesOf(
             PatchTable.TITLE to entity.title,
             PatchTable.SEQUENCE to entity.sequence,
@@ -123,19 +104,11 @@ class DbTests {
     }
 
     @Test
-    fun defaultPatch() {
+    fun dbDefaultPatch() {
         val patchDatabase = DbModule.providePatchDatabase(ApplicationProvider.getApplicationContext())
         migrationTestHelper.closeWhenFinished(patchDatabase)
 
         val defaultPatch = runBlocking { PatchRepository(patchDatabase.patchDao()).activePatch().first() }
-
-        assertThat(defaultPatch.title).isEqualTo("untitled")
-        assertThat(defaultPatch.sequence).isEqualTo(Patch.EMPTY_SEQUENCE)
-        assertThat(defaultPatch.channels[0].name).isEqualTo("bd")
-        assertThat(defaultPatch.channels[0].pan).isEqualTo(Pan(0.5f))
-        assertThat(defaultPatch.channels[0].settings[0].position.y).isEqualTo(0.49f)
-        assertThat(defaultPatch.selectedChannel).isEqualTo(Channel.NONE_ID)
-        assertThat(defaultPatch.tempo).isEqualTo(Tempo(120))
-        assertThat(defaultPatch.swing).isEqualTo(Swing(0))
+        assertThat(defaultPatch).isEqualTo(defaultPatch())
     }
 }

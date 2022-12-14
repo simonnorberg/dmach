@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.sp
 sealed class Dimensions(
     val CircleRadius: Dp,
     val RectHeight: Dp,
+    val ConfigHeightSmall: Dp,
     val ConfigHeight: Dp,
     val PaddingSmall: Dp,
     val PaddingMedium: Dp,
@@ -28,6 +29,7 @@ sealed class Dimensions(
     object Default : Dimensions(
         CircleRadius = 18.dp,
         RectHeight = 44.dp,
+        ConfigHeightSmall = 48.dp,
         ConfigHeight = 64.dp,
         PaddingSmall = 4.dp,
         PaddingMedium = 8.dp,
@@ -44,6 +46,7 @@ sealed class Dimensions(
     object ShortestWidth600 : Dimensions(
         CircleRadius = 24.dp,
         RectHeight = 64.dp,
+        ConfigHeightSmall = 72.dp,
         ConfigHeight = 96.dp,
         PaddingSmall = 5.dp,
         PaddingMedium = 10.dp,

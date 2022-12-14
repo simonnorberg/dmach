@@ -1,6 +1,5 @@
 package net.simno.dmach.machine.state
 
-import android.media.AudioManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flatMapMerge
@@ -8,7 +7,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import net.simno.dmach.data.Channel
+import net.simno.dmach.data.Pan
 import net.simno.dmach.data.Patch
+import net.simno.dmach.data.defaultPatch
 import net.simno.dmach.data.withPan
 import net.simno.dmach.data.withPosition
 import net.simno.dmach.data.withSelectedSetting
@@ -17,7 +18,7 @@ import net.simno.dmach.playback.AudioFocus
 import net.simno.dmach.playback.KortholtController
 import net.simno.dmach.playback.PlaybackObserver
 import net.simno.dmach.playback.PureData
-import kotlin.random.Random
+import net.simno.dmach.settings.SettingsRepository
 
 class MachineProcessor(
     val playbackObservers: Set<PlaybackObserver>,
@@ -25,14 +26,18 @@ class MachineProcessor(
     private val kortholtController: KortholtController,
     private val audioFocus: AudioFocus,
     private val patchRepository: PatchRepository,
-    private val uid: Int? = null
+    private val settingsRepository: SettingsRepository,
+    private val randomSequence: RandomSequence = RandomSequence.DEFAULT,
+    private val randomFloat: RandomFloat = RandomFloat.DEFAULT,
+    private val randomInt: RandomInt = RandomInt.DEFAULT
 ) : (Flow<Action>) -> Flow<Result> {
 
     override fun invoke(actions: Flow<Action>): Flow<Result> = merge(
         actions.filterIsInstance<LoadAction>().let(load),
         actions.filterIsInstance<PlaybackAction>().let(playback),
         actions.filterIsInstance<PlayPauseAction>().let(playPause),
-        actions.filterIsInstance<AudioFocusAction>().let(audioFocusProcessor),
+        actions.filterIsInstance<SettingsAction>().let(settings),
+        actions.filterIsInstance<ChangeSettingsAction>().let(changeSettings),
         actions.filterIsInstance<ConfigAction>().let(config),
         actions.filterIsInstance<ExportAction>().let(export),
         actions.filterIsInstance<ExportFileAction>().let(exportFile),
@@ -44,7 +49,8 @@ class MachineProcessor(
         actions.filterIsInstance<ChangePanAction>().let(changePan),
         actions.filterIsInstance<ChangeTempoAction>().let(changeTempo),
         actions.filterIsInstance<ChangeSwingAction>().let(changeSwing),
-        actions.filterIsInstance<ChangeStepsAction>().let(changeSteps)
+        actions.filterIsInstance<ChangeStepsAction>().let(changeSteps),
+        actions.filterIsInstance<ChangePatchAction>().let(changePatch)
     )
 
     private val load: (Flow<LoadAction>) -> Flow<LoadResult> = { actions ->
@@ -69,17 +75,16 @@ class MachineProcessor(
                 val channel = patch.channel
                 LoadResult(
                     title = patch.title,
-                    ignoreAudioFocus = audioFocus.isIgnoreAudioFocus(),
-                    sequenceId = getUid(),
+                    sequenceId = randomInt.next(),
                     sequence = patch.sequence,
                     selectedChannel = patch.selectedChannel,
                     selectedSetting = channel.selectedSetting,
-                    settingId = getUid(),
+                    settingId = randomInt.next(),
                     settingsSize = channel.settings.size,
                     hText = channel.setting.hText,
                     vText = channel.setting.vText,
                     position = channel.setting.position,
-                    panId = getUid(),
+                    panId = randomInt.next(),
                     pan = channel.pan,
                     tempo = patch.tempo,
                     swing = patch.swing,
@@ -91,10 +96,7 @@ class MachineProcessor(
     private val playback: (Flow<PlaybackAction>) -> Flow<PlaybackResult> = { actions ->
         actions
             .flatMapMerge {
-                audioFocus.audioFocus()
-            }
-            .map { audioFocus ->
-                audioFocus == AudioManager.AUDIOFOCUS_GAIN
+                audioFocus.audioFocus
             }
             .sendToPureData { hasFocus ->
                 if (hasFocus) {
@@ -110,28 +112,42 @@ class MachineProcessor(
 
     private val playPause: (Flow<PlayPauseAction>) -> Flow<PlayPauseResult> = { actions ->
         actions
-            .onEach {
-                audioFocus.toggleFocus()
+            .onEach { action ->
+                if (action.play) {
+                    audioFocus.requestAudioFocus()
+                } else {
+                    audioFocus.abandonAudioFocus()
+                }
             }
             .computeResult {
                 PlayPauseResult
             }
     }
 
-    private val audioFocusProcessor: (Flow<AudioFocusAction>) -> Flow<AudioFocusResult> = { actions ->
+    private val settings: (Flow<SettingsAction>) -> Flow<SettingsResult> = { actions ->
+        actions
+            .flatMapMerge {
+                settingsRepository.settings
+            }
+            .computeResult { settings ->
+                SettingsResult(settings)
+            }
+    }
+
+    private val changeSettings: (Flow<ChangeSettingsAction>) -> Flow<ChangeSettingsResult> = { actions ->
         actions
             .onEach { action ->
-                audioFocus.setIgnoreAudioFocus(action.ignoreAudioFocus)
+                settingsRepository.updateSettings(action.settings)
             }
             .computeResult {
-                AudioFocusResult(audioFocus.isIgnoreAudioFocus())
+                ChangeSettingsResult
             }
     }
 
     private val config: (Flow<ConfigAction>) -> Flow<ConfigResult> = { actions ->
         actions
             .computeResult {
-                ConfigResult(getUid())
+                ConfigResult(randomInt.next())
             }
     }
 
@@ -190,12 +206,12 @@ class MachineProcessor(
                 SelectChannelResult(
                     selectedChannel = pwa.patch.selectedChannel,
                     selectedSetting = channel.selectedSetting,
-                    settingId = getUid(),
+                    settingId = randomInt.next(),
                     settingsSize = channel.settings.size,
                     hText = channel.setting.hText,
                     vText = channel.setting.vText,
                     position = channel.setting.position,
-                    panId = getUid(),
+                    panId = randomInt.next(),
                     pan = channel.pan
                 )
             }
@@ -210,7 +226,7 @@ class MachineProcessor(
                 val channel = pwa.patch.channel
                 SelectSettingResult(
                     selectedSetting = channel.selectedSetting,
-                    settingId = getUid(),
+                    settingId = randomInt.next(),
                     hText = channel.setting.hText,
                     vText = channel.setting.vText,
                     position = channel.setting.position
@@ -283,7 +299,59 @@ class MachineProcessor(
             .computeResult { pwa ->
                 ChangeStepsResult(
                     steps = pwa.action.steps,
-                    sequenceId = getUid()
+                    sequenceId = randomInt.next()
+                )
+            }
+    }
+
+    private val changePatch: (Flow<ChangePatchAction>) -> Flow<ChangePatchResult> = { actions ->
+        actions
+            .modifyPatch { action, patch ->
+                val s = action.settings
+                val reset = action is ChangePatchAction.Reset
+                val defaultPatch = defaultPatch()
+                patch.copy(
+                    sequence = when {
+                        s.sequenceEnabled && reset -> Patch.EMPTY_SEQUENCE
+                        s.sequenceEnabled -> randomSequence.next()
+                        else -> patch.sequence
+                    },
+                    channels = patch.channels.mapIndexed { chIndex, channel ->
+                        channel.copy(
+                            pan = when {
+                                s.panEnabled && reset -> defaultPatch.channels[chIndex].pan
+                                s.panEnabled -> Pan(randomFloat.next())
+                                else -> channel.pan
+                            },
+                            settings = channel.settings.mapIndexed { sIndex, setting ->
+                                when {
+                                    s.soundEnabled && reset -> defaultPatch.channels[chIndex].settings[sIndex]
+                                    s.soundEnabled -> setting.copy(x = randomFloat.next(), y = randomFloat.next())
+                                    else -> setting
+                                }
+                            }
+                        )
+                    }
+                )
+            }
+            .sendToPureData { pwa ->
+                pureData.changeSequence(pwa.patch.sequence)
+                pwa.patch.channels.forEach { channel ->
+                    pureData.changePan(channel.name, channel.pan)
+                    channel.settings.forEach { setting ->
+                        pureData.changeSetting(channel.name, setting)
+                    }
+                }
+            }
+            .computeResult { pwa ->
+                val channel = pwa.patch.channel
+                ChangePatchResult(
+                    sequenceId = randomInt.next(),
+                    sequence = pwa.patch.sequence,
+                    panId = randomInt.next(),
+                    pan = channel.pan,
+                    settingId = randomInt.next(),
+                    position = channel.setting.position
                 )
             }
     }
@@ -295,8 +363,6 @@ class MachineProcessor(
     private fun <T> Flow<T>.sendToPureData(sender: suspend (T) -> Unit): Flow<T> = onEach(sender)
 
     private fun <T, R : Result> Flow<T>.computeResult(mapper: suspend (T) -> R): Flow<R> = map(mapper)
-
-    private fun getUid() = uid ?: Random.nextInt()
 
     private data class PatchWithAction<T : Action>(
         val patch: Patch,

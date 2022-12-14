@@ -1,7 +1,6 @@
 package net.simno.dmach.playback
 
 import android.app.Application
-import android.content.Context
 import android.media.AudioManager
 import android.os.Build
 import androidx.core.content.getSystemService
@@ -11,33 +10,50 @@ import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
+import net.simno.dmach.settings.Settings
+import net.simno.dmach.settings.SettingsRepository
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.whenever
 import org.robolectric.Shadows
 import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
 @Config(sdk = [Build.VERSION_CODES.P])
 class AudioFocusTests {
+
     private val audioManager = ApplicationProvider.getApplicationContext<Application>()
         .getSystemService<AudioManager>()!!
 
-    private val prefs = ApplicationProvider.getApplicationContext<Application>()
-        .getSharedPreferences("dmach.test", Context.MODE_PRIVATE)
+    @Mock
+    private lateinit var settingsRepository: SettingsRepository
+
+    @Before
+    fun setup() {
+        MockitoAnnotations.openMocks(this)
+    }
 
     @Test
     fun requestAudioFocusGranted() = runBlocking {
         val shadowAudioManager = Shadows.shadowOf(audioManager)
         shadowAudioManager.setNextFocusRequestResponse(AudioManager.AUDIOFOCUS_REQUEST_GRANTED)
 
-        val audioFocus = AudioFocus(audioManager, prefs)
+        whenever(settingsRepository.settings)
+            .doReturn(flowOf(Settings(ignoreAudioFocus = false)))
 
-        audioFocus.toggleFocus()
-        val expected = listOf(AudioManager.AUDIOFOCUS_GAIN)
-        val actual = audioFocus.audioFocus().take(expected.size).toList()
+        val audioFocus = AudioFocus(audioManager, settingsRepository)
+
+        audioFocus.requestAudioFocus()
+        val expected = listOf(true)
+        val actual = audioFocus.audioFocus.take(expected.size).toList()
         assertThat(actual).isEqualTo(expected)
     }
 
@@ -46,11 +62,14 @@ class AudioFocusTests {
         val shadowAudioManager = Shadows.shadowOf(audioManager)
         shadowAudioManager.setNextFocusRequestResponse(AudioManager.AUDIOFOCUS_REQUEST_DELAYED)
 
-        val audioFocus = AudioFocus(audioManager, prefs)
+        whenever(settingsRepository.settings)
+            .doReturn(flowOf(Settings(ignoreAudioFocus = false)))
 
-        audioFocus.toggleFocus()
-        val expected = listOf(AudioManager.AUDIOFOCUS_LOSS)
-        val actual = audioFocus.audioFocus().take(expected.size).toList()
+        val audioFocus = AudioFocus(audioManager, settingsRepository)
+
+        audioFocus.requestAudioFocus()
+        val expected = listOf(false)
+        val actual = audioFocus.audioFocus.take(expected.size).toList()
         assertThat(actual).isEqualTo(expected)
     }
 
@@ -59,11 +78,14 @@ class AudioFocusTests {
         val shadowAudioManager = Shadows.shadowOf(audioManager)
         shadowAudioManager.setNextFocusRequestResponse(AudioManager.AUDIOFOCUS_REQUEST_FAILED)
 
-        val audioFocus = AudioFocus(audioManager, prefs)
+        whenever(settingsRepository.settings)
+            .doReturn(flowOf(Settings(ignoreAudioFocus = false)))
 
-        audioFocus.toggleFocus()
-        val expected = listOf(AudioManager.AUDIOFOCUS_LOSS)
-        val actual = audioFocus.audioFocus().take(expected.size).toList()
+        val audioFocus = AudioFocus(audioManager, settingsRepository)
+
+        audioFocus.requestAudioFocus()
+        val expected = listOf(false)
+        val actual = audioFocus.audioFocus.take(expected.size).toList()
         assertThat(actual).isEqualTo(expected)
     }
 
@@ -73,23 +95,22 @@ class AudioFocusTests {
         val shadowAudioManager = Shadows.shadowOf(audioManager)
         shadowAudioManager.setNextFocusRequestResponse(AudioManager.AUDIOFOCUS_REQUEST_GRANTED)
 
-        val audioFocus = AudioFocus(audioManager, prefs)
+        whenever(settingsRepository.settings)
+            .doReturn(flowOf(Settings(ignoreAudioFocus = false)))
 
-        val expected = listOf(
-            AudioManager.AUDIOFOCUS_NONE,
-            AudioManager.AUDIOFOCUS_GAIN,
-            AudioManager.AUDIOFOCUS_LOSS
-        )
+        val audioFocus = AudioFocus(audioManager, settingsRepository)
+
+        val expected = listOf(true, false)
         val actual = listOf(
             async {
-                audioFocus.audioFocus().take(expected.size).toList()
+                audioFocus.audioFocus.take(expected.size).toList()
             },
             async {
-                audioFocus.toggleFocus()
+                audioFocus.requestAudioFocus()
                 delay(10L)
-                audioFocus.toggleFocus()
+                audioFocus.abandonAudioFocus()
             }
-        ).awaitAll().first() as List<Int>
+        ).awaitAll().first() as List<Boolean>
 
         assertThat(actual).isEqualTo(expected)
     }
@@ -99,15 +120,16 @@ class AudioFocusTests {
         val shadowAudioManager = Shadows.shadowOf(audioManager)
         shadowAudioManager.setNextFocusRequestResponse(AudioManager.AUDIOFOCUS_REQUEST_FAILED)
 
-        val audioFocus = AudioFocus(audioManager, prefs)
+        whenever(settingsRepository.settings)
+            .doReturn(flowOf(Settings(ignoreAudioFocus = true)))
 
-        audioFocus.setIgnoreAudioFocus(true)
-        audioFocus.toggleFocus()
-        val expected = listOf(AudioManager.AUDIOFOCUS_GAIN)
-        val actual = audioFocus.audioFocus().take(expected.size).toList()
+        val audioFocus = AudioFocus(audioManager, settingsRepository)
+
+        audioFocus.requestAudioFocus()
+        val expected = listOf(true)
+        val actual = audioFocus.audioFocus.take(expected.size).toList()
         assertThat(actual).isEqualTo(expected)
 
         assertThat(shadowAudioManager.lastAudioFocusRequest).isNull()
-        assertThat(audioFocus.isIgnoreAudioFocus()).isTrue()
     }
 }

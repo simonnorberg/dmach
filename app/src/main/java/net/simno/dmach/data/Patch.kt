@@ -1,7 +1,5 @@
 package net.simno.dmach.data
 
-import kotlin.random.Random
-
 data class Patch(
     val title: String,
     val sequence: List<Int>,
@@ -15,13 +13,7 @@ data class Patch(
 
     companion object {
         const val STEPS = 16
-
         val EMPTY_SEQUENCE: List<Int> = (0..31).map { 0 }
-
-        val RANDOM_SEQUENCE: List<Int>
-            get() = EMPTY_SEQUENCE
-                .map { Random.nextInt(12) }
-                .map { if (it < 8) it else 0 }
     }
 }
 

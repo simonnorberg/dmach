@@ -10,7 +10,6 @@ object MachineStateReducer : (ViewState, Result) -> ViewState {
         }
         is LoadResult -> previousState.copy(
             title = result.title,
-            ignoreAudioFocus = result.ignoreAudioFocus,
             sequenceId = result.sequenceId,
             sequence = result.sequence,
             selectedChannel = result.selectedChannel,
@@ -35,8 +34,12 @@ object MachineStateReducer : (ViewState, Result) -> ViewState {
             position = null,
             pan = null
         )
-        is AudioFocusResult -> previousState.copy(
-            ignoreAudioFocus = result.ignoreAudioFocus,
+        is SettingsResult -> previousState.copy(
+            settings = result.settings,
+            position = null,
+            pan = null
+        )
+        ChangeSettingsResult -> previousState.copy(
             position = null,
             pan = null
         )
@@ -115,6 +118,14 @@ object MachineStateReducer : (ViewState, Result) -> ViewState {
             pan = null,
             sequenceId = result.sequenceId,
             steps = result.steps
+        )
+        is ChangePatchResult -> previousState.copy(
+            sequenceId = result.sequenceId,
+            sequence = result.sequence,
+            panId = result.panId,
+            pan = result.pan,
+            settingId = result.settingId,
+            position = result.position
         )
     }
 }

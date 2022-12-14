@@ -1,12 +1,11 @@
 package net.simno.dmach.machine.state
 
 import net.simno.dmach.data.Pan
-import net.simno.dmach.data.Patch
 import net.simno.dmach.data.Position
 import net.simno.dmach.data.Steps
 import net.simno.dmach.data.Swing
 import net.simno.dmach.data.Tempo
-import kotlin.random.Random
+import net.simno.dmach.settings.Settings
 
 sealed class Action
 
@@ -14,10 +13,14 @@ object LoadAction : Action()
 
 object PlaybackAction : Action()
 
-object PlayPauseAction : Action()
+data class PlayPauseAction(
+    val play: Boolean
+) : Action()
 
-data class AudioFocusAction(
-    val ignoreAudioFocus: Boolean
+object SettingsAction : Action()
+
+data class ChangeSettingsAction(
+    val settings: Settings
 ) : Action()
 
 object ConfigAction : Action()
@@ -32,18 +35,10 @@ data class ExportFileAction(
 
 object DismissAction : Action()
 
-sealed class ChangeSequenceAction(
-    open val sequenceId: Int,
-    open val sequence: List<Int>
-) : Action() {
-    data class Edit(
-        override val sequenceId: Int,
-        override val sequence: List<Int>
-    ) : ChangeSequenceAction(sequenceId, sequence)
-
-    data class Randomize(val id: Int = Random.nextInt()) : ChangeSequenceAction(id, Patch.RANDOM_SEQUENCE)
-    data class Empty(val id: Int = Random.nextInt()) : ChangeSequenceAction(id, Patch.EMPTY_SEQUENCE)
-}
+data class ChangeSequenceAction(
+    val sequenceId: Int,
+    val sequence: List<Int>
+) : Action()
 
 data class SelectChannelAction(
     val channel: Int,
@@ -73,3 +68,10 @@ data class ChangeSwingAction(
 data class ChangeStepsAction(
     val steps: Steps
 ) : Action()
+
+sealed class ChangePatchAction(
+    open val settings: Settings
+) : Action() {
+    data class Reset(override val settings: Settings) : ChangePatchAction(settings)
+    data class Randomize(override val settings: Settings) : ChangePatchAction(settings)
+}

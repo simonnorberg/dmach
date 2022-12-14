@@ -1,9 +1,9 @@
 package net.simno.dmach.machine.state
 
-import android.media.AudioManager
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.channels.Channel.Factory.RENDEZVOUS
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asFlow
@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import net.simno.dmach.data.Pan
+import net.simno.dmach.data.Patch
 import net.simno.dmach.data.Position
 import net.simno.dmach.data.Steps
 import net.simno.dmach.data.Swing
@@ -28,6 +29,8 @@ import net.simno.dmach.playback.AudioFocus
 import net.simno.dmach.playback.KortholtController
 import net.simno.dmach.playback.PlaybackObserver
 import net.simno.dmach.playback.PureData
+import net.simno.dmach.settings.Settings
+import net.simno.dmach.settings.SettingsRepository
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -35,6 +38,7 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
+import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.whenever
 import java.io.File
 
@@ -53,18 +57,23 @@ class MachineProcessorTests {
     @Mock
     private lateinit var kortholtController: KortholtController
 
+    @Mock
+    private lateinit var settingsRepository: SettingsRepository
+
     private lateinit var repository: PatchRepository
     private lateinit var testDao: TestPatchDao
     private lateinit var machineProcessor: MachineProcessor
 
     private suspend fun processAction(action: Action): Result = processActions(action).first()
 
+    private val testUid = 1337
+
     private suspend fun processActions(
         vararg actions: Action,
         resultSize: Int? = null
     ): List<Result> = actions.asFlow()
         .onEach { delay(10L) }
-        .buffer(0)
+        .buffer(RENDEZVOUS)
         .shareIn(GlobalScope, SharingStarted.Lazily)
         .let(machineProcessor)
         .take(resultSize ?: actions.size)
@@ -81,7 +90,10 @@ class MachineProcessorTests {
             kortholtController = kortholtController,
             audioFocus = audioFocus,
             patchRepository = repository,
-            uid = 0
+            settingsRepository = settingsRepository,
+            randomSequence = { listOf(1337) },
+            randomInt = { testUid },
+            randomFloat = { 0.1337f }
         )
     }
 
@@ -90,20 +102,19 @@ class MachineProcessorTests {
         val actual = processAction(LoadAction)
         val expected = LoadResult(
             title = testDao.patch.title,
-            ignoreAudioFocus = false,
-            sequenceId = 0,
+            sequenceId = testUid,
             sequence = testDao.patch.sequence,
             tempo = testDao.patch.tempo,
             swing = testDao.patch.swing,
             steps = testDao.patch.steps,
             selectedChannel = testDao.patch.selectedChannel,
             selectedSetting = 0,
-            settingId = 0,
-            settingsSize = 4,
-            hText = "1",
-            vText = "2",
-            position = Position(0.1f, .2f),
-            panId = 0,
+            settingId = testUid,
+            settingsSize = 5,
+            hText = "Pitch",
+            vText = "Gain",
+            position = Position(0.49f, .45f),
+            panId = testUid,
             pan = Pan(0.5f)
         )
         assertThat(actual).isEqualTo(expected)
@@ -123,8 +134,8 @@ class MachineProcessorTests {
 
     @Test
     fun playback() = runBlocking {
-        whenever(audioFocus.audioFocus())
-            .thenReturn(flowOf(AudioManager.AUDIOFOCUS_LOSS, AudioManager.AUDIOFOCUS_GAIN))
+        whenever(audioFocus.audioFocus)
+            .doReturn(flowOf(false, true))
 
         val expected = listOf(PlaybackResult(false), PlaybackResult(true))
         val actual = processActions(PlaybackAction, resultSize = expected.size)
@@ -136,24 +147,29 @@ class MachineProcessorTests {
 
     @Test
     fun playPause() = runBlocking {
-        val actual = processActions(PlayPauseAction, PlayPauseAction, PlayPauseAction)
+        val actual = processActions(PlayPauseAction(true), PlayPauseAction(false), PlayPauseAction(true))
         val expected = listOf(PlayPauseResult, PlayPauseResult, PlayPauseResult)
         assertThat(actual).isEqualTo(expected)
 
-        verify(audioFocus, times(3)).toggleFocus()
+        verify(audioFocus, times(2)).requestAudioFocus()
+        verify(audioFocus, times(1)).abandonAudioFocus()
     }
 
     @Test
-    fun audioFocus() = runBlocking {
-        whenever(audioFocus.isIgnoreAudioFocus())
-            .thenReturn(true)
-            .thenReturn(false)
-        val actual = processActions(AudioFocusAction(true), AudioFocusAction(false))
-        val expected = listOf(AudioFocusResult(true), AudioFocusResult(false))
+    fun settings() = runBlocking {
+        val settings = listOf(
+            Settings(ignoreAudioFocus = true),
+            Settings(ignoreAudioFocus = false)
+        )
+        whenever(settingsRepository.settings)
+            .doReturn(settings.asFlow())
+
+        val actual = processActions(ChangeSettingsAction(settings[0]), ChangeSettingsAction(settings[1]))
+        val expected = listOf(ChangeSettingsResult, ChangeSettingsResult)
         assertThat(actual).isEqualTo(expected)
 
-        verify(audioFocus, times(1)).setIgnoreAudioFocus(true)
-        verify(audioFocus, times(1)).setIgnoreAudioFocus(false)
+        verify(settingsRepository, times(1)).updateSettings(settings[0])
+        verify(settingsRepository, times(1)).updateSettings(settings[1])
     }
 
     @Test
@@ -162,7 +178,7 @@ class MachineProcessorTests {
         verify(playbackObserver, times(1)).updateInfo(testDao.patch.title, testDao.patch.tempo)
 
         val actual = processActions(ConfigAction, DismissAction, ConfigAction)
-        val expected = listOf(ConfigResult(0), DismissResult, ConfigResult(0))
+        val expected = listOf(ConfigResult(testUid), DismissResult, ConfigResult(testUid))
         assertThat(actual).isEqualTo(expected)
         verify(playbackObserver, times(2)).updateInfo(testDao.patch.title, testDao.patch.tempo)
     }
@@ -186,7 +202,7 @@ class MachineProcessorTests {
         val steps = Steps(16)
 
         whenever(kortholtController.saveWaveFile(title, tempo, steps))
-            .thenReturn(mockFile)
+            .doReturn(mockFile)
 
         processAction(LoadAction)
 
@@ -202,7 +218,7 @@ class MachineProcessorTests {
         processAction(LoadAction)
         val sequence = listOf(1337)
 
-        val actual = processAction(ChangeSequenceAction.Edit(0, sequence))
+        val actual = processAction(ChangeSequenceAction(0, sequence))
         val expected = ChangeSequenceResult(0, sequence)
         assertThat(actual).isEqualTo(expected)
 
@@ -219,13 +235,13 @@ class MachineProcessorTests {
         val expected = SelectChannelResult(
             selectedChannel = selectedChannel,
             selectedSetting = 0,
-            settingId = 0,
+            settingId = testUid,
             settingsSize = 4,
-            hText = "1",
-            vText = "2",
-            panId = 0,
+            hText = "Pitch",
+            vText = "Gain",
+            panId = testUid,
             pan = Pan(0.5f),
-            position = Position(.1f, .2f)
+            position = Position(.55f, .3f)
         )
         assertThat(actual).isEqualTo(expected)
 
@@ -241,10 +257,10 @@ class MachineProcessorTests {
         val actual = processAction(SelectSettingAction(selectedSetting))
         val expected = SelectSettingResult(
             selectedSetting = selectedSetting,
-            settingId = 0,
-            hText = "3",
-            vText = "4",
-            position = Position(.3f, .4f)
+            settingId = testUid,
+            hText = "Low-pass",
+            vText = "Noise",
+            position = Position(.6f, .8f)
         )
         assertThat(actual).isEqualTo(expected)
 
@@ -314,11 +330,132 @@ class MachineProcessorTests {
         val steps = Steps(13)
 
         val actual = processAction(ChangeStepsAction(steps))
-        val expected = ChangeStepsResult(steps, 0)
+        val expected = ChangeStepsResult(steps, testUid)
         assertThat(actual).isEqualTo(expected)
 
         val expectedPatch = testDao.patch.copy(steps = steps)
         verify(pureData, times(1)).changeSteps(steps)
         assertThat(repository.unsavedPatch()).isEqualTo(expectedPatch)
+    }
+
+    @Test
+    fun resetSequence() = runBlocking {
+        processAction(LoadAction)
+
+        val sequence = listOf(1337)
+        processAction(ChangeSequenceAction(0, sequence))
+        verify(pureData, times(1)).changeSequence(sequence)
+        assertThat(repository.unsavedPatch()).isEqualTo(testDao.patch.copy(sequence = sequence))
+
+        val actual = processAction(ChangePatchAction.Reset(Settings(sequenceEnabled = true)))
+        val expected = ChangePatchResult(
+            sequenceId = testUid,
+            sequence = Patch.EMPTY_SEQUENCE,
+            panId = testUid,
+            pan = testDao.patch.channel.pan,
+            settingId = testUid,
+            position = testDao.patch.channel.setting.position
+        )
+        assertThat(actual).isEqualTo(expected)
+        assertThat(repository.unsavedPatch()).isEqualTo(testDao.patch.copy(sequence = expected.sequence))
+        verify(pureData, times(1)).changeSequence(expected.sequence)
+    }
+
+    @Test
+    fun resetSound() = runBlocking {
+        processAction(LoadAction)
+
+        val position = Position(.13f, .37f)
+        processAction(ChangePositionAction(position))
+        assertThat(repository.unsavedPatch()).isEqualTo(testDao.patch.withPosition(position))
+
+        val actual = processAction(ChangePatchAction.Reset(Settings(soundEnabled = true)))
+        val expected = ChangePatchResult(
+            sequenceId = testUid,
+            sequence = testDao.patch.sequence,
+            panId = testUid,
+            pan = testDao.patch.channel.pan,
+            settingId = testUid,
+            position = testDao.patch.channel.setting.position
+        )
+        assertThat(actual).isEqualTo(expected)
+        assertThat(repository.unsavedPatch()).isEqualTo(testDao.patch)
+    }
+
+    @Test
+    fun resetPan() = runBlocking {
+        processAction(LoadAction)
+
+        val pan = Pan(.1337f)
+        processAction(ChangePanAction(pan))
+        assertThat(repository.unsavedPatch()).isEqualTo(testDao.patch.withPan(pan))
+
+        val actual = processAction(ChangePatchAction.Reset(Settings(panEnabled = true)))
+        val expected = ChangePatchResult(
+            sequenceId = testUid,
+            sequence = testDao.patch.sequence,
+            panId = testUid,
+            pan = testDao.patch.channel.pan,
+            settingId = testUid,
+            position = testDao.patch.channel.setting.position
+        )
+        assertThat(actual).isEqualTo(expected)
+        assertThat(repository.unsavedPatch()).isEqualTo(testDao.patch)
+    }
+
+    @Test
+    fun randomizeSequence() = runBlocking {
+        processAction(LoadAction)
+
+        assertThat(repository.unsavedPatch()).isEqualTo(testDao.patch)
+
+        val actual = processAction(ChangePatchAction.Randomize(Settings(sequenceEnabled = true)))
+        val expected = ChangePatchResult(
+            sequenceId = testUid,
+            sequence = listOf(1337),
+            panId = testUid,
+            pan = testDao.patch.channel.pan,
+            settingId = testUid,
+            position = testDao.patch.channel.setting.position
+        )
+        assertThat(actual).isEqualTo(expected)
+        assertThat(repository.unsavedPatch()).isEqualTo(testDao.patch.copy(sequence = expected.sequence))
+        verify(pureData, times(1)).changeSequence(expected.sequence)
+    }
+
+    @Test
+    fun randomizeSound() = runBlocking {
+        processAction(LoadAction)
+
+        assertThat(repository.unsavedPatch()).isEqualTo(testDao.patch)
+
+        val actual = processAction(ChangePatchAction.Randomize(Settings(soundEnabled = true)))
+        val expected = ChangePatchResult(
+            sequenceId = testUid,
+            sequence = testDao.patch.sequence,
+            panId = testUid,
+            pan = testDao.patch.channel.pan,
+            settingId = testUid,
+            position = Position(0.1337f, 0.1337f)
+        )
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun randomizePan() = runBlocking {
+        processAction(LoadAction)
+
+        assertThat(repository.unsavedPatch()).isEqualTo(testDao.patch)
+
+        val actual = processAction(ChangePatchAction.Randomize(Settings(panEnabled = true)))
+        val expected = ChangePatchResult(
+            sequenceId = testUid,
+            sequence = testDao.patch.sequence,
+            panId = testUid,
+            pan = Pan(0.1337f),
+            settingId = testUid,
+            position = testDao.patch.channel.setting.position
+        )
+        assertThat(actual).isEqualTo(expected)
     }
 }

@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
+import kotlinx.coroutines.channels.Channel.Factory.RENDEZVOUS
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -26,7 +28,7 @@ abstract class StateViewModel<Action, Result, ViewState>(
     vararg startActions: Action
 ) : ViewModel() {
 
-    private val _actions = Channel<Action>()
+    private val _actions = Channel<Action>(BUFFERED)
 
     private val actions: Flow<Action> = flow {
         emitAll(flowOf(*startActions))
@@ -34,7 +36,7 @@ abstract class StateViewModel<Action, Result, ViewState>(
     }
 
     val viewState: StateFlow<ViewState> = actions
-        .buffer(0)
+        .buffer(RENDEZVOUS)
         .shareIn(viewModelScope, SharingStarted.Lazily)
         .let(processor)
         .catch { emit(onError(it)) }

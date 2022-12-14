@@ -3,6 +3,7 @@ package net.simno.dmach.patch.state
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.channels.Channel.Factory.RENDEZVOUS
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asFlow
@@ -19,6 +20,7 @@ import net.simno.dmach.machine.state.MachineProcessor
 import net.simno.dmach.playback.AudioFocus
 import net.simno.dmach.playback.KortholtController
 import net.simno.dmach.playback.PureData
+import net.simno.dmach.settings.SettingsRepository
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.mock
@@ -36,7 +38,7 @@ class PatchProcessorTests {
         vararg actions: Action
     ): List<Result> = actions.asFlow()
         .onEach { delay(10L) }
-        .buffer(0)
+        .buffer(RENDEZVOUS)
         .shareIn(GlobalScope, SharingStarted.Lazily)
         .let(patchProcessor)
         .take(actions.size)
@@ -53,7 +55,7 @@ class PatchProcessorTests {
     private fun setupRepository() = runBlocking {
         flowOf(net.simno.dmach.machine.state.LoadAction)
             .onEach { delay(10L) }
-            .buffer(0)
+            .buffer(RENDEZVOUS)
             .shareIn(GlobalScope, SharingStarted.Lazily)
             .let(
                 MachineProcessor(
@@ -61,7 +63,8 @@ class PatchProcessorTests {
                     pureData = mock(PureData::class.java),
                     kortholtController = mock(KortholtController::class.java),
                     audioFocus = mock(AudioFocus::class.java),
-                    patchRepository = repository
+                    patchRepository = repository,
+                    settingsRepository = mock(SettingsRepository::class.java)
                 )
             )
             .take(1)

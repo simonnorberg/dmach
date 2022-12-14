@@ -10,6 +10,7 @@ import net.simno.dmach.machine.state.MachineProcessor
 import net.simno.dmach.machine.state.MachineStateReducer
 import net.simno.dmach.machine.state.PlaybackAction
 import net.simno.dmach.machine.state.Result
+import net.simno.dmach.machine.state.SettingsAction
 import net.simno.dmach.machine.state.ViewState
 import javax.inject.Inject
 
@@ -22,7 +23,8 @@ class MachineViewModel @Inject constructor(
     onError = { ErrorResult(it) },
     startViewState = ViewState(),
     LoadAction,
-    PlaybackAction
+    PlaybackAction,
+    SettingsAction
 ) {
     val lifecycleObservers: Set<LifecycleObserver> = processor.playbackObservers
 }

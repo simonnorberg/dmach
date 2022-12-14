@@ -1,5 +1,6 @@
 package net.simno.dmach.machine.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,6 +28,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import net.simno.dmach.R
 import net.simno.dmach.core.DarkMediumText
@@ -35,10 +37,11 @@ import net.simno.dmach.core.IconButton
 import net.simno.dmach.core.TextButton
 import net.simno.dmach.data.Channel
 import net.simno.dmach.machine.state.Action
-import net.simno.dmach.machine.state.AudioFocusAction
 import net.simno.dmach.machine.state.ChangePanAction
+import net.simno.dmach.machine.state.ChangePatchAction
 import net.simno.dmach.machine.state.ChangePositionAction
 import net.simno.dmach.machine.state.ChangeSequenceAction
+import net.simno.dmach.machine.state.ChangeSettingsAction
 import net.simno.dmach.machine.state.ChangeStepsAction
 import net.simno.dmach.machine.state.ChangeSwingAction
 import net.simno.dmach.machine.state.ChangeTempoAction
@@ -58,6 +61,8 @@ fun Machine(
     onAction: (Action) -> Unit,
     onClickPatch: () -> Unit
 ) {
+    val context = LocalContext.current
+
     val shapeMedium = MaterialTheme.shapes.medium
     val buttonLarge = AppTheme.dimens.ButtonLarge
     val buttonSmall = AppTheme.dimens.ButtonSmall
@@ -95,7 +100,7 @@ fun Machine(
                 modifier = Modifier
                     .width(buttonLarge)
                     .wrapContentWidth(),
-                onClick = { updatedOnAction(PlayPauseAction) }
+                onClick = { updatedOnAction(PlayPauseAction(play = !state.isPlaying)) }
             )
             IconButton(
                 icon = Icons.Filled.Tune,
@@ -113,7 +118,13 @@ fun Machine(
                 modifier = Modifier
                     .width(buttonLarge)
                     .wrapContentWidth(),
-                onClick = { updatedOnAction(ChangeSequenceAction.Empty()) }
+                onClick = {
+                    if (state.settings.isAnyEnabled) {
+                        updatedOnAction(ChangePatchAction.Reset(state.settings))
+                    } else {
+                        Toast.makeText(context, R.string.nothing_reset, Toast.LENGTH_SHORT).show()
+                    }
+                }
             )
             IconButton(
                 icon = Icons.Filled.Refresh,
@@ -122,7 +133,13 @@ fun Machine(
                 modifier = Modifier
                     .width(buttonLarge)
                     .wrapContentWidth(),
-                onClick = { updatedOnAction(ChangeSequenceAction.Randomize()) }
+                onClick = {
+                    if (state.settings.isAnyEnabled) {
+                        updatedOnAction(ChangePatchAction.Randomize(state.settings))
+                    } else {
+                        Toast.makeText(context, R.string.nothing_randomized, Toast.LENGTH_SHORT).show()
+                    }
+                }
             )
             IconButton(
                 icon = Icons.Filled.FileDownload,
@@ -193,7 +210,7 @@ fun Machine(
                     sequence = state.sequence,
                     sequenceLength = state.steps,
                     modifier = Modifier.padding(paddingSmall),
-                    onSequence = { sequence -> updatedOnAction(ChangeSequenceAction.Edit(state.sequenceId, sequence)) }
+                    onSequence = { sequence -> updatedOnAction(ChangeSequenceAction(state.sequenceId, sequence)) }
                 )
             } else {
                 Column(
@@ -243,11 +260,11 @@ fun Machine(
             tempo = state.tempo,
             swing = state.swing,
             steps = state.steps,
-            ignoreAudioFocus = state.ignoreAudioFocus,
+            settings = state.settings,
             onTempo = { updatedOnAction(ChangeTempoAction(it)) },
             onSwing = { updatedOnAction(ChangeSwingAction(it)) },
             onSteps = { updatedOnAction(ChangeStepsAction(it)) },
-            onAudioFocus = { updatedOnAction(AudioFocusAction(it)) },
+            onSettings = { updatedOnAction(ChangeSettingsAction(it)) },
             onDismiss = { updatedOnAction(DismissAction) }
         )
         state.showExport -> ExportDialog(

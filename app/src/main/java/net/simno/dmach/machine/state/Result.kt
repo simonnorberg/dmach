@@ -5,6 +5,7 @@ import net.simno.dmach.data.Position
 import net.simno.dmach.data.Steps
 import net.simno.dmach.data.Swing
 import net.simno.dmach.data.Tempo
+import net.simno.dmach.settings.Settings
 import java.io.File
 
 sealed class Result
@@ -15,7 +16,6 @@ data class ErrorResult(
 
 data class LoadResult(
     val title: String,
-    val ignoreAudioFocus: Boolean,
     val sequenceId: Int,
     val sequence: List<Int>,
     val selectedChannel: Int,
@@ -38,9 +38,11 @@ data class PlaybackResult(
 
 object PlayPauseResult : Result()
 
-data class AudioFocusResult(
-    val ignoreAudioFocus: Boolean
+data class SettingsResult(
+    val settings: Settings
 ) : Result()
+
+object ChangeSettingsResult : Result()
 
 data class ConfigResult(
     val configId: Int
@@ -94,4 +96,13 @@ data class ChangeSwingResult(
 data class ChangeStepsResult(
     val steps: Steps,
     val sequenceId: Int
+) : Result()
+
+data class ChangePatchResult(
+    val sequenceId: Int,
+    val sequence: List<Int>,
+    val panId: Int,
+    val pan: Pan,
+    val settingId: Int,
+    val position: Position
 ) : Result()

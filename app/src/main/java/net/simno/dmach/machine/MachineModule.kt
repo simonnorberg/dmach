@@ -11,6 +11,7 @@ import net.simno.dmach.playback.AudioFocus
 import net.simno.dmach.playback.KortholtController
 import net.simno.dmach.playback.PlaybackServiceController
 import net.simno.dmach.playback.PureDataController
+import net.simno.dmach.settings.SettingsRepository
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -22,14 +23,16 @@ object MachineModule {
         pureDataController: PureDataController,
         kortholtController: KortholtController,
         audioFocus: AudioFocus,
-        patchRepository: PatchRepository
+        patchRepository: PatchRepository,
+        settingsRepository: SettingsRepository
     ): MachineProcessor {
         return MachineProcessor(
             setOf(playbackServiceController, pureDataController),
             pureDataController,
             kortholtController,
             audioFocus,
-            patchRepository
+            patchRepository,
+            settingsRepository
         )
     }
 }

@@ -7,6 +7,7 @@ import net.simno.dmach.data.Position
 import net.simno.dmach.data.Steps
 import net.simno.dmach.data.Swing
 import net.simno.dmach.data.Tempo
+import net.simno.dmach.settings.Settings
 import java.io.File
 
 data class ViewState(
@@ -17,7 +18,7 @@ data class ViewState(
     val showExport: Boolean = false,
     val startExport: Boolean = false,
     val waveFile: File? = null,
-    val ignoreAudioFocus: Boolean = false,
+    val settings: Settings = Settings(),
     val sequenceId: Int = 0,
     val sequence: List<Int> = Patch.EMPTY_SEQUENCE,
     val selectedChannel: Int = Channel.NONE_ID,
