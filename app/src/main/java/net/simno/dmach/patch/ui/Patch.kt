@@ -3,7 +3,6 @@ package net.simno.dmach.patch.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,9 +35,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.itemsIndexed
 import net.simno.dmach.R
-import net.simno.dmach.core.CoreDialog
+import net.simno.dmach.core.DarkButton
+import net.simno.dmach.core.DarkMediumLabel
 import net.simno.dmach.core.DarkMediumText
-import net.simno.dmach.core.TextButton
+import net.simno.dmach.core.OptionsDialog
 import net.simno.dmach.data.Patch
 import net.simno.dmach.patch.state.Action
 import net.simno.dmach.patch.state.ConfirmDeleteAction
@@ -109,13 +109,11 @@ fun Patch(
                         }
                     )
                 )
-                TextButton(
+                DarkButton(
                     text = stringResource(R.string.patch_save),
-                    selected = false,
                     modifier = Modifier
                         .wrapContentSize()
                         .padding(paddingLarge),
-                    textPadding = PaddingValues(paddingLarge),
                     onClick = {
                         keyboardController?.hide()
                         if (title.isNotBlank()) {
@@ -130,21 +128,21 @@ fun Patch(
                 .fillMaxWidth()
                 .padding(horizontal = paddingLarge, vertical = paddingSmall)
         ) {
-            DarkMediumText(
+            DarkMediumLabel(
                 text = stringResource(R.string.patch_name).uppercase(),
                 modifier = Modifier.weight(1f)
             )
-            DarkMediumText(
+            DarkMediumLabel(
                 text = stringResource(R.string.swing).uppercase(),
                 modifier = Modifier.defaultMinSize(minWidth = buttonLarge),
                 textAlign = TextAlign.End
             )
-            DarkMediumText(
+            DarkMediumLabel(
                 text = stringResource(R.string.bpm).uppercase(),
                 modifier = Modifier.defaultMinSize(minWidth = buttonLarge),
                 textAlign = TextAlign.End
             )
-            DarkMediumText(
+            DarkMediumLabel(
                 text = stringResource(R.string.steps).uppercase(),
                 modifier = Modifier.defaultMinSize(minWidth = buttonLarge),
                 textAlign = TextAlign.End
@@ -199,7 +197,7 @@ fun Patch(
     }
     when {
         state.showDelete -> {
-            CoreDialog(
+            OptionsDialog(
                 text = stringResource(R.string.delete_patch, state.title),
                 option1Text = stringResource(R.string.cancel),
                 option2Text = stringResource(R.string.delete),
@@ -209,7 +207,7 @@ fun Patch(
             )
         }
         state.showOverwrite -> {
-            CoreDialog(
+            OptionsDialog(
                 text = stringResource(R.string.overwrite_patch, state.title),
                 option1Text = stringResource(R.string.cancel),
                 option2Text = stringResource(R.string.overwrite),

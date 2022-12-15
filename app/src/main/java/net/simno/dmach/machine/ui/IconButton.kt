@@ -1,4 +1,4 @@
-package net.simno.dmach.core
+package net.simno.dmach.machine.ui
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background

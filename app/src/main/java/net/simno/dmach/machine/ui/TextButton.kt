@@ -1,12 +1,10 @@
-package net.simno.dmach.core
+package net.simno.dmach.machine.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -14,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
+import net.simno.dmach.core.LightMediumText
 
 @Composable
 fun TextButton(
@@ -22,7 +21,6 @@ fun TextButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     radioButton: Boolean = false,
-    textPadding: PaddingValues = PaddingValues(),
     onClick: () -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -49,9 +47,6 @@ fun TextButton(
             ),
         contentAlignment = Alignment.Center
     ) {
-        LightMediumText(
-            text = text.uppercase(),
-            modifier = Modifier.padding(textPadding)
-        )
+        LightMediumText(text = text.uppercase())
     }
 }

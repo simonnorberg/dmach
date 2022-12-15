@@ -32,9 +32,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import net.simno.dmach.R
 import net.simno.dmach.core.DarkMediumText
-import net.simno.dmach.core.DarkSmallText
-import net.simno.dmach.core.IconButton
-import net.simno.dmach.core.TextButton
+import net.simno.dmach.core.DarkSmallLabel
 import net.simno.dmach.data.Channel
 import net.simno.dmach.machine.state.Action
 import net.simno.dmach.machine.state.ChangePanAction
@@ -166,21 +164,21 @@ fun Machine(
                         .padding(horizontal = paddingSmall),
                     verticalArrangement = Arrangement.Center
                 ) {
-                    DarkSmallText(stringResource(R.string.patch_name).uppercase())
+                    DarkSmallLabel(stringResource(R.string.patch_name).uppercase())
                     DarkMediumText(state.title)
                 }
                 Column(
                     modifier = Modifier.align(Alignment.CenterVertically),
                     verticalArrangement = Arrangement.Center
                 ) {
-                    DarkSmallText(stringResource(R.string.swing).uppercase())
+                    DarkSmallLabel(stringResource(R.string.swing).uppercase())
                     DarkMediumText(state.swing.value.toString())
                 }
                 Column(
                     modifier = Modifier.align(Alignment.CenterVertically),
                     verticalArrangement = Arrangement.Center
                 ) {
-                    DarkSmallText(stringResource(R.string.bpm).uppercase())
+                    DarkSmallLabel(stringResource(R.string.bpm).uppercase())
                     DarkMediumText(state.tempo.value.toString())
                 }
             }

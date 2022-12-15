@@ -24,6 +24,7 @@ sealed class Dimensions(
     val TextSmall: TextUnit,
     val TextMedium: TextUnit,
     val TextLarge: TextUnit,
+    val LabelSmall: TextUnit,
     val LabelMedium: TextUnit
 ) {
     object Default : Dimensions(
@@ -37,9 +38,10 @@ sealed class Dimensions(
         ButtonSmall = 56.dp,
         ButtonMedium = 64.dp,
         ButtonLarge = 72.dp,
-        TextSmall = 10.sp,
+        TextSmall = 16.sp,
         TextMedium = 18.sp,
         TextLarge = 24.sp,
+        LabelSmall = 10.sp,
         LabelMedium = 14.sp
     )
 
@@ -54,9 +56,10 @@ sealed class Dimensions(
         ButtonSmall = 88.dp,
         ButtonMedium = 96.dp,
         ButtonLarge = 104.dp,
-        TextSmall = 12.sp,
+        TextSmall = 22.sp,
         TextMedium = 24.sp,
         TextLarge = 30.sp,
+        LabelSmall = 12.sp,
         LabelMedium = 20.sp
     )
 }

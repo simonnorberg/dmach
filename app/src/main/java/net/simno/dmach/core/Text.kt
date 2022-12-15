@@ -68,16 +68,14 @@ fun DarkMediumText(
 }
 
 @Composable
-fun DarkSmallText(
+fun LightSmallText(
     text: String,
     modifier: Modifier = Modifier
 ) {
     Text(
         text = text,
         modifier = modifier,
-        color = MaterialTheme.colorScheme.primary,
-        overflow = TextOverflow.Ellipsis,
-        maxLines = 1,
+        color = MaterialTheme.colorScheme.surface,
         style = MaterialTheme.typography.bodySmall
     )
 }
@@ -93,5 +91,36 @@ fun LightMediumLabel(
         color = MaterialTheme.colorScheme.surface,
         maxLines = 1,
         style = MaterialTheme.typography.labelMedium
+    )
+}
+
+@Composable
+fun DarkMediumLabel(
+    text: String,
+    modifier: Modifier = Modifier,
+    textAlign: TextAlign? = null
+) {
+    Text(
+        text = text,
+        modifier = modifier,
+        color = MaterialTheme.colorScheme.primary,
+        textAlign = textAlign,
+        maxLines = 1,
+        style = MaterialTheme.typography.labelMedium
+    )
+}
+
+@Composable
+fun DarkSmallLabel(
+    text: String,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = text,
+        modifier = modifier,
+        color = MaterialTheme.colorScheme.primary,
+        overflow = TextOverflow.Ellipsis,
+        maxLines = 1,
+        style = MaterialTheme.typography.labelSmall
     )
 }

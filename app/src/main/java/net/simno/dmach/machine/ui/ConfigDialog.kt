@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import net.simno.dmach.R
-import net.simno.dmach.core.LightMediumText
+import net.simno.dmach.core.LightMediumLabel
 import net.simno.dmach.data.Steps
 import net.simno.dmach.data.Swing
 import net.simno.dmach.data.Tempo
@@ -98,7 +98,7 @@ fun ConfigDialog(
                         tint = surface,
                         modifier = Modifier.size(24.dp)
                     )
-                    LightMediumText(stringResource(R.string.back))
+                    LightMediumLabel(stringResource(R.string.back))
                 }
                 ConfigCheckbox(
                     text = stringResource(R.string.audiofocus),
@@ -166,7 +166,7 @@ fun ConfigDialog(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    LightMediumText(stringResource(R.string.more_settings))
+                    LightMediumLabel(stringResource(R.string.more_settings))
                     Icon(
                         imageVector = Icons.Filled.ChevronRight,
                         contentDescription = null,

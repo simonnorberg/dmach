@@ -16,7 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import net.simno.dmach.BuildConfig
 import net.simno.dmach.R
-import net.simno.dmach.core.CoreDialog
+import net.simno.dmach.core.OptionsDialog
 import java.io.File
 
 private const val WAV_MIME_TYPE = "audio/x-wav"
@@ -46,7 +46,7 @@ fun ExportDialog(
         }
     }
 
-    CoreDialog(
+    OptionsDialog(
         text = stringResource(R.string.export_wave_file),
         option1Text = stringResource(R.string.save),
         option2Text = stringResource(R.string.share),
