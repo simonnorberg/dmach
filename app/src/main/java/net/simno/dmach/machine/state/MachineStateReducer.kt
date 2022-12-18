@@ -12,6 +12,7 @@ object MachineStateReducer : (ViewState, Result) -> ViewState {
             title = result.title,
             sequenceId = result.sequenceId,
             sequence = result.sequence,
+            mutedChannels = result.mutedChannels,
             selectedChannel = result.selectedChannel,
             selectedSetting = result.selectedSetting,
             settingsSize = result.settingsSize,
@@ -76,6 +77,9 @@ object MachineStateReducer : (ViewState, Result) -> ViewState {
             sequence = result.sequence,
             position = null,
             pan = null
+        )
+        is MuteChannelResult -> previousState.copy(
+            mutedChannels = result.mutedChannels
         )
         is SelectChannelResult -> previousState.copy(
             selectedChannel = result.selectedChannel,

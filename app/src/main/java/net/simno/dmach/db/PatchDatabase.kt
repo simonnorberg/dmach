@@ -7,7 +7,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
     entities = [PatchEntity::class],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 abstract class PatchDatabase : RoomDatabase() {
@@ -27,6 +27,12 @@ abstract class PatchDatabase : RoomDatabase() {
         val MIGRATION_3_4: Migration = object : Migration(3, 4) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE patch ADD steps INTEGER NOT NULL DEFAULT 16;")
+            }
+        }
+
+        val MIGRATION_4_5: Migration = object : Migration(4, 5) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE patch ADD muted TEXT NOT NULL DEFAULT '[]';")
             }
         }
     }

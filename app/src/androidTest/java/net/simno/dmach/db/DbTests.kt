@@ -93,7 +93,8 @@ class DbTests {
             4,
             true,
             PatchDatabase.MIGRATION_2_3,
-            PatchDatabase.MIGRATION_3_4
+            PatchDatabase.MIGRATION_3_4,
+            PatchDatabase.MIGRATION_4_5
         )
 
         val patchDatabase = DbModule.providePatchDatabase(ApplicationProvider.getApplicationContext())

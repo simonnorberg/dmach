@@ -11,6 +11,7 @@ import net.simno.dmach.data.Setting
 import net.simno.dmach.data.Steps
 import net.simno.dmach.data.Swing
 import net.simno.dmach.data.Tempo
+import net.simno.dmach.util.logSequence
 import net.simno.kortholt.PdBaseHelper
 import org.puredata.core.PdBase
 
@@ -34,6 +35,7 @@ class PureDataController(
     }
 
     override fun changeSequence(@Size(32) sequence: List<Int>) {
+        logSequence("PureDataController", sequence)
         for (step in 0 until Patch.STEPS) {
             PdBase.sendList("step", 0, step, sequence[step])
             PdBase.sendList("step", 1, step, sequence[step + Patch.STEPS])

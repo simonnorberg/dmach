@@ -25,6 +25,8 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntSize
 import net.simno.dmach.core.DrawableRect
 import net.simno.dmach.core.draw
+import net.simno.dmach.data.Patch.Companion.CHANNELS
+import net.simno.dmach.data.Patch.Companion.MASKS
 import net.simno.dmach.data.Patch.Companion.STEPS
 import net.simno.dmach.data.Steps
 import net.simno.dmach.theme.AppTheme
@@ -129,9 +131,6 @@ fun StepSequencer(
             }
     )
 }
-
-private const val CHANNELS = 6
-private val MASKS = intArrayOf(1, 2, 4)
 
 private fun Offset.isValid(size: IntSize): Boolean =
     x.isFinite() &&

@@ -12,6 +12,7 @@ data class PatchEntity(
     val _id: Int?,
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "sequence") val sequence: String,
+    @ColumnInfo(name = "muted") val muted: String,
     @ColumnInfo(name = "channels") val channels: String,
     @ColumnInfo(name = "selected") val selected: Int,
     @ColumnInfo(name = "tempo") val tempo: Int,

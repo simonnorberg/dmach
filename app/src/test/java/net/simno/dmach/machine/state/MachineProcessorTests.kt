@@ -20,6 +20,7 @@ import net.simno.dmach.data.Position
 import net.simno.dmach.data.Steps
 import net.simno.dmach.data.Swing
 import net.simno.dmach.data.Tempo
+import net.simno.dmach.data.mutedSequence
 import net.simno.dmach.data.withPan
 import net.simno.dmach.data.withPosition
 import net.simno.dmach.data.withSelectedSetting
@@ -34,6 +35,7 @@ import net.simno.dmach.settings.SettingsRepository
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
+import org.mockito.Mockito.anyList
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
@@ -104,9 +106,7 @@ class MachineProcessorTests {
             title = testDao.patch.title,
             sequenceId = testUid,
             sequence = testDao.patch.sequence,
-            tempo = testDao.patch.tempo,
-            swing = testDao.patch.swing,
-            steps = testDao.patch.steps,
+            mutedChannels = testDao.patch.mutedChannels,
             selectedChannel = testDao.patch.selectedChannel,
             selectedSetting = 0,
             settingId = testUid,
@@ -115,7 +115,10 @@ class MachineProcessorTests {
             vText = "Gain",
             position = Position(0.49f, .45f),
             panId = testUid,
-            pan = Pan(0.5f)
+            pan = Pan(0.5f),
+            tempo = testDao.patch.tempo,
+            swing = testDao.patch.swing,
+            steps = testDao.patch.steps
         )
         assertThat(actual).isEqualTo(expected)
 
@@ -187,8 +190,8 @@ class MachineProcessorTests {
     fun startExport() = runBlocking {
         processAction(LoadAction)
 
-        val actual = processActions(ExportAction)
-        val expected = listOf(ExportResult)
+        val actual = processAction(ExportAction)
+        val expected = ExportResult
 
         verify(audioFocus, times(1)).abandonAudioFocus()
         assertThat(actual).isEqualTo(expected)
@@ -206,8 +209,8 @@ class MachineProcessorTests {
 
         processAction(LoadAction)
 
-        val actual = processActions(ExportFileAction(title, tempo, steps))
-        val expected = listOf(ExportFileResult(mockFile))
+        val actual = processAction(ExportFileAction(title, tempo, steps))
+        val expected = ExportFileResult(mockFile)
 
         verify(kortholtController, times(1)).saveWaveFile(title, tempo, steps)
         assertThat(actual).isEqualTo(expected)
@@ -224,6 +227,39 @@ class MachineProcessorTests {
 
         verify(pureData, times(1)).changeSequence(sequence)
         assertThat(repository.unsavedPatch()).isEqualTo(testDao.patch.copy(sequence = sequence))
+    }
+
+    @Test
+    fun muteChannel() = runBlocking {
+        processAction(LoadAction)
+
+        val actual = processActions(
+            MuteChannelAction(0, true),
+            MuteChannelAction(4, true),
+            MuteChannelAction(3, true),
+            MuteChannelAction(1, true),
+            MuteChannelAction(2, true),
+            MuteChannelAction(3, false),
+            MuteChannelAction(4, false)
+        )
+        val expected = listOf(
+            MuteChannelResult(setOf(0)),
+            MuteChannelResult(setOf(0, 4)),
+            MuteChannelResult(setOf(0, 3, 4)),
+            MuteChannelResult(setOf(0, 1, 3, 4)),
+            MuteChannelResult(setOf(0, 1, 2, 3, 4)),
+            MuteChannelResult(setOf(0, 1, 2, 4)),
+            MuteChannelResult(setOf(0, 1, 2))
+        )
+        assertThat(actual).isEqualTo(expected)
+
+        verify(pureData, times(8)).changeSequence(anyList())
+        assertThat(repository.unsavedPatch())
+            .isEqualTo(testDao.patch.copy(mutedChannels = expected.last().mutedChannels))
+
+        val mutedSequence = testDao.patch.sequence.take(Patch.STEPS).map { 0 } +
+            testDao.patch.sequence.takeLast(Patch.STEPS)
+        assertThat(repository.unsavedPatch().mutedSequence()).isEqualTo(mutedSequence)
     }
 
     @Test

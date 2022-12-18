@@ -10,6 +10,7 @@ import net.simno.dmach.data.Channel
 import net.simno.dmach.data.Pan
 import net.simno.dmach.data.Patch
 import net.simno.dmach.data.defaultPatch
+import net.simno.dmach.data.mutedSequence
 import net.simno.dmach.data.withPan
 import net.simno.dmach.data.withPosition
 import net.simno.dmach.data.withSelectedSetting
@@ -43,6 +44,7 @@ class MachineProcessor(
         actions.filterIsInstance<ExportFileAction>().let(exportFile),
         actions.filterIsInstance<DismissAction>().let(dismiss),
         actions.filterIsInstance<ChangeSequenceAction>().let(changeSequence),
+        actions.filterIsInstance<MuteChannelAction>().let(muteChannel),
         actions.filterIsInstance<SelectChannelAction>().let(selectChannel),
         actions.filterIsInstance<SelectSettingAction>().let(selectSetting),
         actions.filterIsInstance<ChangePositionAction>().let(changePosition),
@@ -59,7 +61,7 @@ class MachineProcessor(
                 patchRepository.activePatch()
             }
             .sendToPureData { patch ->
-                pureData.changeSequence(patch.sequence)
+                pureData.changeSequence(patch.mutedSequence())
                 pureData.changeTempo(patch.tempo)
                 pureData.changeSwing(patch.swing)
                 pureData.changeSteps(patch.steps)
@@ -77,6 +79,7 @@ class MachineProcessor(
                     title = patch.title,
                     sequenceId = randomInt.next(),
                     sequence = patch.sequence,
+                    mutedChannels = patch.mutedChannels,
                     selectedChannel = patch.selectedChannel,
                     selectedSetting = channel.selectedSetting,
                     settingId = randomInt.next(),
@@ -188,10 +191,30 @@ class MachineProcessor(
                 patch.copy(sequence = action.sequence)
             }
             .sendToPureData { pwa ->
-                pureData.changeSequence(pwa.patch.sequence)
+                pureData.changeSequence(pwa.patch.mutedSequence())
             }
             .computeResult { pwa ->
                 ChangeSequenceResult(pwa.action.sequenceId, pwa.patch.sequence)
+            }
+    }
+
+    private val muteChannel: (Flow<MuteChannelAction>) -> Flow<MuteChannelResult> = { actions ->
+        actions
+            .modifyPatch { action, patch ->
+                val mutedChannels = if (action.isMuted) {
+                    patch.mutedChannels + action.channel
+                } else {
+                    patch.mutedChannels - action.channel
+                }
+                patch.copy(mutedChannels = mutedChannels)
+            }
+            .sendToPureData { pwa ->
+                pureData.changeSequence(pwa.patch.mutedSequence())
+            }
+            .computeResult { pwa ->
+                MuteChannelResult(
+                    mutedChannels = pwa.patch.mutedChannels
+                )
             }
     }
 
@@ -335,7 +358,7 @@ class MachineProcessor(
                 )
             }
             .sendToPureData { pwa ->
-                pureData.changeSequence(pwa.patch.sequence)
+                pureData.changeSequence(pwa.patch.mutedSequence())
                 pwa.patch.channels.forEach { channel ->
                     pureData.changePan(channel.name, channel.pan)
                     channel.settings.forEach { setting ->

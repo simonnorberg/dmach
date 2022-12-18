@@ -40,6 +40,11 @@ data class ChangeSequenceAction(
     val sequence: List<Int>
 ) : Action()
 
+data class MuteChannelAction(
+    val channel: Int,
+    val isMuted: Boolean
+) : Action()
+
 data class SelectChannelAction(
     val channel: Int,
     val isSelected: Boolean

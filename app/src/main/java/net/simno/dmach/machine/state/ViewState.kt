@@ -21,6 +21,7 @@ data class ViewState(
     val settings: Settings = Settings(),
     val sequenceId: Int = 0,
     val sequence: List<Int> = Patch.EMPTY_SEQUENCE,
+    val mutedChannels: Set<Int> = emptySet(),
     val selectedChannel: Int = Channel.NONE_ID,
     val selectedSetting: Int = Channel.NONE.selectedSetting,
     val settingId: Int = 0,

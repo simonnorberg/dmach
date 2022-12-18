@@ -69,6 +69,7 @@ fun defaultPatch(): Patch {
     return Patch(
         title = "untitled",
         sequence = Patch.EMPTY_SEQUENCE,
+        mutedChannels = emptySet(),
         channels = listOf(bd, sd, cp, tt, cb, hh),
         selectedChannel = Channel.NONE_ID,
         tempo = Tempo(120),

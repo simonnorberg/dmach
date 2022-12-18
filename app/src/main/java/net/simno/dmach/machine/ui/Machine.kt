@@ -1,6 +1,7 @@
 package net.simno.dmach.machine.ui
 
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -47,6 +48,7 @@ import net.simno.dmach.machine.state.ConfigAction
 import net.simno.dmach.machine.state.DismissAction
 import net.simno.dmach.machine.state.ExportAction
 import net.simno.dmach.machine.state.ExportFileAction
+import net.simno.dmach.machine.state.MuteChannelAction
 import net.simno.dmach.machine.state.PlayPauseAction
 import net.simno.dmach.machine.state.SelectChannelAction
 import net.simno.dmach.machine.state.SelectSettingAction
@@ -73,6 +75,10 @@ fun Machine(
         if (state.startExport && state.waveFile == null && !state.isPlaying) {
             updatedOnAction(ExportFileAction(state.title, state.tempo, state.steps))
         }
+    }
+
+    BackHandler(!state.showConfig && !state.showExport && state.selectedChannel != Channel.NONE_ID) {
+        updatedOnAction(SelectChannelAction(state.selectedChannel, true))
     }
 
     Column(
@@ -192,13 +198,16 @@ fun Machine(
                 verticalArrangement = Arrangement.spacedBy(paddingSmall)
             ) {
                 ChannelName.values().forEachIndexed { index, channelName ->
+                    val isMuted = state.mutedChannels.contains(index)
                     TextButton(
                         text = channelName.name,
                         selected = state.selectedChannel == index,
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxSize(),
-                        onClick = { updatedOnAction(SelectChannelAction(index, state.selectedChannel == index)) }
+                        muted = isMuted,
+                        onClick = { updatedOnAction(SelectChannelAction(index, state.selectedChannel == index)) },
+                        onLongClick = { updatedOnAction(MuteChannelAction(index, !isMuted)) }
                     )
                 }
             }

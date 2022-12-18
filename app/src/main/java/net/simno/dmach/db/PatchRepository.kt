@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import net.simno.dmach.data.Channel
@@ -77,6 +78,7 @@ class PatchRepository(
             Patch(
                 title = title,
                 sequence = Json.decodeFromString(ListSerializer(Int.serializer()), sequence),
+                mutedChannels = Json.decodeFromString(SetSerializer(Int.serializer()), muted),
                 channels = Json.decodeFromString(ListSerializer(Channel.serializer()), channels),
                 selectedChannel = selected,
                 tempo = Tempo(tempo),
@@ -90,6 +92,7 @@ class PatchRepository(
                 _id = null,
                 title = title,
                 sequence = Json.encodeToString(ListSerializer(Int.serializer()), sequence),
+                muted = Json.encodeToString(SetSerializer(Int.serializer()), mutedChannels),
                 channels = Json.encodeToString(ListSerializer(Channel.serializer()), channels),
                 selected = selectedChannel,
                 tempo = tempo.value,

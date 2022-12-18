@@ -22,7 +22,8 @@ object DbModule {
             .databaseBuilder(context, PatchDatabase::class.java, PatchDatabase.NAME)
             .addMigrations(
                 PatchDatabase.MIGRATION_2_3,
-                PatchDatabase.MIGRATION_3_4
+                PatchDatabase.MIGRATION_3_4,
+                PatchDatabase.MIGRATION_4_5
             )
             .fallbackToDestructiveMigration()
             .build()

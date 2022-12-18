@@ -18,6 +18,7 @@ data class LoadResult(
     val title: String,
     val sequenceId: Int,
     val sequence: List<Int>,
+    val mutedChannels: Set<Int>,
     val selectedChannel: Int,
     val selectedSetting: Int,
     val settingId: Int,
@@ -59,6 +60,10 @@ object DismissResult : Result()
 data class ChangeSequenceResult(
     val sequenceId: Int,
     val sequence: List<Int>
+) : Result()
+
+data class MuteChannelResult(
+    val mutedChannels: Set<Int>
 ) : Result()
 
 data class SelectChannelResult(

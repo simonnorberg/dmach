@@ -163,7 +163,7 @@ dependencies {
     testImplementation "androidx.test:runner:1.5.1"
     testImplementation "androidx.test.ext:junit:$versions.junit"
     testImplementation "androidx.test.ext:truth:$versions.truth"
-    testImplementation "org.mockito:mockito-core:4.9.0"
+    testImplementation "org.mockito:mockito-core:4.10.0"
     testImplementation "org.mockito.kotlin:mockito-kotlin:4.1.0"
     testImplementation "org.robolectric:robolectric:4.9"
 }
