@@ -13,18 +13,11 @@ import net.simno.kortholt.ExperimentalWaveFile
 import net.simno.kortholt.Kortholt
 
 @OptIn(ExperimentalWaveFile::class)
-class KortholtController(
-    private val context: Context
+class WaveExporter(
+    private val context: Context,
+    private val kortholt: Kortholt.Player
 ) {
     private val isExporting = AtomicBoolean(false)
-
-    fun create() {
-        Kortholt.create(context)
-    }
-
-    fun destroy() {
-        Kortholt.destroy()
-    }
 
     fun isExporting(): Boolean = isExporting.get()
 
@@ -43,8 +36,7 @@ class KortholtController(
             val milliSecondsPerBeat = (60 * 1000) / tempo.value.toDouble()
             val duration = (steps.value * milliSecondsPerBeat).toDuration(DurationUnit.MILLISECONDS)
 
-            Kortholt.saveWaveFile(
-                context = context,
+            kortholt.saveWaveFile(
                 outputFile = outputFile,
                 duration = duration,
                 startBang = "play",

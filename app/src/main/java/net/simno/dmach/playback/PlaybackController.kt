@@ -5,29 +5,40 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import java.util.concurrent.atomic.AtomicBoolean
+import kotlinx.coroutines.runBlocking
+import net.simno.dmach.R
 import net.simno.dmach.data.Tempo
+import net.simno.kortholt.Kortholt
 
-class PlaybackServiceController(
+class PlaybackController(
     private val context: Context,
-    private val kortholtController: KortholtController
-) : PlaybackObserver, DefaultLifecycleObserver {
+    private val kortholt: Kortholt.Player,
+    private val pureData: PureData,
+    private val waveExporter: WaveExporter
+) : DefaultLifecycleObserver {
 
     private val isPlaying = AtomicBoolean(false)
     private var title: String? = null
     private var tempo: String? = null
 
-    override fun onPlaybackStart() {
+    suspend fun openPatch() {
+        kortholt.openPatch(R.raw.dmach, "dmach.pd", extractZip = true)
+    }
+
+    suspend fun startPlayback() {
         if (isPlaying.compareAndSet(false, true)) {
             startService()
-            kortholtController.create()
+            kortholt.startStream()
+            pureData.startPlayback()
         }
     }
 
-    override fun onPlaybackStop() {
+    fun stopPlayback() {
         isPlaying.set(false)
+        pureData.stopPlayback()
     }
 
-    override fun updateInfo(title: String, tempo: Tempo) {
+    fun updateInfo(title: String, tempo: Tempo) {
         this.title = title
         this.tempo = "${tempo.value} BPM"
         if (isPlaying.get()) {
@@ -39,8 +50,8 @@ class PlaybackServiceController(
     override fun onPause(owner: LifecycleOwner) {
         if (isPlaying.compareAndSet(false, false)) {
             stopService()
-            if (!kortholtController.isExporting()) {
-                kortholtController.destroy()
+            if (!waveExporter.isExporting()) {
+                runBlocking { kortholt.stopStream() }
             }
         }
     }
@@ -48,7 +59,11 @@ class PlaybackServiceController(
     override fun onDestroy(owner: LifecycleOwner) {
         isPlaying.set(false)
         stopService()
-        kortholtController.destroy()
+        pureData.stopPlayback()
+        runBlocking {
+            kortholt.stopStream()
+            kortholt.closePatch()
+        }
     }
 
     private fun startService() {

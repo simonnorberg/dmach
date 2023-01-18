@@ -1,6 +1,5 @@
 package net.simno.dmach.machine
 
-import androidx.lifecycle.LifecycleObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import net.simno.dmach.StateViewModel
@@ -25,6 +24,4 @@ class MachineViewModel @Inject constructor(
     LoadAction,
     PlaybackAction,
     SettingsAction
-) {
-    val lifecycleObservers: Set<LifecycleObserver> = processor.playbackObservers
-}
+)

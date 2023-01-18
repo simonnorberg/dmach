@@ -8,9 +8,9 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import net.simno.dmach.db.PatchRepository
 import net.simno.dmach.machine.state.MachineProcessor
 import net.simno.dmach.playback.AudioFocus
-import net.simno.dmach.playback.KortholtController
-import net.simno.dmach.playback.PlaybackServiceController
-import net.simno.dmach.playback.PureDataController
+import net.simno.dmach.playback.PlaybackController
+import net.simno.dmach.playback.PureData
+import net.simno.dmach.playback.WaveExporter
 import net.simno.dmach.settings.SettingsRepository
 
 @Module
@@ -19,17 +19,17 @@ object MachineModule {
     @Provides
     @ViewModelScoped
     fun provideMachineProcesssor(
-        playbackServiceController: PlaybackServiceController,
-        pureDataController: PureDataController,
-        kortholtController: KortholtController,
+        playbackController: PlaybackController,
+        pureData: PureData,
+        waveExporter: WaveExporter,
         audioFocus: AudioFocus,
         patchRepository: PatchRepository,
         settingsRepository: SettingsRepository
     ): MachineProcessor {
         return MachineProcessor(
-            setOf(playbackServiceController, pureDataController),
-            pureDataController,
-            kortholtController,
+            playbackController,
+            pureData,
+            waveExporter,
             audioFocus,
             patchRepository,
             settingsRepository

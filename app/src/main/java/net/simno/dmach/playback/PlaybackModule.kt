@@ -10,6 +10,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 import net.simno.dmach.settings.SettingsRepository
+import net.simno.kortholt.Kortholt
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -33,26 +34,37 @@ object PlaybackModule {
 
     @Provides
     @Singleton
-    fun provideKortholtController(
+    fun provideKortholtPlayer(
         @ApplicationContext context: Context
-    ): KortholtController {
-        return KortholtController(context)
+    ): Kortholt.Player {
+        return Kortholt.Player.Builder(context)
+            .build()
+            .also { Kortholt.setPlayer(it) }
     }
 
     @Provides
     @Singleton
-    fun providePlaybackServiceController(
+    fun provideWaveExporter(
         @ApplicationContext context: Context,
-        kortholtController: KortholtController
-    ): PlaybackServiceController {
-        return PlaybackServiceController(context, kortholtController)
+        kortholt: Kortholt.Player
+    ): WaveExporter {
+        return WaveExporter(context, kortholt)
     }
 
     @Provides
     @Singleton
-    fun providePureDataController(
-        @ApplicationContext context: Context
-    ): PureDataController {
-        return PureDataController(context)
+    fun providePureData(): PureData {
+        return PureData()
+    }
+
+    @Provides
+    @Singleton
+    fun providePlaybackController(
+        @ApplicationContext context: Context,
+        kortholt: Kortholt.Player,
+        pureData: PureData,
+        waveExporter: WaveExporter
+    ): PlaybackController {
+        return PlaybackController(context, kortholt, pureData, waveExporter)
     }
 }

@@ -16,15 +16,15 @@ import net.simno.dmach.data.withPosition
 import net.simno.dmach.data.withSelectedSetting
 import net.simno.dmach.db.PatchRepository
 import net.simno.dmach.playback.AudioFocus
-import net.simno.dmach.playback.KortholtController
-import net.simno.dmach.playback.PlaybackObserver
+import net.simno.dmach.playback.PlaybackController
 import net.simno.dmach.playback.PureData
+import net.simno.dmach.playback.WaveExporter
 import net.simno.dmach.settings.SettingsRepository
 
 class MachineProcessor(
-    val playbackObservers: Set<PlaybackObserver>,
+    private val playbackController: PlaybackController,
     private val pureData: PureData,
-    private val kortholtController: KortholtController,
+    private val waveExporter: WaveExporter,
     private val audioFocus: AudioFocus,
     private val patchRepository: PatchRepository,
     private val settingsRepository: SettingsRepository,
@@ -57,6 +57,9 @@ class MachineProcessor(
 
     private val load: (Flow<LoadAction>) -> Flow<LoadResult> = { actions ->
         actions
+            .onEach {
+                playbackController.openPatch()
+            }
             .flatMapMerge {
                 patchRepository.activePatch()
             }
@@ -71,7 +74,7 @@ class MachineProcessor(
                         pureData.changeSetting(channel.name, setting)
                     }
                 }
-                playbackObservers.forEach { it.updateInfo(patch.title, patch.tempo) }
+                playbackController.updateInfo(patch.title, patch.tempo)
             }
             .computeResult { patch ->
                 val channel = patch.channel
@@ -103,9 +106,9 @@ class MachineProcessor(
             }
             .sendToPureData { hasFocus ->
                 if (hasFocus) {
-                    playbackObservers.forEach { it.onPlaybackStart() }
+                    playbackController.startPlayback()
                 } else {
-                    playbackObservers.forEach { it.onPlaybackStop() }
+                    playbackController.stopPlayback()
                 }
             }
             .computeResult { isPlaying ->
@@ -167,7 +170,7 @@ class MachineProcessor(
     private val exportFile: (Flow<ExportFileAction>) -> Flow<ExportFileResult> = { actions ->
         actions
             .computeResult { action ->
-                val waveFile = kortholtController.saveWaveFile(
+                val waveFile = waveExporter.saveWaveFile(
                     title = action.title,
                     tempo = action.tempo,
                     steps = action.steps
@@ -180,7 +183,7 @@ class MachineProcessor(
         actions
             .computeResult {
                 val patch = patchRepository.unsavedPatch()
-                playbackObservers.forEach { it.updateInfo(patch.title, patch.tempo) }
+                playbackController.updateInfo(patch.title, patch.tempo)
                 DismissResult
             }
     }

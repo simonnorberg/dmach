@@ -126,8 +126,8 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$versions.hilt"
     kapt "com.google.dagger:hilt-compiler:$versions.hilt"
 
-    implementation "com.github.simonnorberg:dmach-externals:1.17.0"
-    implementation "net.simno.kortholt:kortholt:1.12.0"
+    implementation "com.github.simonnorberg:dmach-externals:2.0.1"
+    implementation "net.simno.kortholt:kortholt:2.0.1"
 
     implementation "com.squareup.leakcanary:plumber-android:2.10"
 

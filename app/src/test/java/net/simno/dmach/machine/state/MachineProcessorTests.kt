@@ -28,9 +28,9 @@ import net.simno.dmach.data.withSelectedSetting
 import net.simno.dmach.db.PatchRepository
 import net.simno.dmach.db.TestPatchDao
 import net.simno.dmach.playback.AudioFocus
-import net.simno.dmach.playback.KortholtController
-import net.simno.dmach.playback.PlaybackObserver
+import net.simno.dmach.playback.PlaybackController
 import net.simno.dmach.playback.PureData
+import net.simno.dmach.playback.WaveExporter
 import net.simno.dmach.settings.Settings
 import net.simno.dmach.settings.SettingsRepository
 import org.junit.Before
@@ -51,13 +51,13 @@ class MachineProcessorTests {
     private lateinit var pureData: PureData
 
     @Mock
-    private lateinit var playbackObserver: PlaybackObserver
+    private lateinit var playbackController: PlaybackController
 
     @Mock
     private lateinit var audioFocus: AudioFocus
 
     @Mock
-    private lateinit var kortholtController: KortholtController
+    private lateinit var waveExporter: WaveExporter
 
     @Mock
     private lateinit var settingsRepository: SettingsRepository
@@ -87,9 +87,9 @@ class MachineProcessorTests {
         testDao = TestPatchDao()
         repository = PatchRepository(testDao)
         machineProcessor = MachineProcessor(
-            playbackObservers = setOf(playbackObserver),
+            playbackController = playbackController,
             pureData = pureData,
-            kortholtController = kortholtController,
+            waveExporter = waveExporter,
             audioFocus = audioFocus,
             patchRepository = repository,
             settingsRepository = settingsRepository,
@@ -132,7 +132,7 @@ class MachineProcessorTests {
                 verify(pureData, times(1)).changeSetting(channel.name, setting)
             }
         }
-        verify(playbackObserver, times(1)).updateInfo(testDao.patch.title, testDao.patch.tempo)
+        verify(playbackController, times(1)).updateInfo(testDao.patch.title, testDao.patch.tempo)
     }
 
     @Test
@@ -144,8 +144,8 @@ class MachineProcessorTests {
         val actual = processActions(PlaybackAction, resultSize = expected.size)
         assertThat(actual).isEqualTo(expected)
 
-        verify(playbackObserver, times(1)).onPlaybackStop()
-        verify(playbackObserver, times(1)).onPlaybackStart()
+        verify(playbackController, times(1)).stopPlayback()
+        verify(playbackController, times(1)).startPlayback()
     }
 
     @Test
@@ -178,12 +178,12 @@ class MachineProcessorTests {
     @Test
     fun configDismiss() = runBlocking {
         processAction(LoadAction)
-        verify(playbackObserver, times(1)).updateInfo(testDao.patch.title, testDao.patch.tempo)
+        verify(playbackController, times(1)).updateInfo(testDao.patch.title, testDao.patch.tempo)
 
         val actual = processActions(ConfigAction, DismissAction, ConfigAction)
         val expected = listOf(ConfigResult(testUid), DismissResult, ConfigResult(testUid))
         assertThat(actual).isEqualTo(expected)
-        verify(playbackObserver, times(2)).updateInfo(testDao.patch.title, testDao.patch.tempo)
+        verify(playbackController, times(2)).updateInfo(testDao.patch.title, testDao.patch.tempo)
     }
 
     @Test
@@ -204,7 +204,7 @@ class MachineProcessorTests {
         val tempo = Tempo(120)
         val steps = Steps(16)
 
-        whenever(kortholtController.saveWaveFile(title, tempo, steps))
+        whenever(waveExporter.saveWaveFile(title, tempo, steps))
             .doReturn(mockFile)
 
         processAction(LoadAction)
@@ -212,7 +212,7 @@ class MachineProcessorTests {
         val actual = processAction(ExportFileAction(title, tempo, steps))
         val expected = ExportFileResult(mockFile)
 
-        verify(kortholtController, times(1)).saveWaveFile(title, tempo, steps)
+        verify(waveExporter, times(1)).saveWaveFile(title, tempo, steps)
         assertThat(actual).isEqualTo(expected)
     }
 
