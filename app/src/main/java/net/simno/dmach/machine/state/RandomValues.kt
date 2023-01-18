@@ -1,7 +1,7 @@
 package net.simno.dmach.machine.state
 
-import net.simno.dmach.data.Patch
 import kotlin.random.Random
+import net.simno.dmach.data.Patch
 
 fun interface RandomSequence {
     fun next(): List<Int>

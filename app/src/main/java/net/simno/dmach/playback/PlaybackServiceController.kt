@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import net.simno.dmach.data.Tempo
 import java.util.concurrent.atomic.AtomicBoolean
+import net.simno.dmach.data.Tempo
 
 class PlaybackServiceController(
     private val context: Context,

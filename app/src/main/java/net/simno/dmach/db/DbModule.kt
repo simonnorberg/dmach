@@ -7,10 +7,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 import kotlinx.coroutines.runBlocking
 import net.simno.dmach.data.defaultPatch
 import net.simno.dmach.db.PatchRepository.Companion.toEntity
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)

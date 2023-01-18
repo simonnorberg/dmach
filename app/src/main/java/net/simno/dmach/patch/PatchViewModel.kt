@@ -7,6 +7,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import net.simno.dmach.StateViewModel
@@ -19,7 +20,6 @@ import net.simno.dmach.patch.state.PatchProcessor
 import net.simno.dmach.patch.state.PatchStateReducer
 import net.simno.dmach.patch.state.Result
 import net.simno.dmach.patch.state.ViewState
-import javax.inject.Inject
 
 @HiltViewModel
 class PatchViewModel @Inject constructor(

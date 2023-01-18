@@ -1,12 +1,12 @@
 package net.simno.dmach.machine.state
 
+import java.io.File
 import net.simno.dmach.data.Pan
 import net.simno.dmach.data.Position
 import net.simno.dmach.data.Steps
 import net.simno.dmach.data.Swing
 import net.simno.dmach.data.Tempo
 import net.simno.dmach.settings.Settings
-import java.io.File
 
 sealed class Result
 

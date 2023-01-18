@@ -1,6 +1,7 @@
 package net.simno.dmach.machine.state
 
 import com.google.common.truth.Truth.assertThat
+import java.io.File
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel.Factory.RENDEZVOUS
@@ -42,7 +43,6 @@ import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.whenever
-import java.io.File
 
 @DelicateCoroutinesApi
 class MachineProcessorTests {

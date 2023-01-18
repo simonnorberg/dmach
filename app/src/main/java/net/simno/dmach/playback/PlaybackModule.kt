@@ -8,8 +8,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import net.simno.dmach.settings.SettingsRepository
 import javax.inject.Singleton
+import net.simno.dmach.settings.SettingsRepository
 
 @Module
 @InstallIn(SingletonComponent::class)

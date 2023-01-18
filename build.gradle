@@ -1,6 +1,6 @@
 buildscript {
     ext.versions = [
-            "kotlin"    : "1.7.21",
+            "kotlin"    : "1.8.0",
             "coroutines": "1.6.4",
             "compileSdk": 33,
             "minSdk"    : 28,
@@ -8,9 +8,9 @@ buildscript {
             "ndk"       : "25.1.8937393",
             "lifecycle" : "2.6.0-alpha03",
             "paging"    : "3.2.0-alpha03",
-            "room"      : "2.5.0-rc01",
+            "room"      : "2.5.0",
             "hilt"      : "2.44.2",
-            "junit"     : "1.1.4",
+            "junit"     : "1.1.5",
             "truth"     : "1.5.0"
     ]
     repositories {
@@ -18,16 +18,15 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:7.3.1"
+        classpath "com.android.tools.build:gradle:7.4.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
         classpath "org.jetbrains.kotlin:kotlin-serialization:$versions.kotlin"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$versions.hilt"
-        classpath "com.github.triplet.gradle:play-publisher:3.7.0"
     }
 }
 
 plugins {
-    id "com.diffplug.spotless" version "6.12.0"
+    id "com.diffplug.spotless" version "6.13.0"
     id "com.github.ben-manes.versions" version "0.44.0"
 }
 
@@ -75,7 +74,6 @@ subprojects {
         kotlinOptions {
             jvmTarget = "11"
             allWarningsAsErrors = true
-            freeCompilerArgs += "-opt-in=kotlin.Experimental"
             freeCompilerArgs += "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
             freeCompilerArgs += "-opt-in=kotlinx.coroutines.FlowPreview"
             freeCompilerArgs += "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi"
@@ -87,7 +85,10 @@ subprojects {
     spotless {
         kotlin {
             target "**/*.kt"
-            ktlint("0.47.1")
+            ktlint("0.48.1").editorConfigOverride([
+                    ktlint_code_style: "android",
+                    max_line_length  : 120
+            ])
         }
     }
 }

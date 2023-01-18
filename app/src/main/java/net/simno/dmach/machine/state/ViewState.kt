@@ -1,5 +1,6 @@
 package net.simno.dmach.machine.state
 
+import java.io.File
 import net.simno.dmach.data.Channel
 import net.simno.dmach.data.Pan
 import net.simno.dmach.data.Patch
@@ -8,7 +9,6 @@ import net.simno.dmach.data.Steps
 import net.simno.dmach.data.Swing
 import net.simno.dmach.data.Tempo
 import net.simno.dmach.settings.Settings
-import java.io.File
 
 data class ViewState(
     val title: String = "",

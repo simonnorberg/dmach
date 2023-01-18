@@ -4,7 +4,6 @@ plugins {
     id "kotlin-android"
     id "kotlin-kapt"
     id "kotlinx-serialization"
-    id "com.github.triplet.play"
 }
 
 kapt {
@@ -16,18 +15,6 @@ hilt {
     enableAggregatingTask true
 }
 
-play {
-    track.set("internal")
-    resolutionStrategy.set(com.github.triplet.gradle.androidpublisher.ResolutionStrategy.IGNORE)
-    defaultToAppBundles.set(true)
-    serviceAccountCredentials.set(rootProject.file("signing/play-account.json"))
-}
-
-Object propOrDef(String propertyName, Object defaultValue) {
-    def propertyValue = project.properties[propertyName]
-    return propertyValue != null ? propertyValue : defaultValue
-}
-
 android {
     namespace "net.simno.dmach"
     compileSdk versions.compileSdk
@@ -37,8 +24,8 @@ android {
         applicationId "net.simno.dmach"
         minSdk versions.minSdk
         targetSdk versions.targetSdk
-        versionCode 30005
-        versionName "3.2"
+        versionCode 30006
+        versionName "3.3"
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -60,19 +47,10 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    signingConfigs {
-        release {
-            storeFile rootProject.file("signing/app-upload.jks")
-            storePassword propOrDef("STORE_PASSWORD", "")
-            keyAlias propOrDef("KEY_ALIAS", "")
-            keyPassword propOrDef("KEY_PASSWORD", "")
-        }
-    }
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
-            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
@@ -84,7 +62,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion "1.4.0-alpha02"
+        kotlinCompilerExtensionVersion "1.4.0"
     }
     packagingOptions {
         resources {
@@ -117,7 +95,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
 
-    implementation platform("androidx.compose:compose-bom:2022.12.00")
+    implementation platform("androidx.compose:compose-bom:2023.01.00")
     implementation "androidx.compose.material3:material3"
     implementation "androidx.compose.material:material-icons-extended"
     implementation "androidx.compose.ui:ui-tooling-preview"
@@ -148,22 +126,22 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$versions.hilt"
     kapt "com.google.dagger:hilt-compiler:$versions.hilt"
 
-    implementation "com.github.simonnorberg:dmach-externals:1.13.0"
+    implementation "com.github.simonnorberg:dmach-externals:1.17.0"
     implementation "net.simno.kortholt:kortholt:1.12.0"
 
     implementation "com.squareup.leakcanary:plumber-android:2.10"
 
     androidTestImplementation "androidx.room:room-testing:$versions.room"
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.0"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1"
     androidTestImplementation "androidx.test.ext:junit:$versions.junit"
     androidTestImplementation "androidx.test.ext:truth:$versions.truth"
 
     testImplementation "androidx.paging:paging-common-ktx:$versions.paging"
     testImplementation "androidx.test:core:1.5.0"
-    testImplementation "androidx.test:runner:1.5.1"
+    testImplementation "androidx.test:runner:1.5.2"
     testImplementation "androidx.test.ext:junit:$versions.junit"
     testImplementation "androidx.test.ext:truth:$versions.truth"
-    testImplementation "org.mockito:mockito-core:4.10.0"
+    testImplementation "org.mockito:mockito-core:5.0.0"
     testImplementation "org.mockito.kotlin:mockito-kotlin:4.1.0"
-    testImplementation "org.robolectric:robolectric:4.9"
+    testImplementation "org.robolectric:robolectric:4.9.2"
 }

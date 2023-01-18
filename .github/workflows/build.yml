@@ -8,9 +8,6 @@ jobs:
     timeout-minutes: 30
     env:
       TERM: dumb
-      ORG_GRADLE_PROJECT_STORE_PASSWORD: ${{ secrets.ORG_GRADLE_PROJECT_STORE_PASSWORD }}
-      ORG_GRADLE_PROJECT_KEY_PASSWORD: ${{ secrets.ORG_GRADLE_PROJECT_KEY_PASSWORD }}
-      ORG_GRADLE_PROJECT_KEY_ALIAS: ${{ secrets.ORG_GRADLE_PROJECT_KEY_ALIAS }}
 
     steps:
       - uses: actions/checkout@v2
@@ -20,18 +17,5 @@ jobs:
         with:
           java-version: 11
 
-      - name: Decrypt secrets
-        run: signing/setup.sh $ENCRYPT_KEY
-        env:
-          ENCRYPT_KEY: ${{ secrets.ENCRYPT_KEY }}
-
       - name: Build and check
         run: ./gradlew spotlessCheck assemble bundle check
-
-      - name: Publish release
-        if: github.ref == 'refs/heads/develop'
-        run: ./gradlew publishReleaseBundle
-
-      - name: Clean secrets
-        if: always()
-        run: signing/cleanup.sh
