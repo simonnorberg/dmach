@@ -26,20 +26,21 @@ fun OptionsDialog(
     onDismiss: () -> Unit,
     onOption1: () -> Unit,
     onOption2: () -> Unit,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     properties: DialogProperties = DialogProperties()
 ) {
     val surface = MaterialTheme.colorScheme.surface
     val onPrimary = MaterialTheme.colorScheme.onPrimary
     val shapeMedium = MaterialTheme.shapes.medium
-    val paddingLarge = AppTheme.dimens.PaddingLarge
+    val paddingLarge = AppTheme.dimens.paddingLarge
 
     CoreDialog(
         onDismiss = onDismiss,
         properties = properties
     ) {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .background(
                     color = onPrimary,
                     shape = shapeMedium

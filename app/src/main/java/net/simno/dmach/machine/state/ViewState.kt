@@ -1,6 +1,9 @@
 package net.simno.dmach.machine.state
 
 import java.io.File
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.PersistentSet
+import kotlinx.collections.immutable.persistentSetOf
 import net.simno.dmach.data.Channel
 import net.simno.dmach.data.Pan
 import net.simno.dmach.data.Patch
@@ -20,8 +23,8 @@ data class ViewState(
     val waveFile: File? = null,
     val settings: Settings = Settings(),
     val sequenceId: Int = 0,
-    val sequence: List<Int> = Patch.EMPTY_SEQUENCE,
-    val mutedChannels: Set<Int> = emptySet(),
+    val sequence: PersistentList<Int> = Patch.EMPTY_SEQUENCE,
+    val mutedChannels: PersistentSet<Int> = persistentSetOf(),
     val selectedChannel: Int = Channel.NONE_ID,
     val selectedSetting: Int = Channel.NONE.selectedSetting,
     val settingId: Int = 0,

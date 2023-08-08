@@ -21,11 +21,11 @@ import net.simno.dmach.core.LightMediumText
 fun TextButton(
     text: String,
     selected: Boolean,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     muted: Boolean = false,
     radioButton: Boolean = false,
-    onClick: () -> Unit,
     onLongClick: (() -> Unit)? = null
 ) {
     val haptic = LocalHapticFeedback.current

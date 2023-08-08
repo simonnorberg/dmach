@@ -77,6 +77,7 @@ dependencies {
     implementation(platform(libs.coroutines.bom))
     implementation(libs.coroutines.android)
     implementation(libs.coroutines.core)
+    implementation(libs.kotlin.collections)
     implementation(libs.kotlin.serialization)
 
     implementation(platform(libs.compose.bom))
@@ -85,6 +86,7 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.testmanifest)
+    lintChecks(libs.compose.lint)
 
     implementation(libs.androidx.activity)
     implementation(libs.androidx.core)

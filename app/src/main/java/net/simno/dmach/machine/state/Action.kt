@@ -1,5 +1,6 @@
 package net.simno.dmach.machine.state
 
+import kotlinx.collections.immutable.PersistentList
 import net.simno.dmach.data.Pan
 import net.simno.dmach.data.Position
 import net.simno.dmach.data.Steps
@@ -37,7 +38,7 @@ data object DismissAction : Action()
 
 data class ChangeSequenceAction(
     val sequenceId: Int,
-    val sequence: List<Int>
+    val sequence: PersistentList<Int>
 ) : Action()
 
 data class MuteChannelAction(

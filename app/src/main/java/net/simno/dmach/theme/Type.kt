@@ -12,26 +12,26 @@ val Typography: Typography
         bodyLarge = TextStyle(
             fontFamily = FontFamily.SansSerif,
             fontWeight = FontWeight.Light,
-            fontSize = AppTheme.dimens.TextLarge
+            fontSize = AppTheme.dimens.textLarge
         ),
         bodyMedium = TextStyle(
             fontFamily = FontFamily.SansSerif,
             fontWeight = FontWeight.Light,
-            fontSize = AppTheme.dimens.TextMedium
+            fontSize = AppTheme.dimens.textMedium
         ),
         bodySmall = TextStyle(
             fontFamily = FontFamily.SansSerif,
             fontWeight = FontWeight.Light,
-            fontSize = AppTheme.dimens.TextSmall
+            fontSize = AppTheme.dimens.textSmall
         ),
         labelMedium = TextStyle(
             fontFamily = FontFamily.SansSerif,
             fontWeight = FontWeight.Bold,
-            fontSize = AppTheme.dimens.LabelMedium
+            fontSize = AppTheme.dimens.labelMedium
         ),
         labelSmall = TextStyle(
             fontFamily = FontFamily.SansSerif,
             fontWeight = FontWeight.Light,
-            fontSize = AppTheme.dimens.LabelSmall
+            fontSize = AppTheme.dimens.labelSmall
         )
     )

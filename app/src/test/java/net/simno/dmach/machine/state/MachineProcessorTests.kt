@@ -2,6 +2,8 @@ package net.simno.dmach.machine.state
 
 import com.google.common.truth.Truth.assertThat
 import java.io.File
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel.Factory.RENDEZVOUS
@@ -94,7 +96,7 @@ class MachineProcessorTests {
             patchRepository = repository,
             settingsRepository = settingsRepository,
             random = object : Randomizer {
-                override fun nextSequence() = listOf(1337)
+                override fun nextSequence() = persistentListOf(1337)
                 override fun nextFloat() = 0.1337f
                 override fun nextInt() = testUid
             }
@@ -221,7 +223,7 @@ class MachineProcessorTests {
     @Test
     fun changeSequence() = runBlocking {
         processAction(LoadAction)
-        val sequence = listOf(1337)
+        val sequence = persistentListOf(1337)
 
         val actual = processAction(ChangeSequenceAction(0, sequence))
         val expected = ChangeSequenceResult(0, sequence)
@@ -245,13 +247,13 @@ class MachineProcessorTests {
             MuteChannelAction(4, false)
         )
         val expected = listOf(
-            MuteChannelResult(setOf(0)),
-            MuteChannelResult(setOf(0, 4)),
-            MuteChannelResult(setOf(0, 3, 4)),
-            MuteChannelResult(setOf(0, 1, 3, 4)),
-            MuteChannelResult(setOf(0, 1, 2, 3, 4)),
-            MuteChannelResult(setOf(0, 1, 2, 4)),
-            MuteChannelResult(setOf(0, 1, 2))
+            MuteChannelResult(persistentSetOf(0)),
+            MuteChannelResult(persistentSetOf(0, 4)),
+            MuteChannelResult(persistentSetOf(0, 3, 4)),
+            MuteChannelResult(persistentSetOf(0, 1, 3, 4)),
+            MuteChannelResult(persistentSetOf(0, 1, 2, 3, 4)),
+            MuteChannelResult(persistentSetOf(0, 1, 2, 4)),
+            MuteChannelResult(persistentSetOf(0, 1, 2))
         )
         assertThat(actual).isEqualTo(expected)
 
@@ -380,7 +382,7 @@ class MachineProcessorTests {
     fun resetSequence() = runBlocking {
         processAction(LoadAction)
 
-        val sequence = listOf(1337)
+        val sequence = persistentListOf(1337)
         processAction(ChangeSequenceAction(0, sequence))
         verify(pureData, times(1)).changeSequence(sequence)
         assertThat(repository.unsavedPatch()).isEqualTo(testDao.patch.copy(sequence = sequence))
@@ -450,7 +452,7 @@ class MachineProcessorTests {
         val actual = processAction(ChangePatchAction.Randomize(Settings(sequenceEnabled = true)))
         val expected = ChangePatchResult(
             sequenceId = testUid,
-            sequence = listOf(1337),
+            sequence = persistentListOf(1337),
             panId = testUid,
             pan = testDao.patch.channel.pan,
             settingId = testUid,

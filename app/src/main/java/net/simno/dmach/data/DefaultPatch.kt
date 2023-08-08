@@ -1,5 +1,8 @@
 package net.simno.dmach.data
 
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.persistentSetOf
+
 fun defaultPatch(): Patch {
     val bd = Channel(
         name = "bd",
@@ -69,8 +72,8 @@ fun defaultPatch(): Patch {
     return Patch(
         title = "untitled",
         sequence = Patch.EMPTY_SEQUENCE,
-        mutedChannels = emptySet(),
-        channels = listOf(bd, sd, cp, tt, cb, hh),
+        mutedChannels = persistentSetOf(),
+        channels = persistentListOf(bd, sd, cp, tt, cb, hh),
         selectedChannel = Channel.NONE_ID,
         tempo = Tempo(120),
         swing = Swing(0),

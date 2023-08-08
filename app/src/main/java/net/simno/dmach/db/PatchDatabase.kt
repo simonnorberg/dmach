@@ -18,21 +18,21 @@ abstract class PatchDatabase : RoomDatabase() {
         const val NAME = "dmach.db"
 
         val MIGRATION_2_3: Migration = object : Migration(2, 3) {
-            override fun migrate(database: SupportSQLiteDatabase) {
-                database.execSQL("ALTER TABLE patch ADD active INTEGER NOT NULL DEFAULT 1;")
-                database.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS index_patch_title ON patch (title)")
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE patch ADD active INTEGER NOT NULL DEFAULT 1;")
+                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS index_patch_title ON patch (title)")
             }
         }
 
         val MIGRATION_3_4: Migration = object : Migration(3, 4) {
-            override fun migrate(database: SupportSQLiteDatabase) {
-                database.execSQL("ALTER TABLE patch ADD steps INTEGER NOT NULL DEFAULT 16;")
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE patch ADD steps INTEGER NOT NULL DEFAULT 16;")
             }
         }
 
         val MIGRATION_4_5: Migration = object : Migration(4, 5) {
-            override fun migrate(database: SupportSQLiteDatabase) {
-                database.execSQL("ALTER TABLE patch ADD muted TEXT NOT NULL DEFAULT '[]';")
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE patch ADD muted TEXT NOT NULL DEFAULT '[]';")
             }
         }
     }

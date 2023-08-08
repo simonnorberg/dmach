@@ -24,10 +24,10 @@ import net.simno.dmach.theme.AppTheme
 @Composable
 fun IconButton(
     icon: ImageVector,
-    iconPadding: Dp = AppTheme.dimens.PaddingLarge,
     @StringRes description: Int,
     selected: Boolean,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
+    iconPadding: Dp = AppTheme.dimens.paddingLarge,
     onClick: () -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }

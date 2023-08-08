@@ -46,8 +46,8 @@ fun PanFader(
     modifier: Modifier = Modifier,
     onPan: (Pan) -> Unit
 ) {
-    val rectHeight = AppTheme.dimens.RectHeight
-    val buttonMedium = AppTheme.dimens.ButtonMedium
+    val rectHeight = AppTheme.dimens.rectHeight
+    val buttonMedium = AppTheme.dimens.buttonMedium
 
     Box(
         modifier = modifier
@@ -87,8 +87,7 @@ fun PanFader(
         Fader(
             panId = panId,
             pan = pan,
-            onPan = onPan,
-            modifier = modifier
+            onPan = onPan
         )
     }
 }
@@ -97,13 +96,13 @@ fun PanFader(
 private fun Fader(
     panId: Int,
     pan: Pan?,
-    onPan: (Pan) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onPan: (Pan) -> Unit
 ) {
     val secondary = MaterialTheme.colorScheme.secondary
     val shapeSmall = MaterialTheme.shapes.small
-    val rectHeight = AppTheme.dimens.RectHeight
-    val paddingSmall = AppTheme.dimens.PaddingSmall
+    val rectHeight = AppTheme.dimens.rectHeight
+    val paddingSmall = AppTheme.dimens.paddingSmall
     val updatedOnPan by rememberUpdatedState(onPan)
     var rect by remember { mutableStateOf<DrawableRect?>(null) }
 

@@ -47,15 +47,16 @@ fun ConfigDialog(
     onSwing: (Swing) -> Unit,
     onSteps: (Steps) -> Unit,
     onSettings: (Settings) -> Unit,
+    modifier: Modifier = Modifier,
     onDismiss: () -> Unit
 ) {
     val surface = MaterialTheme.colorScheme.surface
     val primary = MaterialTheme.colorScheme.primary
     val onPrimary = MaterialTheme.colorScheme.onPrimary
     val shapeMedium = MaterialTheme.shapes.medium
-    val paddingSmall = AppTheme.dimens.PaddingSmall
-    val paddingLarge = AppTheme.dimens.PaddingLarge
-    val configHeightSmall = AppTheme.dimens.ConfigHeightSmall
+    val paddingSmall = AppTheme.dimens.paddingSmall
+    val paddingLarge = AppTheme.dimens.paddingLarge
+    val configHeightSmall = AppTheme.dimens.configHeightSmall
 
     val updatedOnTempo by rememberUpdatedState(onTempo)
     val updatedOnSwing by rememberUpdatedState(onSwing)
@@ -69,7 +70,7 @@ fun ConfigDialog(
         onDismissRequest = onDismiss
     ) {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .background(
                     color = primary,
                     shape = shapeMedium

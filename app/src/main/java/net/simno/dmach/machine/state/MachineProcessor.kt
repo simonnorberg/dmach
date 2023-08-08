@@ -1,5 +1,7 @@
 package net.simno.dmach.machine.state
 
+import kotlinx.collections.immutable.toPersistentList
+import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flatMapMerge
@@ -206,7 +208,7 @@ class MachineProcessor(
                     patch.mutedChannels + action.channel
                 } else {
                     patch.mutedChannels - action.channel
-                }
+                }.toPersistentSet()
                 patch.copy(mutedChannels = mutedChannels)
             }
             .sendToPureData { pwa ->
@@ -353,9 +355,9 @@ class MachineProcessor(
                                     s.soundEnabled -> setting.copy(x = random.nextFloat(), y = random.nextFloat())
                                     else -> setting
                                 }
-                            }
+                            }.toPersistentList()
                         )
-                    }
+                    }.toPersistentList()
                 )
             }
             .sendToPureData { pwa ->

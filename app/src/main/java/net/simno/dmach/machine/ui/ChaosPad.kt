@@ -41,7 +41,7 @@ fun ChaosPad(
 ) {
     val secondary = MaterialTheme.colorScheme.secondary
     val shapeSmall = MaterialTheme.shapes.small
-    val paddingSmall = AppTheme.dimens.PaddingSmall
+    val paddingSmall = AppTheme.dimens.paddingSmall
 
     Box(
         modifier = modifier
@@ -88,8 +88,8 @@ private fun Circle(
     modifier: Modifier = Modifier
 ) {
     val surface = MaterialTheme.colorScheme.surface
-    val circleRadius = AppTheme.dimens.CircleRadius
-    val paddingSmall = AppTheme.dimens.PaddingSmall
+    val circleRadius = AppTheme.dimens.circleRadius
+    val paddingSmall = AppTheme.dimens.paddingSmall
     val updatedOnPosition by rememberUpdatedState(onPosition)
     var circle by remember { mutableStateOf<DrawableCircle?>(null) }
 

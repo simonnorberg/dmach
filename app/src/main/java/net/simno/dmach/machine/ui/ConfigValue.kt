@@ -47,18 +47,19 @@ fun ConfigValue(
     configValue: Int,
     minValue: Int,
     maxValue: Int,
+    modifier: Modifier = Modifier,
     onValue: (Int) -> Unit
 ) {
     val surface = MaterialTheme.colorScheme.surface
     val onPrimary = MaterialTheme.colorScheme.onPrimary
     val shapeMedium = MaterialTheme.shapes.medium
-    val paddingLarge = AppTheme.dimens.PaddingLarge
-    val configHeight = AppTheme.dimens.ConfigHeight
+    val paddingLarge = AppTheme.dimens.paddingLarge
+    val configHeight = AppTheme.dimens.configHeight
     val updatedOnValue by rememberUpdatedState(onValue)
     var value by remember { mutableStateOf(configValue) }
 
     Row(
-        modifier = Modifier
+        modifier = modifier
             .background(
                 color = onPrimary,
                 shape = shapeMedium

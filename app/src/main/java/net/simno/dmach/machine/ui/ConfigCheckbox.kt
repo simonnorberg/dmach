@@ -19,17 +19,18 @@ import net.simno.dmach.theme.AppTheme
 fun ConfigCheckbox(
     text: String,
     checked: Boolean,
+    modifier: Modifier = Modifier,
     onCheckedChange: (Boolean) -> Unit
 ) {
     val surface = MaterialTheme.colorScheme.surface
     val onPrimary = MaterialTheme.colorScheme.onPrimary
     val shapeMedium = MaterialTheme.shapes.medium
-    val paddingLarge = AppTheme.dimens.PaddingLarge
-    val paddingSmall = AppTheme.dimens.PaddingSmall
-    val configHeightSmall = AppTheme.dimens.ConfigHeightSmall
+    val paddingLarge = AppTheme.dimens.paddingLarge
+    val paddingSmall = AppTheme.dimens.paddingSmall
+    val configHeightSmall = AppTheme.dimens.configHeightSmall
 
     Row(
-        modifier = Modifier
+        modifier = modifier
             .background(
                 color = onPrimary,
                 shape = shapeMedium

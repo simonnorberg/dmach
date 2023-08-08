@@ -2,6 +2,8 @@ package net.simno.dmach.db
 
 import android.database.sqlite.SQLiteConstraintException
 import androidx.paging.PagingSource
+import kotlinx.collections.immutable.toPersistentList
+import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow
@@ -77,9 +79,9 @@ class PatchRepository(
         suspend fun PatchEntity.toPatch(): Patch = withContext(Default) {
             Patch(
                 title = title,
-                sequence = Json.decodeFromString(ListSerializer(Int.serializer()), sequence),
-                mutedChannels = Json.decodeFromString(SetSerializer(Int.serializer()), muted),
-                channels = Json.decodeFromString(ListSerializer(Channel.serializer()), channels),
+                sequence = Json.decodeFromString(ListSerializer(Int.serializer()), sequence).toPersistentList(),
+                mutedChannels = Json.decodeFromString(SetSerializer(Int.serializer()), muted).toPersistentSet(),
+                channels = Json.decodeFromString(ListSerializer(Channel.serializer()), channels).toPersistentList(),
                 selectedChannel = selected,
                 tempo = Tempo(tempo),
                 swing = Swing(swing),
@@ -89,7 +91,7 @@ class PatchRepository(
 
         suspend fun Patch.toEntity(title: String): PatchEntity = withContext(Default) {
             PatchEntity(
-                _id = null,
+                id = null,
                 title = title,
                 sequence = Json.encodeToString(ListSerializer(Int.serializer()), sequence),
                 muted = Json.encodeToString(SetSerializer(Int.serializer()), mutedChannels),

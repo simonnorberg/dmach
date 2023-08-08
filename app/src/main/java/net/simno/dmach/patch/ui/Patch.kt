@@ -55,18 +55,19 @@ import net.simno.dmach.theme.AppTheme
 fun Patch(
     state: ViewState,
     patches: LazyPagingItems<Patch>,
+    modifier: Modifier = Modifier,
     onAction: (Action) -> Unit
 ) {
     val primary = MaterialTheme.colorScheme.primary
     val onSurface = MaterialTheme.colorScheme.onSurface
     val onSurfaceVariant = MaterialTheme.colorScheme.onSurfaceVariant
-    val paddingLarge = AppTheme.dimens.PaddingLarge
-    val paddingSmall = AppTheme.dimens.PaddingSmall
-    val buttonLarge = AppTheme.dimens.ButtonLarge
+    val paddingLarge = AppTheme.dimens.paddingLarge
+    val paddingSmall = AppTheme.dimens.paddingSmall
+    val buttonLarge = AppTheme.dimens.buttonLarge
     val updatedOnAction by rememberUpdatedState(onAction)
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .systemBarsPadding()
             .navigationBarsPadding()

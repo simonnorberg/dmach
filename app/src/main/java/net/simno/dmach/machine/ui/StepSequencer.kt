@@ -23,6 +23,8 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChanged
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntSize
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.toPersistentList
 import net.simno.dmach.core.DrawableRect
 import net.simno.dmach.core.draw
 import net.simno.dmach.data.Patch.Companion.CHANNELS
@@ -34,16 +36,16 @@ import net.simno.dmach.theme.AppTheme
 @Composable
 fun StepSequencer(
     sequenceId: Int,
-    sequence: List<Int>,
+    sequence: PersistentList<Int>,
     sequenceLength: Steps,
     modifier: Modifier = Modifier,
-    onSequence: (List<Int>) -> Unit
+    onSequence: (PersistentList<Int>) -> Unit
 ) {
     val tertiary = MaterialTheme.colorScheme.tertiary
     val onSurface = MaterialTheme.colorScheme.onSurface
     val onSurfaceVariant = MaterialTheme.colorScheme.onSurfaceVariant
     val shapeSmall = MaterialTheme.shapes.small
-    val paddingSmall = AppTheme.dimens.PaddingSmall
+    val paddingSmall = AppTheme.dimens.paddingSmall
     val updatedOnSequence by rememberUpdatedState(onSequence)
     val drawables = remember { mutableStateListOf<DrawableRect>() }
     var sizeKey by remember { mutableStateOf(IntSize.Zero) }
@@ -87,7 +89,7 @@ fun StepSequencer(
                     steps[stepChange.index] = stepChange.changedStep
                     drawables.clear()
                     drawables.addAll(getDrawableSteps())
-                    updatedOnSequence(steps)
+                    updatedOnSequence(steps.toPersistentList())
                 }
 
                 drawables.clear()

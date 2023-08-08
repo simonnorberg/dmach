@@ -59,16 +59,17 @@ import net.simno.dmach.theme.AppTheme
 fun Machine(
     state: ViewState,
     onAction: (Action) -> Unit,
+    modifier: Modifier = Modifier,
     onClickPatch: () -> Unit
 ) {
     val context = LocalContext.current
 
     val shapeMedium = MaterialTheme.shapes.medium
-    val buttonLarge = AppTheme.dimens.ButtonLarge
-    val buttonSmall = AppTheme.dimens.ButtonSmall
-    val paddingLarge = AppTheme.dimens.PaddingLarge
-    val paddingMedium = AppTheme.dimens.PaddingMedium
-    val paddingSmall = AppTheme.dimens.PaddingSmall
+    val buttonLarge = AppTheme.dimens.buttonLarge
+    val buttonSmall = AppTheme.dimens.buttonSmall
+    val paddingLarge = AppTheme.dimens.paddingLarge
+    val paddingMedium = AppTheme.dimens.paddingMedium
+    val paddingSmall = AppTheme.dimens.paddingSmall
     val updatedOnAction by rememberUpdatedState(onAction)
 
     LaunchedEffect(state.startExport, state.waveFile, state.isPlaying) {
@@ -82,7 +83,7 @@ fun Machine(
     }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .systemBarsPadding()
             .navigationBarsPadding()
@@ -98,12 +99,12 @@ fun Machine(
         ) {
             IconButton(
                 icon = Icons.Filled.PlayArrow,
-                iconPadding = paddingSmall,
                 description = R.string.description_play,
                 selected = state.isPlaying,
                 modifier = Modifier
                     .width(buttonLarge)
                     .wrapContentWidth(),
+                iconPadding = paddingSmall,
                 onClick = { updatedOnAction(PlayPauseAction(play = !state.isPlaying)) }
             )
             IconButton(
@@ -282,4 +283,5 @@ fun Machine(
     }
 }
 
+@Suppress("unused")
 private enum class ChannelName { BD, SD, CP, TT, CB, HH }

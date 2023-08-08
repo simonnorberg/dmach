@@ -1,6 +1,8 @@
 package net.simno.dmach.machine.state
 
 import java.io.File
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.PersistentSet
 import net.simno.dmach.data.Pan
 import net.simno.dmach.data.Position
 import net.simno.dmach.data.Steps
@@ -17,8 +19,8 @@ data class ErrorResult(
 data class LoadResult(
     val title: String,
     val sequenceId: Int,
-    val sequence: List<Int>,
-    val mutedChannels: Set<Int>,
+    val sequence: PersistentList<Int>,
+    val mutedChannels: PersistentSet<Int>,
     val selectedChannel: Int,
     val selectedSetting: Int,
     val settingId: Int,
@@ -59,11 +61,11 @@ data object DismissResult : Result()
 
 data class ChangeSequenceResult(
     val sequenceId: Int,
-    val sequence: List<Int>
+    val sequence: PersistentList<Int>
 ) : Result()
 
 data class MuteChannelResult(
-    val mutedChannels: Set<Int>
+    val mutedChannels: PersistentSet<Int>
 ) : Result()
 
 data class SelectChannelResult(
@@ -105,7 +107,7 @@ data class ChangeStepsResult(
 
 data class ChangePatchResult(
     val sequenceId: Int,
-    val sequence: List<Int>,
+    val sequence: PersistentList<Int>,
     val panId: Int,
     val pan: Pan,
     val settingId: Int,

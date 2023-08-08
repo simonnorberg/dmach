@@ -1,10 +1,14 @@
 package net.simno.dmach.data
 
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.PersistentSet
+import kotlinx.collections.immutable.toPersistentList
+
 data class Patch(
     val title: String,
-    val sequence: List<Int>,
-    val mutedChannels: Set<Int>,
-    val channels: List<Channel>,
+    val sequence: PersistentList<Int>,
+    val mutedChannels: PersistentSet<Int>,
+    val channels: PersistentList<Channel>,
     val selectedChannel: Int,
     val tempo: Tempo,
     val swing: Swing,
@@ -17,7 +21,7 @@ data class Patch(
         const val CHANNELS = 6
         val MASKS = intArrayOf(1, 2, 4)
         val MUTED_MASKS = MASKS.map { 7 - it }.toIntArray()
-        val EMPTY_SEQUENCE: List<Int> = (0..31).map { 0 }
+        val EMPTY_SEQUENCE = (0..31).map { 0 }.toPersistentList()
     }
 }
 
@@ -37,7 +41,7 @@ fun Patch.withPan(pan: Pan): Patch {
     return copy(
         channels = channels.map { ch ->
             if (ch == channel) ch.copy(pan = pan) else ch
-        }
+        }.toPersistentList()
     )
 }
 
@@ -45,7 +49,7 @@ fun Patch.withSelectedSetting(selectedSetting: Int): Patch {
     return copy(
         channels = channels.map { ch ->
             if (ch == channel) ch.copy(selectedSetting = selectedSetting) else ch
-        }
+        }.toPersistentList()
     )
 }
 
@@ -57,11 +61,11 @@ fun Patch.withPosition(position: Position): Patch {
                 ch.copy(
                     settings = ch.settings.map { s ->
                         if (s == setting) s.copy(x = position.x, y = position.y) else s
-                    }
+                    }.toPersistentList()
                 )
             } else {
                 ch
             }
-        }
+        }.toPersistentList()
     )
 }

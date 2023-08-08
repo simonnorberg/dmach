@@ -16,6 +16,7 @@ import net.simno.dmach.theme.AppTheme
 @Composable
 fun CoreDialog(
     onDismiss: () -> Unit,
+    modifier: Modifier = Modifier,
     properties: DialogProperties = DialogProperties(),
     content: @Composable BoxScope.() -> Unit
 ) {
@@ -24,14 +25,14 @@ fun CoreDialog(
         properties = properties
     ) {
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .background(
                     color = MaterialTheme.colorScheme.primary,
                     shape = MaterialTheme.shapes.medium
                 )
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .padding(AppTheme.dimens.PaddingSmall),
+                .padding(AppTheme.dimens.paddingSmall),
             content = content
         )
     }
