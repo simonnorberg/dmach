@@ -197,7 +197,7 @@ fun Machine(
                     .padding(start = paddingSmall, top = paddingSmall, bottom = paddingSmall),
                 verticalArrangement = Arrangement.spacedBy(paddingSmall)
             ) {
-                ChannelName.values().forEachIndexed { index, channelName ->
+                ChannelName.entries.forEachIndexed { index, channelName ->
                     val isMuted = state.mutedChannels.contains(index)
                     TextButton(
                         text = channelName.name,

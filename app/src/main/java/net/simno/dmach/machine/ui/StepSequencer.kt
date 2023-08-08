@@ -1,7 +1,7 @@
 package net.simno.dmach.machine.ui
 
+import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.gestures.forEachGesture
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -93,37 +93,35 @@ fun StepSequencer(
                 drawables.clear()
                 drawables.addAll(getDrawableSteps())
 
-                forEachGesture {
-                    awaitPointerEventScope {
-                        val firstPointer = awaitFirstDown()
-                        if (firstPointer.changedToDown()) {
-                            firstPointer.consume()
-                        }
-
-                        val firstStepChange = firstPointer.position
-                            .takeIf { it.isValid(size) }
-                            ?.let { position ->
-                                StepChange(steps, stepSize, margin, position)
-                            }
-                        firstStepChange?.let(::onStepChange)
-
-                        do {
-                            val event = awaitPointerEvent()
-                            event.changes.forEach { pointer ->
-                                if (pointer.positionChanged()) {
-                                    pointer.consume()
-                                }
-                                pointer.position
-                                    .takeIf { it.isValid(size) }
-                                    ?.let { position ->
-                                        val stepChange = StepChange(steps, stepSize, margin, position)
-                                        if (stepChange.isChecked == firstStepChange?.isChecked) {
-                                            onStepChange(stepChange)
-                                        }
-                                    }
-                            }
-                        } while (event.changes.any { it.pressed })
+                awaitEachGesture {
+                    val firstPointer = awaitFirstDown()
+                    if (firstPointer.changedToDown()) {
+                        firstPointer.consume()
                     }
+
+                    val firstStepChange = firstPointer.position
+                        .takeIf { it.isValid(size) }
+                        ?.let { position ->
+                            StepChange(steps, stepSize, margin, position)
+                        }
+                    firstStepChange?.let(::onStepChange)
+
+                    do {
+                        val event = awaitPointerEvent()
+                        event.changes.forEach { pointer ->
+                            if (pointer.positionChanged()) {
+                                pointer.consume()
+                            }
+                            pointer.position
+                                .takeIf { it.isValid(size) }
+                                ?.let { position ->
+                                    val stepChange = StepChange(steps, stepSize, margin, position)
+                                    if (stepChange.isChecked == firstStepChange?.isChecked) {
+                                        onStepChange(stepChange)
+                                    }
+                                }
+                        }
+                    } while (event.changes.any { it.pressed })
                 }
             }
             .drawBehind {

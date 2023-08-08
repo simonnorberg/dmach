@@ -2,8 +2,8 @@ package net.simno.dmach.machine.ui
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.gestures.forEachGesture
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -90,7 +90,7 @@ fun ConfigValue(
                 }
 
                 coroutineScope {
-                    forEachGesture {
+                    awaitEachGesture {
                         val job = launch(start = CoroutineStart.LAZY) {
                             runCatching {
                                 while (isActive) {
@@ -104,26 +104,24 @@ fun ConfigValue(
                             }
                         }
 
-                        awaitPointerEventScope {
-                            val firstPointer = awaitFirstDown()
-                            if (firstPointer.changedToDown()) {
-                                firstPointer.consume()
-                            }
-                            calculateChangeAndDelay(firstPointer.position.x)
-                            job.start()
-
-                            do {
-                                val event = awaitPointerEvent()
-                                event.changes.forEach { pointer ->
-                                    if (pointer.positionChanged()) {
-                                        pointer.consume()
-                                    }
-                                    calculateChangeAndDelay(pointer.position.x)
-                                }
-                            } while (event.changes.any { it.pressed })
-
-                            job.cancel()
+                        val firstPointer = awaitFirstDown()
+                        if (firstPointer.changedToDown()) {
+                            firstPointer.consume()
                         }
+                        calculateChangeAndDelay(firstPointer.position.x)
+                        job.start()
+
+                        do {
+                            val event = awaitPointerEvent()
+                            event.changes.forEach { pointer ->
+                                if (pointer.positionChanged()) {
+                                    pointer.consume()
+                                }
+                                calculateChangeAndDelay(pointer.position.x)
+                            }
+                        } while (event.changes.any { it.pressed })
+
+                        job.cancel()
                     }
                 }
             },

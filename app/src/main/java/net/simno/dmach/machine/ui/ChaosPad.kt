@@ -1,8 +1,8 @@
 package net.simno.dmach.machine.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.gestures.forEachGesture
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -140,24 +140,22 @@ private fun Circle(
                     circle = getDrawableCircle(newX, newY)
                 }
 
-                forEachGesture {
-                    awaitPointerEventScope {
-                        val firstPointer = awaitFirstDown()
-                        if (firstPointer.changedToDown()) {
-                            firstPointer.consume()
-                        }
-                        onPointerDownOrMove(firstPointer)
-
-                        do {
-                            val event = awaitPointerEvent()
-                            event.changes.forEach { pointer ->
-                                if (pointer.positionChanged()) {
-                                    pointer.consume()
-                                }
-                                onPointerDownOrMove(pointer)
-                            }
-                        } while (event.changes.any { it.pressed })
+                awaitEachGesture {
+                    val firstPointer = awaitFirstDown()
+                    if (firstPointer.changedToDown()) {
+                        firstPointer.consume()
                     }
+                    onPointerDownOrMove(firstPointer)
+
+                    do {
+                        val event = awaitPointerEvent()
+                        event.changes.forEach { pointer ->
+                            if (pointer.positionChanged()) {
+                                pointer.consume()
+                            }
+                            onPointerDownOrMove(pointer)
+                        }
+                    } while (event.changes.any { it.pressed })
                 }
             }
             .drawBehind {

@@ -2,8 +2,8 @@ package net.simno.dmach.machine.ui
 
 import android.animation.ValueAnimator
 import android.view.animation.DecelerateInterpolator
+import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.gestures.forEachGesture
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -190,24 +190,22 @@ private fun Fader(
                     rect = getDrawableRect(newY)
                 }
 
-                forEachGesture {
-                    awaitPointerEventScope {
-                        val firstPointer = awaitFirstDown()
-                        if (firstPointer.changedToDown()) {
-                            firstPointer.consume()
-                        }
-                        onPointerDownOrMove(firstPointer.position.y)
-
-                        do {
-                            val event = awaitPointerEvent()
-                            event.changes.forEach { pointer ->
-                                if (pointer.positionChanged()) {
-                                    pointer.consume()
-                                }
-                                onPointerDownOrMove(pointer.position.y)
-                            }
-                        } while (event.changes.any { it.pressed })
+                awaitEachGesture {
+                    val firstPointer = awaitFirstDown()
+                    if (firstPointer.changedToDown()) {
+                        firstPointer.consume()
                     }
+                    onPointerDownOrMove(firstPointer.position.y)
+
+                    do {
+                        val event = awaitPointerEvent()
+                        event.changes.forEach { pointer ->
+                            if (pointer.positionChanged()) {
+                                pointer.consume()
+                            }
+                            onPointerDownOrMove(pointer.position.y)
+                        }
+                    } while (event.changes.any { it.pressed })
                 }
             }
             .drawBehind {

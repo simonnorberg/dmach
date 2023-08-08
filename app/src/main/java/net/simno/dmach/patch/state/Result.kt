@@ -10,11 +10,11 @@ data class LoadResult(
     val title: String
 ) : Result()
 
-object DismissResult : Result()
+data object DismissResult : Result()
 
-object ConfirmOverwriteResult : Result()
+data object ConfirmOverwriteResult : Result()
 
-object ConfirmDeleteResult : Result()
+data object ConfirmDeleteResult : Result()
 
 data class SavePatchResult(
     val showOverwrite: Boolean,
@@ -25,4 +25,4 @@ data class DeletePatchResult(
     val deleteTitle: String
 ) : Result()
 
-object SelectPatchResult : Result()
+data object SelectPatchResult : Result()

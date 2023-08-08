@@ -9,23 +9,23 @@ import net.simno.dmach.settings.Settings
 
 sealed class Action
 
-object LoadAction : Action()
+data object LoadAction : Action()
 
-object PlaybackAction : Action()
+data object PlaybackAction : Action()
 
 data class PlayPauseAction(
     val play: Boolean
 ) : Action()
 
-object SettingsAction : Action()
+data object SettingsAction : Action()
 
 data class ChangeSettingsAction(
     val settings: Settings
 ) : Action()
 
-object ConfigAction : Action()
+data object ConfigAction : Action()
 
-object ExportAction : Action()
+data object ExportAction : Action()
 
 data class ExportFileAction(
     val title: String,
@@ -33,7 +33,7 @@ data class ExportFileAction(
     val steps: Steps
 ) : Action()
 
-object DismissAction : Action()
+data object DismissAction : Action()
 
 data class ChangeSequenceAction(
     val sequenceId: Int,

@@ -2,13 +2,13 @@ package net.simno.dmach.patch.state
 
 sealed class Action
 
-object LoadAction : Action()
+data object LoadAction : Action()
 
-object DismissAction : Action()
+data object DismissAction : Action()
 
-object ConfirmOverwriteAction : Action()
+data object ConfirmOverwriteAction : Action()
 
-object ConfirmDeleteAction : Action()
+data object ConfirmDeleteAction : Action()
 
 data class SavePatchAction(
     val title: String

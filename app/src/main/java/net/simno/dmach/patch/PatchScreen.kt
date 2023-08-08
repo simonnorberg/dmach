@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import net.simno.dmach.patch.ui.Patch
@@ -11,7 +12,7 @@ import net.simno.dmach.patch.ui.Patch
 @Composable
 fun PatchScreen(
     navController: NavController,
-    viewModel: PatchViewModel
+    viewModel: PatchViewModel = hiltViewModel()
 ) {
     val state by viewModel.viewState.collectAsState()
     val patches = viewModel.patches.collectAsLazyPagingItems()

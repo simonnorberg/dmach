@@ -28,7 +28,7 @@ class PatchRepository(
     private val deleteTitle = MutableStateFlow("")
     private val saveTitle = MutableStateFlow("")
 
-    fun getAllPatches(): PagingSource<Int, PatchEntity> = patchDao.getAllPatches()
+    fun patches(): PagingSource<Int, PatchEntity> = patchDao.getAllPatches()
 
     suspend fun acceptPatch(patch: Patch) = withContext(IO) {
         unsavedPatch.tryEmit(patch)

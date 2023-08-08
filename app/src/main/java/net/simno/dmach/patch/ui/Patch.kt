@@ -33,7 +33,8 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.itemsIndexed
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import net.simno.dmach.R
 import net.simno.dmach.core.DarkButton
 import net.simno.dmach.core.DarkMediumLabel
@@ -149,7 +150,12 @@ fun Patch(
             )
         }
         LazyColumn {
-            itemsIndexed(patches) { index, patch ->
+            items(
+                count = patches.itemCount,
+                key = patches.itemKey(),
+                contentType = patches.itemContentType()
+            ) { index ->
+                val patch = patches[index]
                 if (patch != null) {
                     val background = when {
                         index % 2 == 0 -> onSurface

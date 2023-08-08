@@ -1,11 +1,9 @@
 package net.simno.dmach.patch.state
 
-import androidx.paging.PagingSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
-import net.simno.dmach.db.PatchEntity
 import net.simno.dmach.db.PatchRepository
 
 class PatchProcessor(
@@ -21,8 +19,6 @@ class PatchProcessor(
         actions.filterIsInstance<DeletePatchAction>().let(deletePatch),
         actions.filterIsInstance<SelectPatchAction>().let(selectPatch)
     )
-
-    fun patches(): PagingSource<Int, PatchEntity> = patchRepository.getAllPatches()
 
     private val load: (Flow<LoadAction>) -> Flow<LoadResult> = { actions ->
         actions

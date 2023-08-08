@@ -27,7 +27,7 @@ sealed class Dimensions(
     val LabelSmall: TextUnit,
     val LabelMedium: TextUnit
 ) {
-    object Default : Dimensions(
+    data object Default : Dimensions(
         CircleRadius = 18.dp,
         RectHeight = 44.dp,
         ConfigHeightSmall = 48.dp,
@@ -45,7 +45,7 @@ sealed class Dimensions(
         LabelMedium = 14.sp
     )
 
-    object ShortestWidth600 : Dimensions(
+    data object ShortestWidth600 : Dimensions(
         CircleRadius = 24.dp,
         RectHeight = 64.dp,
         ConfigHeightSmall = 72.dp,

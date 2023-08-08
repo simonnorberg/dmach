@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import net.simno.dmach.StateViewModel
 import net.simno.dmach.data.Patch
+import net.simno.dmach.db.PatchRepository
 import net.simno.dmach.db.PatchRepository.Companion.toPatch
 import net.simno.dmach.patch.state.Action
 import net.simno.dmach.patch.state.ErrorResult
@@ -23,7 +24,8 @@ import net.simno.dmach.patch.state.ViewState
 
 @HiltViewModel
 class PatchViewModel @Inject constructor(
-    private val processor: PatchProcessor
+    processor: PatchProcessor,
+    private val repository: PatchRepository
 ) : StateViewModel<Action, Result, ViewState>(
     processor = processor,
     reducer = PatchStateReducer,
@@ -31,7 +33,7 @@ class PatchViewModel @Inject constructor(
     startViewState = ViewState(),
     LoadAction
 ) {
-    val patches: Flow<PagingData<Patch>> = Pager(PagingConfig(pageSize = 50)) { processor.patches() }
+    val patches: Flow<PagingData<Patch>> = Pager(PagingConfig(pageSize = 50)) { repository.patches() }
         .flow
         .map { pagingData -> pagingData.map { entity -> entity.toPatch() } }
         .cachedIn(viewModelScope)

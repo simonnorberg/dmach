@@ -37,25 +37,25 @@ data class PlaybackResult(
     val isPlaying: Boolean
 ) : Result()
 
-object PlayPauseResult : Result()
+data object PlayPauseResult : Result()
 
 data class SettingsResult(
     val settings: Settings
 ) : Result()
 
-object ChangeSettingsResult : Result()
+data object ChangeSettingsResult : Result()
 
 data class ConfigResult(
     val configId: Int
 ) : Result()
 
-object ExportResult : Result()
+data object ExportResult : Result()
 
 data class ExportFileResult(
     val waveFile: File?
 ) : Result()
 
-object DismissResult : Result()
+data object DismissResult : Result()
 
 data class ChangeSequenceResult(
     val sequenceId: Int,
@@ -86,9 +86,9 @@ data class SelectSettingResult(
     val position: Position
 ) : Result()
 
-object ChangePositionResult : Result()
+data object ChangePositionResult : Result()
 
-object ChangePanResult : Result()
+data object ChangePanResult : Result()
 
 data class ChangeTempoResult(
     val tempo: Tempo
