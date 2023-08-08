@@ -8,44 +8,46 @@ import net.simno.dmach.data.Steps
 import net.simno.dmach.data.Swing
 import net.simno.dmach.data.Tempo
 import net.simno.dmach.util.logSequence
-import org.puredata.core.PdBase
+import net.simno.kortholt.Kortholt
 
-class PureData {
+class PureData(
+    private val kortholt: Kortholt.Player
+) {
 
     fun startPlayback() {
-        PdBase.sendBang("play")
+        kortholt.sendBang("play")
     }
 
     fun stopPlayback() {
-        PdBase.sendBang("stop")
+        kortholt.sendBang("stop")
     }
 
     fun changeSequence(@Size(32) sequence: List<Int>) {
-        logSequence("PureDataController", sequence)
+        logSequence("PureData", sequence)
         for (step in 0 until Patch.STEPS) {
-            PdBase.sendList("step", 0, step, sequence[step])
-            PdBase.sendList("step", 1, step, sequence[step + Patch.STEPS])
+            kortholt.sendList("step", 0, step, sequence[step])
+            kortholt.sendList("step", 1, step, sequence[step + Patch.STEPS])
         }
     }
 
     fun changeSetting(channel: String, setting: Setting) {
-        PdBase.sendList(channel, setting.hIndex, setting.x)
-        PdBase.sendList(channel, setting.vIndex, setting.y)
+        kortholt.sendList(channel, setting.hIndex, setting.x)
+        kortholt.sendList(channel, setting.vIndex, setting.y)
     }
 
     fun changePan(channel: String, pan: Pan) {
-        PdBase.sendFloat(channel + "p", pan.value)
+        kortholt.sendFloat(channel + "p", pan.value)
     }
 
     fun changeTempo(tempo: Tempo) {
-        PdBase.sendFloat("tempo", tempo.value.toFloat())
+        kortholt.sendFloat("tempo", tempo.value.toFloat())
     }
 
     fun changeSwing(swing: Swing) {
-        PdBase.sendFloat("swing", swing.value / 100f)
+        kortholt.sendFloat("swing", swing.value / 100f)
     }
 
     fun changeSteps(steps: Steps) {
-        PdBase.sendFloat("steps", steps.value.coerceIn(8, 16).toFloat())
+        kortholt.sendFloat("steps", steps.value.coerceIn(8, 16).toFloat())
     }
 }

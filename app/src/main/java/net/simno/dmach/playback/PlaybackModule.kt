@@ -53,8 +53,10 @@ object PlaybackModule {
 
     @Provides
     @Singleton
-    fun providePureData(): PureData {
-        return PureData()
+    fun providePureData(
+        kortholt: Kortholt.Player
+    ): PureData {
+        return PureData(kortholt)
     }
 
     @Provides
