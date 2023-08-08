@@ -93,9 +93,11 @@ class MachineProcessorTests {
             audioFocus = audioFocus,
             patchRepository = repository,
             settingsRepository = settingsRepository,
-            randomSequence = { listOf(1337) },
-            randomInt = { testUid },
-            randomFloat = { 0.1337f }
+            random = object : Randomizer {
+                override fun nextSequence() = listOf(1337)
+                override fun nextFloat() = 0.1337f
+                override fun nextInt() = testUid
+            }
         )
     }
 

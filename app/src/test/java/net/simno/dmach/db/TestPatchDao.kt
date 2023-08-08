@@ -9,14 +9,14 @@ import net.simno.dmach.data.Swing
 import net.simno.dmach.data.Tempo
 import net.simno.dmach.data.defaultPatch
 import net.simno.dmach.db.PatchRepository.Companion.toEntity
-import net.simno.dmach.machine.state.RandomSequence
+import net.simno.dmach.machine.state.Randomizer
 
 class TestPatchDao : PatchDao {
     var deleteTitle = ""
 
     val patch = defaultPatch().copy(
         title = "test",
-        sequence = RandomSequence.DEFAULT.next(),
+        sequence = Randomizer.DEFAULT.nextSequence(),
         selectedChannel = 1,
         tempo = Tempo(123),
         swing = Swing(10),

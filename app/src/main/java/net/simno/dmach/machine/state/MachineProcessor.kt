@@ -28,9 +28,7 @@ class MachineProcessor(
     private val audioFocus: AudioFocus,
     private val patchRepository: PatchRepository,
     private val settingsRepository: SettingsRepository,
-    private val randomSequence: RandomSequence = RandomSequence.DEFAULT,
-    private val randomFloat: RandomFloat = RandomFloat.DEFAULT,
-    private val randomInt: RandomInt = RandomInt.DEFAULT
+    private val random: Randomizer = Randomizer.DEFAULT
 ) : (Flow<Action>) -> Flow<Result> {
 
     override fun invoke(actions: Flow<Action>): Flow<Result> = merge(
@@ -80,17 +78,17 @@ class MachineProcessor(
                 val channel = patch.channel
                 LoadResult(
                     title = patch.title,
-                    sequenceId = randomInt.next(),
+                    sequenceId = random.nextInt(),
                     sequence = patch.sequence,
                     mutedChannels = patch.mutedChannels,
                     selectedChannel = patch.selectedChannel,
                     selectedSetting = channel.selectedSetting,
-                    settingId = randomInt.next(),
+                    settingId = random.nextInt(),
                     settingsSize = channel.settings.size,
                     hText = channel.setting.hText,
                     vText = channel.setting.vText,
                     position = channel.setting.position,
-                    panId = randomInt.next(),
+                    panId = random.nextInt(),
                     pan = channel.pan,
                     tempo = patch.tempo,
                     swing = patch.swing,
@@ -153,7 +151,7 @@ class MachineProcessor(
     private val config: (Flow<ConfigAction>) -> Flow<ConfigResult> = { actions ->
         actions
             .computeResult {
-                ConfigResult(randomInt.next())
+                ConfigResult(random.nextInt())
             }
     }
 
@@ -232,12 +230,12 @@ class MachineProcessor(
                 SelectChannelResult(
                     selectedChannel = pwa.patch.selectedChannel,
                     selectedSetting = channel.selectedSetting,
-                    settingId = randomInt.next(),
+                    settingId = random.nextInt(),
                     settingsSize = channel.settings.size,
                     hText = channel.setting.hText,
                     vText = channel.setting.vText,
                     position = channel.setting.position,
-                    panId = randomInt.next(),
+                    panId = random.nextInt(),
                     pan = channel.pan
                 )
             }
@@ -252,7 +250,7 @@ class MachineProcessor(
                 val channel = pwa.patch.channel
                 SelectSettingResult(
                     selectedSetting = channel.selectedSetting,
-                    settingId = randomInt.next(),
+                    settingId = random.nextInt(),
                     hText = channel.setting.hText,
                     vText = channel.setting.vText,
                     position = channel.setting.position
@@ -325,7 +323,7 @@ class MachineProcessor(
             .computeResult { pwa ->
                 ChangeStepsResult(
                     steps = pwa.action.steps,
-                    sequenceId = randomInt.next()
+                    sequenceId = random.nextInt()
                 )
             }
     }
@@ -339,20 +337,20 @@ class MachineProcessor(
                 patch.copy(
                     sequence = when {
                         s.sequenceEnabled && reset -> Patch.EMPTY_SEQUENCE
-                        s.sequenceEnabled -> randomSequence.next()
+                        s.sequenceEnabled -> random.nextSequence()
                         else -> patch.sequence
                     },
                     channels = patch.channels.mapIndexed { chIndex, channel ->
                         channel.copy(
                             pan = when {
                                 s.panEnabled && reset -> defaultPatch.channels[chIndex].pan
-                                s.panEnabled -> Pan(randomFloat.next())
+                                s.panEnabled -> Pan(random.nextFloat())
                                 else -> channel.pan
                             },
                             settings = channel.settings.mapIndexed { sIndex, setting ->
                                 when {
                                     s.soundEnabled && reset -> defaultPatch.channels[chIndex].settings[sIndex]
-                                    s.soundEnabled -> setting.copy(x = randomFloat.next(), y = randomFloat.next())
+                                    s.soundEnabled -> setting.copy(x = random.nextFloat(), y = random.nextFloat())
                                     else -> setting
                                 }
                             }
@@ -372,11 +370,11 @@ class MachineProcessor(
             .computeResult { pwa ->
                 val channel = pwa.patch.channel
                 ChangePatchResult(
-                    sequenceId = randomInt.next(),
+                    sequenceId = random.nextInt(),
                     sequence = pwa.patch.sequence,
-                    panId = randomInt.next(),
+                    panId = random.nextInt(),
                     pan = channel.pan,
-                    settingId = randomInt.next(),
+                    settingId = random.nextInt(),
                     position = channel.setting.position
                 )
             }
