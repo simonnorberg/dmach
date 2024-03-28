@@ -20,7 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
@@ -48,15 +48,15 @@ fun ConfigValue(
     minValue: Int,
     maxValue: Int,
     modifier: Modifier = Modifier,
-    onValue: (Int) -> Unit
+    onValueChanged: (Int) -> Unit
 ) {
     val surface = MaterialTheme.colorScheme.surface
     val onPrimary = MaterialTheme.colorScheme.onPrimary
     val shapeMedium = MaterialTheme.shapes.medium
     val paddingLarge = AppTheme.dimens.paddingLarge
     val configHeight = AppTheme.dimens.configHeight
-    val updatedOnValue by rememberUpdatedState(onValue)
-    var value by remember { mutableStateOf(configValue) }
+    val updatedOnValueChanged by rememberUpdatedState(onValueChanged)
+    var value by remember { mutableIntStateOf(configValue) }
 
     Row(
         modifier = modifier
@@ -98,7 +98,7 @@ fun ConfigValue(
                                     val newValue = value + change
                                     if (newValue in minValue..maxValue) {
                                         value = newValue
-                                        updatedOnValue(newValue)
+                                        updatedOnValueChanged(newValue)
                                     }
                                     delay(delay)
                                 }

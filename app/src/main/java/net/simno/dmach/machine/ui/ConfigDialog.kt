@@ -43,10 +43,10 @@ fun ConfigDialog(
     swing: Swing,
     steps: Steps,
     settings: Settings,
-    onTempo: (Tempo) -> Unit,
-    onSwing: (Swing) -> Unit,
-    onSteps: (Steps) -> Unit,
-    onSettings: (Settings) -> Unit,
+    onTempoChanged: (Tempo) -> Unit,
+    onSwingChanged: (Swing) -> Unit,
+    onStepsChanged: (Steps) -> Unit,
+    onSettingsChanged: (Settings) -> Unit,
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit
 ) {
@@ -58,10 +58,10 @@ fun ConfigDialog(
     val paddingLarge = AppTheme.dimens.paddingLarge
     val configHeightSmall = AppTheme.dimens.configHeightSmall
 
-    val updatedOnTempo by rememberUpdatedState(onTempo)
-    val updatedOnSwing by rememberUpdatedState(onSwing)
-    val updatedOnSteps by rememberUpdatedState(onSteps)
-    val updatedOnSettings by rememberUpdatedState(onSettings)
+    val updatedOnTempoChanged by rememberUpdatedState(onTempoChanged)
+    val updatedOnSwingChanged by rememberUpdatedState(onSwingChanged)
+    val updatedOnStepsChanged by rememberUpdatedState(onStepsChanged)
+    val updatedOnSettingsChanged by rememberUpdatedState(onSettingsChanged)
 
     var showSettings by remember { mutableStateOf(false) }
 
@@ -105,28 +105,28 @@ fun ConfigDialog(
                     text = stringResource(R.string.audiofocus),
                     checked = settings.ignoreAudioFocus,
                     onCheckedChange = { checked ->
-                        updatedOnSettings(settings.copy(ignoreAudioFocus = checked))
+                        updatedOnSettingsChanged(settings.copy(ignoreAudioFocus = checked))
                     }
                 )
                 ConfigCheckbox(
                     text = stringResource(R.string.sequencer_setting),
                     checked = settings.sequenceEnabled,
                     onCheckedChange = { checked ->
-                        updatedOnSettings(settings.copy(sequenceEnabled = checked))
+                        updatedOnSettingsChanged(settings.copy(sequenceEnabled = checked))
                     }
                 )
                 ConfigCheckbox(
                     text = stringResource(R.string.sound_setting),
                     checked = settings.soundEnabled,
                     onCheckedChange = { checked ->
-                        updatedOnSettings(settings.copy(soundEnabled = checked))
+                        updatedOnSettingsChanged(settings.copy(soundEnabled = checked))
                     }
                 )
                 ConfigCheckbox(
                     text = stringResource(R.string.pan_setting),
                     checked = settings.panEnabled,
                     onCheckedChange = { checked ->
-                        updatedOnSettings(settings.copy(panEnabled = checked))
+                        updatedOnSettingsChanged(settings.copy(panEnabled = checked))
                     }
                 )
             } else {
@@ -136,7 +136,7 @@ fun ConfigDialog(
                     configValue = tempo.value,
                     minValue = 1,
                     maxValue = 1000,
-                    onValue = { value -> updatedOnTempo(Tempo(value)) }
+                    onValueChanged = { value -> updatedOnTempoChanged(Tempo(value)) }
                 )
                 ConfigValue(
                     configId = configId,
@@ -144,7 +144,7 @@ fun ConfigDialog(
                     configValue = swing.value,
                     minValue = 0,
                     maxValue = 50,
-                    onValue = { value -> updatedOnSwing(Swing(value)) }
+                    onValueChanged = { value -> updatedOnSwingChanged(Swing(value)) }
                 )
                 ConfigValue(
                     configId = configId,
@@ -152,7 +152,7 @@ fun ConfigDialog(
                     configValue = steps.value,
                     minValue = 8,
                     maxValue = 16,
-                    onValue = { value -> updatedOnSteps(Steps(value)) }
+                    onValueChanged = { value -> updatedOnStepsChanged(Steps(value)) }
                 )
                 Row(
                     modifier = Modifier

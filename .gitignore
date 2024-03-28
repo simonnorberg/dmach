@@ -1,8 +1,9 @@
 *.iml
 .gradle
 local.properties
-/.idea/*
-!/.idea/codeStyles
+.idea/*
+!.idea/codeStyles/
+!.idea/icon.svg
 .DS_Store
 build
 captures

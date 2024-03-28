@@ -8,7 +8,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 @Database(
     entities = [PatchEntity::class],
     version = 5,
-    exportSchema = false
+    exportSchema = true
 )
 abstract class PatchDatabase : RoomDatabase() {
 

@@ -1,28 +1,20 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.cacheFixPlugin)
+    alias(libs.plugins.cachefix)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
 }
 
-kapt {
-    correctErrorTypes = true
-    useBuildCache = true
-    javacOptions {
-        option("-Adagger.ignoreProvisionKeyWildcards=ENABLED")
-    }
+hilt {
+    enableAggregatingTask = true
 }
 
 ksp {
     arg("room.schemaLocation", "$projectDir/schemas")
     arg("room.incremental", "true")
-}
-
-hilt {
-    enableAggregatingTask = true
+    arg("room.generateKotlin", "true")
 }
 
 android {
@@ -33,8 +25,8 @@ android {
         applicationId = "net.simno.dmach"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 30007
-        versionName = "3.4"
+        versionCode = 30008
+        versionName = "3.5"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         ndk.abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64"))
     }
@@ -44,10 +36,6 @@ android {
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
     }
     buildFeatures {
         buildConfig = true
@@ -70,6 +58,7 @@ android {
         warningsAsErrors = true
         abortOnError = true
         disable += "GradleDependency"
+        disable += "ObsoleteLintCustomCheck"
     }
 }
 
@@ -87,15 +76,18 @@ dependencies {
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.testmanifest)
     lintChecks(libs.compose.lint)
+    ktlintRuleset(libs.ktlint.compose)
 
     implementation(libs.androidx.activity)
     implementation(libs.androidx.core)
     implementation(libs.androidx.datastore)
+    ksp(libs.androidx.hilt.compiler)
     implementation(libs.androidx.hilt.navigation)
     implementation(libs.androidx.media)
     implementation(libs.androidx.navigation)
 
-    implementation(libs.androidx.lifecycle.runtime)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
@@ -109,7 +101,7 @@ dependencies {
     ksp(libs.androidx.room.compiler)
 
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
 
     implementation(libs.dmach.externals)
     implementation(libs.kortholt)

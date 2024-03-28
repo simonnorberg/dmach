@@ -29,22 +29,24 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.changedToDown
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChanged
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import net.simno.dmach.R
 import net.simno.dmach.core.DarkLargeText
-import net.simno.dmach.core.DrawableRect
-import net.simno.dmach.core.draw
 import net.simno.dmach.data.Pan
 import net.simno.dmach.theme.AppTheme
+import net.simno.dmach.util.toPx
 
 @Composable
 fun PanFader(
     panId: Int,
     pan: Pan?,
     modifier: Modifier = Modifier,
-    onPan: (Pan) -> Unit
+    onPanChanged: (Pan) -> Unit
 ) {
     val rectHeight = AppTheme.dimens.rectHeight
     val buttonMedium = AppTheme.dimens.buttonMedium
@@ -87,7 +89,7 @@ fun PanFader(
         Fader(
             panId = panId,
             pan = pan,
-            onPan = onPan
+            onPanChanged = onPanChanged
         )
     }
 }
@@ -97,31 +99,53 @@ private fun Fader(
     panId: Int,
     pan: Pan?,
     modifier: Modifier = Modifier,
-    onPan: (Pan) -> Unit
+    onPanChanged: (Pan) -> Unit
 ) {
+    val updatedOnPanChanged by rememberUpdatedState(onPanChanged)
+
+    val density = LocalDensity.current
     val secondary = MaterialTheme.colorScheme.secondary
-    val shapeSmall = MaterialTheme.shapes.small
-    val rectHeight = AppTheme.dimens.rectHeight
-    val paddingSmall = AppTheme.dimens.paddingSmall
-    val updatedOnPan by rememberUpdatedState(onPan)
-    var rect by remember { mutableStateOf<DrawableRect?>(null) }
+    val cornerSize = MaterialTheme.shapes.small.topStart
+    val rectHeight = AppTheme.dimens.rectHeight.toPx()
+    val strokeWidth = AppTheme.dimens.paddingSmall.toPx()
+
+    var size by remember { mutableStateOf(IntSize.Zero) }
+
+    val rectSize = remember(size.width, rectHeight) { Size(size.width.toFloat(), rectHeight) }
+    val offset = remember(rectHeight) { rectHeight / 2f }
+    val cornerRadius = remember(rectSize) { cornerSize.toPx(rectSize, density).let { CornerRadius(it, it) } }
+    val stroke = remember(strokeWidth) { Stroke(width = strokeWidth) }
+    val minX = remember(strokeWidth) { strokeWidth / 2f }
+    val minY = remember(strokeWidth, offset) { offset + (strokeWidth / 2f) }
+    val maxY = remember(size, minY) { size.height - minY }
+
+    var panPosition by remember(panId, maxY) {
+        mutableStateOf(
+            pan?.let {
+                // Convert position value [0.0-1.0] to pixels.
+                if (pan.value == 0.5f) {
+                    size.height / 2f
+                } else {
+                    (1 - pan.value) * (maxY - minY) + minY
+                }
+            }
+        )
+    }
+
+    val panOffset = remember(panPosition, offset, minX) {
+        panPosition?.let {
+            val newY = it
+                .coerceAtLeast(minY)
+                .coerceAtMost(maxY)
+            Offset(minX, newY - offset)
+        }
+    }
 
     Box(
         modifier = modifier
             .fillMaxSize()
-            .pointerInput(panId) {
-                val strokeWidth = paddingSmall.toPx()
-                val rectHeightPx = rectHeight.toPx()
-                val rectSize = Size(size.width.toFloat(), rectHeightPx)
-                val offset = rectHeightPx / 2f
-                val radius = shapeSmall.topStart.toPx(rectSize, this)
-                val cornerRadius = CornerRadius(radius, radius)
-                val stroke = Stroke(width = strokeWidth)
-
-                val minX = strokeWidth / 2f
-                val minY = offset - (strokeWidth / 2f)
-                val maxY = size.height - minY
-
+            .onSizeChanged { size = it }
+            .pointerInput(panId, size) {
                 var centerAnimator: ValueAnimator? = null
                 var isCentered = true
                 val center = size.height / 2f
@@ -136,21 +160,7 @@ private fun Fader(
                     } else {
                         1 - ((y - minY) / (maxY - minY)).coerceIn(0f, 1f)
                     }
-                    updatedOnPan(Pan(pos))
-                }
-
-                fun getDrawableRect(y: Float): DrawableRect {
-                    val newY = y
-                        .coerceAtLeast(minY)
-                        .coerceAtMost(maxY)
-                    return DrawableRect(
-                        color = secondary,
-                        topLeft = Offset(minX, newY - offset),
-                        size = rectSize,
-                        cornerRadius = cornerRadius,
-                        style = stroke,
-                        alpha = 0.94f
-                    )
+                    updatedOnPanChanged(Pan(pos))
                 }
 
                 fun animateToCenter(y: Float, center: Float) {
@@ -162,7 +172,7 @@ private fun Fader(
                             interpolator = DecelerateInterpolator()
                             addUpdateListener { animation ->
                                 (animation.animatedValue as Float).let {
-                                    rect = getDrawableRect(it)
+                                    panPosition = it
                                     notifyPosition(it, notifyCenter = it == center)
                                 }
                             }
@@ -178,15 +188,9 @@ private fun Fader(
                         }
                     } else {
                         isCentered = false
-                        rect = getDrawableRect(y)
+                        panPosition = y
                         notifyPosition(y)
                     }
-                }
-
-                if (pan != null) {
-                    // Convert position value [0.0-1.0] to pixels.
-                    val newY = if (pan.value == 0.5f) size.height / 2f else (1 - pan.value) * (maxY - minY) + minY
-                    rect = getDrawableRect(newY)
                 }
 
                 awaitEachGesture {
@@ -208,7 +212,16 @@ private fun Fader(
                 }
             }
             .drawBehind {
-                rect?.let(::draw)
+                panOffset?.let {
+                    drawRoundRect(
+                        color = secondary,
+                        topLeft = it,
+                        size = rectSize,
+                        cornerRadius = cornerRadius,
+                        style = stroke,
+                        alpha = 0.94f
+                    )
+                }
             }
     )
 }

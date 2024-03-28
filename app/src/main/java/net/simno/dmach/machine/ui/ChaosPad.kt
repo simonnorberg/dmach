@@ -24,11 +24,12 @@ import androidx.compose.ui.input.pointer.changedToDown
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChanged
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.unit.IntSize
 import net.simno.dmach.core.DarkLargeText
-import net.simno.dmach.core.DrawableCircle
-import net.simno.dmach.core.draw
 import net.simno.dmach.data.Position
 import net.simno.dmach.theme.AppTheme
+import net.simno.dmach.util.toPx
 
 @Composable
 fun ChaosPad(
@@ -37,7 +38,7 @@ fun ChaosPad(
     horizontalText: String,
     verticalText: String,
     modifier: Modifier = Modifier,
-    onPosition: (Position) -> Unit
+    onPositionChanged: (Position) -> Unit
 ) {
     val secondary = MaterialTheme.colorScheme.secondary
     val shapeSmall = MaterialTheme.shapes.small
@@ -75,7 +76,7 @@ fun ChaosPad(
         Circle(
             settingId = settingId,
             position = position,
-            onPosition = onPosition
+            onPositionChanged = onPositionChanged
         )
     }
 }
@@ -84,60 +85,61 @@ fun ChaosPad(
 private fun Circle(
     settingId: Int,
     position: Position?,
-    onPosition: (Position) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onPositionChanged: (Position) -> Unit
 ) {
+    val updatedOnPositionChanged by rememberUpdatedState(onPositionChanged)
+
     val surface = MaterialTheme.colorScheme.surface
-    val circleRadius = AppTheme.dimens.circleRadius
-    val paddingSmall = AppTheme.dimens.paddingSmall
-    val updatedOnPosition by rememberUpdatedState(onPosition)
-    var circle by remember { mutableStateOf<DrawableCircle?>(null) }
+    val radius = AppTheme.dimens.circleRadius.toPx()
+    val strokeWidth = AppTheme.dimens.paddingSmall.toPx()
+
+    var size by remember { mutableStateOf(IntSize.Zero) }
+
+    val stroke = remember(strokeWidth) { Stroke(width = strokeWidth) }
+    val minX = remember(strokeWidth, radius) { strokeWidth / 2f + radius }
+    val minY = remember(strokeWidth, radius) { strokeWidth / 2f + radius }
+    val maxX = remember(minX, size.width) { size.width - minX }
+    val maxY = remember(minY, size.height) { size.height - minY }
+
+    var circlePosition by remember(settingId, maxX, maxY) {
+        mutableStateOf(
+            position?.let {
+                // Convert position value [0.0-1.0] to pixels.
+                val newX = it.x * (maxX - minX) + minX
+                val newY = (1 - it.y) * (maxY - minY) + minY
+                Position(newX, newY)
+            }
+        )
+    }
+
+    val circleOffset = remember(circlePosition) {
+        circlePosition?.let {
+            val newX = it.x
+                .coerceAtLeast(minX)
+                .coerceAtMost(maxX)
+            val newY = it.y
+                .coerceAtLeast(minY)
+                .coerceAtMost(maxY)
+            Offset(newX, newY)
+        }
+    }
 
     Box(
         modifier = modifier
             .fillMaxSize()
-            .pointerInput(settingId) {
-                val strokeWidth = paddingSmall.toPx()
-                val radius = circleRadius.toPx()
-                val stroke = Stroke(width = strokeWidth)
-                val minX = strokeWidth / 2f + radius
-                val minY = strokeWidth / 2f + radius
-                val maxX = size.width - minX
-                val maxY = size.height - minY
-
+            .onSizeChanged { size = it }
+            .pointerInput(settingId, size) {
                 fun notifyPosition(x: Float, y: Float) {
                     // Convert pixels to a position value [0.0-1.0]
                     val posX = ((x - minX) / (maxX - minX)).coerceIn(0f, 1f)
                     val posY = 1 - ((y - minY) / (maxY - minY)).coerceIn(0f, 1f)
-                    updatedOnPosition(Position(posX, posY))
-                }
-
-                fun getDrawableCircle(x: Float, y: Float): DrawableCircle {
-                    val newX = x
-                        .coerceAtLeast(minX)
-                        .coerceAtMost(maxX)
-                    val newY = y
-                        .coerceAtLeast(minY)
-                        .coerceAtMost(maxY)
-                    return DrawableCircle(
-                        color = surface,
-                        radius = radius,
-                        style = stroke,
-                        center = Offset(newX, newY),
-                        alpha = 0.94f
-                    )
+                    updatedOnPositionChanged(Position(posX, posY))
                 }
 
                 fun onPointerDownOrMove(pointer: PointerInputChange) {
-                    circle = getDrawableCircle(pointer.position.x, pointer.position.y)
+                    circlePosition = Position(pointer.position.x, pointer.position.y)
                     notifyPosition(pointer.position.x, pointer.position.y)
-                }
-
-                if (position != null) {
-                    // Convert position value [0.0-1.0] to pixels.
-                    val newX = position.x * (maxX - minX) + minX
-                    val newY = (1 - position.y) * (maxY - minY) + minY
-                    circle = getDrawableCircle(newX, newY)
                 }
 
                 awaitEachGesture {
@@ -159,7 +161,15 @@ private fun Circle(
                 }
             }
             .drawBehind {
-                circle?.let(::draw)
+                circleOffset?.let {
+                    drawCircle(
+                        color = surface,
+                        radius = radius,
+                        style = stroke,
+                        center = it,
+                        alpha = 0.94f
+                    )
+                }
             }
     )
 }

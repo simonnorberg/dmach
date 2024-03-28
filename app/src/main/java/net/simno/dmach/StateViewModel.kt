@@ -28,11 +28,11 @@ abstract class StateViewModel<Action, Result, ViewState>(
     vararg startActions: Action
 ) : ViewModel() {
 
-    private val _actions = Channel<Action>(BUFFERED)
+    private val actionsChannel = Channel<Action>(BUFFERED)
 
     private val actions: Flow<Action> = flow {
         emitAll(flowOf(*startActions))
-        emitAll(_actions.receiveAsFlow())
+        emitAll(actionsChannel.receiveAsFlow())
     }
 
     val viewState: StateFlow<ViewState> = actions
@@ -45,6 +45,6 @@ abstract class StateViewModel<Action, Result, ViewState>(
         .stateIn(viewModelScope, SharingStarted.Lazily, startViewState)
 
     fun onAction(action: Action) {
-        _actions.trySend(action)
+        actionsChannel.trySend(action)
     }
 }

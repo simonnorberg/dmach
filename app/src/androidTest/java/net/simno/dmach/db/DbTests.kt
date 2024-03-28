@@ -90,7 +90,7 @@ class DbTests {
 
         migrationTestHelper.runMigrationsAndValidate(
             PatchDatabase.NAME,
-            4,
+            5,
             true,
             PatchDatabase.MIGRATION_2_3,
             PatchDatabase.MIGRATION_3_4,

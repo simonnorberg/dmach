@@ -218,7 +218,9 @@ fun Machine(
                     sequence = state.sequence,
                     sequenceLength = state.steps,
                     modifier = Modifier.padding(paddingSmall),
-                    onSequence = { sequence -> updatedOnAction(ChangeSequenceAction(state.sequenceId, sequence)) }
+                    onSequenceChanged = { sequence ->
+                        updatedOnAction(ChangeSequenceAction(state.sequenceId, sequence))
+                    }
                 )
             } else {
                 Column(
@@ -249,14 +251,14 @@ fun Machine(
                     modifier = Modifier
                         .weight(1f)
                         .padding(paddingSmall),
-                    onPosition = { updatedOnAction(ChangePositionAction(it)) }
+                    onPositionChanged = { updatedOnAction(ChangePositionAction(it)) }
                 )
                 PanFader(
                     panId = state.panId,
                     pan = state.pan,
                     modifier = Modifier
                         .padding(top = paddingSmall, end = paddingSmall, bottom = paddingSmall),
-                    onPan = { updatedOnAction(ChangePanAction(it)) }
+                    onPanChanged = { updatedOnAction(ChangePanAction(it)) }
                 )
             }
         }
@@ -269,10 +271,10 @@ fun Machine(
             swing = state.swing,
             steps = state.steps,
             settings = state.settings,
-            onTempo = { updatedOnAction(ChangeTempoAction(it)) },
-            onSwing = { updatedOnAction(ChangeSwingAction(it)) },
-            onSteps = { updatedOnAction(ChangeStepsAction(it)) },
-            onSettings = { updatedOnAction(ChangeSettingsAction(it)) },
+            onTempoChanged = { updatedOnAction(ChangeTempoAction(it)) },
+            onSwingChanged = { updatedOnAction(ChangeSwingAction(it)) },
+            onStepsChanged = { updatedOnAction(ChangeStepsAction(it)) },
+            onSettingsChanged = { updatedOnAction(ChangeSettingsAction(it)) },
             onDismiss = { updatedOnAction(DismissAction) }
         )
         state.showExport -> ExportDialog(
@@ -283,5 +285,4 @@ fun Machine(
     }
 }
 
-@Suppress("unused")
 private enum class ChannelName { BD, SD, CP, TT, CB, HH }
