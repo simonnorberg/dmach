@@ -6,10 +6,10 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import net.simno.dmach.theme.AppTheme
 
@@ -20,7 +20,7 @@ fun CoreDialog(
     properties: DialogProperties = DialogProperties(),
     content: @Composable BoxScope.() -> Unit
 ) {
-    Dialog(
+    BasicAlertDialog(
         onDismissRequest = onDismiss,
         properties = properties
     ) {

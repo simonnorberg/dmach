@@ -12,6 +12,8 @@ sealed class Action
 
 data object LoadAction : Action()
 
+data object ResumeAction : Action()
+
 data object PlaybackAction : Action()
 
 data class PlayPauseAction(

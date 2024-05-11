@@ -35,6 +35,7 @@ class MachineProcessor(
 
     override fun invoke(actions: Flow<Action>): Flow<Result> = merge(
         actions.filterIsInstance<LoadAction>().let(load),
+        actions.filterIsInstance<ResumeAction>().let(resume),
         actions.filterIsInstance<PlaybackAction>().let(playback),
         actions.filterIsInstance<PlayPauseAction>().let(playPause),
         actions.filterIsInstance<SettingsAction>().let(settings),
@@ -95,6 +96,19 @@ class MachineProcessor(
                     tempo = patch.tempo,
                     swing = patch.swing,
                     steps = patch.steps
+                )
+            }
+    }
+
+    private val resume: (Flow<ResumeAction>) -> Flow<ResumeResult> = { actions ->
+        actions
+            .computeResult {
+                val patch = patchRepository.unsavedPatch()
+                ResumeResult(
+                    settingId = random.nextInt(),
+                    position = patch.channel.setting.position,
+                    panId = random.nextInt(),
+                    pan = patch.channel.pan
                 )
             }
     }

@@ -35,6 +35,13 @@ data class LoadResult(
     val steps: Steps
 ) : Result()
 
+data class ResumeResult(
+    val settingId: Int,
+    val position: Position,
+    val panId: Int,
+    val pan: Pan
+) : Result()
+
 data class PlaybackResult(
     val isPlaying: Boolean
 ) : Result()

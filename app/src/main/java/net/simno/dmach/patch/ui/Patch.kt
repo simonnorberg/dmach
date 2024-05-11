@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -40,6 +39,7 @@ import net.simno.dmach.core.DarkButton
 import net.simno.dmach.core.DarkMediumLabel
 import net.simno.dmach.core.DarkMediumText
 import net.simno.dmach.core.OptionsDialog
+import net.simno.dmach.core.hapticClick
 import net.simno.dmach.data.Patch
 import net.simno.dmach.patch.state.Action
 import net.simno.dmach.patch.state.ConfirmDeleteAction
@@ -70,7 +70,6 @@ fun Patch(
         modifier = modifier
             .fillMaxSize()
             .systemBarsPadding()
-            .navigationBarsPadding()
             .safeDrawingPadding()
     ) {
         Row(
@@ -170,7 +169,7 @@ fun Patch(
                                 onClick = {
                                     updatedOnAction(SelectPatchAction(patch.title))
                                 },
-                                onLongClick = {
+                                onLongClick = hapticClick {
                                     if (patches.itemCount > 1) {
                                         updatedOnAction(DeletePatchAction(patch.title))
                                     }
@@ -205,7 +204,7 @@ fun Patch(
     when {
         state.showDelete -> {
             OptionsDialog(
-                text = stringResource(R.string.delete_patch, state.title),
+                text = stringResource(R.string.delete_patch, state.deleteTitle),
                 option1Text = stringResource(R.string.cancel),
                 option2Text = stringResource(R.string.delete),
                 onDismiss = { updatedOnAction(DismissAction) },

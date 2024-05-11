@@ -5,7 +5,25 @@ import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.displayCutout
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Surface
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -32,17 +50,38 @@ class MainActivity : ComponentActivity() {
         setContent {
             AppTheme {
                 Surface {
-                    val navController = rememberNavController()
-                    NavHost(
-                        navController = navController,
-                        startDestination = Destination.Machine.name
+                    Box(
+                        modifier = Modifier.fillMaxSize()
                     ) {
-                        composable(Destination.Machine.name) {
-                            MachineScreen(navController)
+                        val navController = rememberNavController()
+                        NavHost(
+                            navController = navController,
+                            startDestination = Destination.Machine.name,
+                            enterTransition = { fadeIn(animationSpec = tween(200)) },
+                            exitTransition = { fadeOut(animationSpec = tween(200)) }
+                        ) {
+                            composable(Destination.Machine.name) {
+                                MachineScreen(navController)
+                            }
+                            composable(Destination.Patch.name) {
+                                PatchScreen(navController)
+                            }
                         }
-                        composable(Destination.Patch.name) {
-                            PatchScreen(navController)
-                        }
+                        val displayCutout = WindowInsets.displayCutout.asPaddingValues()
+                        Spacer(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .width(displayCutout.calculateStartPadding(LayoutDirection.Ltr))
+                                .background(Color.Black)
+                                .align(Alignment.TopStart)
+                        )
+                        Spacer(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .width(displayCutout.calculateEndPadding(LayoutDirection.Ltr))
+                                .background(Color.Black)
+                                .align(Alignment.TopEnd)
+                        )
                     }
                 }
             }

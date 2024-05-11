@@ -26,6 +26,12 @@ object MachineStateReducer : (ViewState, Result) -> ViewState {
             swing = result.swing,
             steps = result.steps
         )
+        is ResumeResult -> previousState.copy(
+            settingId = result.settingId,
+            position = result.position,
+            panId = result.panId,
+            pan = result.pan
+        )
         is PlaybackResult -> previousState.copy(
             isPlaying = result.isPlaying,
             position = null,

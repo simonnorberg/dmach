@@ -81,6 +81,19 @@ fun LightSmallText(
 }
 
 @Composable
+fun DarkSmallText(
+    text: String,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = text,
+        modifier = modifier,
+        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.666f),
+        style = MaterialTheme.typography.bodySmall
+    )
+}
+
+@Composable
 fun LightMediumLabel(
     text: String,
     modifier: Modifier = Modifier

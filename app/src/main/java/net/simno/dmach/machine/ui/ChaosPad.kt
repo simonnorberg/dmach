@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -15,6 +16,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
@@ -26,7 +28,10 @@ import androidx.compose.ui.input.pointer.positionChanged
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
+import java.util.Locale
 import net.simno.dmach.core.DarkLargeText
+import net.simno.dmach.core.DarkSmallText
 import net.simno.dmach.data.Position
 import net.simno.dmach.theme.AppTheme
 import net.simno.dmach.util.toPx
@@ -37,12 +42,21 @@ fun ChaosPad(
     position: Position?,
     horizontalText: String,
     verticalText: String,
+    debug: Boolean,
     modifier: Modifier = Modifier,
     onPositionChanged: (Position) -> Unit
 ) {
     val secondary = MaterialTheme.colorScheme.secondary
     val shapeSmall = MaterialTheme.shapes.small
     val paddingSmall = AppTheme.dimens.paddingSmall
+
+    var debugPosition by remember { mutableStateOf(position) }
+
+    LaunchedEffect(position) {
+        position?.let {
+            debugPosition = it
+        }
+    }
 
     Box(
         modifier = modifier
@@ -73,10 +87,37 @@ fun ChaosPad(
                 .align(Alignment.BottomCenter)
                 .padding(bottom = paddingSmall)
         )
+        if (debug) {
+            DarkSmallText(
+                text = debugPosition?.let { String.format(Locale.US, "%.2f", it.y) }.orEmpty(),
+                modifier = Modifier
+                    .layout { measurable, constraints ->
+                        val placeable = measurable.measure(constraints)
+                        layout(placeable.height, placeable.width) {
+                            placeable.place(
+                                x = -(placeable.width / 2 - placeable.height / 2),
+                                y = -(placeable.height / 2 - placeable.width / 2)
+                            )
+                        }
+                    }
+                    .rotate(-90f)
+                    .align(Alignment.TopStart)
+                    .padding(end = 4.dp)
+            )
+            DarkSmallText(
+                text = debugPosition?.let { String.format(Locale.US, "%.2f", it.x) }.orEmpty(),
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(end = 4.dp)
+            )
+        }
         Circle(
             settingId = settingId,
             position = position,
-            onPositionChanged = onPositionChanged
+            onPositionChanged = {
+                debugPosition = it
+                onPositionChanged(it)
+            }
         )
     }
 }
@@ -106,8 +147,8 @@ private fun Circle(
         mutableStateOf(
             position?.let {
                 // Convert position value [0.0-1.0] to pixels.
-                val newX = it.x * (maxX - minX) + minX
-                val newY = (1 - it.y) * (maxY - minY) + minY
+                val newX = it.x * ((maxX - minX) + minX)
+                val newY = (1 - it.y) * ((maxY - minY) + minY)
                 Position(newX, newY)
             }
         )
@@ -128,6 +169,7 @@ private fun Circle(
     Box(
         modifier = modifier
             .fillMaxSize()
+            .clipToBounds()
             .onSizeChanged { size = it }
             .pointerInput(settingId, size) {
                 fun notifyPosition(x: Float, y: Float) {

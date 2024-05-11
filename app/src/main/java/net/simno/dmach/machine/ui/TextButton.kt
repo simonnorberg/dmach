@@ -12,10 +12,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.semantics.Role
 import net.simno.dmach.core.LightMediumText
+import net.simno.dmach.core.hapticClick
 
 @Composable
 fun TextButton(
@@ -28,7 +27,6 @@ fun TextButton(
     radioButton: Boolean = false,
     onLongClick: (() -> Unit)? = null
 ) {
-    val haptic = LocalHapticFeedback.current
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
     val background = when {
@@ -48,12 +46,7 @@ fun TextButton(
             )
             .combinedClickable(
                 onClick = onClick,
-                onLongClick = {
-                    updatedOnLongClick?.let { click ->
-                        click()
-                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                    }
-                },
+                onLongClick = hapticClick(updatedOnLongClick),
                 enabled = enabled,
                 role = Role.Button,
                 interactionSource = interactionSource,

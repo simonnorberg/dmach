@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,22 +22,27 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.changedToDown
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChanged
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import java.util.Locale
 import net.simno.dmach.R
 import net.simno.dmach.core.DarkLargeText
+import net.simno.dmach.core.DarkSmallText
 import net.simno.dmach.data.Pan
 import net.simno.dmach.theme.AppTheme
 import net.simno.dmach.util.toPx
@@ -45,11 +51,20 @@ import net.simno.dmach.util.toPx
 fun PanFader(
     panId: Int,
     pan: Pan?,
+    debug: Boolean,
     modifier: Modifier = Modifier,
     onPanChanged: (Pan) -> Unit
 ) {
     val rectHeight = AppTheme.dimens.rectHeight
     val buttonMedium = AppTheme.dimens.buttonMedium
+
+    var debugPan by remember { mutableStateOf(pan) }
+
+    LaunchedEffect(pan) {
+        pan?.let {
+            debugPan = it
+        }
+    }
 
     Box(
         modifier = modifier
@@ -86,10 +101,19 @@ fun PanFader(
                     .align(Alignment.Center)
             )
         }
+        if (debug) {
+            DarkSmallText(
+                text = debugPan?.let { String.format(Locale.US, "%.2f", it.value) }.orEmpty(),
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
         Fader(
             panId = panId,
             pan = pan,
-            onPanChanged = onPanChanged
+            onPanChanged = {
+                debugPan = it
+                onPanChanged(it)
+            }
         )
     }
 }
@@ -103,6 +127,7 @@ private fun Fader(
 ) {
     val updatedOnPanChanged by rememberUpdatedState(onPanChanged)
 
+    val haptic = LocalHapticFeedback.current
     val density = LocalDensity.current
     val secondary = MaterialTheme.colorScheme.secondary
     val cornerSize = MaterialTheme.shapes.small.topStart
@@ -111,13 +136,15 @@ private fun Fader(
 
     var size by remember { mutableStateOf(IntSize.Zero) }
 
-    val rectSize = remember(size.width, rectHeight) { Size(size.width.toFloat(), rectHeight) }
+    val rectSize = remember(strokeWidth, size.width, rectHeight) {
+        Size(size.width.toFloat() - strokeWidth, rectHeight)
+    }
     val offset = remember(rectHeight) { rectHeight / 2f }
     val cornerRadius = remember(rectSize) { cornerSize.toPx(rectSize, density).let { CornerRadius(it, it) } }
     val stroke = remember(strokeWidth) { Stroke(width = strokeWidth) }
     val minX = remember(strokeWidth) { strokeWidth / 2f }
     val minY = remember(strokeWidth, offset) { offset + (strokeWidth / 2f) }
-    val maxY = remember(size, minY) { size.height - minY }
+    val maxY = remember(minY, size.height) { size.height - minY }
 
     var panPosition by remember(panId, maxY) {
         mutableStateOf(
@@ -126,7 +153,7 @@ private fun Fader(
                 if (pan.value == 0.5f) {
                     size.height / 2f
                 } else {
-                    (1 - pan.value) * (maxY - minY) + minY
+                    (1 - pan.value) * ((maxY - minY) + minY)
                 }
             }
         )
@@ -144,6 +171,7 @@ private fun Fader(
     Box(
         modifier = modifier
             .fillMaxSize()
+            .clipToBounds()
             .onSizeChanged { size = it }
             .pointerInput(panId, size) {
                 var centerAnimator: ValueAnimator? = null
@@ -178,6 +206,7 @@ private fun Fader(
                             }
                             start()
                         }
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                 }
 
                 fun onPointerDownOrMove(y: Float) {

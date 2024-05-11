@@ -140,6 +140,20 @@ class MachineProcessorTests {
     }
 
     @Test
+    fun resume(): Unit = runBlocking {
+        processAction(LoadAction)
+
+        val actual = processAction(ResumeAction)
+        val expected = ResumeResult(
+            settingId = testUid,
+            position = Position(0.49f, .45f),
+            panId = testUid,
+            pan = Pan(0.5f)
+        )
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
     fun playback() = runBlocking {
         whenever(audioFocus.audioFocus)
             .doReturn(flowOf(false, true))
