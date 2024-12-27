@@ -1,9 +1,10 @@
 package net.simno.dmach.machine.ui
 
 import android.widget.Toast
-import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -24,12 +25,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -38,6 +41,7 @@ import androidx.lifecycle.compose.dropUnlessResumed
 import net.simno.dmach.R
 import net.simno.dmach.core.DarkMediumText
 import net.simno.dmach.core.DarkSmallLabel
+import net.simno.dmach.core.PredictiveBackProgress
 import net.simno.dmach.data.Channel
 import net.simno.dmach.machine.state.Action
 import net.simno.dmach.machine.state.ChangePanAction
@@ -90,9 +94,16 @@ fun Machine(
         }
     }
 
-    BackHandler(!state.showConfig && !state.showExport && state.selectedChannel != Channel.NONE_ID) {
-        currentOnAction(SelectChannelAction(state.selectedChannel, true))
-    }
+    var backProgress by remember { mutableFloatStateOf(0f) }
+    var inPredictiveBack by remember { mutableStateOf(false) }
+    PredictiveBackProgress(
+        onProgress = { backProgress = it },
+        onInPredictiveBack = { inPredictiveBack = it },
+        onBack = { currentOnAction(SelectChannelAction(state.selectedChannel, true)) },
+        enabled = !state.showConfig &&
+            !state.showExport &&
+            state.selectedChannel != Channel.NONE_ID
+    )
 
     Column(
         modifier = modifier
@@ -224,7 +235,7 @@ fun Machine(
                     )
                 }
             }
-            if (state.selectedChannel == Channel.NONE_ID) {
+            Box {
                 StepSequencer(
                     sequenceId = state.sequenceId,
                     sequence = state.sequence,
@@ -234,46 +245,54 @@ fun Machine(
                         currentOnAction(ChangeSequenceAction(state.sequenceId, sequence))
                     }
                 )
-            } else {
-                Column(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .width(buttonSmall)
-                        .padding(start = paddingSmall, top = paddingSmall, bottom = paddingSmall),
-                    verticalArrangement = Arrangement.spacedBy(paddingSmall)
-                ) {
-                    (1..6).forEachIndexed { index, name ->
-                        TextButton(
-                            text = name.toString(),
-                            selected = state.selectedSetting == index,
+                if (state.selectedChannel != Channel.NONE_ID) {
+                    val alpha = if (inPredictiveBack) 1f - backProgress else 1f
+                    Row(
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.surface.copy(alpha = alpha))
+                            .alpha(alpha)
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .width(buttonSmall)
+                                .padding(start = paddingSmall, top = paddingSmall, bottom = paddingSmall),
+                            verticalArrangement = Arrangement.spacedBy(paddingSmall)
+                        ) {
+                            (1..6).forEachIndexed { index, name ->
+                                TextButton(
+                                    text = name.toString(),
+                                    selected = state.selectedSetting == index,
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .fillMaxSize(),
+                                    enabled = state.settingsSize > index,
+                                    radioButton = true,
+                                    onClick = { currentOnAction(SelectSettingAction(index)) }
+                                )
+                            }
+                        }
+                        ChaosPad(
+                            settingId = state.settingId,
+                            position = state.position,
+                            horizontalText = state.hText,
+                            verticalText = state.vText,
+                            debug = debug,
                             modifier = Modifier
                                 .weight(1f)
-                                .fillMaxSize(),
-                            enabled = state.settingsSize > index,
-                            radioButton = true,
-                            onClick = { currentOnAction(SelectSettingAction(index)) }
+                                .padding(paddingSmall),
+                            onPositionChange = { currentOnAction(ChangePositionAction(it)) }
+                        )
+                        PanFader(
+                            panId = state.panId,
+                            pan = state.pan,
+                            debug = debug,
+                            modifier = Modifier
+                                .padding(top = paddingSmall, end = paddingSmall, bottom = paddingSmall),
+                            onPanChange = { currentOnAction(ChangePanAction(it)) }
                         )
                     }
                 }
-                ChaosPad(
-                    settingId = state.settingId,
-                    position = state.position,
-                    horizontalText = state.hText,
-                    verticalText = state.vText,
-                    debug = debug,
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(paddingSmall),
-                    onPositionChange = { currentOnAction(ChangePositionAction(it)) }
-                )
-                PanFader(
-                    panId = state.panId,
-                    pan = state.pan,
-                    debug = debug,
-                    modifier = Modifier
-                        .padding(top = paddingSmall, end = paddingSmall, bottom = paddingSmall),
-                    onPanChange = { currentOnAction(ChangePanAction(it)) }
-                )
             }
         }
     }

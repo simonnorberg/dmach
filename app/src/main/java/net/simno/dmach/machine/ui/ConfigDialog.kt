@@ -18,17 +18,20 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import net.simno.dmach.R
 import net.simno.dmach.core.LightMediumLabel
+import net.simno.dmach.core.PredictiveBackProgress
 import net.simno.dmach.data.Steps
 import net.simno.dmach.data.Swing
 import net.simno.dmach.data.Tempo
@@ -62,8 +65,17 @@ fun ConfigDialog(
         properties = DialogProperties(usePlatformDefaultWidth = showSettings),
         onDismissRequest = onDismiss
     ) {
+        var backProgress by remember { mutableFloatStateOf(0f) }
+        var inPredictiveBack by remember { mutableStateOf(false) }
+        PredictiveBackProgress(
+            onProgress = { backProgress = it },
+            onInPredictiveBack = { inPredictiveBack = it },
+            onBack = onDismiss
+        )
+
         Column(
             modifier = modifier
+                .scale((1f - backProgress).coerceAtLeast(0.85f))
                 .background(
                     color = primary,
                     shape = shapeMedium
