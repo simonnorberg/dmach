@@ -26,9 +26,8 @@ class TestPatchDao : PatchDao {
     private val patches = listOf(patch, patch)
 
     private val dataSource = object : PagingSource<Int, PatchEntity>() {
-        override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PatchEntity> {
-            return LoadResult.Page(data = patches.map { it.toEntity(it.title) }, null, null)
-        }
+        override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PatchEntity> =
+            LoadResult.Page(data = patches.map { it.toEntity(it.title) }, null, null)
 
         override fun getRefreshKey(state: PagingState<Int, PatchEntity>): Int? = null
     }

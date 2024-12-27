@@ -43,8 +43,8 @@ fun ChaosPad(
     horizontalText: String,
     verticalText: String,
     debug: Boolean,
-    modifier: Modifier = Modifier,
-    onPositionChanged: (Position) -> Unit
+    onPositionChange: (Position) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val secondary = MaterialTheme.colorScheme.secondary
     val shapeSmall = MaterialTheme.shapes.small
@@ -114,9 +114,9 @@ fun ChaosPad(
         Circle(
             settingId = settingId,
             position = position,
-            onPositionChanged = {
+            onPositionChange = {
                 debugPosition = it
-                onPositionChanged(it)
+                onPositionChange(it)
             }
         )
     }
@@ -126,10 +126,10 @@ fun ChaosPad(
 private fun Circle(
     settingId: Int,
     position: Position?,
-    modifier: Modifier = Modifier,
-    onPositionChanged: (Position) -> Unit
+    onPositionChange: (Position) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    val updatedOnPositionChanged by rememberUpdatedState(onPositionChanged)
+    val currentOnPositionChange by rememberUpdatedState(onPositionChange)
 
     val surface = MaterialTheme.colorScheme.surface
     val radius = AppTheme.dimens.circleRadius.toPx()
@@ -176,7 +176,7 @@ private fun Circle(
                     // Convert pixels to a position value [0.0-1.0]
                     val posX = ((x - minX) / (maxX - minX)).coerceIn(0f, 1f)
                     val posY = 1 - ((y - minY) / (maxY - minY)).coerceIn(0f, 1f)
-                    updatedOnPositionChanged(Position(posX, posY))
+                    currentOnPositionChange(Position(posX, posY))
                 }
 
                 fun onPointerDownOrMove(pointer: PointerInputChange) {

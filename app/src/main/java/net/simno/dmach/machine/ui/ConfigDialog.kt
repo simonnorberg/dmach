@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,10 +42,10 @@ fun ConfigDialog(
     swing: Swing,
     steps: Steps,
     settings: Settings,
-    onTempoChanged: (Tempo) -> Unit,
-    onSwingChanged: (Swing) -> Unit,
-    onStepsChanged: (Steps) -> Unit,
-    onSettingsChanged: (Settings) -> Unit,
+    onTempoChange: (Tempo) -> Unit,
+    onSwingChange: (Swing) -> Unit,
+    onStepsChange: (Steps) -> Unit,
+    onSettingsChange: (Settings) -> Unit,
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit
 ) {
@@ -57,12 +56,6 @@ fun ConfigDialog(
     val paddingSmall = AppTheme.dimens.paddingSmall
     val paddingLarge = AppTheme.dimens.paddingLarge
     val configHeightSmall = AppTheme.dimens.configHeightSmall
-
-    val updatedOnTempoChanged by rememberUpdatedState(onTempoChanged)
-    val updatedOnSwingChanged by rememberUpdatedState(onSwingChanged)
-    val updatedOnStepsChanged by rememberUpdatedState(onStepsChanged)
-    val updatedOnSettingsChanged by rememberUpdatedState(onSettingsChanged)
-
     var showSettings by remember { mutableStateOf(false) }
 
     Dialog(
@@ -105,28 +98,28 @@ fun ConfigDialog(
                     text = stringResource(R.string.audiofocus),
                     checked = settings.ignoreAudioFocus,
                     onCheckedChange = { checked ->
-                        updatedOnSettingsChanged(settings.copy(ignoreAudioFocus = checked))
+                        onSettingsChange(settings.copy(ignoreAudioFocus = checked))
                     }
                 )
                 ConfigCheckbox(
                     text = stringResource(R.string.sequencer_setting),
                     checked = settings.sequenceEnabled,
                     onCheckedChange = { checked ->
-                        updatedOnSettingsChanged(settings.copy(sequenceEnabled = checked))
+                        onSettingsChange(settings.copy(sequenceEnabled = checked))
                     }
                 )
                 ConfigCheckbox(
                     text = stringResource(R.string.sound_setting),
                     checked = settings.soundEnabled,
                     onCheckedChange = { checked ->
-                        updatedOnSettingsChanged(settings.copy(soundEnabled = checked))
+                        onSettingsChange(settings.copy(soundEnabled = checked))
                     }
                 )
                 ConfigCheckbox(
                     text = stringResource(R.string.pan_setting),
                     checked = settings.panEnabled,
                     onCheckedChange = { checked ->
-                        updatedOnSettingsChanged(settings.copy(panEnabled = checked))
+                        onSettingsChange(settings.copy(panEnabled = checked))
                     }
                 )
             } else {
@@ -136,7 +129,7 @@ fun ConfigDialog(
                     configValue = tempo.value,
                     minValue = 1,
                     maxValue = 1000,
-                    onValueChanged = { value -> updatedOnTempoChanged(Tempo(value)) }
+                    onValueChange = { value -> onTempoChange(Tempo(value)) }
                 )
                 ConfigValue(
                     configId = configId,
@@ -144,7 +137,7 @@ fun ConfigDialog(
                     configValue = swing.value,
                     minValue = 0,
                     maxValue = 50,
-                    onValueChanged = { value -> updatedOnSwingChanged(Swing(value)) }
+                    onValueChange = { value -> onSwingChange(Swing(value)) }
                 )
                 ConfigValue(
                     configId = configId,
@@ -152,7 +145,7 @@ fun ConfigDialog(
                     configValue = steps.value,
                     minValue = 8,
                     maxValue = 16,
-                    onValueChanged = { value -> updatedOnStepsChanged(Steps(value)) }
+                    onValueChange = { value -> onStepsChange(Steps(value)) }
                 )
                 Row(
                     modifier = Modifier

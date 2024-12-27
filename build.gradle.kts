@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.cachefix) apply false
     alias(libs.plugins.hilt.android) apply false
     alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.ktlint.gradle)
@@ -22,13 +23,12 @@ allprojects {
         }
     }
     tasks.withType<KotlinCompile>().configureEach {
-        kotlinOptions {
+        compilerOptions {
             allWarningsAsErrors = true
-            freeCompilerArgs = freeCompilerArgs + listOf(
-                "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            freeCompilerArgs.addAll(
                 "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
                 "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
-                "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi"
+                "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
             )
         }
     }

@@ -47,15 +47,15 @@ fun ConfigValue(
     configValue: Int,
     minValue: Int,
     maxValue: Int,
-    modifier: Modifier = Modifier,
-    onValueChanged: (Int) -> Unit
+    onValueChange: (Int) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val surface = MaterialTheme.colorScheme.surface
     val onPrimary = MaterialTheme.colorScheme.onPrimary
     val shapeMedium = MaterialTheme.shapes.medium
     val paddingLarge = AppTheme.dimens.paddingLarge
     val configHeight = AppTheme.dimens.configHeight
-    val updatedOnValueChanged by rememberUpdatedState(onValueChanged)
+    val currentOnValueChange by rememberUpdatedState(onValueChange)
     var value by remember { mutableIntStateOf(configValue) }
 
     Row(
@@ -98,7 +98,7 @@ fun ConfigValue(
                                     val newValue = value + change
                                     if (newValue in minValue..maxValue) {
                                         value = newValue
-                                        updatedOnValueChanged(newValue)
+                                        currentOnValueChange(newValue)
                                     }
                                     delay(delay)
                                 }

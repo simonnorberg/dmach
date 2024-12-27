@@ -52,8 +52,8 @@ fun PanFader(
     panId: Int,
     pan: Pan?,
     debug: Boolean,
-    modifier: Modifier = Modifier,
-    onPanChanged: (Pan) -> Unit
+    onPanChange: (Pan) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val rectHeight = AppTheme.dimens.rectHeight
     val buttonMedium = AppTheme.dimens.buttonMedium
@@ -110,9 +110,9 @@ fun PanFader(
         Fader(
             panId = panId,
             pan = pan,
-            onPanChanged = {
+            onPanChange = {
                 debugPan = it
-                onPanChanged(it)
+                onPanChange(it)
             }
         )
     }
@@ -122,10 +122,10 @@ fun PanFader(
 private fun Fader(
     panId: Int,
     pan: Pan?,
-    modifier: Modifier = Modifier,
-    onPanChanged: (Pan) -> Unit
+    onPanChange: (Pan) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    val updatedOnPanChanged by rememberUpdatedState(onPanChanged)
+    val currentOnPanChange by rememberUpdatedState(onPanChange)
 
     val haptic = LocalHapticFeedback.current
     val density = LocalDensity.current
@@ -188,7 +188,7 @@ private fun Fader(
                     } else {
                         1 - ((y - minY) / (maxY - minY)).coerceIn(0f, 1f)
                     }
-                    updatedOnPanChanged(Pan(pos))
+                    currentOnPanChange(Pan(pos))
                 }
 
                 fun animateToCenter(y: Float, center: Float) {

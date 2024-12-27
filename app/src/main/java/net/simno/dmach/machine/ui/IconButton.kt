@@ -13,13 +13,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
+import androidx.lifecycle.compose.dropUnlessResumed
 import net.simno.dmach.core.hapticClick
 import net.simno.dmach.theme.AppTheme
 
@@ -28,10 +28,10 @@ fun IconButton(
     icon: ImageVector,
     @StringRes description: Int,
     selected: Boolean,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     iconPadding: Dp = AppTheme.dimens.paddingLarge,
-    onLongClick: (() -> Unit)? = null,
-    onClick: () -> Unit
+    onLongClick: (() -> Unit)? = null
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
@@ -40,7 +40,6 @@ fun IconButton(
         selected -> MaterialTheme.colorScheme.onSecondary
         else -> MaterialTheme.colorScheme.primary
     }
-    val updatedOnLongClick by rememberUpdatedState(onLongClick)
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -49,8 +48,8 @@ fun IconButton(
                 shape = MaterialTheme.shapes.medium
             )
             .combinedClickable(
-                onClick = onClick,
-                onLongClick = hapticClick(updatedOnLongClick),
+                onClick = dropUnlessResumed(block = onClick),
+                onLongClick = hapticClick(block = onLongClick),
                 enabled = true,
                 role = Role.Button,
                 interactionSource = interactionSource,

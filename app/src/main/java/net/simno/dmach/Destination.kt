@@ -1,6 +1,12 @@
 package net.simno.dmach
 
-enum class Destination {
-    Machine,
-    Patch
+import kotlinx.serialization.Serializable
+
+@Serializable
+sealed class Destination {
+    @Serializable
+    data object Machine : Destination()
+
+    @Serializable
+    data object Patch : Destination()
 }

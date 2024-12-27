@@ -41,10 +41,10 @@ fun StepSequencer(
     sequenceId: Int,
     sequence: PersistentList<Int>,
     sequenceLength: Steps,
-    modifier: Modifier = Modifier,
-    onSequenceChanged: (PersistentList<Int>) -> Unit
+    onSequenceChange: (PersistentList<Int>) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    val updatedOnSequenceChanged by rememberUpdatedState(onSequenceChanged)
+    val currentOnSequenceChange by rememberUpdatedState(onSequenceChange)
 
     val density = LocalDensity.current
     val tertiary = MaterialTheme.colorScheme.tertiary
@@ -96,7 +96,7 @@ fun StepSequencer(
                 fun onStepChange(stepChange: StepChange) {
                     steps[stepChange.index] = stepChange.changedStep
                     stepChanges++
-                    updatedOnSequenceChanged(steps.toPersistentList())
+                    currentOnSequenceChange(steps.toPersistentList())
                 }
 
                 awaitEachGesture {

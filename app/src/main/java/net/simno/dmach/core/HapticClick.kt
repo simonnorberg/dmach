@@ -5,10 +5,10 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 
 @Composable
-fun hapticClick(action: (() -> Unit)?): () -> Unit {
+fun hapticClick(block: (() -> Unit)?): () -> Unit {
     val haptic = LocalHapticFeedback.current
     return {
-        action?.let {
+        block?.let {
             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
             it()
         }

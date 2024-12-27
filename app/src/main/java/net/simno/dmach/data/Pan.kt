@@ -4,4 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @JvmInline
-value class Pan(val value: Float)
+value class Pan(
+    val value: Float
+)

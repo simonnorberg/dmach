@@ -31,6 +31,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.lifecycle.compose.dropUnlessResumed
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
@@ -55,8 +56,8 @@ import net.simno.dmach.theme.AppTheme
 fun Patch(
     state: ViewState,
     patches: LazyPagingItems<Patch>,
-    modifier: Modifier = Modifier,
-    onAction: (Action) -> Unit
+    onAction: (Action) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val primary = MaterialTheme.colorScheme.primary
     val onSurface = MaterialTheme.colorScheme.onSurface
@@ -64,7 +65,7 @@ fun Patch(
     val paddingLarge = AppTheme.dimens.paddingLarge
     val paddingSmall = AppTheme.dimens.paddingSmall
     val buttonLarge = AppTheme.dimens.buttonLarge
-    val updatedOnAction by rememberUpdatedState(onAction)
+    val currentOnAction by rememberUpdatedState(onAction)
 
     Column(
         modifier = modifier
@@ -97,7 +98,7 @@ fun Patch(
                     singleLine = true,
                     keyboardOptions = KeyboardOptions.Default.copy(
                         capitalization = KeyboardCapitalization.None,
-                        autoCorrect = false,
+                        autoCorrectEnabled = false,
                         keyboardType = KeyboardType.Text,
                         imeAction = ImeAction.Done
                     ),
@@ -105,7 +106,7 @@ fun Patch(
                         onDone = {
                             keyboardController?.hide()
                             if (title.isNotBlank()) {
-                                updatedOnAction(SavePatchAction(title))
+                                currentOnAction(SavePatchAction(title))
                             }
                         }
                     )
@@ -118,7 +119,7 @@ fun Patch(
                     onClick = {
                         keyboardController?.hide()
                         if (title.isNotBlank()) {
-                            updatedOnAction(SavePatchAction(title))
+                            currentOnAction(SavePatchAction(title))
                         }
                     }
                 )
@@ -166,12 +167,12 @@ fun Patch(
                             .fillMaxWidth()
                             .background(background)
                             .combinedClickable(
-                                onClick = {
-                                    updatedOnAction(SelectPatchAction(patch.title))
+                                onClick = dropUnlessResumed {
+                                    currentOnAction(SelectPatchAction(patch.title))
                                 },
                                 onLongClick = hapticClick {
                                     if (patches.itemCount > 1) {
-                                        updatedOnAction(DeletePatchAction(patch.title))
+                                        currentOnAction(DeletePatchAction(patch.title))
                                     }
                                 }
                             )
@@ -207,9 +208,9 @@ fun Patch(
                 text = stringResource(R.string.delete_patch, state.deleteTitle),
                 option1Text = stringResource(R.string.cancel),
                 option2Text = stringResource(R.string.delete),
-                onDismiss = { updatedOnAction(DismissAction) },
-                onOption1 = { updatedOnAction(DismissAction) },
-                onOption2 = { updatedOnAction(ConfirmDeleteAction) }
+                onDismiss = { currentOnAction(DismissAction) },
+                onOption1 = { currentOnAction(DismissAction) },
+                onOption2 = { currentOnAction(ConfirmDeleteAction) }
             )
         }
         state.showOverwrite -> {
@@ -217,9 +218,9 @@ fun Patch(
                 text = stringResource(R.string.overwrite_patch, state.title),
                 option1Text = stringResource(R.string.cancel),
                 option2Text = stringResource(R.string.overwrite),
-                onDismiss = { updatedOnAction(DismissAction) },
-                onOption1 = { updatedOnAction(DismissAction) },
-                onOption2 = { updatedOnAction(ConfirmOverwriteAction) }
+                onDismiss = { currentOnAction(DismissAction) },
+                onOption1 = { currentOnAction(DismissAction) },
+                onOption2 = { currentOnAction(ConfirmOverwriteAction) }
             )
         }
     }

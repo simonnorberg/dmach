@@ -19,45 +19,35 @@ object PlaybackModule {
     @Provides
     fun provideAudioManager(
         @ApplicationContext context: Context
-    ): AudioManager {
-        return context.getSystemService()!!
-    }
+    ): AudioManager = context.getSystemService()!!
 
     @Provides
     @Singleton
     fun provideAudioFocus(
         audioManager: AudioManager,
         settingsRepository: SettingsRepository
-    ): AudioFocus {
-        return AudioFocus(audioManager, settingsRepository)
-    }
+    ): AudioFocus = AudioFocus(audioManager, settingsRepository)
 
     @Provides
     @Singleton
     fun provideKortholtPlayer(
         @ApplicationContext context: Context
-    ): Kortholt.Player {
-        return Kortholt.Player.Builder(context)
-            .build()
-            .also { Kortholt.setPlayer(it) }
-    }
+    ): Kortholt.Player = Kortholt.Player.Builder(context)
+        .build()
+        .also { Kortholt.setPlayer(it) }
 
     @Provides
     @Singleton
     fun provideWaveExporter(
         @ApplicationContext context: Context,
         kortholt: Kortholt.Player
-    ): WaveExporter {
-        return WaveExporter(context, kortholt)
-    }
+    ): WaveExporter = WaveExporter(context, kortholt)
 
     @Provides
     @Singleton
     fun providePureData(
         kortholt: Kortholt.Player
-    ): PureData {
-        return PureData(kortholt)
-    }
+    ): PureData = PureData(kortholt)
 
     @Provides
     @Singleton
@@ -66,7 +56,5 @@ object PlaybackModule {
         kortholt: Kortholt.Player,
         pureData: PureData,
         waveExporter: WaveExporter
-    ): PlaybackController {
-        return PlaybackController(context, kortholt, pureData, waveExporter)
-    }
+    ): PlaybackController = PlaybackController(context, kortholt, pureData, waveExporter)
 }

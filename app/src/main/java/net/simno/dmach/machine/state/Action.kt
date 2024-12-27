@@ -80,6 +80,11 @@ data class ChangeStepsAction(
 sealed class ChangePatchAction(
     open val settings: Settings
 ) : Action() {
-    data class Reset(override val settings: Settings) : ChangePatchAction(settings)
-    data class Randomize(override val settings: Settings) : ChangePatchAction(settings)
+    data class Reset(
+        override val settings: Settings
+    ) : ChangePatchAction(settings)
+
+    data class Randomize(
+        override val settings: Settings
+    ) : ChangePatchAction(settings)
 }

@@ -13,7 +13,5 @@ import net.simno.dmach.patch.state.PatchProcessor
 object PatchModule {
     @Provides
     @ViewModelScoped
-    fun providePatchProcesssor(patchRepository: PatchRepository): PatchProcessor {
-        return PatchProcessor(patchRepository)
-    }
+    fun providePatchProcesssor(patchRepository: PatchRepository): PatchProcessor = PatchProcessor(patchRepository)
 }

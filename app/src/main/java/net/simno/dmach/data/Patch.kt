@@ -25,33 +25,27 @@ data class Patch(
     }
 }
 
-fun Patch.mutedSequence(): List<Int> {
-    return sequence.mapIndexed { index, step ->
-        val offset = if (index < Patch.STEPS) 0 else Patch.MUTED_MASKS.size
-        Patch.MUTED_MASKS.foldIndexed(step) { maskIndex, maskedStep, mask ->
-            when {
-                mutedChannels.contains(maskIndex + offset) -> maskedStep and mask
-                else -> maskedStep
-            }
+fun Patch.mutedSequence(): List<Int> = sequence.mapIndexed { index, step ->
+    val offset = if (index < Patch.STEPS) 0 else Patch.MUTED_MASKS.size
+    Patch.MUTED_MASKS.foldIndexed(step) { maskIndex, maskedStep, mask ->
+        when {
+            mutedChannels.contains(maskIndex + offset) -> maskedStep and mask
+            else -> maskedStep
         }
     }
 }
 
-fun Patch.withPan(pan: Pan): Patch {
-    return copy(
-        channels = channels.map { ch ->
-            if (ch == channel) ch.copy(pan = pan) else ch
-        }.toPersistentList()
-    )
-}
+fun Patch.withPan(pan: Pan): Patch = copy(
+    channels = channels.map { ch ->
+        if (ch == channel) ch.copy(pan = pan) else ch
+    }.toPersistentList()
+)
 
-fun Patch.withSelectedSetting(selectedSetting: Int): Patch {
-    return copy(
-        channels = channels.map { ch ->
-            if (ch == channel) ch.copy(selectedSetting = selectedSetting) else ch
-        }.toPersistentList()
-    )
-}
+fun Patch.withSelectedSetting(selectedSetting: Int): Patch = copy(
+    channels = channels.map { ch ->
+        if (ch == channel) ch.copy(selectedSetting = selectedSetting) else ch
+    }.toPersistentList()
+)
 
 fun Patch.withPosition(position: Position): Patch {
     val setting = channel.setting

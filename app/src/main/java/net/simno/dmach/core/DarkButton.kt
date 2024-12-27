@@ -5,6 +5,7 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.dropUnlessResumed
 
 @Composable
 fun DarkButton(
@@ -13,7 +14,7 @@ fun DarkButton(
     modifier: Modifier = Modifier
 ) {
     ElevatedButton(
-        onClick = onClick,
+        onClick = dropUnlessResumed(block = onClick),
         modifier = modifier,
         colors = ButtonDefaults.elevatedButtonColors(
             containerColor = MaterialTheme.colorScheme.primary

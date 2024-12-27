@@ -19,8 +19,8 @@ import net.simno.dmach.theme.AppTheme
 fun ConfigCheckbox(
     text: String,
     checked: Boolean,
-    modifier: Modifier = Modifier,
-    onCheckedChange: (Boolean) -> Unit
+    onCheckedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val surface = MaterialTheme.colorScheme.surface
     val onPrimary = MaterialTheme.colorScheme.onPrimary

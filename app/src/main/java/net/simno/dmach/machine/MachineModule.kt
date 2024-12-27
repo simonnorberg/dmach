@@ -25,14 +25,12 @@ object MachineModule {
         audioFocus: AudioFocus,
         patchRepository: PatchRepository,
         settingsRepository: SettingsRepository
-    ): MachineProcessor {
-        return MachineProcessor(
-            playbackController,
-            pureData,
-            waveExporter,
-            audioFocus,
-            patchRepository,
-            settingsRepository
-        )
-    }
+    ): MachineProcessor = MachineProcessor(
+        playbackController,
+        pureData,
+        waveExporter,
+        audioFocus,
+        patchRepository,
+        settingsRepository
+    )
 }

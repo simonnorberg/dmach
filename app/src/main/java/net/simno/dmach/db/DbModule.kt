@@ -41,7 +41,7 @@ object DbModule {
 
     @Provides
     @Singleton
-    fun providePatchRepository(patchDatabase: PatchDatabase): PatchRepository {
-        return PatchRepository(patchDatabase.patchDao())
-    }
+    fun providePatchRepository(
+        patchDatabase: PatchDatabase
+    ): PatchRepository = PatchRepository(patchDatabase.patchDao())
 }

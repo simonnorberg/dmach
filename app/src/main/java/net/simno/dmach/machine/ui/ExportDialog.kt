@@ -5,9 +5,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
@@ -29,7 +27,6 @@ fun ExportDialog(
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val updatedOnDismiss by rememberUpdatedState(onDismiss)
 
     val shareLauncher = rememberLauncherForActivityResult(StartActivityForResult()) {
     }
@@ -52,7 +49,7 @@ fun ExportDialog(
         option2Text = stringResource(R.string.share),
         onDismiss = {
             runCatching { waveFile?.delete() }
-            updatedOnDismiss()
+            onDismiss()
         },
         onOption1 = {
             waveFile?.name?.let { name -> saveLauncher.launch(name) }

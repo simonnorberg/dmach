@@ -34,6 +34,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.LifecycleResumeEffect
+import androidx.lifecycle.compose.dropUnlessResumed
 import net.simno.dmach.R
 import net.simno.dmach.core.DarkMediumText
 import net.simno.dmach.core.DarkSmallLabel
@@ -63,8 +64,8 @@ import net.simno.dmach.theme.AppTheme
 fun Machine(
     state: ViewState,
     onAction: (Action) -> Unit,
-    modifier: Modifier = Modifier,
-    onClickPatch: () -> Unit
+    onClickPatch: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
 
@@ -74,23 +75,23 @@ fun Machine(
     val paddingLarge = AppTheme.dimens.paddingLarge
     val paddingMedium = AppTheme.dimens.paddingMedium
     val paddingSmall = AppTheme.dimens.paddingSmall
-    val updatedOnAction by rememberUpdatedState(onAction)
+    val currentOnAction by rememberUpdatedState(onAction)
     var debug by remember { mutableStateOf(false) }
 
     LifecycleResumeEffect(Unit) {
-        updatedOnAction(ResumeAction)
+        currentOnAction(ResumeAction)
         onPauseOrDispose {
         }
     }
 
     LaunchedEffect(state.startExport, state.waveFile, state.isPlaying) {
         if (state.startExport && state.waveFile == null && !state.isPlaying) {
-            updatedOnAction(ExportFileAction(state.title, state.tempo, state.steps))
+            currentOnAction(ExportFileAction(state.title, state.tempo, state.steps))
         }
     }
 
     BackHandler(!state.showConfig && !state.showExport && state.selectedChannel != Channel.NONE_ID) {
-        updatedOnAction(SelectChannelAction(state.selectedChannel, true))
+        currentOnAction(SelectChannelAction(state.selectedChannel, true))
     }
 
     Column(
@@ -115,7 +116,7 @@ fun Machine(
                     .width(buttonLarge)
                     .wrapContentWidth(),
                 iconPadding = paddingSmall,
-                onClick = { updatedOnAction(PlayPauseAction(play = !state.isPlaying)) }
+                onClick = { currentOnAction(PlayPauseAction(play = !state.isPlaying)) }
             )
             IconButton(
                 icon = Icons.Filled.Tune,
@@ -124,7 +125,7 @@ fun Machine(
                 modifier = Modifier
                     .width(buttonLarge)
                     .wrapContentWidth(),
-                onClick = { updatedOnAction(ConfigAction) }
+                onClick = { currentOnAction(ConfigAction) }
             )
             IconButton(
                 icon = Icons.Filled.DeleteForever,
@@ -136,7 +137,7 @@ fun Machine(
                 onLongClick = { debug = !debug },
                 onClick = {
                     if (state.settings.isAnyEnabled) {
-                        updatedOnAction(ChangePatchAction.Reset(state.settings))
+                        currentOnAction(ChangePatchAction.Reset(state.settings))
                     } else {
                         Toast.makeText(context, R.string.nothing_reset, Toast.LENGTH_SHORT).show()
                     }
@@ -151,7 +152,7 @@ fun Machine(
                     .wrapContentWidth(),
                 onClick = {
                     if (state.settings.isAnyEnabled) {
-                        updatedOnAction(ChangePatchAction.Randomize(state.settings))
+                        currentOnAction(ChangePatchAction.Randomize(state.settings))
                     } else {
                         Toast.makeText(context, R.string.nothing_randomized, Toast.LENGTH_SHORT).show()
                     }
@@ -164,14 +165,14 @@ fun Machine(
                 modifier = Modifier
                     .width(buttonLarge)
                     .wrapContentWidth(),
-                onClick = { updatedOnAction(ExportAction) }
+                onClick = { currentOnAction(ExportAction) }
             )
             Row(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxSize()
                     .clip(shapeMedium)
-                    .clickable(onClick = onClickPatch)
+                    .clickable(onClick = dropUnlessResumed(block = onClickPatch))
                     .padding(paddingSmall),
                 horizontalArrangement = Arrangement.spacedBy(paddingLarge)
             ) {
@@ -218,8 +219,8 @@ fun Machine(
                             .weight(1f)
                             .fillMaxSize(),
                         muted = isMuted,
-                        onClick = { updatedOnAction(SelectChannelAction(index, state.selectedChannel == index)) },
-                        onLongClick = { updatedOnAction(MuteChannelAction(index, !isMuted)) }
+                        onClick = { currentOnAction(SelectChannelAction(index, state.selectedChannel == index)) },
+                        onLongClick = { currentOnAction(MuteChannelAction(index, !isMuted)) }
                     )
                 }
             }
@@ -229,8 +230,8 @@ fun Machine(
                     sequence = state.sequence,
                     sequenceLength = state.steps,
                     modifier = Modifier.padding(paddingSmall),
-                    onSequenceChanged = { sequence ->
-                        updatedOnAction(ChangeSequenceAction(state.sequenceId, sequence))
+                    onSequenceChange = { sequence ->
+                        currentOnAction(ChangeSequenceAction(state.sequenceId, sequence))
                     }
                 )
             } else {
@@ -250,7 +251,7 @@ fun Machine(
                                 .fillMaxSize(),
                             enabled = state.settingsSize > index,
                             radioButton = true,
-                            onClick = { updatedOnAction(SelectSettingAction(index)) }
+                            onClick = { currentOnAction(SelectSettingAction(index)) }
                         )
                     }
                 }
@@ -263,7 +264,7 @@ fun Machine(
                     modifier = Modifier
                         .weight(1f)
                         .padding(paddingSmall),
-                    onPositionChanged = { updatedOnAction(ChangePositionAction(it)) }
+                    onPositionChange = { currentOnAction(ChangePositionAction(it)) }
                 )
                 PanFader(
                     panId = state.panId,
@@ -271,7 +272,7 @@ fun Machine(
                     debug = debug,
                     modifier = Modifier
                         .padding(top = paddingSmall, end = paddingSmall, bottom = paddingSmall),
-                    onPanChanged = { updatedOnAction(ChangePanAction(it)) }
+                    onPanChange = { currentOnAction(ChangePanAction(it)) }
                 )
             }
         }
@@ -284,16 +285,16 @@ fun Machine(
             swing = state.swing,
             steps = state.steps,
             settings = state.settings,
-            onTempoChanged = { updatedOnAction(ChangeTempoAction(it)) },
-            onSwingChanged = { updatedOnAction(ChangeSwingAction(it)) },
-            onStepsChanged = { updatedOnAction(ChangeStepsAction(it)) },
-            onSettingsChanged = { updatedOnAction(ChangeSettingsAction(it)) },
-            onDismiss = { updatedOnAction(DismissAction) }
+            onTempoChange = { currentOnAction(ChangeTempoAction(it)) },
+            onSwingChange = { currentOnAction(ChangeSwingAction(it)) },
+            onStepsChange = { currentOnAction(ChangeStepsAction(it)) },
+            onSettingsChange = { currentOnAction(ChangeSettingsAction(it)) },
+            onDismiss = { currentOnAction(DismissAction) }
         )
         state.showExport -> ExportDialog(
             enabled = !state.startExport,
             waveFile = state.waveFile,
-            onDismiss = { updatedOnAction(DismissAction) }
+            onDismiss = { currentOnAction(DismissAction) }
         )
     }
 }

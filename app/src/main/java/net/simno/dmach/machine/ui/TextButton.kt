@@ -9,10 +9,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
+import androidx.lifecycle.compose.dropUnlessResumed
 import net.simno.dmach.core.LightMediumText
 import net.simno.dmach.core.hapticClick
 
@@ -37,7 +37,6 @@ fun TextButton(
         muted -> MaterialTheme.colorScheme.onSurfaceVariant
         else -> MaterialTheme.colorScheme.primary
     }
-    val updatedOnLongClick by rememberUpdatedState(onLongClick)
     Box(
         modifier = modifier
             .background(
@@ -45,8 +44,8 @@ fun TextButton(
                 shape = MaterialTheme.shapes.small
             )
             .combinedClickable(
-                onClick = onClick,
-                onLongClick = hapticClick(updatedOnLongClick),
+                onClick = dropUnlessResumed(block = onClick),
+                onLongClick = hapticClick(block = onLongClick),
                 enabled = enabled,
                 role = Role.Button,
                 interactionSource = interactionSource,

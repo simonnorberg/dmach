@@ -88,11 +88,9 @@ class PlaybackService : Service() {
             context: Context,
             title: String? = null,
             tempo: String? = null
-        ): Intent {
-            return Intent(context, PlaybackService::class.java).apply {
-                putExtra(TITLE, title)
-                putExtra(TEMPO, tempo)
-            }
+        ): Intent = Intent(context, PlaybackService::class.java).apply {
+            putExtra(TITLE, title)
+            putExtra(TEMPO, tempo)
         }
     }
 }

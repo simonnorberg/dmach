@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.cachefix)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
 }
@@ -41,9 +42,6 @@ android {
         buildConfig = true
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
     packaging {
         resources.excludes += "/META-INF/{AL2.0,LGPL2.1}"
         jniLibs.useLegacyPackaging = true
@@ -57,8 +55,6 @@ android {
     lint {
         warningsAsErrors = true
         abortOnError = true
-        disable += "GradleDependency"
-        disable += "ObsoleteLintCustomCheck"
     }
 }
 
@@ -72,6 +68,7 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.material)
     implementation(libs.compose.material.icons)
+    implementation(libs.compose.ui)
     implementation(libs.compose.ui.tooling.preview)
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.testmanifest)

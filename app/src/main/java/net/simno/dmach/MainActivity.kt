@@ -56,15 +56,15 @@ class MainActivity : ComponentActivity() {
                         val navController = rememberNavController()
                         NavHost(
                             navController = navController,
-                            startDestination = Destination.Machine.name,
+                            startDestination = Destination.Machine,
                             enterTransition = { fadeIn(animationSpec = tween(200)) },
                             exitTransition = { fadeOut(animationSpec = tween(200)) }
                         ) {
-                            composable(Destination.Machine.name) {
-                                MachineScreen(navController)
+                            composable<Destination.Machine> {
+                                MachineScreen(navigateToPatch = { navController.navigate(Destination.Patch) })
                             }
-                            composable(Destination.Patch.name) {
-                                PatchScreen(navController)
+                            composable<Destination.Patch> {
+                                PatchScreen(navigateUp = navController::navigateUp)
                             }
                         }
                         val displayCutout = WindowInsets.displayCutout.asPaddingValues()
