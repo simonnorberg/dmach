@@ -8,6 +8,9 @@ object MachineStateReducer : (ViewState, Result) -> ViewState {
             logError("MachineStateReducer", "ErrorResult", result.error)
             previousState
         }
+        is DebugResult -> previousState.copy(
+            debug = result.debug
+        )
         is LoadResult -> previousState.copy(
             title = result.title,
             sequenceId = result.sequenceId,

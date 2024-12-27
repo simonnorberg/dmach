@@ -53,6 +53,7 @@ import net.simno.dmach.machine.state.ChangeStepsAction
 import net.simno.dmach.machine.state.ChangeSwingAction
 import net.simno.dmach.machine.state.ChangeTempoAction
 import net.simno.dmach.machine.state.ConfigAction
+import net.simno.dmach.machine.state.DebugAction
 import net.simno.dmach.machine.state.DismissAction
 import net.simno.dmach.machine.state.ExportAction
 import net.simno.dmach.machine.state.ExportFileAction
@@ -80,7 +81,6 @@ fun Machine(
     val paddingMedium = AppTheme.dimens.paddingMedium
     val paddingSmall = AppTheme.dimens.paddingSmall
     val currentOnAction by rememberUpdatedState(onAction)
-    var debug by remember { mutableStateOf(false) }
 
     LifecycleResumeEffect(Unit) {
         currentOnAction(ResumeAction)
@@ -145,7 +145,7 @@ fun Machine(
                 modifier = Modifier
                     .width(buttonLarge)
                     .wrapContentWidth(),
-                onLongClick = { debug = !debug },
+                onLongClick = { currentOnAction(DebugAction(state.debug)) },
                 onClick = {
                     if (state.settings.isAnyEnabled) {
                         currentOnAction(ChangePatchAction.Reset(state.settings))
@@ -277,7 +277,7 @@ fun Machine(
                             position = state.position,
                             horizontalText = state.hText,
                             verticalText = state.vText,
-                            debug = debug,
+                            debug = state.debug,
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(paddingSmall),
@@ -286,7 +286,7 @@ fun Machine(
                         PanFader(
                             panId = state.panId,
                             pan = state.pan,
-                            debug = debug,
+                            debug = state.debug,
                             modifier = Modifier
                                 .padding(top = paddingSmall, end = paddingSmall, bottom = paddingSmall),
                             onPanChange = { currentOnAction(ChangePanAction(it)) }

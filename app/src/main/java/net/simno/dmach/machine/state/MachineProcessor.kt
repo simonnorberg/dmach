@@ -34,6 +34,7 @@ class MachineProcessor(
 ) : (Flow<Action>) -> Flow<Result> {
 
     override fun invoke(actions: Flow<Action>): Flow<Result> = merge(
+        actions.filterIsInstance<DebugAction>().let(debug),
         actions.filterIsInstance<LoadAction>().let(load),
         actions.filterIsInstance<ResumeAction>().let(resume),
         actions.filterIsInstance<PlaybackAction>().let(playback),
@@ -55,6 +56,13 @@ class MachineProcessor(
         actions.filterIsInstance<ChangeStepsAction>().let(changeSteps),
         actions.filterIsInstance<ChangePatchAction>().let(changePatch)
     )
+
+    private val debug: (Flow<DebugAction>) -> Flow<DebugResult> = { actions ->
+        actions
+            .computeResult { action ->
+                DebugResult(debug = !action.debug)
+            }
+    }
 
     private val load: (Flow<LoadAction>) -> Flow<LoadResult> = { actions ->
         actions

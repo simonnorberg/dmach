@@ -14,6 +14,7 @@ import net.simno.dmach.data.Tempo
 import net.simno.dmach.settings.Settings
 
 data class ViewState(
+    val debug: Boolean = false,
     val title: String = "",
     val isPlaying: Boolean = false,
     val showConfig: Boolean = false,

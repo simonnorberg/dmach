@@ -10,6 +10,10 @@ import net.simno.dmach.settings.Settings
 
 sealed class Action
 
+data class DebugAction(
+    val debug: Boolean
+) : Action()
+
 data object LoadAction : Action()
 
 data object ResumeAction : Action()

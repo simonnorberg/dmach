@@ -16,6 +16,10 @@ data class ErrorResult(
     val error: Throwable
 ) : Result()
 
+data class DebugResult(
+    val debug: Boolean
+) : Result()
+
 data class LoadResult(
     val title: String,
     val sequenceId: Int,
