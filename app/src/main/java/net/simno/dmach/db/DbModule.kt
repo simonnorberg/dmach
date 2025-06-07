@@ -25,7 +25,7 @@ object DbModule {
                 PatchDatabase.MIGRATION_3_4,
                 PatchDatabase.MIGRATION_4_5
             )
-            .fallbackToDestructiveMigration()
+            .fallbackToDestructiveMigration(dropAllTables = true)
             .build()
 
         val dao = db.patchDao()

@@ -26,8 +26,8 @@ android {
         applicationId = "net.simno.dmach"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 30012
-        versionName = "3.7"
+        versionCode = 30013
+        versionName = "3.8"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         ndk.abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64"))
     }
